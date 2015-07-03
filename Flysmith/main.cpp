@@ -1,14 +1,12 @@
 #include "FlysmithGame.h"
-#include "Application\Timer.h"
-#include <ctime>
-#include <cmath>
-#include <vector>
-#include <string>
-#include <chrono>
+
 
 FORCE_NV_OPTIMUS
 
-int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int)
+int WINAPI WinMain(_In_ HINSTANCE hInstance,
+				   _In_opt_ HINSTANCE,
+				   _In_ LPSTR,
+				   _In_ int)
 {
 	FlysmithGame game(hInstance);
 	return game.Run();

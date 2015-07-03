@@ -1,7 +1,7 @@
 #include "Timer.h"
 #include <Windows.h>
-#include <condition_variable>
-std::condition_variable var;
+using namespace cuc;
+
 
 U64 Timer::s_ticksPerSecond = 0;
 

@@ -20,8 +20,8 @@ Window::Window(HINSTANCE hInstance, U32 width, U32 height, const std::wstring& c
 	else
 	{
 		m_windowStyle = WS_OVERLAPPEDWINDOW | WS_VISIBLE;
-		x = CW_USEDEFAULT;
-		y = CW_USEDEFAULT;
+		x = static_cast<U32>(CW_USEDEFAULT);
+		y = static_cast<U32>(CW_USEDEFAULT);
 	}
 
 	WNDCLASSEX wc;
@@ -86,6 +86,11 @@ void Window::HandleWindowEvent(HWND hwnd, UINT msg, WPARAM, LPARAM lParam)
 		break;
 
 	case WM_SIZE:
+		// CreateWindowEx sends WM_CREATE only in Debug builds for some reason, even though MSDN
+		// says it sends only WM_NCCREATE, WM_NCCALCSIZE, and WM_CREATE.
+		// No window exists prior to its... creation.
+		if (!s_windows.size())
+			return;
 		s_windows[hwnd]->Resize(LOWORD(lParam), HIWORD(lParam));
 		break;
 	}
@@ -154,6 +159,9 @@ LRESULT CALLBACK Window::WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPar
 {
 	switch (msg)
 	{
+	case WM_CREATE:
+		return 0;
+
 	case WM_DESTROY:
 	case WM_SIZE:
 		HandleWindowEvent(hwnd, msg, wParam, lParam);

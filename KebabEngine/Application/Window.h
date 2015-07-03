@@ -26,8 +26,8 @@ namespace cuc
 	private:
 		HWND m_hWnd;
 		DWORD m_windowStyle;
-		int x;
-		int y;
+		U32 x;
+		U32 y;
 		bool m_bShouldClose;
 
 		GLContext* m_pContext;

@@ -5,7 +5,7 @@
 
 namespace cuc
 {
-	class KEBAB_API GLContext
+	class GLContext
 	{
 	public:
 		GLContext(HWND, U32 width, U32 height);
