@@ -1,6 +1,6 @@
 #pragma once
 #include "KebabEngine.h"
-#include <string>
+#include "StringHash.h"
 #include <vector>
 #include "Variant.h"
 
@@ -22,12 +22,10 @@ namespace cuc
 
 	struct KEBAB_API Event final
 	{
-		Event(const std::string&);
-		Event(const std::string&, const std::vector<Variant32>&);
+		Event(const U32&);
+		Event(const U32&, const std::vector<Variant32>&);
 
-		// Currently, event types are strings, but in the (very) near future the strings
-		// will be hashed so that Events store only the resulting hash.
-		std::string type;
+		U32 type; 
 
 		// Will use a pool allocator shared by all events.
 		std::vector<Variant32> attributes;

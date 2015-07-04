@@ -186,6 +186,7 @@
     <ClInclude Include="Application\Window.h" />
     <ClInclude Include="Event.h" />
     <ClInclude Include="KebabEngine.h" />
+    <ClInclude Include="StringHash.h" />
     <ClInclude Include="Types.h" />
     <ClInclude Include="Variant.h" />
   </ItemGroup>

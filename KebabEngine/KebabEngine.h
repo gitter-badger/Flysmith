@@ -12,3 +12,4 @@
 #define FORCE_NV_OPTIMUS extern "C" { __declspec(dllexport) unsigned long NvOptimusEnablement = 0x00000001; }
 
 #include "Types.h"
+#include "StringHash.h"
