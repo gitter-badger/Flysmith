@@ -6,7 +6,7 @@ using namespace cuc;
 Application::Application(HINSTANCE hInstance)
 	: m_pWindow(nullptr)
 {
-	m_pWindow = new Window(hInstance, 800, 600, L"Kebab", true);
+	m_pWindow = new Window(hInstance, 800, 600, L"Kebab", false);
 }
 
 Application::~Application()

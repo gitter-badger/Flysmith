@@ -18,21 +18,25 @@ namespace cuc
 		enum class Type
 		{
 			INVALID,
-			INTEGER,
+			SIGNED_INT,
+			UNSIGNED_INT,
 			FLOAT
 		} type;
 
 		union
 		{
-			I32 asInteger;
+			I32 asSignedInt;
+			U32 asUnsignedInt;
 			F32 asFloat;
 		};
 		
 		Variant32();
-		explicit Variant32(F32);
-		explicit Variant32(I32);
+		Variant32(F32);
+		Variant32(I32);
+		Variant32(U32);
 		
 		void SetValue(F32);
 		void SetValue(I32);
+		void SetValue(U32);
 	};
 }

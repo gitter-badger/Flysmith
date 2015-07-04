@@ -91,6 +91,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>GLEW_STATIC;X86;WIN32;_DEBUG;_WINDOWS;_USRDLL;KEBABENGINE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)Dependencies</AdditionalIncludeDirectories>
+      <PreprocessToFile>false</PreprocessToFile>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -174,6 +175,7 @@
     <ClCompile Include="Application\Timer.cpp" />
     <ClCompile Include="Application\Window.cpp" />
     <ClCompile Include="dllmain.cpp" />
+    <ClCompile Include="Event.cpp" />
     <ClCompile Include="Variant.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -182,6 +184,7 @@
     <ClInclude Include="Application\Renderer.h" />
     <ClInclude Include="Application\Timer.h" />
     <ClInclude Include="Application\Window.h" />
+    <ClInclude Include="Event.h" />
     <ClInclude Include="KebabEngine.h" />
     <ClInclude Include="Types.h" />
     <ClInclude Include="Variant.h" />

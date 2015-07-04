@@ -4,8 +4,6 @@ using namespace cuc;
 
 inline Variant32::Variant32()
 	: type(Type::INVALID)
-	, asInteger(0)
-	, asFloat(0.0f)
 {
 }
 
@@ -16,8 +14,14 @@ inline Variant32::Variant32(F32 value)
 }
 
 inline Variant32::Variant32(I32 value)
-	: type(Type::INTEGER)
-	, asInteger(value)
+	: type(Type::SIGNED_INT)
+	, asSignedInt(value)
+{
+}
+
+inline Variant32::Variant32(U32 value)
+	: type(Type::UNSIGNED_INT)
+	, asUnsignedInt(value)
 {
 }
 
@@ -29,6 +33,12 @@ inline void Variant32::SetValue(F32 value)
 
 inline void Variant32::SetValue(I32 value)
 {
-	type = Type::INTEGER;
-	asInteger = value;
+	type = Type::SIGNED_INT;
+	asSignedInt = value;
+}
+
+inline void Variant32::SetValue(U32 value)
+{
+	type = Type::UNSIGNED_INT;
+	asUnsignedInt = value;
 }
