@@ -1,7 +1,10 @@
 #include "Application.h"
+#include "EventManager.h"
 #include "Window.h"
 using namespace cuc;
 
+
+EventManager cuc::g_eventManager;
 
 Application::Application(HINSTANCE hInstance)
 	: m_pWindow(nullptr)

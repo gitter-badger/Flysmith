@@ -1,8 +1,8 @@
 #pragma once
 #include "KebabEngine.h"
 #include "StringHash.h"
-#include <vector>
 #include "Variant.h"
+#include <vector>
 
 
 namespace cuc
@@ -19,9 +19,14 @@ namespace cuc
 	//		DoAttribute1Stuff(event.attributes[PlayerDiedEvent::ATTRIBUTE1_KEY]);
 	//		DoAttribute2Stuff(event.attributes[PlayerDiedEvent::ATTRIBUTE2_KEY]);
 	// }
-
-	struct KEBAB_API Event final
+	class KEBAB_API Event final
 	{
+	public:
+		// Required to avoid 2 copies for each event submitted to the manager(one to the PostEvent() - copy needed, and one to the queues - move used instead).
+		// Also factory creation functions make use of moves when returning a created event.
+		Event(Event&&);
+		Event& operator=(Event&&);
+
 		Event(const U32&);
 		Event(const U32&, const std::vector<Variant32>&);
 

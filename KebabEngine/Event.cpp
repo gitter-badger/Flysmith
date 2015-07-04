@@ -1,4 +1,5 @@
 #include "Event.h"
+#include "Variant.h"
 using namespace cuc;
 
 
@@ -15,6 +16,22 @@ Event KeyDownEvent::Create(const U32& keyCode)
 Event KeyCharEvent::Create(const U32& keyCode)
 {
 	return Event("KeyCharEvent"_HASH, { keyCode });
+}
+
+Event::Event(Event&& other)
+	: type(other.type)
+	, attributes(other.attributes)
+{
+	other.type = 0;
+	other.attributes.clear();
+}
+
+Event& Event::operator=(Event&& other)
+{
+	std::swap(type, other.type);
+	std::swap(attributes, other.attributes);
+
+	return *this;
 }
 
 Event::Event(const U32& type_) 

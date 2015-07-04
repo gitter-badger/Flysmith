@@ -176,6 +176,8 @@
     <ClCompile Include="Application\Window.cpp" />
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="Event.cpp" />
+    <ClCompile Include="EventManager.cpp" />
+    <ClCompile Include="EventListener.cpp" />
     <ClCompile Include="Variant.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -185,6 +187,8 @@
     <ClInclude Include="Application\Timer.h" />
     <ClInclude Include="Application\Window.h" />
     <ClInclude Include="Event.h" />
+    <ClInclude Include="EventManager.h" />
+    <ClInclude Include="EventListener.h" />
     <ClInclude Include="KebabEngine.h" />
     <ClInclude Include="StringHash.h" />
     <ClInclude Include="Types.h" />
