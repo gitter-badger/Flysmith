@@ -14,7 +14,7 @@ namespace cuc
 		Application(HINSTANCE);
 		virtual ~Application();
 
-		U32 Run();
+		virtual U32 Run();
 
 	private:
 		Timer   m_timer;

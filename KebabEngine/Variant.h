@@ -23,13 +23,6 @@ namespace cuc
 			FLOAT
 		} type;
 
-		union
-		{
-			I32 asSignedInt;
-			U32 asUnsignedInt;
-			F32 asFloat;
-		};
-		
 		Variant32();
 		Variant32(F32);
 		Variant32(I32);
@@ -38,5 +31,19 @@ namespace cuc
 		void SetValue(F32);
 		void SetValue(I32);
 		void SetValue(U32);
+
+		F32 GetFloat() const;
+		I32 GetSignedInt() const;
+		U32 GetUnsignedInt() const;
+
+		bool operator ==(const Variant32&);
+
+	private:
+		union
+		{
+			I32 asSignedInt;
+			U32 asUnsignedInt;
+			F32 asFloat;
+		};
 	};
 }

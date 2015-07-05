@@ -19,6 +19,7 @@ namespace cuc
 	//		DoAttribute1Stuff(event.attributes[PlayerDiedEvent::ATTRIBUTE1_KEY]);
 	//		DoAttribute2Stuff(event.attributes[PlayerDiedEvent::ATTRIBUTE2_KEY]);
 	// }
+	// Individual event classes provide a creation function and an enumeration of its attributes.
 	class KEBAB_API Event final
 	{
 	public:
@@ -30,30 +31,14 @@ namespace cuc
 		Event(const U32&);
 		Event(const U32&, const std::vector<Variant32>&);
 
+		// Get an attribute without going through the attributes vector:
+		// Event event;
+		// event[0] is the event's first attribute
+		const Variant32 operator[](const std::size_t) const;
+
 		U32 type; 
 
 		// Will use a pool allocator shared by all events.
 		std::vector<Variant32> attributes;
-	};
-
-	// -----------------
-	// Individual event classes provide a creation function and an enumeration of its attributes.
-	// -----------------
-	struct KEBAB_API KeyUpEvent
-	{
-		enum { KEY_CODE };
-		static Event Create(const U32& keyCode);
-	};
-
-	struct KEBAB_API KeyDownEvent
-	{
-		enum { KEY_CODE };
-		static Event Create(const U32& keyCode);
-	};
-
-	struct KEBAB_API KeyCharEvent
-	{
-		enum { KEY_CODE };
-		static Event Create(const U32& keyCode);
 	};
 };

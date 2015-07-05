@@ -1,5 +1,5 @@
 #include "Application.h"
-#include "EventManager.h"
+#include "Events\EventManager.h"
 #include "Window.h"
 using namespace cuc;
 
@@ -27,9 +27,11 @@ U32 Application::Run()
 
 	while (!m_pWindow->ShouldClose())
 	{
+		m_pWindow->RunMessageLoop();
+		
 		m_timer.Update();
 
-		m_pWindow->RunMessageLoop();
+		g_eventManager.DispatchEvents();
 
 		renderer.Render();
 	}

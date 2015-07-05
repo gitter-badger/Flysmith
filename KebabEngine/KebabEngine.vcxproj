@@ -175,9 +175,10 @@
     <ClCompile Include="Application\Timer.cpp" />
     <ClCompile Include="Application\Window.cpp" />
     <ClCompile Include="dllmain.cpp" />
-    <ClCompile Include="Event.cpp" />
-    <ClCompile Include="EventManager.cpp" />
-    <ClCompile Include="EventListener.cpp" />
+    <ClCompile Include="Events\Event.cpp" />
+    <ClCompile Include="Events\EventManager.cpp" />
+    <ClCompile Include="Events\EventListener.cpp" />
+    <ClCompile Include="Events\InputEvents.cpp" />
     <ClCompile Include="Variant.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -186,9 +187,11 @@
     <ClInclude Include="Application\Renderer.h" />
     <ClInclude Include="Application\Timer.h" />
     <ClInclude Include="Application\Window.h" />
-    <ClInclude Include="Event.h" />
-    <ClInclude Include="EventManager.h" />
-    <ClInclude Include="EventListener.h" />
+    <ClInclude Include="Events\Event.h" />
+    <ClInclude Include="Events\EventFactory.h" />
+    <ClInclude Include="Events\EventManager.h" />
+    <ClInclude Include="Events\EventListener.h" />
+    <ClInclude Include="Events\InputEvents.h" />
     <ClInclude Include="KebabEngine.h" />
     <ClInclude Include="StringHash.h" />
     <ClInclude Include="Types.h" />

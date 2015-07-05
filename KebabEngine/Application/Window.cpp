@@ -1,6 +1,9 @@
 #include "Window.h"
 #include "GLContext.h"
 #include <Windows.h>
+#include <windowsx.h>
+#include "Events\InputEvents.h"
+#include "Events\EventManager.h"
 using namespace cuc;
 
 
@@ -96,36 +99,22 @@ void Window::HandleWindowEvent(HWND hwnd, UINT msg, WPARAM, LPARAM lParam)
 	}
 }
 
-void Window::HandleMouseEvent(UINT msg, WPARAM, LPARAM)
+void Window::HandleMouseEvent(UINT msg, WPARAM, LPARAM lParam)
 {
+	F32 xPosition = static_cast<F32>(GET_X_LPARAM(lParam));
+	F32 yPosition = static_cast<F32>(GET_Y_LPARAM(lParam));
+
+#define PostMouseEv(WindowsMessage, EventId) \
+	case WindowsMessage: \
+		g_eventManager.PostEvent(MouseEvent::Create(MouseEvent::EventId, xPosition, yPosition)); \
+		break;
+
 	switch (msg)
 	{
-	case WM_LBUTTONUP:
-		//g_eventManager.PostEvent(new MouseLButtonUp(wParam, lParam));
-		break;
-
-	case WM_LBUTTONDOWN:
-		//g_eventManager.PostEvent(new MouseLButtonDown(wParam, lParam));
-		break;
-
-	case WM_MBUTTONUP:
-		//g_eventManager.PostEvent(new MouseMButtonUp(wParam, lParam));
-		break;
-
-	case WM_MBUTTONDOWN:
-		//g_eventManager.PostEvent(new MouseMButtonDown(wParam, lParam));
-		break;
-
-	case WM_RBUTTONUP:
-		//g_eventManager.PostEvent(new MouseRButtonUp(wParam, lParam));
-		break;
-
-	case WM_RBUTTONDOWN:
-		//g_eventManager.PostEvent(new MouseRButtonDown(wParam, lParam));
-		break;
-
-	case WM_MOUSEWHEEL:
-		break;
+		PostMouseEv(WM_LBUTTONUP,   LMouseUpId)
+		PostMouseEv(WM_LBUTTONDOWN, LMouseDownId)
+		PostMouseEv(WM_RBUTTONUP,   RMouseUpId)
+		PostMouseEv(WM_RBUTTONDOWN, RMouseDownId)
 	}
 }
 
@@ -134,22 +123,22 @@ void Window::HandleKeyboardEvent(UINT msg, WPARAM wParam, LPARAM)
 	switch (msg)
 	{
 	case WM_CHAR:
-		//g_eventManager.PostEvent(new KeyChar(wParam, lParam));
+		g_eventManager.PostEvent(KeyboardEvent::Create(KeyboardEvent::KeyCharId, wParam));
 		break;
 
 	case WM_KEYUP:
-		//g_eventManager.PostEvent(new KeyUp(wParam, lParam));
+		g_eventManager.PostEvent(KeyboardEvent::Create(KeyboardEvent::KeyUpId, wParam));
 		break;
 
 	case WM_KEYDOWN:
-		// g_eventManager.PostEvent(new KeyDown(wParam, lParam));
+		g_eventManager.PostEvent(KeyboardEvent::Create(KeyboardEvent::KeyDownId, wParam));
 		break;
 
 	case WM_SYSCOMMAND:
 		if (wParam == SC_CLOSE)
 		{
 			//g_eventManager.PostEvent({ Event::EngineEvents::EXIT });
-			//return 0;
+			return;
 		}
 		break;
 	}

@@ -9,5 +9,5 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance,
 				   _In_ int)
 {
 	FlysmithGame game(hInstance);
-	return game.Run();
+	game.Run();
 }

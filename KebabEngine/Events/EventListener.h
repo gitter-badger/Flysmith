@@ -7,7 +7,7 @@ namespace cuc
 {
 	class Event;
 
-	class EventListener
+	class KEBAB_API EventListener
 	{
 	public:
 		virtual ~EventListener();

@@ -17,7 +17,7 @@ EventManager::~EventManager()
 {
 	s_bInstantiated = false;
 }
-
+#include <Windows.h>
 void EventManager::RegisterListener(U32 eventType, EventListener* pListener)
 {
 	m_listeners[eventType].push_back(pListener);

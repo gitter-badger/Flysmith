@@ -6,8 +6,9 @@
 //		since "MyString"cuc::_HASH
 //			  cuc::"MyString"_HASH or something is not possible
 
+// CRC32
 // Credit: Clement JACOB - http://stackoverflow.com/a/9842857
-static constexpr std::uint32_t crc_table[256] = {
+static constexpr U32 crc_table[256] = {
 	0x00000000, 0x77073096, 0xee0e612c, 0x990951ba, 0x076dc419, 0x706af48f,
 	0xe963a535, 0x9e6495a3,	0x0edb8832, 0x79dcb8a4, 0xe0d5e91e, 0x97d2d988,
 	0x09b64c2b, 0x7eb17cbd, 0xe7b82d07, 0x90bf1d91, 0x1db71064, 0x6ab020f2,
@@ -54,19 +55,28 @@ static constexpr std::uint32_t crc_table[256] = {
 };
 
 template<size_t idx>
-constexpr std::uint32_t crc32(const char * str)
+constexpr U32 crc32(const char* str)
 {
 	return (crc32<idx - 1>(str) >> 8)
 		^ crc_table[(crc32<idx - 1>(str) ^ str[idx]) & 0x000000FF];
 }
 
 template<>
-constexpr std::uint32_t crc32<size_t(-1)>(const char*)
+constexpr U32 crc32<size_t(-1)>(const char*)
 {
 	return 0xFFFFFFFF;
 }
 
-constexpr std::uint32_t operator "" _HASH(const char* str, size_t)
+// djb2
+constexpr U32 djb2(const char* str)
 {
-	return crc32<sizeof(str) - 2>(str) ^ 0xFFFFFFFF;
+	return str[0] ?
+		static_cast<U32>(str[0]) + 33 * djb2(&str[1]) :
+		5381;
+}
+
+constexpr U32 operator "" _HASH(const char* str, size_t)
+{
+	return djb2(str);
+	//return crc32<sizeof(str) - 2>(str) ^ 0xFFFFFFFF;
 }
