@@ -70,8 +70,9 @@ constexpr U32 crc32<size_t(-1)>(const char*)
 // djb2
 constexpr U32 djb2(const char* str)
 {
-	return str[0] ?
-		static_cast<U32>(str[0]) + 33 * djb2(&str[1]) :
+	#pragma warning(disable:4307)
+	return *str ?
+		static_cast<U32>(*str) + 33 * djb2(str + 1) :
 		5381;
 }
 

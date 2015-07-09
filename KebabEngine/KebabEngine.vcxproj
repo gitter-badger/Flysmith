@@ -179,6 +179,7 @@
     <ClCompile Include="Events\EventManager.cpp" />
     <ClCompile Include="Events\EventListener.cpp" />
     <ClCompile Include="Events\InputEvents.cpp" />
+    <ClCompile Include="Resources\File.cpp" />
     <ClCompile Include="Variant.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -187,12 +188,14 @@
     <ClInclude Include="Application\Renderer.h" />
     <ClInclude Include="Application\Timer.h" />
     <ClInclude Include="Application\Window.h" />
+    <ClInclude Include="Events\Delegate.h" />
     <ClInclude Include="Events\Event.h" />
     <ClInclude Include="Events\EventFactory.h" />
     <ClInclude Include="Events\EventManager.h" />
     <ClInclude Include="Events\EventListener.h" />
     <ClInclude Include="Events\InputEvents.h" />
     <ClInclude Include="KebabEngine.h" />
+    <ClInclude Include="Resources\File.h" />
     <ClInclude Include="StringHash.h" />
     <ClInclude Include="Types.h" />
     <ClInclude Include="Variant.h" />
