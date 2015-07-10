@@ -1,8 +1,10 @@
 #include "GLContext.h"
-#include "GL\glew.h"
-#include "GL\wglew.h"
+#include "GLCore.h"
+#include "WGL.h"
 using namespace cuc;
 
+
+bool GLContext::s_bLoadedFunctions = false;
 
 GLContext::GLContext(HWND hWindow, U32 width, U32 height)
 	: m_hWindow(hWindow)
@@ -15,12 +17,17 @@ GLContext::GLContext(HWND hWindow, U32 width, U32 height)
 	CreateContext();
 
 	// Set clear color
-	glClearColor(0.4f, 0.6f, 0.9f, 0.0f);
+	gl::ClearColor(0.4f, 0.6f, 0.9f, 0.0f);
 
-	glViewport(0, 0, width, height);
+	gl::Viewport(0, 0, width, height);
 }
 
 GLContext::~GLContext()
+{
+	DestroyContext();
+}
+
+void GLContext::DestroyContext()
 {
 	wglMakeCurrent(m_hDeviceContext, 0);
 	wglDeleteContext(m_hRenderContext);
@@ -43,32 +50,69 @@ void GLContext::CreatePixelFormat()
 
 void GLContext::CreateContext()
 {
-	// Create a temporary Opengl 2.1 context to allow the initialization of GLEW
+	// Create a temporary Opengl 2.1 context to allow the loading of functions that can create a 4.5 context
 	auto tempContext = wglCreateContext(m_hDeviceContext);
 	wglMakeCurrent(m_hDeviceContext, tempContext);
 
-	glewInit();
+	if (!s_bLoadedFunctions)
+	{
+		LoadFunctions();
+	}
+	
+	if (!s_bLoadedFunctions)
+	{
+		// TODO: Decide if crash or allow using the 2.1 context
+		// DestroyContext();
+		m_hRenderContext = tempContext;
+		return;
+	}
 
-	// If the context creation extension is available, create an Opengl 4.3 context and make it active(replacing the temporary one)
+	// If the context creation extension is available, create an Opengl 4.5 context and make it active(replacing the temporary one)
 	// If not, keep using the 2.1 context
-	if (wglewIsSupported("WGL_ARB_create_contxt"))
+	if (wgl::exts::var_ARB_create_context)
 	{
 		int attributes[] = {
-			WGL_CONTEXT_MAJOR_VERSION_ARB, 4,
-			WGL_CONTEXT_MINOR_VERSION_ARB, 3,
-			WGL_CONTEXT_FLAGS_ARB, WGL_CONTEXT_FORWARD_COMPATIBLE_BIT_ARB,
+			wgl::CONTEXT_MAJOR_VERSION_ARB, 4,
+			wgl::CONTEXT_MINOR_VERSION_ARB, 5,
+			wgl::CONTEXT_FLAGS_ARB, wgl::CONTEXT_FORWARD_COMPATIBLE_BIT_ARB,
 			0
 		};
 
-		m_hRenderContext = wglCreateContextAttribsARB(m_hDeviceContext, nullptr, attributes);
-		
+		m_hRenderContext = wgl::CreateContextAttribsARB(m_hDeviceContext, nullptr, attributes);
+
 		wglDeleteContext(tempContext);
 		wglMakeCurrent(m_hDeviceContext, m_hRenderContext);
 	}
 	else
 	{
+		// TODO: Decide if crash or allow using the 2.1 context
+		// DestroyContext();
 		m_hRenderContext = tempContext;
 	}
+
+}
+
+void GLContext::LoadFunctions()
+{
+	auto glLoad = gl::sys::LoadFunctions();
+	if (!glLoad)
+	{
+		// TODO: Log error
+		return;
+	}
+
+	auto wglLoad = wgl::sys::LoadFunctions(m_hDeviceContext);
+	if (!wglLoad)
+	{
+		// TODO: Log error
+		return;
+	}
+
+	// TODO: Log number of functions that failed to load:
+	//		 glLoad.GetNumMissing();
+	//		 wglLoad.GetNumMissing();
+
+	s_bLoadedFunctions = true;
 }
 
 void GLContext::SwapContextBuffers()
@@ -78,5 +122,5 @@ void GLContext::SwapContextBuffers()
 
 void GLContext::Resize(U32 width, U32 height)
 {
-	glViewport(0, 0, width, height);
+	gl::Viewport(0, 0, width, height);
 }

@@ -45,10 +45,13 @@
     <ClCompile Include="Events\InputEvents.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Resources\File.cpp">
+    <ClCompile Include="Resources\FileReader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Resources\FileReader.cpp">
+    <ClCompile Include="Dependencies\OpenGL\GLCore_4_5.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\OpenGL\WGL_4_5.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -98,10 +101,19 @@
     <ClInclude Include="Events\Delegate.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Resources\File.h">
+    <ClInclude Include="Resources\FileReader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Resources\FileReader.h">
+    <ClInclude Include="Dependencies\GLCore.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\WGL.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\OpenGL\GLCore_4_5.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\OpenGL\WGL_4_5.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

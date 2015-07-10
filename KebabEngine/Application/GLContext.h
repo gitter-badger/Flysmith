@@ -18,9 +18,12 @@ namespace cuc
 		HWND  m_hWindow;
 		HDC   m_hDeviceContext;
 		HGLRC m_hRenderContext;
+		
+		static bool s_bLoadedFunctions;
+		void LoadFunctions();
 
-	private:
 		void CreatePixelFormat();
 		void CreateContext();
+		void DestroyContext();
 	};
 }

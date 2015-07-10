@@ -1,8 +1,7 @@
 #pragma once
 #include "KebabEngine.h"
-#include "GL\glew.h"
-#include "GL\wglew.h"
 #include "GLContext.h"
+#include "GLCore.h"
 
 
 namespace cuc
@@ -14,7 +13,7 @@ namespace cuc
 
 		void Render()
 		{
-			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+			gl::Clear(gl::COLOR_BUFFER_BIT | gl::DEPTH_BUFFER_BIT | gl::STENCIL_BUFFER_BIT);
 			m_pContext->SwapContextBuffers();
 		}
 	};

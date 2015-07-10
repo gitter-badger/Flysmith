@@ -1,13 +1,6 @@
 #include <Windows.h>
 
-#ifdef X86
-#pragma comment(lib, "glew32s.lib")
-#elif defined(X64)
-#pragma comment(lib, "glew64s.lib")
-#endif
 #pragma comment(lib, "opengl32.lib")
-
-
 
 
 BOOL APIENTRY DllMain(HMODULE,

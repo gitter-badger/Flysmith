@@ -49,6 +49,7 @@ AsyncRequestId FileReader::ReadAsync(const char* path, char* buffer, size_t buff
 
 	// TODO: generate async request and submit to a safe queue
 	//		 if the queue is empty, wake up read thread
+	return 0;
 }
 
 void FileReader::WaitAll()
