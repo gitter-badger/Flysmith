@@ -1,7 +1,11 @@
 #include <Windows.h>
+#include "KebabEngine.h"
 
+#ifdef RENDERER_OGL
 #pragma comment(lib, "opengl32.lib")
-
+#elif defined(RENDERER_DX12)
+#pragma comment(lib, "D3d12.lib")
+#endif
 
 BOOL APIENTRY DllMain(HMODULE,
 					  DWORD ul_reason_for_call,

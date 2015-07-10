@@ -1,5 +1,7 @@
 #pragma once
 
+#define RENDERER_OGL
+//#define RENDERER_DX12
 
 #ifdef KEBABENGINE_EXPORTS
 #define KEBAB_API __declspec(dllexport)

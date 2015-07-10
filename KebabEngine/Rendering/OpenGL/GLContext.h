@@ -1,5 +1,6 @@
 #pragma once
 #include "KebabEngine.h"
+#ifdef RENDERER_OGL
 #include <Windows.h>
 
 
@@ -27,3 +28,4 @@ namespace cuc
 		void DestroyContext();
 	};
 }
+#endif // RENDERER_OGL

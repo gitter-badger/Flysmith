@@ -9,19 +9,17 @@ EventManager cuc::g_eventManager;
 Application::Application(HINSTANCE hInstance)
 	: m_pWindow(nullptr)
 {
-	m_pWindow = new Window(hInstance, 800, 600, L"Kebab", false);
+	m_pWindow = std::make_shared<Window>(hInstance, 800, 600, L"Kebab Engine", false);
 }
 
 Application::~Application()
 {
-	delete m_pWindow;
 }
 
-#include "Renderer.h"
+#include "Rendering\GLRenderer.h"
 U32 Application::Run()
 {
-	Renderer renderer;
-	renderer.m_pContext = m_pWindow->GetContext();
+	GLRenderer renderer(m_pWindow);
 	
 	m_timer.Reset();
 

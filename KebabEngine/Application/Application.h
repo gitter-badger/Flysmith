@@ -2,6 +2,7 @@
 #include "KebabEngine.h"
 #include "Timer.h"
 #include <Windows.h>
+#include <memory>
 
 
 namespace cuc
@@ -17,7 +18,7 @@ namespace cuc
 		virtual U32 Run();
 
 	private:
-		Timer   m_timer;
-		Window* m_pWindow;
+		Timer m_timer;
+		std::shared_ptr<Window> m_pWindow;
 	};
 }

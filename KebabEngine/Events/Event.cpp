@@ -20,12 +20,12 @@ Event& Event::operator=(Event&& other)
 	return *this;
 }
 
-Event::Event(const U32& type_) 
+Event::Event(const U32 type_) 
 	: type(type_)
 {
 }
 
-Event::Event(const U32& type_, const std::vector<Variant32>& attributes_)
+Event::Event(const U32 type_, const std::vector<Variant32>& attributes_)
 	: type(type_)
 	, attributes(attributes_)
 {

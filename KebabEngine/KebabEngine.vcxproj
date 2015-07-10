@@ -171,7 +171,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Application\Application.cpp" />
-    <ClCompile Include="Application\GLContext.cpp" />
+    <ClCompile Include="Events\WindowEvents.cpp" />
+    <ClCompile Include="Rendering\GLRenderer.cpp" />
+    <ClCompile Include="Rendering\OpenGL\GLContext.cpp" />
     <ClCompile Include="Application\Timer.cpp" />
     <ClCompile Include="Application\Window.cpp" />
     <ClCompile Include="Dependencies\OpenGL\GLCore_4_5.cpp" />
@@ -186,8 +188,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application\Application.h" />
-    <ClInclude Include="Application\GLContext.h" />
-    <ClInclude Include="Application\Renderer.h" />
+    <ClInclude Include="Events\WindowEvents.h" />
+    <ClInclude Include="Rendering\OpenGL\GLContext.h" />
+    <ClInclude Include="Rendering\GLRenderer.h" />
     <ClInclude Include="Application\Timer.h" />
     <ClInclude Include="Application\Window.h" />
     <ClInclude Include="Dependencies\GLCore.h" />

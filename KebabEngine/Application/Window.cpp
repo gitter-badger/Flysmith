@@ -1,8 +1,8 @@
 #include "Window.h"
-#include "GLContext.h"
 #include <Windows.h>
 #include <windowsx.h>
 #include "Events\InputEvents.h"
+#include "Events\WindowEvents.h"
 #include "Events\EventManager.h"
 using namespace cuc;
 
@@ -13,18 +13,20 @@ std::map<HWND, Window*> Window::s_windows = {};
 Window::Window(HINSTANCE hInstance, U32 width, U32 height, const std::wstring& caption, bool bBorderless)
 	: m_hWnd(0)
 	, m_bShouldClose(false)
+	, m_width(width)
+	, m_height(height)
 {
 	if (bBorderless)
 	{
 		m_windowStyle = WS_OVERLAPPED | WS_POPUP;
-		x = 0;
-		y = 0;
+		m_positionX = 0;
+		m_positionY = 0;
 	}
 	else
 	{
 		m_windowStyle = WS_OVERLAPPEDWINDOW | WS_VISIBLE;
-		x = static_cast<U32>(CW_USEDEFAULT);
-		y = static_cast<U32>(CW_USEDEFAULT);
+		m_positionX = static_cast<U32>(CW_USEDEFAULT);
+		m_positionY = static_cast<U32>(CW_USEDEFAULT);
 	}
 
 	WNDCLASSEX wc;
@@ -56,8 +58,8 @@ Window::Window(HINSTANCE hInstance, U32 width, U32 height, const std::wstring& c
 		wc.lpszClassName,
 		caption.c_str(),
 		m_windowStyle,
-		x,
-		y,
+		m_positionX,
+		m_positionY,
 		width,
 		height,
 		nullptr,
@@ -68,8 +70,7 @@ Window::Window(HINSTANCE hInstance, U32 width, U32 height, const std::wstring& c
 	GetClientRect(m_hWnd, &rect);
 
 	s_windows[m_hWnd] = this;
-	m_pContext = new GLContext(m_hWnd, width, height);
-
+	
 	ShowWindow(m_hWnd, SW_SHOWNORMAL);
 	UpdateWindow(m_hWnd);
 }
@@ -77,7 +78,6 @@ Window::Window(HINSTANCE hInstance, U32 width, U32 height, const std::wstring& c
 Window::~Window()
 {
 	s_windows.erase(m_hWnd);
-	delete m_pContext;
 }
 
 void Window::HandleWindowEvent(HWND hwnd, UINT msg, WPARAM, LPARAM lParam)
@@ -89,12 +89,11 @@ void Window::HandleWindowEvent(HWND hwnd, UINT msg, WPARAM, LPARAM lParam)
 		break;
 
 	case WM_SIZE:
-		// CreateWindowEx sends WM_CREATE only in Debug builds for some reason, even though MSDN
-		// says it sends only WM_NCCREATE, WM_NCCALCSIZE, and WM_CREATE.
-		// No window exists prior to its... creation.
 		if (!s_windows.size())
 			return;
-		s_windows[hwnd]->Resize(LOWORD(lParam), HIWORD(lParam));
+		g_eventManager.PostEvent(WindowResizeEvent::Create(LOWORD(lParam), HIWORD(lParam)));
+		s_windows[hwnd]->m_width = LOWORD(lParam);
+		s_windows[hwnd]->m_height = HIWORD(lParam);
 		break;
 	}
 }
@@ -180,14 +179,19 @@ const bool Window::ShouldClose() const
 	return m_bShouldClose;
 }
 
-GLContext* Window::GetContext() const
+const HWND Window::GetHandle() const
 {
-	return m_pContext;
+	return m_hWnd;
 }
 
-void Window::Resize(U32 width, U32 height)
+const U32 cuc::Window::GetWidth() const
 {
-	m_pContext->Resize(width, height);
+	return m_width;
+}
+
+const U32 cuc::Window::GetHeight() const
+{
+	return m_height;
 }
 
 void Window::RunMessageLoop()

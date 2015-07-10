@@ -28,8 +28,8 @@ namespace cuc
 		Event(Event&&);
 		Event& operator=(Event&&);
 
-		Event(const U32&);
-		Event(const U32&, const std::vector<Variant32>&);
+		Event(const U32 hashedType);
+		Event(const U32 hashedType, const std::vector<Variant32>&);
 
 		// Get an attribute without going through the attributes vector:
 		// Event event;
