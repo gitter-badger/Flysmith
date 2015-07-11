@@ -7,7 +7,6 @@ using namespace cuc;
 EventManager cuc::g_eventManager;
 
 Application::Application(HINSTANCE hInstance)
-	: m_pWindow(nullptr)
 {
 	m_pWindow = std::make_shared<Window>(hInstance, 800, 600, L"Kebab Engine", false);
 }
@@ -16,10 +15,19 @@ Application::~Application()
 {
 }
 
+#ifdef RENDERER_DX12
+#include "Rendering\DX12Renderer.h"
+#elif defined(RENDERER_OGL)
 #include "Rendering\GLRenderer.h"
+#endif
+
 U32 Application::Run()
 {
+#ifdef RENDERER_DX12
+	DX12Renderer renderer(m_pWindow);
+#elif defined(RENDERER_OGL)
 	GLRenderer renderer(m_pWindow);
+#endif
 	
 	m_timer.Reset();
 

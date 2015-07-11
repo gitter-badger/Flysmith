@@ -1,8 +1,9 @@
+#include "GLCore_4_5.hpp"
+#ifdef RENDERER_OGL
 #include <algorithm>
 #include <vector>
 #include <string.h>
 #include <stddef.h>
-#include "GLCore_4_5.hpp"
 
 #if defined(__APPLE__)
 #include <dlfcn.h>
@@ -61,6 +62,8 @@ static int TestPointer(const PROC pTest)
 
 static PROC WinGetProcAddress(const char *name)
 {
+#pragma warning(push)
+#pragma warning(disable:6387)
 	HMODULE glMod = NULL;
 	PROC pFunc = wglGetProcAddress((LPCSTR)name);
 	if(TestPointer(pFunc))
@@ -69,6 +72,7 @@ static PROC WinGetProcAddress(const char *name)
 	}
 	glMod = GetModuleHandleA("OpenGL32.dll");
 	return (PROC)GetProcAddress(glMod, (LPCSTR)name);
+#pragma warning(pop)
 }
 	
 #define IntGetProcAddress(name) WinGetProcAddress(name)
@@ -2859,3 +2863,4 @@ namespace gl
 		
 	} //namespace sys
 } //namespace gl
+#endif // RENDERER_OGL

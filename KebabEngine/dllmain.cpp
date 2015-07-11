@@ -5,6 +5,8 @@
 #pragma comment(lib, "opengl32.lib")
 #elif defined(RENDERER_DX12)
 #pragma comment(lib, "D3d12.lib")
+#pragma comment(lib, "DXGI.lib")
+#pragma comment(lib, "d3dcompiler.lib")
 #endif
 
 BOOL APIENTRY DllMain(HMODULE,
