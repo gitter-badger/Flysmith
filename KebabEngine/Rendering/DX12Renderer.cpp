@@ -1,7 +1,8 @@
 #include "DX12Renderer.h"
 #ifdef RENDERER_DX12
-#include "Application\Window.h"
 #include <d3dcompiler.h>
+#include "Application\Window.h"
+#include "DX12\SwapChainConfig.h"
 using namespace cuc;
 using namespace Microsoft::WRL;
 
@@ -25,7 +26,6 @@ HRESULT DX12Renderer::CreateDeviceAndSwapChain(const D3D_DRIVER_TYPE driverType,
 	ComPtr<ID3D12CommandQueue> pQueue;
 
 	HRESULT hr = D3D12CreateDevice(nullptr, D3D_FEATURE_LEVEL_11_0, __uuidof(ID3D12Device), (void**)&pDevice);
-	
 	if (FAILED(hr))
 	{
 		// TODO: Log error
@@ -33,11 +33,12 @@ HRESULT DX12Renderer::CreateDeviceAndSwapChain(const D3D_DRIVER_TYPE driverType,
 	}
 
 	D3D12_COMMAND_QUEUE_DESC queueDesc;
-	ZeroMemory(&queueDesc, sizeof(queueDesc));
-	queueDesc.Flags = D3D12_COMMAND_QUEUE_FLAG_NONE;
-	queueDesc.Type = D3D12_COMMAND_LIST_TYPE_DIRECT;
-	hr = pDevice->CreateCommandQueue(&queueDesc,IID_PPV_ARGS(&pQueue));
+	queueDesc.Type = D3D12_COMMAND_LIST_TYPE::D3D12_COMMAND_LIST_TYPE_DIRECT;
+	queueDesc.Priority = D3D12_COMMAND_QUEUE_PRIORITY::D3D12_COMMAND_QUEUE_PRIORITY_NORMAL;
+	queueDesc.Flags = D3D12_COMMAND_QUEUE_FLAGS::D3D12_COMMAND_QUEUE_FLAG_NONE;
+	queueDesc.NodeMask = 0;
 
+	hr = pDevice->CreateCommandQueue(&queueDesc, IID_PPV_ARGS(&pQueue));
 	if (FAILED(hr))
 	{
 		// TODO: Log error
@@ -86,21 +87,13 @@ HRESULT DX12Renderer::CreateDeviceAndSwapChain(const D3D_DRIVER_TYPE driverType,
 
 void DX12Renderer::LoadPipeline()
 {
-	DXGI_SWAP_CHAIN_DESC descSwapChain;
-	ZeroMemory(&descSwapChain, sizeof(descSwapChain));
-	descSwapChain.BufferCount = m_numSwapBufs;
-	descSwapChain.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
-	descSwapChain.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
-	descSwapChain.SwapEffect = DXGI_SWAP_EFFECT_FLIP_SEQUENTIAL;
-	descSwapChain.OutputWindow = m_pWindow->GetHandle();
-	descSwapChain.SampleDesc.Count = 1;
-	descSwapChain.Windowed = TRUE;
+	SwapChainConfig swapChainConfig(m_pWindow->GetHandle(), true, { 1, 0 });
 
-	HRESULT hr = CreateDeviceAndSwapChain(D3D_DRIVER_TYPE_HARDWARE, &descSwapChain);
+	HRESULT hr = CreateDeviceAndSwapChain(D3D_DRIVER_TYPE_HARDWARE, &swapChainConfig.GetDescritpion());
 	if (FAILED(hr))
 	{
 		// TODO: Log error
-		CreateDeviceAndSwapChain(D3D_DRIVER_TYPE_WARP, &descSwapChain);
+		CreateDeviceAndSwapChain(D3D_DRIVER_TYPE_WARP, &swapChainConfig.GetDescritpion());
 	}
 
 	hr = m_pDevice->CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE_DIRECT, IID_PPV_ARGS(m_pCommandAllocator.GetAddressOf()));
@@ -122,6 +115,19 @@ void DX12Renderer::LoadAssets()
 		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 }, 
 		{ "COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 12, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 }
 	};
+	UINT numElements = sizeof(layout) / sizeof(layout[0]);
+
+	// Root signature
+	D3D12_ROOT_SIGNATURE_DESC descRootSignature;
+	descRootSignature.NumParameters = 0;
+	descRootSignature.pParameters = nullptr;
+	descRootSignature.NumStaticSamplers = 0;
+	descRootSignature.pStaticSamplers = nullptr;
+	descRootSignature.Flags = D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT;
+	
+	ComPtr<ID3DBlob> pOutBlob, pErrorBlob;
+	D3D12SerializeRootSignature(&descRootSignature, D3D_ROOT_SIGNATURE_VERSION_1, pOutBlob.GetAddressOf(), pErrorBlob.GetAddressOf());
+	m_pDevice->CreateRootSignature(0, pOutBlob->GetBufferPointer(), pOutBlob->GetBufferSize(), IID_PPV_ARGS(pOutBlob.GetAddressOf()));
 }
 
 void DX12Renderer::Render()

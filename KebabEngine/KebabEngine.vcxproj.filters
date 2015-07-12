@@ -63,6 +63,9 @@
     <ClCompile Include="Rendering\DX12Renderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Rendering\DX12\SwapChainConfig.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="KebabEngine.h">
@@ -129,6 +132,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Rendering\DX12Renderer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Rendering\DX12\SwapChainConfig.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

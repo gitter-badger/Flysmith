@@ -173,6 +173,7 @@
     <ClCompile Include="Application\Application.cpp" />
     <ClCompile Include="Events\WindowEvents.cpp" />
     <ClCompile Include="Rendering\DX12Renderer.cpp" />
+    <ClCompile Include="Rendering\DX12\SwapChainConfig.cpp" />
     <ClCompile Include="Rendering\GLRenderer.cpp" />
     <ClCompile Include="Rendering\OpenGL\GLContext.cpp" />
     <ClCompile Include="Application\Timer.cpp" />
@@ -191,6 +192,7 @@
     <ClInclude Include="Application\Application.h" />
     <ClInclude Include="Events\WindowEvents.h" />
     <ClInclude Include="Rendering\DX12Renderer.h" />
+    <ClInclude Include="Rendering\DX12\SwapChainConfig.h" />
     <ClInclude Include="Rendering\OpenGL\GLContext.h" />
     <ClInclude Include="Rendering\GLRenderer.h" />
     <ClInclude Include="Application\Timer.h" />

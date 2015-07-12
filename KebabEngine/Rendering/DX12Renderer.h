@@ -30,7 +30,6 @@ namespace cuc
 
 		Microsoft::WRL::ComPtr<IDXGISwapChain> m_pSwapChain;
 		U32 m_indexLastSwapBuf = 0;
-		U32 m_numSwapBufs = 2;
 
 		Microsoft::WRL::ComPtr<ID3D12Device>         m_pDevice;
 		Microsoft::WRL::ComPtr<ID3D12Resource>       m_pRenderTarget;
