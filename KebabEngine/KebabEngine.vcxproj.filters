@@ -138,4 +138,11 @@
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Rendering\DX12\Shaders\TestHeader.hlsli" />
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="Rendering\DX12\Shaders\TestVS.hlsl" />
+    <FxCompile Include="Rendering\DX12\Shaders\TestPS.hlsl" />
+  </ItemGroup>
 </Project>

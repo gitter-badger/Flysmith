@@ -13,6 +13,10 @@ BOOL APIENTRY DllMain(HMODULE,
 					  DWORD ul_reason_for_call,
 					  LPVOID)
 {
+#ifdef _DEBUG
+	LoadLibrary(L"D3D12SDKLayers.dll");
+#endif
+
 	switch (ul_reason_for_call)
 	{
 	case DLL_PROCESS_ATTACH:

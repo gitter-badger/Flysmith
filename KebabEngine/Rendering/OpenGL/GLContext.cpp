@@ -18,7 +18,7 @@ GLContext::GLContext(HWND hWindow, U32 width, U32 height)
 	CreateContext();
 
 	// Set clear color
-	gl::ClearColor(0.4f, 0.6f, 0.9f, 0.0f);
+	gl::ClearColor(0.4f, 0.6f, 0.9f, 1.0f);
 
 	gl::Viewport(0, 0, width, height);
 }
