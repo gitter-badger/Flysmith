@@ -19,16 +19,18 @@ DX12Renderer::DX12Renderer(const std::shared_ptr<Window>& pWindow)
 DX12Renderer::~DX12Renderer()
 {
 }
-
+#include <vector>
 HRESULT DX12Renderer::CreateDeviceAndSwapChain(const D3D_DRIVER_TYPE driverType, const DXGI_SWAP_CHAIN_DESC* pSwapChainDesc)
 {
 	ComPtr<ID3D12Device>       pDevice;
-	ComPtr<IDXGIFactory1>      pDxgiFactory;
 	ComPtr<IDXGISwapChain>     pDxgiSwapChain;
 	ComPtr<ID3D12CommandQueue> pQueue;
 
-	HRESULT hr = D3D12CreateDevice(nullptr, D3D_FEATURE_LEVEL_11_0, __uuidof(ID3D12Device), (void**)&pDevice);
+	auto pAdapter = m_hwCaps.GetDisplayAdapters()[0].m_pAdapter;
+	HRESULT hr = D3D12CreateDevice(pAdapter.Get(), D3D_FEATURE_LEVEL_11_0, __uuidof(ID3D12Device), (void**)&pDevice);
 	assert(SUCCEEDED(hr));
+
+	m_hwCaps.CheckMSAASupport(pDevice.Get());
 
 	D3D12_COMMAND_QUEUE_DESC queueDesc;
 	queueDesc.Type = D3D12_COMMAND_LIST_TYPE::D3D12_COMMAND_LIST_TYPE_DIRECT;
@@ -39,12 +41,15 @@ HRESULT DX12Renderer::CreateDeviceAndSwapChain(const D3D_DRIVER_TYPE driverType,
 	hr = pDevice->CreateCommandQueue(&queueDesc, IID_PPV_ARGS(&pQueue));
 	assert(SUCCEEDED(hr));
 
-	hr = CreateDXGIFactory1(IID_PPV_ARGS(&pDxgiFactory));
+	IDXGIFactory4* pDXGIFactory = nullptr;
+	hr = CreateDXGIFactory1(__uuidof(IDXGIFactory4), (void**)&pDXGIFactory);
 	assert(SUCCEEDED(hr));
 
 	DXGI_SWAP_CHAIN_DESC localSwapChainDesc = *pSwapChainDesc;
-	hr = pDxgiFactory->CreateSwapChain(pQueue.Get(), &localSwapChainDesc, &pDxgiSwapChain);
+	hr = pDXGIFactory->CreateSwapChain(pQueue.Get(), &localSwapChainDesc, &pDxgiSwapChain);
 	assert(SUCCEEDED(hr));
+
+	pDXGIFactory->Release();
 
 	hr = pDevice.Get()->QueryInterface(IID_PPV_ARGS(m_pDevice.GetAddressOf()));
 	assert(SUCCEEDED(hr));

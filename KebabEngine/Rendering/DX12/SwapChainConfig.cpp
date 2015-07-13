@@ -1,15 +1,9 @@
 #include "SwapChainConfig.h"
 #ifdef RENDERER_DX12
+#include "HardwareCaps.h"
 #include <cassert>
 using namespace cuc;
 
-
-MSAAConfig::MSAAConfig(U32 sampleCount, U32 sampleQuality)
-	: sampleCount(sampleCount)
-	, sampleQuality(sampleQuality)
-{
-	assert(sampleQuality == (sampleCount - 1));
-}
 
 SwapChainConfig::SwapChainConfig(const HWND hwnd)
 {

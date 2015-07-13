@@ -4,6 +4,7 @@
 #include <d3d12.h>
 #include <wrl/client.h>
 #include <memory>
+#include "DX12\HardwareCaps.h"
 
 
 namespace cuc
@@ -18,6 +19,7 @@ namespace cuc
 		void Render();
 
 	private:
+		HardwareCaps m_hwCaps;
 		std::shared_ptr<Window> m_pWindow;
 
 		HRESULT CreateDeviceAndSwapChain(const D3D_DRIVER_TYPE, const DXGI_SWAP_CHAIN_DESC*);

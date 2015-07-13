@@ -1,18 +1,12 @@
 #pragma once
 #include "KebabEngine.h"
 #ifdef RENDERER_DX12
-#include <dxgi.h>
+#include <dxgi1_4.h>
 
 
 namespace cuc
 {
-	struct MSAAConfig
-	{
-		MSAAConfig(U32 sampleCount = 1, U32 sampleQuality = 0);
-
-		int sampleCount;
-		int sampleQuality;
-	};
+	struct MSAAConfig;
 
 	class SwapChainConfig
 	{
