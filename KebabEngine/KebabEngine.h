@@ -16,7 +16,15 @@
 // Place before main() function.
 #ifndef RENDERER_DX12
 #define FORCE_NV_OPTIMUS extern "C" { __declspec(dllexport) unsigned long NvOptimusEnablement = 0x00000001; }
+#else
+#define FORCE_NV_OPTIMUS
 #endif
+
+#define SAFE_RELEASE(x) if(x) \
+						{ \
+							(x)->Release(); \
+							(x) = nullptr; \
+						}
 
 #include "Types.h"
 #include "StringHash.h"

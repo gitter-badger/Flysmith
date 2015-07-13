@@ -1,8 +1,10 @@
 #include "DX12Renderer.h"
 #ifdef RENDERER_DX12
-#include <d3dcompiler.h>
 #include "Application\Window.h"
 #include "DX12\SwapChainConfig.h"
+#include "DX12\ShaderProgram.h"
+#include "DX12\RasterizerStateConfig.h"
+#include "DX12\BlendStateConfig.h"
 #include <d3d12sdklayers.h>
 #include <cassert>
 using namespace cuc;
@@ -19,18 +21,14 @@ DX12Renderer::DX12Renderer(const std::shared_ptr<Window>& pWindow)
 DX12Renderer::~DX12Renderer()
 {
 }
-#include <vector>
+
 HRESULT DX12Renderer::CreateDeviceAndSwapChain(const D3D_DRIVER_TYPE driverType, const DXGI_SWAP_CHAIN_DESC* pSwapChainDesc)
 {
-	ComPtr<ID3D12Device>       pDevice;
-	ComPtr<IDXGISwapChain>     pDxgiSwapChain;
-	ComPtr<ID3D12CommandQueue> pQueue;
-
 	auto pAdapter = m_hwCaps.GetDisplayAdapters()[0].m_pAdapter;
-	HRESULT hr = D3D12CreateDevice(pAdapter.Get(), D3D_FEATURE_LEVEL_11_0, __uuidof(ID3D12Device), (void**)&pDevice);
+	HRESULT hr = D3D12CreateDevice(pAdapter.Get(), D3D_FEATURE_LEVEL_11_0, IID_PPV_ARGS(&m_pDevice));
 	assert(SUCCEEDED(hr));
 
-	m_hwCaps.CheckMSAASupport(pDevice.Get());
+	m_hwCaps.CheckMSAASupport(m_pDevice.Get());
 
 	D3D12_COMMAND_QUEUE_DESC queueDesc;
 	queueDesc.Type = D3D12_COMMAND_LIST_TYPE::D3D12_COMMAND_LIST_TYPE_DIRECT;
@@ -38,31 +36,18 @@ HRESULT DX12Renderer::CreateDeviceAndSwapChain(const D3D_DRIVER_TYPE driverType,
 	queueDesc.Flags = D3D12_COMMAND_QUEUE_FLAGS::D3D12_COMMAND_QUEUE_FLAG_NONE;
 	queueDesc.NodeMask = 0;
 
-	hr = pDevice->CreateCommandQueue(&queueDesc, IID_PPV_ARGS(&pQueue));
+	hr = m_pDevice->CreateCommandQueue(&queueDesc, IID_PPV_ARGS(&m_pCommandQueue));
 	assert(SUCCEEDED(hr));
 
 	IDXGIFactory4* pDXGIFactory = nullptr;
-	hr = CreateDXGIFactory1(__uuidof(IDXGIFactory4), (void**)&pDXGIFactory);
+	hr = CreateDXGIFactory1(IID_PPV_ARGS(&pDXGIFactory));
 	assert(SUCCEEDED(hr));
 
 	DXGI_SWAP_CHAIN_DESC localSwapChainDesc = *pSwapChainDesc;
-	hr = pDXGIFactory->CreateSwapChain(pQueue.Get(), &localSwapChainDesc, &pDxgiSwapChain);
+	hr = pDXGIFactory->CreateSwapChain(m_pCommandQueue.Get(), &localSwapChainDesc, &m_pSwapChain);
 	assert(SUCCEEDED(hr));
 
 	pDXGIFactory->Release();
-
-	hr = pDevice.Get()->QueryInterface(IID_PPV_ARGS(m_pDevice.GetAddressOf()));
-	assert(SUCCEEDED(hr));
-
-	hr = pQueue.Get()->QueryInterface(IID_PPV_ARGS(m_pCommandQueue.GetAddressOf()));
-	assert(SUCCEEDED(hr));
-
-	hr = pDxgiSwapChain.Get()->QueryInterface(IID_PPV_ARGS(m_pSwapChain.GetAddressOf()));
-	if (FAILED(hr))
-	{
-		reinterpret_cast<IUnknown*>(m_pDevice.GetAddressOf())->Release();
-		return hr;
-	}
 
 	return S_OK;
 }
@@ -200,80 +185,23 @@ void DX12Renderer::WaitForGPU()
 
 HRESULT DX12Renderer::CreatePipelineStateObject()
 {
-	ComPtr<ID3DBlob> blobShaderVert;
-	ComPtr<ID3DBlob> blobErrorVert;
-	HRESULT hr = D3DCompileFromFile(
-		L"D:\\Flysmith\\KebabEngine\\Rendering\\DX12\\Shaders\\TestVS.hlsl", 
-		nullptr, 
-		D3D_COMPILE_STANDARD_FILE_INCLUDE, 
-		"main", 
-		"vs_5_1", 
-		0,
-		0, 
-		blobShaderVert.GetAddressOf(), 
-		blobErrorVert.GetAddressOf());
-	assert(SUCCEEDED(hr));
-	assert(!blobErrorVert);
-
-	ComPtr<ID3DBlob> blobShaderPixel;
-	ComPtr<ID3DBlob> blobErrorPixel;
-	hr = D3DCompileFromFile(
-		L"D:\\Flysmith\\KebabEngine\\Rendering\\DX12\\Shaders\\TestPS.hlsl", 
-		nullptr, 
-		D3D_COMPILE_STANDARD_FILE_INCLUDE,
-		"main", 
-		"ps_5_1", 
-		0, 
-		0, 
-		blobShaderPixel.GetAddressOf(), 
-		blobErrorPixel.GetAddressOf());
-	assert(SUCCEEDED(hr));
-	assert(!blobErrorPixel);
-
 	D3D12_INPUT_ELEMENT_DESC layout[] = {
 		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
 		{ "COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 12, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 }
 	};
 
-	D3D12_RASTERIZER_DESC descRasterizer;
-	descRasterizer.FillMode = D3D12_FILL_MODE::D3D12_FILL_MODE_SOLID;
-	descRasterizer.CullMode = D3D12_CULL_MODE::D3D12_CULL_MODE_BACK;
-	descRasterizer.FrontCounterClockwise = FALSE;
-	descRasterizer.DepthBias = 0;
-	descRasterizer.SlopeScaledDepthBias = 0.0f;
-	descRasterizer.DepthBiasClamp = 0.0f;
-	descRasterizer.DepthClipEnable = TRUE;
-	descRasterizer.MultisampleEnable = FALSE;
-	descRasterizer.AntialiasedLineEnable = FALSE;
-	descRasterizer.ForcedSampleCount = 0;
-	descRasterizer.ConservativeRaster = D3D12_CONSERVATIVE_RASTERIZATION_MODE::D3D12_CONSERVATIVE_RASTERIZATION_MODE_OFF;
-
-	D3D12_BLEND_DESC descBlend;
-	descBlend.AlphaToCoverageEnable = FALSE;
-	descBlend.IndependentBlendEnable = FALSE;
-	descBlend.RenderTarget[0].BlendEnable = FALSE;
-	descBlend.RenderTarget[0].BlendOp = D3D12_BLEND_OP::D3D12_BLEND_OP_ADD;
-	descBlend.RenderTarget[0].BlendOpAlpha = D3D12_BLEND_OP::D3D12_BLEND_OP_ADD;
-	descBlend.RenderTarget[0].LogicOpEnable = FALSE;
-	descBlend.RenderTarget[0].LogicOp = D3D12_LOGIC_OP::D3D12_LOGIC_OP_NOOP;
-	descBlend.RenderTarget[0].SrcBlend = D3D12_BLEND::D3D12_BLEND_ONE;
-	descBlend.RenderTarget[0].DestBlend = D3D12_BLEND::D3D12_BLEND_ZERO;
-	descBlend.RenderTarget[0].SrcBlendAlpha = D3D12_BLEND::D3D12_BLEND_ONE;
-	descBlend.RenderTarget[0].DestBlendAlpha = D3D12_BLEND::D3D12_BLEND_ZERO;
-	descBlend.RenderTarget[0].RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;
-
-
+	RasterizerStateConfig rasterizerStateConfig;
+	BlendStateConfig blendStateConfig;
+	
 	D3D12_GRAPHICS_PIPELINE_STATE_DESC descPso;
 	ZeroMemory(&descPso, sizeof(descPso));
 	descPso.InputLayout.pInputElementDescs = layout;
 	descPso.InputLayout.NumElements = sizeof(layout) / sizeof(layout[0]);
 	descPso.pRootSignature = m_pRootSignature.Get();
-	descPso.VS.pShaderBytecode = reinterpret_cast<BYTE*>(blobShaderVert->GetBufferPointer());
-	descPso.VS.BytecodeLength = blobShaderVert->GetBufferSize();
-	descPso.PS.pShaderBytecode = reinterpret_cast<BYTE*>(blobShaderPixel->GetBufferPointer());
-	descPso.PS.BytecodeLength = blobShaderPixel->GetBufferSize();
-	descPso.RasterizerState = descRasterizer;
-	descPso.BlendState = descBlend;
+	descPso.VS = ShaderProgram::GetCompiledShader(ShaderType::VERTEX, L"D:\\Flysmith\\KebabEngine\\Rendering\\DX12\\Shaders\\TestVS.hlsl");
+	descPso.PS = ShaderProgram::GetCompiledShader(ShaderType::PIXEL, L"D:\\Flysmith\\KebabEngine\\Rendering\\DX12\\Shaders\\TestPS.hlsl");
+	descPso.RasterizerState = rasterizerStateConfig;
+	descPso.BlendState = blendStateConfig;
 	descPso.DepthStencilState.DepthEnable = FALSE;
 	descPso.DepthStencilState.StencilEnable = FALSE;
 	descPso.SampleMask = UINT_MAX;
@@ -283,7 +211,7 @@ HRESULT DX12Renderer::CreatePipelineStateObject()
 	descPso.SampleDesc.Count = 1;
 	descPso.SampleDesc.Quality = 0;
 
-	hr = m_pDevice->CreateGraphicsPipelineState(&descPso, IID_PPV_ARGS(m_pPSO.GetAddressOf()));
+	HRESULT hr = m_pDevice->CreateGraphicsPipelineState(&descPso, IID_PPV_ARGS(m_pPSO.GetAddressOf()));
 	assert(SUCCEEDED(hr));
 
 	return S_OK;
@@ -341,8 +269,7 @@ void DX12Renderer::PopulateCommandLists()
 		D3D12_RESOURCE_STATES::D3D12_RESOURCE_STATE_PRESENT, 
 		D3D12_RESOURCE_STATES::D3D12_RESOURCE_STATE_RENDER_TARGET);
 
-	float clearColor[] = { 0.0f, 0.2f, 0.4f, 1.0f };
-	//float clearColor[] = { 1.0f, 1.0f, 1.0f, 1.0f };
+	float clearColor[] = { 0.4f, 0.6f, 0.9f, 1.0f };
 	m_pCommandList->ClearRenderTargetView(m_pDescriptorHeap->GetCPUDescriptorHandleForHeapStart(), clearColor, 1, &m_rectScissor);
 	m_pCommandList->OMSetRenderTargets(1, &m_pDescriptorHeap->GetCPUDescriptorHandleForHeapStart(), TRUE, nullptr);
 	m_pCommandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);

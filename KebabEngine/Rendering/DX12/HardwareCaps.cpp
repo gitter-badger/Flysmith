@@ -62,7 +62,7 @@ const MSAAConfig HardwareCaps::GetMSAASupport() const
 void HardwareCaps::EnumerateDisplayAdapters()
 {
 	IDXGIFactory4* pFactory = nullptr;
-	HRESULT hr = CreateDXGIFactory1(__uuidof(IDXGIFactory4), (void**)&pFactory);
+	HRESULT hr = CreateDXGIFactory1(IID_PPV_ARGS(&pFactory));
 	assert(SUCCEEDED(hr));
 
 	bool bFoundDedicated = false;
