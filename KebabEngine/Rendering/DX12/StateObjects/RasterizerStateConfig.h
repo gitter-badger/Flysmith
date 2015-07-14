@@ -11,6 +11,8 @@ namespace cuc
 		RasterizerStateConfig(const D3D12_FILL_MODE fillMode = D3D12_FILL_MODE_SOLID,
 							  const D3D12_CULL_MODE cullMode = D3D12_CULL_MODE_BACK);
 	};
+
+	const RasterizerStateConfig kDefaultRasterizerState;
 }
 
 #endif

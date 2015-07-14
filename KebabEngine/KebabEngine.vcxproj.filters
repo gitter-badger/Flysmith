@@ -93,6 +93,9 @@
     <ClCompile Include="Rendering\DX12\SwapChain.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Rendering\DX12\PipelineStateObject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="KebabEngine.h">
@@ -189,6 +192,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Rendering\DX12\SwapChain.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Rendering\DX12\PipelineStateObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -144,29 +144,10 @@ void DX12Renderer::CreatePipelineStateObject()
 		{ "COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 12, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 }
 	};
 
-	RasterizerStateConfig rasterizerStateConfig;
-	BlendStateConfig blendStateConfig;
+	auto VS = ShaderProgram::GetCompiledShader(ShaderType::VERTEX, L"D:\\Flysmith\\KebabEngine\\Rendering\\DX12\\Shaders\\TestVS.hlsl");
+	auto PS = ShaderProgram::GetCompiledShader(ShaderType::PIXEL, L"D:\\Flysmith\\KebabEngine\\Rendering\\DX12\\Shaders\\TestPS.hlsl");
 	
-	D3D12_GRAPHICS_PIPELINE_STATE_DESC descPso;
-	ZeroMemory(&descPso, sizeof(descPso));
-	descPso.InputLayout.pInputElementDescs = layout;
-	descPso.InputLayout.NumElements = sizeof(layout) / sizeof(layout[0]);
-	descPso.pRootSignature = m_pRootSignature.Get();
-	descPso.VS = ShaderProgram::GetCompiledShader(ShaderType::VERTEX, L"D:\\Flysmith\\KebabEngine\\Rendering\\DX12\\Shaders\\TestVS.hlsl");
-	descPso.PS = ShaderProgram::GetCompiledShader(ShaderType::PIXEL, L"D:\\Flysmith\\KebabEngine\\Rendering\\DX12\\Shaders\\TestPS.hlsl");
-	descPso.RasterizerState = rasterizerStateConfig;
-	descPso.BlendState = blendStateConfig;
-	descPso.DepthStencilState.DepthEnable = FALSE;
-	descPso.DepthStencilState.StencilEnable = FALSE;
-	descPso.SampleMask = UINT_MAX;
-	descPso.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
-	descPso.NumRenderTargets = 1;
-	descPso.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM;
-	descPso.SampleDesc.Count = 1;
-	descPso.SampleDesc.Quality = 0;
-
-	HRESULT hr = m_pDevice->CreateGraphicsPipelineState(&descPso, IID_PPV_ARGS(m_pPSO.GetAddressOf()));
-	assert(SUCCEEDED(hr));
+	m_pso.Init(m_pDevice.Get(), m_pRootSignature.Get(), layout, 2, nullptr, nullptr, &VS, &PS);
 }
 
 void DX12Renderer::CreateRootSignature()
@@ -193,7 +174,7 @@ void DX12Renderer::CreateDescriptorHeap()
 
 void DX12Renderer::CreateCommandList()
 {
-	HRESULT hr = m_pDevice->CreateCommandList(0, D3D12_COMMAND_LIST_TYPE_DIRECT, m_pCommandAllocator.Get(),m_pPSO.Get(), IID_PPV_ARGS(m_pCommandList.GetAddressOf()));
+	HRESULT hr = m_pDevice->CreateCommandList(0, D3D12_COMMAND_LIST_TYPE_DIRECT, m_pCommandAllocator.Get(), m_pso.Get(), IID_PPV_ARGS(m_pCommandList.GetAddressOf()));
 	assert(SUCCEEDED(hr));
 }
 
@@ -202,6 +183,22 @@ void DX12Renderer::CreateRenderTargetView()
 	// Associate the render target with the swap chain's active surface.
 	m_swapChain.GetBuffer(m_pRenderTarget.GetAddressOf());
 	m_pDevice->CreateRenderTargetView(m_pRenderTarget.Get(), nullptr, m_renderTargetDescHeap.GetCPUHandle(0));
+}
+
+void DX12Renderer::HandleEvent(const Event& event)
+{
+	switch (event.type)
+	{
+	case "WindowResize"_HASH:
+	{
+		auto newWidth = event[WindowResizeEvent::U32_WIDTH].GetUnsignedInt();
+		auto newHeight = event[WindowResizeEvent::U32_HEIGHT].GetUnsignedInt();
+		m_swapChain.Resize(newWidth, newHeight);
+		m_viewport.Resize(newWidth, newHeight);
+		m_scissorRect.Resize(newWidth, newHeight);
+		break;
+	}
+	}
 }
 
 void DX12Renderer::SwapBuffers()
@@ -222,33 +219,19 @@ void DX12Renderer::Render()
 	WaitForGPU();
 }
 
-void DX12Renderer::HandleEvent(const Event& event)
-{
-	switch (event.type)
-	{
-	case "WindowResize"_HASH:
-	{
-		auto newWidth = event[WindowResizeEvent::U32_WIDTH].GetUnsignedInt();
-		auto newHeight = event[WindowResizeEvent::U32_HEIGHT].GetUnsignedInt();
-		m_swapChain.Resize(newWidth, newHeight);
-		m_viewport.Resize(newWidth, newHeight);
-		m_scissorRect.Resize(newWidth, newHeight);
-		break;
-	}
-	}
-}
-
 void DX12Renderer::PopulateCommandLists()
 {
 	HRESULT hr = m_pCommandAllocator->Reset();
 	assert(SUCCEEDED(hr));
 
-	hr = m_pCommandList->Reset(m_pCommandAllocator.Get(), m_pPSO.Get());
+	hr = m_pCommandList->Reset(m_pCommandAllocator.Get(),  // The used command allocator cannot be associated with another command list.
+							   m_pso.Get()); // Initial pipeline state. Not inherited from previous command list.
 	assert(SUCCEEDED(hr));
+
 	m_pCommandList->SetGraphicsRootSignature(m_pRootSignature.Get());
 	m_pCommandList->RSSetViewports(1, &m_viewport);
 	m_pCommandList->RSSetScissorRects(1, &m_scissorRect);
-
+	
 	SetResourceBarrier(
 		m_pCommandList.Get(), 
 		m_pRenderTarget.Get(), 

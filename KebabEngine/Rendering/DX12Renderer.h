@@ -9,6 +9,7 @@
 #include "DX12\ScissorRectangle.h"
 #include "DX12\Viewport.h"
 #include "DX12\SwapChain.h"
+#include "DX12\PipelineStateObject.h"
 #include "Events\EventListener.h"
 
 
@@ -59,7 +60,7 @@ namespace cuc
 		U64 m_currentFence;
 		HANDLE m_handleEvent;
 
-		Microsoft::WRL::ComPtr<ID3D12PipelineState> m_pPSO;
+		PipelineStateObject m_pso;
 		Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> m_pCommandList;
 		Microsoft::WRL::ComPtr<ID3D12Resource> m_pBufVerts;
 

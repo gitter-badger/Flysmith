@@ -10,6 +10,8 @@ namespace cuc
 	{
 		BlendStateConfig();
 	};
+
+	const BlendStateConfig kDefaultBlendState;
 }
 
 #endif
