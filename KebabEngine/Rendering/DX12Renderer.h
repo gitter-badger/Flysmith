@@ -6,6 +6,8 @@
 #include <memory>
 #include "DX12\HardwareCaps.h"
 #include "DX12\DescriptorHeap.h"
+#include "DX12\ScissorRectangle.h"
+#include "DX12\Viewport.h"
 
 
 namespace cuc
@@ -34,8 +36,6 @@ namespace cuc
 		void CreateDescriptorHeap();
 		void CreateCommandList();
 		void CreateRenderTargetView(U32 bufferIndex = 0);
-		void CreateViewport();
-		void CreateScissorRect();
 
 		void SwapBuffers();
 
@@ -43,8 +43,8 @@ namespace cuc
 		void PopulateCommandLists();
 		void SetResourceBarrier(ID3D12GraphicsCommandList* commandList, ID3D12Resource* resource, D3D12_RESOURCE_STATES stateBefore, D3D12_RESOURCE_STATES stateAfter);
 
-		D3D12_VIEWPORT m_viewport;
-		D3D12_RECT m_rectScissor;
+		Viewport m_viewport;
+		ScissorRectangle m_scissorRect;
 
 		Microsoft::WRL::ComPtr<IDXGISwapChain> m_pSwapChain;
 		U32 m_indexLastSwapBuf = 0;
@@ -54,7 +54,7 @@ namespace cuc
 		Microsoft::WRL::ComPtr<ID3D12CommandAllocator> m_pCommandAllocator;
 		Microsoft::WRL::ComPtr<ID3D12CommandQueue>     m_pCommandQueue;
 		Microsoft::WRL::ComPtr<ID3D12RootSignature>    m_pRootSignature;
-		DescriptorHeap m_descriptorHeap;
+		DescriptorHeap m_renderTargetDescHeap;
 		
 		Microsoft::WRL::ComPtr<ID3D12Fence> m_pFence;
 		U64 m_currentFence;

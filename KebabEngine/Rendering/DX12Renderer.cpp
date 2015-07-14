@@ -13,6 +13,8 @@ using namespace Microsoft::WRL;
 
 DX12Renderer::DX12Renderer(const std::shared_ptr<Window>& pWindow)
 	: m_pWindow(pWindow)
+	, m_scissorRect(pWindow.get())
+	, m_viewport(pWindow.get())
 {
 	CreateDevice();
 	CreateCommandQueue();
@@ -75,8 +77,6 @@ void DX12Renderer::LoadAssets()
 	CreateDescriptorHeap();
 	CreateCommandList();
 	CreateRenderTargetView();
-	CreateViewport();
-	CreateScissorRect();
 
 	VERTEX triangleVerts[] =
 	{
@@ -198,7 +198,7 @@ void DX12Renderer::CreateRootSignature()
 
 void DX12Renderer::CreateDescriptorHeap()
 {
-	m_descriptorHeap.Init(m_pDevice.Get(), DescHeapType::RENDER_TARGET);
+	m_renderTargetDescHeap.Init(m_pDevice.Get(), DescHeapType::RENDER_TARGET, 1);
 }
 
 void DX12Renderer::CreateCommandList()
@@ -212,27 +212,7 @@ void DX12Renderer::CreateRenderTargetView(U32 bufferIndex)
 	HRESULT hr = m_pSwapChain->GetBuffer(bufferIndex, IID_PPV_ARGS(m_pRenderTarget.GetAddressOf()));
 	assert(SUCCEEDED(hr));
 
-	m_pDevice->CreateRenderTargetView(m_pRenderTarget.Get(), nullptr, m_descriptorHeap.GetCPUHandle(0));
-}
-
-void DX12Renderer::CreateViewport()
-{
-	m_viewport = {
-		0.0f,
-		0.0f,
-		static_cast<float>(m_pWindow->GetWidth()),
-		static_cast<float>(m_pWindow->GetHeight()),
-		0.0f,
-		1.0f
-	};
-}
-
-void cuc::DX12Renderer::CreateScissorRect()
-{
-	m_rectScissor.left = 0;
-	m_rectScissor.top = 0;
-	m_rectScissor.right = m_pWindow->GetWidth();
-	m_rectScissor.bottom = m_pWindow->GetHeight();
+	m_pDevice->CreateRenderTargetView(m_pRenderTarget.Get(), nullptr, m_renderTargetDescHeap.GetCPUHandle(0));
 }
 
 void DX12Renderer::SwapBuffers()
@@ -263,7 +243,7 @@ void DX12Renderer::PopulateCommandLists()
 	assert(SUCCEEDED(hr));
 	m_pCommandList->SetGraphicsRootSignature(m_pRootSignature.Get());
 	m_pCommandList->RSSetViewports(1, &m_viewport);
-	m_pCommandList->RSSetScissorRects(1, &m_rectScissor);
+	m_pCommandList->RSSetScissorRects(1, &m_scissorRect);
 
 	SetResourceBarrier(
 		m_pCommandList.Get(), 
@@ -272,8 +252,8 @@ void DX12Renderer::PopulateCommandLists()
 		D3D12_RESOURCE_STATE_RENDER_TARGET);
 
 	float clearColor[] = { 0.93f, 0.5f, 0.93f, 1.0f };
-	m_pCommandList->ClearRenderTargetView(m_descriptorHeap.GetCPUHandle(0), clearColor, 1, &m_rectScissor);
-	m_pCommandList->OMSetRenderTargets(1, &m_descriptorHeap.GetCPUHandle(0), TRUE, nullptr);
+	m_pCommandList->ClearRenderTargetView(m_renderTargetDescHeap.GetCPUHandle(0), clearColor, 1, &m_scissorRect);
+	m_pCommandList->OMSetRenderTargets(1, &m_renderTargetDescHeap.GetCPUHandle(0), TRUE, nullptr);
 	m_pCommandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	m_pCommandList->IASetVertexBuffers(0, 1, &m_descViewBufVert);
 	m_pCommandList->DrawInstanced(3, 1, 0, 0);
