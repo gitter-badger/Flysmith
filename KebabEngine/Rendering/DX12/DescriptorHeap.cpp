@@ -22,6 +22,7 @@ DescriptorHeap::~DescriptorHeap()
 
 void DescriptorHeap::Init(ID3D12Device* pDevice, DescHeapType type, U32 numDescriptors, bool bShaderVisible)
 {
+	assert(pDevice != nullptr);
 	assert(!m_bInitialized);
 
 	D3D12_DESCRIPTOR_HEAP_DESC desc;

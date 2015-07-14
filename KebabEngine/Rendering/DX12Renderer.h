@@ -8,25 +8,27 @@
 #include "DX12\DescriptorHeap.h"
 #include "DX12\ScissorRectangle.h"
 #include "DX12\Viewport.h"
+#include "DX12\SwapChain.h"
+#include "Events\EventListener.h"
 
 
 namespace cuc
 {
 	class Window;
 
-	class DX12Renderer
+	class DX12Renderer : public EventListener
 	{
 	public:
 		DX12Renderer(const std::shared_ptr<Window>&);
 		~DX12Renderer();
 		void Render();
+		void HandleEvent(const Event&);
 
 	private:
 		HardwareCaps m_hwCaps;
 		std::shared_ptr<Window> m_pWindow;
 
 		void CreateDevice();
-		void CreateSwapChain();
 		void CreateCommandQueue();
 		void CreateCommandAllocator();
 
@@ -35,7 +37,7 @@ namespace cuc
 		void CreatePipelineStateObject();
 		void CreateDescriptorHeap();
 		void CreateCommandList();
-		void CreateRenderTargetView(U32 bufferIndex = 0);
+		void CreateRenderTargetView();
 
 		void SwapBuffers();
 
@@ -45,10 +47,7 @@ namespace cuc
 
 		Viewport m_viewport;
 		ScissorRectangle m_scissorRect;
-
-		Microsoft::WRL::ComPtr<IDXGISwapChain> m_pSwapChain;
-		U32 m_indexLastSwapBuf = 0;
-
+		SwapChain m_swapChain;
 		Microsoft::WRL::ComPtr<ID3D12Device>           m_pDevice;
 		Microsoft::WRL::ComPtr<ID3D12Resource>         m_pRenderTarget;
 		Microsoft::WRL::ComPtr<ID3D12CommandAllocator> m_pCommandAllocator;

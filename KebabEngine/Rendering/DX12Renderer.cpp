@@ -6,6 +6,7 @@
 #include "DX12\StateObjects\RasterizerStateConfig.h"
 #include "DX12\StateObjects\BlendStateConfig.h"
 #include <d3d12sdklayers.h>
+#include "Events\WindowEvents.h"
 #include <cassert>
 using namespace cuc;
 using namespace Microsoft::WRL;
@@ -16,9 +17,11 @@ DX12Renderer::DX12Renderer(const std::shared_ptr<Window>& pWindow)
 	, m_scissorRect(pWindow.get())
 	, m_viewport(pWindow.get())
 {
+	RegisterForEvent("WindowResize"_HASH);
+
 	CreateDevice();
 	CreateCommandQueue();
-	CreateSwapChain();
+	m_swapChain.Init(m_pCommandQueue.Get(), m_pWindow->GetHandle());
 	CreateCommandAllocator();
 
 	LoadAssets();
@@ -35,19 +38,6 @@ void DX12Renderer::CreateDevice()
 	assert(SUCCEEDED(hr));
 
 	m_hwCaps.CheckMSAASupport(m_pDevice.Get());
-}
-
-void DX12Renderer::CreateSwapChain()
-{
-	IDXGIFactory4* pDXGIFactory = nullptr;
-	HRESULT hr = CreateDXGIFactory1(IID_PPV_ARGS(&pDXGIFactory));
-	assert(SUCCEEDED(hr));
-
-	SwapChainConfig swapChainConfig(m_pWindow->GetHandle());
-	hr = pDXGIFactory->CreateSwapChain(m_pCommandQueue.Get(), &swapChainConfig.GetDescritpion(), &m_pSwapChain);
-	assert(SUCCEEDED(hr));
-
-	pDXGIFactory->Release();
 }
 
 void DX12Renderer::CreateCommandQueue()
@@ -207,19 +197,17 @@ void DX12Renderer::CreateCommandList()
 	assert(SUCCEEDED(hr));
 }
 
-void DX12Renderer::CreateRenderTargetView(U32 bufferIndex)
+void DX12Renderer::CreateRenderTargetView()
 {
-	HRESULT hr = m_pSwapChain->GetBuffer(bufferIndex, IID_PPV_ARGS(m_pRenderTarget.GetAddressOf()));
-	assert(SUCCEEDED(hr));
-
+	// Associate the render target with the swap chain's active surface.
+	m_swapChain.GetBuffer(m_pRenderTarget.GetAddressOf());
 	m_pDevice->CreateRenderTargetView(m_pRenderTarget.Get(), nullptr, m_renderTargetDescHeap.GetCPUHandle(0));
 }
 
 void DX12Renderer::SwapBuffers()
 {
-	m_pSwapChain->Present(1, 0);
-	m_indexLastSwapBuf = (1 + m_indexLastSwapBuf) % 2;
-	CreateRenderTargetView(m_indexLastSwapBuf);
+	m_swapChain.Present();
+	CreateRenderTargetView();
 }
 
 void DX12Renderer::Render()
@@ -232,6 +220,22 @@ void DX12Renderer::Render()
 	SwapBuffers();
 
 	WaitForGPU();
+}
+
+void DX12Renderer::HandleEvent(const Event& event)
+{
+	switch (event.type)
+	{
+	case "WindowResize"_HASH:
+	{
+		auto newWidth = event[WindowResizeEvent::U32_WIDTH].GetUnsignedInt();
+		auto newHeight = event[WindowResizeEvent::U32_HEIGHT].GetUnsignedInt();
+		m_swapChain.Resize(newWidth, newHeight);
+		m_viewport.Resize(newWidth, newHeight);
+		m_scissorRect.Resize(newWidth, newHeight);
+		break;
+	}
+	}
 }
 
 void DX12Renderer::PopulateCommandLists()

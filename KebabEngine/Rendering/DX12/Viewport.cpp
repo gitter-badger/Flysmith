@@ -1,5 +1,6 @@
 #include "Viewport.h"
 #ifdef RENDERER_DX12
+#include <cassert>
 using namespace cuc;
 
 
@@ -15,6 +16,16 @@ Viewport::Viewport()
 
 Viewport::Viewport(const F32 width, const F32 height, const F32 topLeftX, const F32 topLeftY, const F32 minDepth, const F32 maxDepth)
 {
+	Resize(width, height, topLeftX, topLeftY, minDepth, maxDepth);
+}
+
+Viewport::Viewport(const Window* pWindow, const F32 minDepth, const F32 maxDepth)
+{
+	Resize(pWindow, minDepth, maxDepth);
+}
+
+void Viewport::Resize(const F32 width, const F32 height, const F32 topLeftX, const F32 topLeftY, const F32 minDepth, const F32 maxDepth)
+{
 	Width = width;
 	Height = height;
 	TopLeftX = topLeftX;
@@ -23,8 +34,10 @@ Viewport::Viewport(const F32 width, const F32 height, const F32 topLeftX, const 
 	MaxDepth = maxDepth;
 }
 
-Viewport::Viewport(const Window* pWindow, const F32 minDepth, const F32 maxDepth)
+void Viewport::Resize(const Window* pWindow, const F32 minDepth, const F32 maxDepth)
 {
+	assert(pWindow != nullptr);
+
 	Width = static_cast<F32>(pWindow->GetWidth());
 	Height = static_cast<F32>(pWindow->GetHeight());
 	TopLeftX = 0.0f;

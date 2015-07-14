@@ -180,6 +180,7 @@
     <ClCompile Include="Rendering\DX12\HardwareCaps.cpp" />
     <ClCompile Include="Rendering\DX12\StateObjects\RasterizerStateConfig.cpp" />
     <ClCompile Include="Rendering\DX12\ShaderProgram.cpp" />
+    <ClCompile Include="Rendering\DX12\SwapChain.cpp" />
     <ClCompile Include="Rendering\DX12\SwapChainConfig.cpp" />
     <ClCompile Include="Rendering\DX12\Viewport.cpp" />
     <ClCompile Include="Rendering\GLRenderer.cpp" />
@@ -207,6 +208,7 @@
     <ClInclude Include="Rendering\DX12\DXGI\DXGIAdapter.h" />
     <ClInclude Include="Rendering\DX12\HardwareCaps.h" />
     <ClInclude Include="Rendering\DX12\ShaderProgram.h" />
+    <ClInclude Include="Rendering\DX12\SwapChain.h" />
     <ClInclude Include="Rendering\DX12\SwapChainConfig.h" />
     <ClInclude Include="Rendering\DX12\Viewport.h" />
     <ClInclude Include="Rendering\OpenGL\GLContext.h" />
