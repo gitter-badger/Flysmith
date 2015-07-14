@@ -25,7 +25,7 @@ namespace cuc
 		void SetWindowed(const bool);
 		void SetOutputWindow(const HWND);
 
-		const DXGI_SWAP_CHAIN_DESC& GetDescritpion() const;
+		DXGI_SWAP_CHAIN_DESC& GetDescritpion();
 		
 	private:
 		DXGI_SWAP_CHAIN_DESC m_description;

@@ -63,22 +63,22 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>$(SolutionDir)Bin\$(Configuration)$(Platform)\</OutDir>
+    <OutDir>$(SolutionDir)Bin\$(Platform)$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)Temp\$(ProjectName)\$(Configuration)$(Platform)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <OutDir>$(SolutionDir)Bin\$(Configuration)$(Platform)\</OutDir>
+    <OutDir>$(SolutionDir)Bin\$(Platform)$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)Temp\$(ProjectName)\$(Configuration)$(Platform)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <OutDir>$(SolutionDir)Bin\$(Configuration)$(Platform)\</OutDir>
+    <OutDir>$(SolutionDir)Bin\$(Platform)$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)Temp\$(ProjectName)\$(Configuration)$(Platform)\</IntDir>
     <TargetExt>.dll</TargetExt>
     <LinkIncremental>true</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <OutDir>$(SolutionDir)Bin\$(Configuration)$(Platform)\</OutDir>
+    <OutDir>$(SolutionDir)Bin\$(Platform)$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)Temp\$(ProjectName)\$(Configuration)$(Platform)\</IntDir>
     <TargetExt>.dll</TargetExt>
     <LinkIncremental>false</LinkIncremental>
@@ -173,10 +173,10 @@
     <ClCompile Include="Application\Application.cpp" />
     <ClCompile Include="Events\WindowEvents.cpp" />
     <ClCompile Include="Rendering\DX12Renderer.cpp" />
-    <ClCompile Include="Rendering\DX12\BlendStateConfig.cpp" />
+    <ClCompile Include="Rendering\DX12\StateObjects\BlendStateConfig.cpp" />
     <ClCompile Include="Rendering\DX12\DXGI\DXGIAdapter.cpp" />
     <ClCompile Include="Rendering\DX12\HardwareCaps.cpp" />
-    <ClCompile Include="Rendering\DX12\RasterizerStateConfig.cpp" />
+    <ClCompile Include="Rendering\DX12\StateObjects\RasterizerStateConfig.cpp" />
     <ClCompile Include="Rendering\DX12\ShaderProgram.cpp" />
     <ClCompile Include="Rendering\DX12\SwapChainConfig.cpp" />
     <ClCompile Include="Rendering\GLRenderer.cpp" />
@@ -185,20 +185,20 @@
     <ClCompile Include="Application\Window.cpp" />
     <ClCompile Include="Dependencies\OpenGL\GLCore_4_5.cpp" />
     <ClCompile Include="Dependencies\OpenGL\WGL_4_5.cpp" />
-    <ClCompile Include="dllmain.cpp" />
+    <ClCompile Include="Utils\dllmain.cpp" />
     <ClCompile Include="Events\Event.cpp" />
     <ClCompile Include="Events\EventManager.cpp" />
     <ClCompile Include="Events\EventListener.cpp" />
     <ClCompile Include="Events\InputEvents.cpp" />
     <ClCompile Include="Resources\FileReader.cpp" />
-    <ClCompile Include="Variant.cpp" />
+    <ClCompile Include="Utils\Variant.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application\Application.h" />
     <ClInclude Include="Events\WindowEvents.h" />
     <ClInclude Include="Rendering\DX12Renderer.h" />
-    <ClInclude Include="Rendering\DX12\BlendStateConfig.h" />
-    <ClInclude Include="Rendering\DX12\RasterizerStateConfig.h" />
+    <ClInclude Include="Rendering\DX12\StateObjects\BlendStateConfig.h" />
+    <ClInclude Include="Rendering\DX12\StateObjects\RasterizerStateConfig.h" />
     <ClInclude Include="Rendering\DX12\DXGI\DXGIAdapter.h" />
     <ClInclude Include="Rendering\DX12\HardwareCaps.h" />
     <ClInclude Include="Rendering\DX12\ShaderProgram.h" />
@@ -219,9 +219,9 @@
     <ClInclude Include="Events\InputEvents.h" />
     <ClInclude Include="KebabEngine.h" />
     <ClInclude Include="Resources\FileReader.h" />
-    <ClInclude Include="StringHash.h" />
-    <ClInclude Include="Types.h" />
-    <ClInclude Include="Variant.h" />
+    <ClInclude Include="Utils\StringHash.h" />
+    <ClInclude Include="Utils\Types.h" />
+    <ClInclude Include="Utils\Variant.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Rendering\DX12\Shaders\TestHeader.hlsli" />

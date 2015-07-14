@@ -38,6 +38,8 @@ D3D12_SHADER_BYTECODE ShaderProgram::GetCompiledShader(const ShaderType type, co
 	flags |= D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION | D3DCOMPILE_WARNINGS_ARE_ERRORS;
 #endif
 
+#pragma warning(push)
+#pragma warning(disable:4996)
 	// 2 bytes for shader type
 	// 4 bytes for the shader model
 	// 1 byte for the null terminator
@@ -45,6 +47,7 @@ D3D12_SHADER_BYTECODE ShaderProgram::GetCompiledShader(const ShaderType type, co
 	strcpy(shaderModelName, shaderTypeStringNames[type]);
 	strcat(shaderModelName, "_");
 	strcat(shaderModelName, shaderModel);
+#pragma warning(pop)
 
 	ID3DBlob* shaderBlob = nullptr;
 	ID3DBlob* errorBlob = nullptr;
@@ -63,7 +66,7 @@ D3D12_SHADER_BYTECODE ShaderProgram::GetCompiledShader(const ShaderType type, co
 
 	if (errorBlob)
 	{
-		
+		shaderBlob->Release();
 		errorBlob->Release();
 	}
 	

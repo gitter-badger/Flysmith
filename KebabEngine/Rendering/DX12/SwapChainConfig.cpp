@@ -87,7 +87,7 @@ void SwapChainConfig::SetOutputWindow(const HWND hwnd)
 	m_description.OutputWindow = hwnd;
 }
 
-const DXGI_SWAP_CHAIN_DESC& SwapChainConfig::GetDescritpion() const
+DXGI_SWAP_CHAIN_DESC& SwapChainConfig::GetDescritpion()
 {
 	return m_description;
 }

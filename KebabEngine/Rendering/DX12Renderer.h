@@ -22,12 +22,20 @@ namespace cuc
 		HardwareCaps m_hwCaps;
 		std::shared_ptr<Window> m_pWindow;
 
-		HRESULT CreateDeviceAndSwapChain(const D3D_DRIVER_TYPE, const DXGI_SWAP_CHAIN_DESC*);
+		void CreateDevice();
+		void CreateSwapChain();
+		void CreateCommandQueue();
+		void CreateCommandAllocator();
 
-		void LoadPipeline();
 		void LoadAssets();
-		HRESULT CreateRootSignature();
-		HRESULT CreatePipelineStateObject();
+		void CreateRootSignature();
+		void CreatePipelineStateObject();
+		void CreateDescriptorHeap();
+		void CreateCommandList();
+		void CreateRenderTargetView();
+		void CreateViewport();
+		void CreateScissorRect();
+
 		void WaitForGPU();
 		void PopulateCommandLists();
 		void SetResourceBarrier(ID3D12GraphicsCommandList* commandList, ID3D12Resource* resource, D3D12_RESOURCE_STATES stateBefore, D3D12_RESOURCE_STATES stateAfter);
@@ -46,7 +54,7 @@ namespace cuc
 		Microsoft::WRL::ComPtr<ID3D12DescriptorHeap>   m_pDescriptorHeap;
 		
 		Microsoft::WRL::ComPtr<ID3D12Fence> m_pFence;
-		UINT64 m_currentFence;
+		U64 m_currentFence;
 		HANDLE m_handleEvent;
 
 		Microsoft::WRL::ComPtr<ID3D12PipelineState> m_pPSO;

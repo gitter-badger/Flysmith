@@ -26,5 +26,5 @@
 							(x) = nullptr; \
 						}
 
-#include "Types.h"
-#include "StringHash.h"
+#include "Utils\Types.h"
+#include "Utils\StringHash.h"

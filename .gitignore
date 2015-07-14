@@ -15,6 +15,7 @@ build/
 bld/
 [Bb]in/
 [Oo]bj/
+Temp/
 
 # Roslyn cache directories
 *.ide/
@@ -56,6 +57,8 @@ dlldata.c
 *.pidb
 *.svclog
 *.scc
+*.tlog
+*.idb
 
 # Chutzpah Test files
 _Chutzpah*

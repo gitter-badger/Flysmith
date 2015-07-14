@@ -15,9 +15,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="dllmain.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Application\Window.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -25,9 +22,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Application\Timer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Variant.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Events\Event.cpp">
@@ -75,10 +69,16 @@
     <ClCompile Include="Rendering\DX12\ShaderProgram.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Rendering\DX12\RasterizerStateConfig.cpp">
+    <ClCompile Include="Utils\Variant.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Rendering\DX12\BlendStateConfig.cpp">
+    <ClCompile Include="Utils\dllmain.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Rendering\DX12\StateObjects\BlendStateConfig.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Rendering\DX12\StateObjects\RasterizerStateConfig.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -89,19 +89,10 @@
     <ClInclude Include="Application\Window.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Types.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Application\Application.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Application\Timer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Variant.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="StringHash.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Events\Event.h">
@@ -161,10 +152,19 @@
     <ClInclude Include="Rendering\DX12\ShaderProgram.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Rendering\DX12\RasterizerStateConfig.h">
+    <ClInclude Include="Utils\Variant.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Rendering\DX12\BlendStateConfig.h">
+    <ClInclude Include="Utils\StringHash.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils\Types.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Rendering\DX12\StateObjects\BlendStateConfig.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Rendering\DX12\StateObjects\RasterizerStateConfig.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
