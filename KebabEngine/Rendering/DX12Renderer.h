@@ -5,6 +5,7 @@
 #include <wrl/client.h>
 #include <memory>
 #include "DX12\HardwareCaps.h"
+#include "DX12\DescriptorHeap.h"
 
 
 namespace cuc
@@ -32,9 +33,11 @@ namespace cuc
 		void CreatePipelineStateObject();
 		void CreateDescriptorHeap();
 		void CreateCommandList();
-		void CreateRenderTargetView();
+		void CreateRenderTargetView(U32 bufferIndex = 0);
 		void CreateViewport();
 		void CreateScissorRect();
+
+		void SwapBuffers();
 
 		void WaitForGPU();
 		void PopulateCommandLists();
@@ -51,7 +54,7 @@ namespace cuc
 		Microsoft::WRL::ComPtr<ID3D12CommandAllocator> m_pCommandAllocator;
 		Microsoft::WRL::ComPtr<ID3D12CommandQueue>     m_pCommandQueue;
 		Microsoft::WRL::ComPtr<ID3D12RootSignature>    m_pRootSignature;
-		Microsoft::WRL::ComPtr<ID3D12DescriptorHeap>   m_pDescriptorHeap;
+		DescriptorHeap m_descriptorHeap;
 		
 		Microsoft::WRL::ComPtr<ID3D12Fence> m_pFence;
 		U64 m_currentFence;

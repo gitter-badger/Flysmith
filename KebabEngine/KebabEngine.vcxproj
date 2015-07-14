@@ -173,6 +173,7 @@
     <ClCompile Include="Application\Application.cpp" />
     <ClCompile Include="Events\WindowEvents.cpp" />
     <ClCompile Include="Rendering\DX12Renderer.cpp" />
+    <ClCompile Include="Rendering\DX12\DescriptorHeap.cpp" />
     <ClCompile Include="Rendering\DX12\StateObjects\BlendStateConfig.cpp" />
     <ClCompile Include="Rendering\DX12\DXGI\DXGIAdapter.cpp" />
     <ClCompile Include="Rendering\DX12\HardwareCaps.cpp" />
@@ -197,6 +198,7 @@
     <ClInclude Include="Application\Application.h" />
     <ClInclude Include="Events\WindowEvents.h" />
     <ClInclude Include="Rendering\DX12Renderer.h" />
+    <ClInclude Include="Rendering\DX12\DescriptorHeap.h" />
     <ClInclude Include="Rendering\DX12\StateObjects\BlendStateConfig.h" />
     <ClInclude Include="Rendering\DX12\StateObjects\RasterizerStateConfig.h" />
     <ClInclude Include="Rendering\DX12\DXGI\DXGIAdapter.h" />

@@ -198,13 +198,7 @@ void DX12Renderer::CreateRootSignature()
 
 void DX12Renderer::CreateDescriptorHeap()
 {
-	D3D12_DESCRIPTOR_HEAP_DESC descHeap;
-	descHeap.NumDescriptors = 1;
-	descHeap.Type = D3D12_DESCRIPTOR_HEAP_TYPE_RTV;
-	descHeap.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
-	descHeap.NodeMask = 0;
-	HRESULT hr = m_pDevice->CreateDescriptorHeap(&descHeap, IID_PPV_ARGS(m_pDescriptorHeap.GetAddressOf()));
-	assert(SUCCEEDED(hr));
+	m_descriptorHeap.Init(m_pDevice.Get(), DescHeapType::RENDER_TARGET);
 }
 
 void DX12Renderer::CreateCommandList()
@@ -213,12 +207,12 @@ void DX12Renderer::CreateCommandList()
 	assert(SUCCEEDED(hr));
 }
 
-void DX12Renderer::CreateRenderTargetView()
+void DX12Renderer::CreateRenderTargetView(U32 bufferIndex)
 {
-	HRESULT hr = m_pSwapChain->GetBuffer(0, IID_PPV_ARGS(m_pRenderTarget.GetAddressOf()));
+	HRESULT hr = m_pSwapChain->GetBuffer(bufferIndex, IID_PPV_ARGS(m_pRenderTarget.GetAddressOf()));
 	assert(SUCCEEDED(hr));
 
-	m_pDevice->CreateRenderTargetView(m_pRenderTarget.Get(), nullptr, m_pDescriptorHeap->GetCPUDescriptorHandleForHeapStart());
+	m_pDevice->CreateRenderTargetView(m_pRenderTarget.Get(), nullptr, m_descriptorHeap.GetCPUHandle(0));
 }
 
 void DX12Renderer::CreateViewport()
@@ -241,6 +235,13 @@ void cuc::DX12Renderer::CreateScissorRect()
 	m_rectScissor.bottom = m_pWindow->GetHeight();
 }
 
+void DX12Renderer::SwapBuffers()
+{
+	m_pSwapChain->Present(1, 0);
+	m_indexLastSwapBuf = (1 + m_indexLastSwapBuf) % 2;
+	CreateRenderTargetView(m_indexLastSwapBuf);
+}
+
 void DX12Renderer::Render()
 {
 	PopulateCommandLists();
@@ -248,11 +249,7 @@ void DX12Renderer::Render()
 	ID3D12CommandList* ppCommandLists[] = { m_pCommandList.Get() };
 	m_pCommandQueue->ExecuteCommandLists(_countof(ppCommandLists), ppCommandLists);
 
-	m_pSwapChain->Present(1, 0);
-	m_indexLastSwapBuf = (1 + m_indexLastSwapBuf) % 2;
-	HRESULT hr = m_pSwapChain->GetBuffer(m_indexLastSwapBuf, IID_PPV_ARGS(m_pRenderTarget.ReleaseAndGetAddressOf()));
-	assert(SUCCEEDED(hr));
-	m_pDevice->CreateRenderTargetView(m_pRenderTarget.Get(), nullptr, m_pDescriptorHeap->GetCPUDescriptorHandleForHeapStart());
+	SwapBuffers();
 
 	WaitForGPU();
 }
@@ -275,8 +272,8 @@ void DX12Renderer::PopulateCommandLists()
 		D3D12_RESOURCE_STATE_RENDER_TARGET);
 
 	float clearColor[] = { 0.93f, 0.5f, 0.93f, 1.0f };
-	m_pCommandList->ClearRenderTargetView(m_pDescriptorHeap->GetCPUDescriptorHandleForHeapStart(), clearColor, 1, &m_rectScissor);
-	m_pCommandList->OMSetRenderTargets(1, &m_pDescriptorHeap->GetCPUDescriptorHandleForHeapStart(), TRUE, nullptr);
+	m_pCommandList->ClearRenderTargetView(m_descriptorHeap.GetCPUHandle(0), clearColor, 1, &m_rectScissor);
+	m_pCommandList->OMSetRenderTargets(1, &m_descriptorHeap.GetCPUHandle(0), TRUE, nullptr);
 	m_pCommandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	m_pCommandList->IASetVertexBuffers(0, 1, &m_descViewBufVert);
 	m_pCommandList->DrawInstanced(3, 1, 0, 0);
