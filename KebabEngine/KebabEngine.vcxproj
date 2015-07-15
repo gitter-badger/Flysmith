@@ -196,6 +196,7 @@
     <ClCompile Include="Rendering\DX12\ShaderProgram.cpp" />
     <ClCompile Include="Rendering\DX12\SwapChain.cpp" />
     <ClCompile Include="Rendering\DX12\SwapChainConfig.cpp" />
+    <ClCompile Include="Rendering\DX12\UploadHeap.cpp" />
     <ClCompile Include="Rendering\DX12\Viewport.cpp" />
     <ClCompile Include="Rendering\GLRenderer.cpp" />
     <ClCompile Include="Rendering\OpenGL\GLContext.cpp" />
@@ -226,6 +227,7 @@
     <ClInclude Include="Rendering\DX12\ShaderProgram.h" />
     <ClInclude Include="Rendering\DX12\SwapChain.h" />
     <ClInclude Include="Rendering\DX12\SwapChainConfig.h" />
+    <ClInclude Include="Rendering\DX12\UploadHeap.h" />
     <ClInclude Include="Rendering\DX12\Viewport.h" />
     <ClInclude Include="Rendering\OpenGL\GLContext.h" />
     <ClInclude Include="Rendering\GLRenderer.h" />

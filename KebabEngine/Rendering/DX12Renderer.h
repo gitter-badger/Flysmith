@@ -11,6 +11,7 @@
 #include "DX12\SwapChain.h"
 #include "DX12\PipelineStateObject.h"
 #include "Events\EventListener.h"
+#include "DX12\UploadHeap.h"
 
 
 namespace cuc
@@ -55,6 +56,8 @@ namespace cuc
 		Microsoft::WRL::ComPtr<ID3D12CommandQueue>     m_pCommandQueue;
 		Microsoft::WRL::ComPtr<ID3D12RootSignature>    m_pRootSignature; 
 		DescriptorHeap m_renderTargetDescHeap;
+		UploadHeap m_uploadHeap;
+		ID3D12Resource* m_pBufVerts;
 		
 		Microsoft::WRL::ComPtr<ID3D12Fence> m_pFence;
 		U64 m_currentFence;
@@ -62,7 +65,6 @@ namespace cuc
 
 		PipelineStateObject m_pso;
 		Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> m_pCommandList;
-		Microsoft::WRL::ComPtr<ID3D12Resource> m_pBufVerts;
 
 		D3D12_VERTEX_BUFFER_VIEW m_descViewBufVert;
 	};

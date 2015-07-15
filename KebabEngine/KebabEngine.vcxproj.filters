@@ -99,6 +99,9 @@
     <ClCompile Include="Rendering\DX12\RootSignatureFactory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Rendering\DX12\UploadHeap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="KebabEngine.h">
@@ -201,6 +204,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Rendering\DX12\RootSignatureFactory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Rendering\DX12\UploadHeap.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

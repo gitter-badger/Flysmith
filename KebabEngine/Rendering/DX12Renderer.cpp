@@ -30,6 +30,7 @@ DX12Renderer::DX12Renderer(const std::shared_ptr<Window>& pWindow)
 
 DX12Renderer::~DX12Renderer()
 {
+	m_pBufVerts->Release();
 }
 
 void DX12Renderer::CreateDevice()
@@ -95,19 +96,9 @@ void DX12Renderer::LoadAssets()
 	descResource.SampleDesc.Quality = 0;
 	descResource.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
 	descResource.Flags = D3D12_RESOURCE_FLAG_NONE;
-
-	m_pDevice->CreateCommittedResource(
-		&heapProperty,
-		D3D12_HEAP_FLAG_NONE,
-		&descResource,
-		D3D12_RESOURCE_STATE_GENERIC_READ,
-		nullptr,  
-		IID_PPV_ARGS(m_pBufVerts.GetAddressOf()));
-
-	UINT8* dataBegin;
-	m_pBufVerts->Map(0, nullptr, reinterpret_cast<void**>(&dataBegin));
-	memcpy(dataBegin, triangleVerts, sizeof(triangleVerts));
-	m_pBufVerts->Unmap(0, nullptr);
+	
+	m_uploadHeap.Init(m_pDevice.Get(), 1);
+	m_uploadHeap.Alloc(&m_pBufVerts, descResource, triangleVerts, sizeof(triangleVerts));
 
 	m_descViewBufVert.BufferLocation = m_pBufVerts->GetGPUVirtualAddress();
 	m_descViewBufVert.StrideInBytes = sizeof(VERTEX);
