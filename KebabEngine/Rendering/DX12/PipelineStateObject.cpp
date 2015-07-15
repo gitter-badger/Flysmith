@@ -17,12 +17,12 @@ PipelineStateObject::PipelineStateObject(ID3D12Device* pDevice, const D3D12_GRAP
 	Init(pDevice, desc);
 }
 
-PipelineStateObject::PipelineStateObject(ID3D12Device* pDevice, ID3D12RootSignature* pRootSignature, const D3D12_INPUT_ELEMENT_DESC* layout, 
-										 const U32 numLayoutElements, const BlendStateConfig* pBlendState, const RasterizerStateConfig* pRasterizerState, 
+PipelineStateObject::PipelineStateObject(ID3D12Device* pDevice, const D3D12_INPUT_ELEMENT_DESC* layout, const U32 numLayoutElements,
+										 ID3D12RootSignature* pRootSignature, const BlendStateConfig* pBlendState, const RasterizerStateConfig* pRasterizerState,
 										 const D3D12_SHADER_BYTECODE * VS, const D3D12_SHADER_BYTECODE * PS, const D3D12_SHADER_BYTECODE * GS, 
 										 const D3D12_SHADER_BYTECODE * HS, const D3D12_SHADER_BYTECODE * DS, const D3D12_PRIMITIVE_TOPOLOGY_TYPE primitiveType)
 {
-	Init(pDevice, pRootSignature, layout, numLayoutElements, pBlendState, pRasterizerState, VS, PS, GS, HS, DS, primitiveType);
+	Init(pDevice, layout, numLayoutElements, pRootSignature, pBlendState, pRasterizerState, VS, PS, GS, HS, DS, primitiveType);
 }
 
 PipelineStateObject::~PipelineStateObject()
@@ -37,9 +37,9 @@ void PipelineStateObject::Init(ID3D12Device* pDevice, const D3D12_GRAPHICS_PIPEL
 }
 
 void PipelineStateObject::Init(ID3D12Device* pDevice,
-							   ID3D12RootSignature* pRootSignature,
 							   const D3D12_INPUT_ELEMENT_DESC* layout,
 							   const U32 numLayoutElements,
+							   ID3D12RootSignature* pRootSignature,
 							   const BlendStateConfig* pBlendState,
 							   const RasterizerStateConfig* pRasterizerState,
 							   const D3D12_SHADER_BYTECODE* VS,
@@ -50,7 +50,6 @@ void PipelineStateObject::Init(ID3D12Device* pDevice,
 							   const D3D12_PRIMITIVE_TOPOLOGY_TYPE primitiveType)
 {
 	assert(pDevice != nullptr);
-	assert(pRootSignature != nullptr);
 	assert(numLayoutElements > 0);
 	assert(layout != nullptr);
 

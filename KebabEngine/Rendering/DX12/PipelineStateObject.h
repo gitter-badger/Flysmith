@@ -14,7 +14,7 @@ namespace cuc
 	public:
 		PipelineStateObject();
 		PipelineStateObject(ID3D12Device*, const D3D12_GRAPHICS_PIPELINE_STATE_DESC&);
-		PipelineStateObject(ID3D12Device*, ID3D12RootSignature*, const D3D12_INPUT_ELEMENT_DESC*, const U32 numLayoutElements,
+		PipelineStateObject(ID3D12Device*, const D3D12_INPUT_ELEMENT_DESC*, const U32 numLayoutElements, ID3D12RootSignature* = nullptr,
 							const BlendStateConfig* = nullptr, const RasterizerStateConfig* = nullptr, const D3D12_SHADER_BYTECODE* VS = nullptr,
 							const D3D12_SHADER_BYTECODE* PS = nullptr, const D3D12_SHADER_BYTECODE* GS = nullptr, const D3D12_SHADER_BYTECODE* HS = nullptr,
 							const D3D12_SHADER_BYTECODE* DS = nullptr, const D3D12_PRIMITIVE_TOPOLOGY_TYPE = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE);
@@ -22,10 +22,10 @@ namespace cuc
 		
 		void Init(ID3D12Device*, const D3D12_GRAPHICS_PIPELINE_STATE_DESC&);
 		void Init(ID3D12Device*,
-				  ID3D12RootSignature*,
 				  const D3D12_INPUT_ELEMENT_DESC*,
 				  const U32 numLayoutElements,
-				  const BlendStateConfig*      = nullptr,    // Leave null to use the default blend state configuration
+				  ID3D12RootSignature* = nullptr,            // All used shaders must have a matching root signature if no root signature is passed in.
+				  const BlendStateConfig* = nullptr,         // Leave null to use the default blend state configuration
 				  const RasterizerStateConfig* = nullptr,    // Leave null to use the default rasterizer state configuration
 				  const D3D12_SHADER_BYTECODE* VS = nullptr,
 				  const D3D12_SHADER_BYTECODE* PS = nullptr,

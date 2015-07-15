@@ -53,7 +53,7 @@ namespace cuc
 		Microsoft::WRL::ComPtr<ID3D12Resource>         m_pRenderTarget;
 		Microsoft::WRL::ComPtr<ID3D12CommandAllocator> m_pCommandAllocator;
 		Microsoft::WRL::ComPtr<ID3D12CommandQueue>     m_pCommandQueue;
-		Microsoft::WRL::ComPtr<ID3D12RootSignature>    m_pRootSignature;
+		Microsoft::WRL::ComPtr<ID3D12RootSignature>    m_pRootSignature; 
 		DescriptorHeap m_renderTargetDescHeap;
 		
 		Microsoft::WRL::ComPtr<ID3D12Fence> m_pFence;

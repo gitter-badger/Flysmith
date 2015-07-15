@@ -96,6 +96,9 @@
     <ClCompile Include="Rendering\DX12\PipelineStateObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Rendering\DX12\RootSignatureFactory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="KebabEngine.h">
@@ -197,12 +200,15 @@
     <ClInclude Include="Rendering\DX12\PipelineStateObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Rendering\DX12\RootSignatureFactory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Rendering\DX12\Shaders\TestHeader.hlsli" />
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="Rendering\DX12\Shaders\TestVS.hlsl" />
     <FxCompile Include="Rendering\DX12\Shaders\TestPS.hlsl" />
+    <FxCompile Include="Rendering\DX12\Shaders\TestVS.hlsl" />
   </ItemGroup>
 </Project>

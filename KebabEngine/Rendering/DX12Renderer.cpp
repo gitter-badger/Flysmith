@@ -5,6 +5,7 @@
 #include "DX12\ShaderProgram.h"
 #include "DX12\StateObjects\RasterizerStateConfig.h"
 #include "DX12\StateObjects\BlendStateConfig.h"
+#include "DX12\RootSignatureFactory.h"
 #include <d3d12sdklayers.h>
 #include "Events\WindowEvents.h"
 #include <cassert>
@@ -124,6 +125,15 @@ void DX12Renderer::LoadAssets()
 	WaitForGPU();
 }
 
+void DX12Renderer::CreateRootSignature()
+{
+	RootSignatureFactory rootSigFactory(RootSignatureFactory::ALLOW_IA_LAYOUT);
+	
+	rootSigFactory.AddParameterConstants(4);
+	
+	m_pRootSignature = rootSigFactory.BuildRootSignature(m_pDevice.Get());
+}
+
 void DX12Renderer::WaitForGPU()
 {
 	auto fence = m_currentFence;
@@ -147,24 +157,7 @@ void DX12Renderer::CreatePipelineStateObject()
 	auto VS = ShaderProgram::GetCompiledShader(ShaderType::VERTEX, L"D:\\Flysmith\\KebabEngine\\Rendering\\DX12\\Shaders\\TestVS.hlsl");
 	auto PS = ShaderProgram::GetCompiledShader(ShaderType::PIXEL, L"D:\\Flysmith\\KebabEngine\\Rendering\\DX12\\Shaders\\TestPS.hlsl");
 	
-	m_pso.Init(m_pDevice.Get(), m_pRootSignature.Get(), layout, 2, nullptr, nullptr, &VS, &PS);
-}
-
-void DX12Renderer::CreateRootSignature()
-{
-	D3D12_ROOT_SIGNATURE_DESC descRootSignature;
-	descRootSignature.NumParameters = 0;
-	descRootSignature.pParameters = nullptr;
-	descRootSignature.NumStaticSamplers = 0;
-	descRootSignature.pStaticSamplers = nullptr;
-	descRootSignature.Flags = D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT;
-
-	ComPtr<ID3DBlob> pOutBlob, pErrorBlob;
-	HRESULT hr = D3D12SerializeRootSignature(&descRootSignature, D3D_ROOT_SIGNATURE_VERSION_1, pOutBlob.GetAddressOf(), pErrorBlob.GetAddressOf());
-	assert(SUCCEEDED(hr));
-
-	hr = m_pDevice->CreateRootSignature(0, pOutBlob->GetBufferPointer(), pOutBlob->GetBufferSize(), IID_PPV_ARGS(m_pRootSignature.GetAddressOf()));
-	assert(SUCCEEDED(hr));
+	m_pso.Init(m_pDevice.Get(), layout, 2, m_pRootSignature.Get(), nullptr, nullptr, &VS, &PS);
 }
 
 void DX12Renderer::CreateDescriptorHeap()
@@ -231,6 +224,11 @@ void DX12Renderer::PopulateCommandLists()
 	m_pCommandList->SetGraphicsRootSignature(m_pRootSignature.Get());
 	m_pCommandList->RSSetViewports(1, &m_viewport);
 	m_pCommandList->RSSetScissorRects(1, &m_scissorRect);
+
+	m_pCommandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	m_pCommandList->IASetVertexBuffers(0, 1, &m_descViewBufVert);
+	U32 color[] = { 0, 0, 128, 255 };
+	m_pCommandList->SetGraphicsRoot32BitConstants(0, 4, color, 0);
 	
 	SetResourceBarrier(
 		m_pCommandList.Get(), 
@@ -241,8 +239,6 @@ void DX12Renderer::PopulateCommandLists()
 	float clearColor[] = { 0.93f, 0.5f, 0.93f, 1.0f };
 	m_pCommandList->ClearRenderTargetView(m_renderTargetDescHeap.GetCPUHandle(0), clearColor, 1, &m_scissorRect);
 	m_pCommandList->OMSetRenderTargets(1, &m_renderTargetDescHeap.GetCPUHandle(0), TRUE, nullptr);
-	m_pCommandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-	m_pCommandList->IASetVertexBuffers(0, 1, &m_descViewBufVert);
 	m_pCommandList->DrawInstanced(3, 1, 0, 0);
 
 	SetResourceBarrier(
