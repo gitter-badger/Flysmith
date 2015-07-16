@@ -184,20 +184,6 @@
   <ItemGroup>
     <ClCompile Include="Application\Application.cpp" />
     <ClCompile Include="Events\WindowEvents.cpp" />
-    <ClCompile Include="Rendering\DX12Renderer.cpp" />
-    <ClCompile Include="Rendering\DX12\DescriptorHeap.cpp" />
-    <ClCompile Include="Rendering\DX12\PipelineStateObject.cpp" />
-    <ClCompile Include="Rendering\DX12\RootSignatureFactory.cpp" />
-    <ClCompile Include="Rendering\DX12\ScissorRectangle.cpp" />
-    <ClCompile Include="Rendering\DX12\StateObjects\BlendStateConfig.cpp" />
-    <ClCompile Include="Rendering\DX12\DXGI\DXGIAdapter.cpp" />
-    <ClCompile Include="Rendering\DX12\HardwareCaps.cpp" />
-    <ClCompile Include="Rendering\DX12\StateObjects\RasterizerStateConfig.cpp" />
-    <ClCompile Include="Rendering\DX12\ShaderProgram.cpp" />
-    <ClCompile Include="Rendering\DX12\SwapChain.cpp" />
-    <ClCompile Include="Rendering\DX12\SwapChainConfig.cpp" />
-    <ClCompile Include="Rendering\DX12\UploadHeap.cpp" />
-    <ClCompile Include="Rendering\DX12\Viewport.cpp" />
     <ClCompile Include="Application\Timer.cpp" />
     <ClCompile Include="Application\Window.cpp" />
     <ClCompile Include="Utils\dllmain.cpp" />
@@ -211,20 +197,6 @@
   <ItemGroup>
     <ClInclude Include="Application\Application.h" />
     <ClInclude Include="Events\WindowEvents.h" />
-    <ClInclude Include="Rendering\DX12Renderer.h" />
-    <ClInclude Include="Rendering\DX12\DescriptorHeap.h" />
-    <ClInclude Include="Rendering\DX12\PipelineStateObject.h" />
-    <ClInclude Include="Rendering\DX12\RootSignatureFactory.h" />
-    <ClInclude Include="Rendering\DX12\ScissorRectangle.h" />
-    <ClInclude Include="Rendering\DX12\StateObjects\BlendStateConfig.h" />
-    <ClInclude Include="Rendering\DX12\StateObjects\RasterizerStateConfig.h" />
-    <ClInclude Include="Rendering\DX12\DXGI\DXGIAdapter.h" />
-    <ClInclude Include="Rendering\DX12\HardwareCaps.h" />
-    <ClInclude Include="Rendering\DX12\ShaderProgram.h" />
-    <ClInclude Include="Rendering\DX12\SwapChain.h" />
-    <ClInclude Include="Rendering\DX12\SwapChainConfig.h" />
-    <ClInclude Include="Rendering\DX12\UploadHeap.h" />
-    <ClInclude Include="Rendering\DX12\Viewport.h" />
     <ClInclude Include="Application\Timer.h" />
     <ClInclude Include="Application\Window.h" />
     <ClInclude Include="Events\Delegate.h" />
@@ -238,31 +210,6 @@
     <ClInclude Include="Utils\StringHash.h" />
     <ClInclude Include="Utils\Types.h" />
     <ClInclude Include="Utils\Variant.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Rendering\DX12\Shaders\TestHeader.hlsli" />
-  </ItemGroup>
-  <ItemGroup>
-    <FxCompile Include="Rendering\DX12\Shaders\TestPS.hlsl">
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">5.0</ShaderModel>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">5.0</ShaderModel>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
-    </FxCompile>
-    <FxCompile Include="Rendering\DX12\Shaders\TestVS.hlsl">
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">5.0</ShaderModel>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">5.0</ShaderModel>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
-    </FxCompile>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

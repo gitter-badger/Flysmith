@@ -7,10 +7,13 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Flysmith", "Flysmith\Flysmi
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "KebabEngine", "KebabEngine\KebabEngine.vcxproj", "{396E5932-C801-4089-8A0D-33CEC31A9336}"
 	ProjectSection(ProjectDependencies) = postProject
+		{2D2DDCB5-46CB-47ED-8BC0-913F90BDEA7F} = {2D2DDCB5-46CB-47ED-8BC0-913F90BDEA7F}
 		{DCE614C9-8512-405F-8035-D56F3257AD6C} = {DCE614C9-8512-405F-8035-D56F3257AD6C}
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "KebabOGL", "KebabOGL\KebabOGL.vcxproj", "{DCE614C9-8512-405F-8035-D56F3257AD6C}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "KebabD3D12", "KebabD3D12\KebabD3D12.vcxproj", "{2D2DDCB5-46CB-47ED-8BC0-913F90BDEA7F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -44,6 +47,14 @@ Global
 		{DCE614C9-8512-405F-8035-D56F3257AD6C}.Release|x64.Build.0 = Release|x64
 		{DCE614C9-8512-405F-8035-D56F3257AD6C}.Release|x86.ActiveCfg = Release|Win32
 		{DCE614C9-8512-405F-8035-D56F3257AD6C}.Release|x86.Build.0 = Release|Win32
+		{2D2DDCB5-46CB-47ED-8BC0-913F90BDEA7F}.Debug|x64.ActiveCfg = Debug|x64
+		{2D2DDCB5-46CB-47ED-8BC0-913F90BDEA7F}.Debug|x64.Build.0 = Debug|x64
+		{2D2DDCB5-46CB-47ED-8BC0-913F90BDEA7F}.Debug|x86.ActiveCfg = Debug|Win32
+		{2D2DDCB5-46CB-47ED-8BC0-913F90BDEA7F}.Debug|x86.Build.0 = Debug|Win32
+		{2D2DDCB5-46CB-47ED-8BC0-913F90BDEA7F}.Release|x64.ActiveCfg = Release|x64
+		{2D2DDCB5-46CB-47ED-8BC0-913F90BDEA7F}.Release|x64.Build.0 = Release|x64
+		{2D2DDCB5-46CB-47ED-8BC0-913F90BDEA7F}.Release|x86.ActiveCfg = Release|Win32
+		{2D2DDCB5-46CB-47ED-8BC0-913F90BDEA7F}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

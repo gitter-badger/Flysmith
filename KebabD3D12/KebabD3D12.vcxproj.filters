@@ -15,85 +15,107 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Application\Window.cpp">
+    <ClCompile Include="DX12Renderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Application\Application.cpp">
+    <ClCompile Include="PCH.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Application\Timer.cpp">
+    <ClCompile Include="DXGI\DXGIAdapter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Events\Event.cpp">
+    <ClCompile Include="StateObjects\BlendStateConfig.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Events\EventListener.cpp">
+    <ClCompile Include="StateObjects\RasterizerStateConfig.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Events\EventManager.cpp">
+    <ClCompile Include="DescriptorHeap.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Events\InputEvents.cpp">
+    <ClCompile Include="HardwareCaps.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Resources\FileReader.cpp">
+    <ClCompile Include="PipelineStateObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Events\WindowEvents.cpp">
+    <ClCompile Include="RootSignatureFactory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Utils\Variant.cpp">
+    <ClCompile Include="ScissorRectangle.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Utils\dllmain.cpp">
+    <ClCompile Include="ShaderProgram.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SwapChain.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SwapChainConfig.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UploadHeap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Viewport.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="KebabEngine.h">
+    <ClInclude Include="DX12Renderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Application\Window.h">
+    <ClInclude Include="Types.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Application\Application.h">
+    <ClInclude Include="PCH.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Application\Timer.h">
+    <ClInclude Include="DXGI\DXGIAdapter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Events\Event.h">
+    <ClInclude Include="StateObjects\BlendStateConfig.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Events\EventManager.h">
+    <ClInclude Include="StateObjects\RasterizerStateConfig.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Events\EventListener.h">
+    <ClInclude Include="DescriptorHeap.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Events\InputEvents.h">
+    <ClInclude Include="HardwareCaps.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Events\EventFactory.h">
+    <ClInclude Include="PipelineStateObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Events\Delegate.h">
+    <ClInclude Include="RootSignatureFactory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Resources\FileReader.h">
+    <ClInclude Include="ScissorRectangle.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Events\WindowEvents.h">
+    <ClInclude Include="ShaderProgram.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Utils\Variant.h">
+    <ClInclude Include="SwapChain.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Utils\StringHash.h">
+    <ClInclude Include="SwapChainConfig.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Utils\Types.h">
+    <ClInclude Include="UploadHeap.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Viewport.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="Shaders\TestPS.hlsl" />
+    <FxCompile Include="Shaders\TestVS.hlsl" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Shaders\TestHeader.hlsli" />
   </ItemGroup>
 </Project>

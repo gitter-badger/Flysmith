@@ -2,12 +2,9 @@
 #include "KebabEngine.h"
 
 #ifdef RENDERER_OGL
-#pragma comment(lib, "opengl32.lib")
-#pragma comment(lib, "D:\\Flysmith\\Bin\\x64Release\\KebabOGL.lib")
+#pragma comment(lib, "D:\\Flysmith\\Bin\\Win32Debug\\KebabOGL.lib")
 #elif defined(RENDERER_DX12)
-#pragma comment(lib, "D3d12.lib")
-#pragma comment(lib, "DXGI.lib")
-#pragma comment(lib, "d3dcompiler.lib")
+#pragma comment(lib, "D:\\Flysmith\\Bin\\Win32Debug\\KebabD3D12.lib")
 #endif
 
 BOOL APIENTRY DllMain(HMODULE,
