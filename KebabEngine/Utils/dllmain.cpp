@@ -4,7 +4,7 @@
 #ifdef RENDERER_OGL
 #pragma comment(lib, "D:\\Flysmith\\Bin\\Win32Release\\KebabOGL.lib")
 #elif defined(RENDERER_DX12)
-#pragma comment(lib, "D:\\Flysmith\\Bin\\Win32Release\\KebabD3D12.lib")
+#pragma comment(lib, "KebabD3D12.lib")
 #endif
 
 BOOL APIENTRY DllMain(HMODULE,

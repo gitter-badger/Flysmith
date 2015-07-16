@@ -86,6 +86,7 @@ Renderer::Renderer(const HWND hwnd, const U32 windowWidth, const U32 windowHeigh
 
 Renderer::~Renderer()
 {
+	delete m_pImpl;
 }
 
 void Renderer::Render()
@@ -103,7 +104,7 @@ void Renderer::Render()
 // Renderer Impl implementation
 // ===========================================================================================================
 Renderer::Impl::Impl(HWND hwnd, U32 windowWidth, U32 windowHeight)
-	: m_viewport(windowWidth, windowHeight)
+	: m_viewport(static_cast<F32>(windowWidth), static_cast<F32>(windowHeight))
 	, m_scissorRect(windowWidth, windowHeight)
 {
 	CreateDevice();

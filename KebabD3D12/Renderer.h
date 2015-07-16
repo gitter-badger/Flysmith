@@ -13,6 +13,6 @@ namespace cuc
 
 	private:
 		struct Impl;
-		std::unique_ptr<Impl> m_pImpl;
+		Impl* m_pImpl;
 	};
 }

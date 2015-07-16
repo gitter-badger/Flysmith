@@ -75,7 +75,7 @@ void HardwareCaps::EnumerateDisplayAdapters()
 		U32 currentIndex = m_displayAdapters.size() - 1;
 		if (currentIndex != 0 && !bFoundDedicated)
 		{
-			auto label = m_displayAdapters[m_displayAdapters.size() - 1].GetDescription();	
+			auto label = m_displayAdapters[m_displayAdapters.size() - 1].GetName();	
 			if (wcsstr(label, L"NVIDIA") || wcsstr(label, L"ATI"))
 			{
 				bFoundDedicated = true;

@@ -13,14 +13,14 @@ FileReader::~FileReader()
 	m_thread.detach();
 }
 
+#pragma warning(push)
+#pragma warning(disable:6387)
 size_t FileReader::ReadSync(const char* path, char* buffer, size_t bufferSize)
 {
 	assert(path != nullptr);
 	assert(buffer != nullptr);
 	assert(bufferSize > 0);
 	
-#pragma warning(push)
-#pragma warning(disable:6387)
 	FILE* pFile;
 	auto openError = fopen_s(&pFile, path, "r");
 	if(openError)
@@ -38,10 +38,10 @@ size_t FileReader::ReadSync(const char* path, char* buffer, size_t bufferSize)
 	}
 	
 	fclose(pFile);
-#pragma warning(pop)
 	
 	return bytesRead;
 }
+#pragma warning(pop)
 
 AsyncRequestId FileReader::ReadAsync(const char*, char*, size_t)
 {
