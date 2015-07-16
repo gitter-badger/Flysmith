@@ -22,3 +22,8 @@ const wchar_t* DXGIAdapter::GetDescription() const
 	m_pAdapter->GetDesc(&description);
 	return description.Description;
 }
+
+Microsoft::WRL::ComPtr<IDXGIAdapter1> DXGIAdapter::Get() const
+{
+	return m_pAdapter;
+}

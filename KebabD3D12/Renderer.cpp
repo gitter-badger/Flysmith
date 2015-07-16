@@ -1,10 +1,17 @@
 #include "PCH.h"
-#include "DX12Renderer.h"
+#include "Renderer.h"
 #include "SwapChainConfig.h"
 #include "ShaderProgram.h"
 #include "StateObjects\RasterizerStateConfig.h"
 #include "StateObjects\BlendStateConfig.h"
 #include "RootSignatureFactory.h"
+#include "HardwareCaps.h"
+#include "DescriptorHeap.h"
+#include "ScissorRectangle.h"
+#include "Viewport.h"
+#include "SwapChain.h"
+#include "PipelineStateObject.h"
+#include "UploadHeap.h"
 using namespace cuc;
 using namespace Microsoft::WRL;
 
@@ -13,11 +20,91 @@ using namespace Microsoft::WRL;
 #pragma comment(lib, "d3dcompiler.lib")
 
 
-#pragma warning(push)
-#pragma warning(disable:4244)
-DX12Renderer::DX12Renderer(const HWND hwnd, const U32 windowWidth, const U32 windowHeight)
-	: m_scissorRect(windowWidth, windowHeight)
-	, m_viewport(windowWidth, windowHeight)
+struct VERTEX { FLOAT X, Y, Z; FLOAT Color[4]; };
+
+// ===========================================================================================================
+// Private Renderer Implementation
+// ===========================================================================================================
+struct Renderer::Impl
+{
+	// ===========================================================================================================
+	// Data members 
+	// ===========================================================================================================
+	// Device
+	Viewport m_viewport;
+	ScissorRectangle m_scissorRect;
+	HardwareCaps m_hwCaps;
+	SwapChain m_swapChain;
+	ComPtr<ID3D12Device> m_pDevice;
+	
+	// Pipeline
+	ComPtr<ID3D12RootSignature> m_pRootSignature;
+	ComPtr<ID3D12CommandQueue> m_pCommandQueue;
+	ComPtr<ID3D12GraphicsCommandList> m_pCommandList;
+	ComPtr<ID3D12CommandAllocator> m_pCommandAllocator;
+
+	// Resources
+	UploadHeap m_uploadHeap;
+	DescriptorHeap m_renderTargetDescHeap;
+	ComPtr<ID3D12Resource> m_pRenderTarget;
+	ID3D12Resource* m_pBufVerts;
+	PipelineStateObject m_pso;
+	D3D12_VERTEX_BUFFER_VIEW m_descViewBufVert;
+	
+	// Synchronization
+	ComPtr<ID3D12Fence> m_pFence;
+	U64 m_currentFence;
+	HANDLE m_handleEvent;
+
+	// ===========================================================================================================
+	// Function members 
+	// ===========================================================================================================
+	Impl(HWND hwnd, U32 windowWidth, U32 windowHeight);
+	~Impl();
+	void CreateDevice();
+	void CreateCommandQueue();
+	void CreateCommandAllocator();
+	void LoadAssets();
+	void CreateRootSignature();
+	void CreatePipelineStateObject();
+	void CreateDescriptorHeap();
+	void CreateCommandList();
+	void CreateRenderTargetView();
+	void SwapBuffers();
+	void WaitForGPU();
+	void PopulateCommandLists();
+	void SetResourceBarrier(ID3D12GraphicsCommandList* commandList, ID3D12Resource* resource, D3D12_RESOURCE_STATES stateBefore, D3D12_RESOURCE_STATES stateAfter);
+};
+
+// ===========================================================================================================
+// Public Renderer API
+// ===========================================================================================================
+Renderer::Renderer(const HWND hwnd, const U32 windowWidth, const U32 windowHeight)
+	: m_pImpl(new Impl(hwnd, windowWidth, windowHeight))
+{
+}
+
+Renderer::~Renderer()
+{
+}
+
+void Renderer::Render()
+{
+	m_pImpl->PopulateCommandLists();
+	ID3D12CommandList* ppCommandLists[] = { m_pImpl->m_pCommandList.Get() };
+	m_pImpl->m_pCommandQueue->ExecuteCommandLists(_countof(ppCommandLists), ppCommandLists);
+
+	m_pImpl->SwapBuffers();
+
+	m_pImpl->WaitForGPU();
+}
+
+// ===========================================================================================================
+// Renderer Impl implementation
+// ===========================================================================================================
+Renderer::Impl::Impl(HWND hwnd, U32 windowWidth, U32 windowHeight)
+	: m_viewport(windowWidth, windowHeight)
+	, m_scissorRect(windowWidth, windowHeight)
 {
 	CreateDevice();
 	CreateCommandQueue();
@@ -26,23 +113,22 @@ DX12Renderer::DX12Renderer(const HWND hwnd, const U32 windowWidth, const U32 win
 
 	LoadAssets();
 }
-#pragma warning(pop)
 
-DX12Renderer::~DX12Renderer()
+Renderer::Impl::~Impl()
 {
 	m_pBufVerts->Release();
 }
 
-void DX12Renderer::CreateDevice()
+void Renderer::Impl::CreateDevice()
 {
-	auto pAdapter = m_hwCaps.GetDisplayAdapters()[0].m_pAdapter;
+	auto pAdapter = m_hwCaps.GetDisplayAdapters()[0].Get();
 	HRESULT hr = D3D12CreateDevice(pAdapter.Get(), D3D_FEATURE_LEVEL_11_0, IID_PPV_ARGS(&m_pDevice));
 	assert(SUCCEEDED(hr));
 
 	m_hwCaps.CheckMSAASupport(m_pDevice.Get());
 }
 
-void DX12Renderer::CreateCommandQueue()
+void Renderer::Impl::CreateCommandQueue()
 {
 	D3D12_COMMAND_QUEUE_DESC queueDesc;
 	queueDesc.Type = D3D12_COMMAND_LIST_TYPE_DIRECT;
@@ -54,15 +140,13 @@ void DX12Renderer::CreateCommandQueue()
 	assert(SUCCEEDED(hr));
 }
 
-void DX12Renderer::CreateCommandAllocator()
+void Renderer::Impl::CreateCommandAllocator()
 {
 	HRESULT hr = m_pDevice->CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE_DIRECT, IID_PPV_ARGS(m_pCommandAllocator.GetAddressOf()));
 	assert(SUCCEEDED(hr));
 }
 
-struct VERTEX { FLOAT X, Y, Z; FLOAT Color[4]; };
-
-void DX12Renderer::LoadAssets()
+void Renderer::Impl::LoadAssets()
 {
 	CreateRootSignature();
 	CreatePipelineStateObject();
@@ -96,7 +180,7 @@ void DX12Renderer::LoadAssets()
 	descResource.SampleDesc.Quality = 0;
 	descResource.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
 	descResource.Flags = D3D12_RESOURCE_FLAG_NONE;
-	
+
 	m_uploadHeap.Init(m_pDevice.Get(), 1);
 	m_uploadHeap.Alloc(&m_pBufVerts, descResource, triangleVerts, sizeof(triangleVerts));
 
@@ -116,16 +200,53 @@ void DX12Renderer::LoadAssets()
 	WaitForGPU();
 }
 
-void DX12Renderer::CreateRootSignature()
+void Renderer::Impl::CreateRootSignature()
 {
 	RootSignatureFactory rootSigFactory(RootSignatureFactory::ALLOW_IA_LAYOUT);
-	
+
 	rootSigFactory.AddParameterConstants(4);
-	
+
 	m_pRootSignature = rootSigFactory.BuildRootSignature(m_pDevice.Get());
 }
 
-void DX12Renderer::WaitForGPU()
+void Renderer::Impl::CreatePipelineStateObject()
+{
+	D3D12_INPUT_ELEMENT_DESC layout[] = {
+		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
+		{ "COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 12, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 }
+	};
+
+	auto VS = ShaderProgram::GetCompiledShader(ShaderType::VERTEX_SHADER, L"D:\\Flysmith\\KebabD3D12\\Shaders\\TestVS.hlsl");
+	auto PS = ShaderProgram::GetCompiledShader(ShaderType::PIXEL_SHADER, L"D:\\Flysmith\\KebabD3D12\\Shaders\\TestPS.hlsl");
+
+	m_pso.Init(m_pDevice.Get(), layout, 2, m_pRootSignature.Get(), nullptr, nullptr, &VS, &PS);
+}
+
+void Renderer::Impl::CreateDescriptorHeap()
+{
+	m_renderTargetDescHeap.Init(m_pDevice.Get(), DescHeapType::RENDER_TARGET, 1);
+}
+
+void Renderer::Impl::CreateCommandList()
+{
+	HRESULT hr = m_pDevice->CreateCommandList(0, D3D12_COMMAND_LIST_TYPE_DIRECT, m_pCommandAllocator.Get(), m_pso.Get(), IID_PPV_ARGS(m_pCommandList.GetAddressOf()));
+	assert(SUCCEEDED(hr));
+}
+
+void Renderer::Impl::CreateRenderTargetView()
+{
+	// Associate the render target with the swap chain's active surface.
+	m_swapChain.GetBuffer(m_pRenderTarget.GetAddressOf());
+	m_pDevice->CreateRenderTargetView(m_pRenderTarget.Get(), nullptr, m_renderTargetDescHeap.GetCPUHandle(0));
+}
+
+void Renderer::Impl::SwapBuffers()
+{
+	m_swapChain.Present();
+	CreateRenderTargetView();
+}
+
+void Renderer::Impl::WaitForGPU()
 {
 	auto fence = m_currentFence;
 	m_pCommandQueue->Signal(m_pFence.Get(), fence);
@@ -138,62 +259,13 @@ void DX12Renderer::WaitForGPU()
 	}
 }
 
-void DX12Renderer::CreatePipelineStateObject()
-{
-	D3D12_INPUT_ELEMENT_DESC layout[] = {
-		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
-		{ "COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 12, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 }
-	};
-
-	auto VS = ShaderProgram::GetCompiledShader(ShaderType::VERTEX_SHADER, L"D:\\Flysmith\\KebabD3D12\\Shaders\\TestVS.hlsl");
-	auto PS = ShaderProgram::GetCompiledShader(ShaderType::PIXEL_SHADER, L"D:\\Flysmith\\KebabD3D12\\Shaders\\TestPS.hlsl");
-	
-	m_pso.Init(m_pDevice.Get(), layout, 2, m_pRootSignature.Get(), nullptr, nullptr, &VS, &PS);
-}
-
-void DX12Renderer::CreateDescriptorHeap()
-{
-	m_renderTargetDescHeap.Init(m_pDevice.Get(), DescHeapType::RENDER_TARGET, 1);
-}
-
-void DX12Renderer::CreateCommandList()
-{
-	HRESULT hr = m_pDevice->CreateCommandList(0, D3D12_COMMAND_LIST_TYPE_DIRECT, m_pCommandAllocator.Get(), m_pso.Get(), IID_PPV_ARGS(m_pCommandList.GetAddressOf()));
-	assert(SUCCEEDED(hr));
-}
-
-void DX12Renderer::CreateRenderTargetView()
-{
-	// Associate the render target with the swap chain's active surface.
-	m_swapChain.GetBuffer(m_pRenderTarget.GetAddressOf());
-	m_pDevice->CreateRenderTargetView(m_pRenderTarget.Get(), nullptr, m_renderTargetDescHeap.GetCPUHandle(0));
-}
-
-void DX12Renderer::SwapBuffers()
-{
-	m_swapChain.Present();
-	CreateRenderTargetView();
-}
-
-void DX12Renderer::Render()
-{
-	PopulateCommandLists();
-
-	ID3D12CommandList* ppCommandLists[] = { m_pCommandList.Get() };
-	m_pCommandQueue->ExecuteCommandLists(_countof(ppCommandLists), ppCommandLists);
-
-	SwapBuffers();
-
-	WaitForGPU();
-}
-
-void DX12Renderer::PopulateCommandLists()
+void Renderer::Impl::PopulateCommandLists()
 {
 	HRESULT hr = m_pCommandAllocator->Reset();
 	assert(SUCCEEDED(hr));
 
 	hr = m_pCommandList->Reset(m_pCommandAllocator.Get(),  // The used command allocator cannot be associated with another command list.
-							   m_pso.Get()); // Initial pipeline state. Not inherited from previous command list.
+		m_pso.Get()); // Initial pipeline state. Not inherited from previous command list.
 	assert(SUCCEEDED(hr));
 
 	m_pCommandList->SetGraphicsRootSignature(m_pRootSignature.Get());
@@ -204,11 +276,11 @@ void DX12Renderer::PopulateCommandLists()
 	m_pCommandList->IASetVertexBuffers(0, 1, &m_descViewBufVert);
 	U32 color[] = { 0, 0, 128, 255 };
 	m_pCommandList->SetGraphicsRoot32BitConstants(0, 4, color, 0);
-	
+
 	SetResourceBarrier(
-		m_pCommandList.Get(), 
-		m_pRenderTarget.Get(), 
-		D3D12_RESOURCE_STATE_PRESENT, 
+		m_pCommandList.Get(),
+		m_pRenderTarget.Get(),
+		D3D12_RESOURCE_STATE_PRESENT,
 		D3D12_RESOURCE_STATE_RENDER_TARGET);
 
 	float clearColor[] = { 0.93f, 0.5f, 0.93f, 1.0f };
@@ -217,15 +289,15 @@ void DX12Renderer::PopulateCommandLists()
 	m_pCommandList->DrawInstanced(3, 1, 0, 0);
 
 	SetResourceBarrier(
-		m_pCommandList.Get(), 
-		m_pRenderTarget.Get(), 
+		m_pCommandList.Get(),
+		m_pRenderTarget.Get(),
 		D3D12_RESOURCE_STATE_RENDER_TARGET,
 		D3D12_RESOURCE_STATE_PRESENT);
 
 	m_pCommandList->Close();
 }
 
-void DX12Renderer::SetResourceBarrier(ID3D12GraphicsCommandList* commandList, ID3D12Resource* resource, D3D12_RESOURCE_STATES stateBefore, D3D12_RESOURCE_STATES stateAfter)
+void Renderer::Impl::SetResourceBarrier(ID3D12GraphicsCommandList* commandList, ID3D12Resource* resource, D3D12_RESOURCE_STATES stateBefore, D3D12_RESOURCE_STATES stateAfter)
 {
 	D3D12_RESOURCE_BARRIER descBarrier;
 	ZeroMemory(&descBarrier, sizeof(descBarrier));

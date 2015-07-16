@@ -19,3 +19,4 @@
 #include <algorithm>
 #include <cassert>
 #include <unordered_set>
+#include <memory>

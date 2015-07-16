@@ -154,7 +154,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="DX12Renderer.cpp" />
+    <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="DescriptorHeap.cpp" />
     <ClCompile Include="DXGI\DXGIAdapter.cpp" />
     <ClCompile Include="HardwareCaps.cpp" />
@@ -176,7 +176,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="DX12Renderer.h" />
+    <ClInclude Include="Renderer.h" />
     <ClInclude Include="DescriptorHeap.h" />
     <ClInclude Include="DXGI\DXGIAdapter.h" />
     <ClInclude Include="HardwareCaps.h" />
