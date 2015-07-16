@@ -1,7 +1,5 @@
 #ifndef FUNCTION_CPP_GENERATED_HEADEROPENGL_HPP
 #define FUNCTION_CPP_GENERATED_HEADEROPENGL_HPP
-#include "KebabEngine.h"
-#ifdef RENDERER_OGL
 
 #if defined(__glew_h__) || defined(__GLEW_H__)
 #error Attempt to include auto-generated header after including glew.h
@@ -2916,5 +2914,4 @@ namespace gl
 		
 	} //namespace sys
 } //namespace gl
-#endif // RENDERER_OGL
 #endif //FUNCTION_CPP_GENERATED_HEADEROPENGL_HPP

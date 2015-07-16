@@ -89,7 +89,7 @@
       </PrecompiledHeader>
       <WarningLevel>Level4</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>GLEW_STATIC;X86;WIN32;_DEBUG;_WINDOWS;_USRDLL;KEBABENGINE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>X86;WIN32;_DEBUG;_WINDOWS;_USRDLL;KEBABENGINE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)Dependencies</AdditionalIncludeDirectories>
       <PreprocessToFile>false</PreprocessToFile>
     </ClCompile>
@@ -112,7 +112,7 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>GLEW_STATIC;X86;WIN32;NDEBUG;_WINDOWS;_USRDLL;KEBABENGINE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>X86;WIN32;NDEBUG;_WINDOWS;_USRDLL;KEBABENGINE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)Dependencies</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
@@ -139,7 +139,7 @@
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <OmitFramePointers>false</OmitFramePointers>
-      <PreprocessorDefinitions>GLEW_STATIC;X64;WIN32;_DEBUG;_WINDOWS;_USRDLL;KEBABENGINE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>X64;WIN32;_DEBUG;_WINDOWS;_USRDLL;KEBABENGINE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -164,7 +164,7 @@
       <WarningLevel>Level4</WarningLevel>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <OmitFramePointers>false</OmitFramePointers>
-      <PreprocessorDefinitions>GLEW_STATIC;X64;WIN32;NDEBUG;_WINDOWS;_USRDLL;KEBABENGINE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>X64;WIN32;NDEBUG;_WINDOWS;_USRDLL;KEBABENGINE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <FunctionLevelLinking>true</FunctionLevelLinking>
     </ClCompile>
     <Link>
@@ -198,12 +198,8 @@
     <ClCompile Include="Rendering\DX12\SwapChainConfig.cpp" />
     <ClCompile Include="Rendering\DX12\UploadHeap.cpp" />
     <ClCompile Include="Rendering\DX12\Viewport.cpp" />
-    <ClCompile Include="Rendering\GLRenderer.cpp" />
-    <ClCompile Include="Rendering\OpenGL\GLContext.cpp" />
     <ClCompile Include="Application\Timer.cpp" />
     <ClCompile Include="Application\Window.cpp" />
-    <ClCompile Include="Dependencies\OpenGL\GLCore_4_5.cpp" />
-    <ClCompile Include="Dependencies\OpenGL\WGL_4_5.cpp" />
     <ClCompile Include="Utils\dllmain.cpp" />
     <ClCompile Include="Events\Event.cpp" />
     <ClCompile Include="Events\EventManager.cpp" />
@@ -229,14 +225,8 @@
     <ClInclude Include="Rendering\DX12\SwapChainConfig.h" />
     <ClInclude Include="Rendering\DX12\UploadHeap.h" />
     <ClInclude Include="Rendering\DX12\Viewport.h" />
-    <ClInclude Include="Rendering\OpenGL\GLContext.h" />
-    <ClInclude Include="Rendering\GLRenderer.h" />
     <ClInclude Include="Application\Timer.h" />
     <ClInclude Include="Application\Window.h" />
-    <ClInclude Include="Dependencies\GLCore.h" />
-    <ClInclude Include="Dependencies\OpenGL\GLCore_4_5.hpp" />
-    <ClInclude Include="Dependencies\OpenGL\WGL_4_5.hpp" />
-    <ClInclude Include="Dependencies\WGL.h" />
     <ClInclude Include="Events\Delegate.h" />
     <ClInclude Include="Events\Event.h" />
     <ClInclude Include="Events\EventFactory.h" />

@@ -1,12 +1,11 @@
 #pragma once
-#include "KebabEngine.h"
-#ifdef RENDERER_OGL
+#include "PCH.h"
 #include <Windows.h>
 
 
 namespace cuc
 {
-	class GLContext
+	class KEBABOGL_API GLContext
 	{
 	public:
 		GLContext(HWND, U32 width, U32 height);
@@ -28,4 +27,3 @@ namespace cuc
 		void DestroyContext();
 	};
 }
-#endif // RENDERER_OGL

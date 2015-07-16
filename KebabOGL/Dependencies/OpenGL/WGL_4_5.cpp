@@ -1,5 +1,6 @@
+#include "PCH.h"
+
 #include "WGL_4_5.hpp"
-#ifdef RENDERER_OGL
 #include <algorithm>
 #include <vector>
 #include <string.h>
@@ -335,4 +336,3 @@ namespace wgl
 		
 	} //namespace sys
 } //namespace wgl
-#endif // RENDERER_OGL

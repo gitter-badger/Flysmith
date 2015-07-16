@@ -6,6 +6,11 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Flysmith", "Flysmith\Flysmith.vcxproj", "{9EB2712F-A1B7-405C-A513-C168E92E0351}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "KebabEngine", "KebabEngine\KebabEngine.vcxproj", "{396E5932-C801-4089-8A0D-33CEC31A9336}"
+	ProjectSection(ProjectDependencies) = postProject
+		{DCE614C9-8512-405F-8035-D56F3257AD6C} = {DCE614C9-8512-405F-8035-D56F3257AD6C}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "KebabOGL", "KebabOGL\KebabOGL.vcxproj", "{DCE614C9-8512-405F-8035-D56F3257AD6C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,6 +36,14 @@ Global
 		{396E5932-C801-4089-8A0D-33CEC31A9336}.Release|x64.Build.0 = Release|x64
 		{396E5932-C801-4089-8A0D-33CEC31A9336}.Release|x86.ActiveCfg = Release|Win32
 		{396E5932-C801-4089-8A0D-33CEC31A9336}.Release|x86.Build.0 = Release|Win32
+		{DCE614C9-8512-405F-8035-D56F3257AD6C}.Debug|x64.ActiveCfg = Debug|x64
+		{DCE614C9-8512-405F-8035-D56F3257AD6C}.Debug|x64.Build.0 = Debug|x64
+		{DCE614C9-8512-405F-8035-D56F3257AD6C}.Debug|x86.ActiveCfg = Debug|Win32
+		{DCE614C9-8512-405F-8035-D56F3257AD6C}.Debug|x86.Build.0 = Debug|Win32
+		{DCE614C9-8512-405F-8035-D56F3257AD6C}.Release|x64.ActiveCfg = Release|x64
+		{DCE614C9-8512-405F-8035-D56F3257AD6C}.Release|x64.Build.0 = Release|x64
+		{DCE614C9-8512-405F-8035-D56F3257AD6C}.Release|x86.ActiveCfg = Release|Win32
+		{DCE614C9-8512-405F-8035-D56F3257AD6C}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,7 +1,7 @@
 #pragma once
 
-//#define RENDERER_OGL
-#define RENDERER_DX12
+#define RENDERER_OGL
+//#define RENDERER_DX12
 
 // Happens with STL objects 
 #pragma warning(disable:4251)

@@ -1,7 +1,7 @@
+#include "PCH.h"
 #include "GLContext.h"
-#ifdef RENDERER_OGL
-#include "GLCore.h"
-#include "WGL.h"
+#include "Dependencies\GLCore.h"
+#include "Dependencies\WGL.h"
 using namespace cuc;
 
 
@@ -125,4 +125,3 @@ void GLContext::Resize(U32 width, U32 height)
 {
 	gl::Viewport(0, 0, width, height);
 }
-#endif // RENDERER_OGL

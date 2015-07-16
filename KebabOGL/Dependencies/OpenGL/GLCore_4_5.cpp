@@ -1,5 +1,6 @@
+#include "PCH.h"
+
 #include "GLCore_4_5.hpp"
-#ifdef RENDERER_OGL
 #include <algorithm>
 #include <vector>
 #include <string.h>
@@ -2863,4 +2864,3 @@ namespace gl
 		
 	} //namespace sys
 } //namespace gl
-#endif // RENDERER_OGL

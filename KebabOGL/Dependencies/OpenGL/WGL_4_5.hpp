@@ -1,7 +1,5 @@
 #ifndef FUNCTION_CPP_GENERATED_HEADERWINDOWSGL_HPP
 #define FUNCTION_CPP_GENERATED_HEADERWINDOWSGL_HPP
-#include "KebabEngine.h"
-#ifdef RENDERER_OGL
 
 #ifdef __wglext_h_
 #error Attempt to include auto-generated WGL header after wglext.h
@@ -257,5 +255,4 @@ namespace wgl
 		
 	} //namespace sys
 } //namespace wgl
-#endif // RENDERER_OGL
 #endif //FUNCTION_CPP_GENERATED_HEADERWINDOWSGL_HPP
