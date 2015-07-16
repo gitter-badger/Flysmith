@@ -1,6 +1,5 @@
+#include "PCH.h"
 #include "Window.h"
-#include <Windows.h>
-#include <windowsx.h>
 #include "Events\InputEvents.h"
 #include "Events\WindowEvents.h"
 #include "Events\EventManager.h"

@@ -1,5 +1,5 @@
+#include "PCH.h"
 #include "Timer.h"
-#include <Windows.h>
 using namespace cuc;
 
 

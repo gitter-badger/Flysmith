@@ -1,6 +1,6 @@
+#include "PCH.h"
 #include "Event.h"
 #include "Utils\Variant.h"
-#include <cassert>
 using namespace cuc;
 
 

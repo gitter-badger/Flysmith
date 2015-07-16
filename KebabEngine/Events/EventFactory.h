@@ -1,8 +1,12 @@
 #pragma once
+#include "PCH.h"
 
 
-struct EventFactory
+namespace cuc
 {
-	EventFactory() = delete;
-	EventFactory(const EventFactory&) = delete;
-};
+	struct EventFactory
+	{
+		EventFactory() = delete;
+		EventFactory(const EventFactory&) = delete;
+	};
+}
