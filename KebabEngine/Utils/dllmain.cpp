@@ -2,7 +2,7 @@
 
 
 #ifdef RENDERER_OGL
-#pragma comment(lib, "D:\\Flysmith\\Bin\\Win32Release\\KebabOGL.lib")
+#pragma comment(lib, "KebabOGL.lib")
 #elif defined(RENDERER_DX12)
 #pragma comment(lib, "KebabD3D12.lib")
 #endif

@@ -11,6 +11,7 @@ namespace cuc
 		const char* GetExePath();
 		const char* GetAssetsPath();
 		const char* GetShadersPath();
+		const char* GetFontsPath();
 
 	private:
 		struct Impl;
