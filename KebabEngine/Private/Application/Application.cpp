@@ -9,26 +9,17 @@ EventManager cuc::g_eventManager;
 Application::Application(HINSTANCE hInstance)
 {
 	m_pWindow = std::make_shared<Window>(hInstance, 800, 600, L"Kebab Engine", false);
+
+	m_pRenderer = new Renderer(m_pWindow->GetHandle(), m_pWindow->GetWidth(), m_pWindow->GetHeight());
 }
 
 Application::~Application()
 {
+	delete m_pRenderer;
 }
-
-#ifdef RENDERER_DX12
-#include "../../KebabD3D12/Public/Renderer.h"
-#elif defined(RENDERER_OGL)
-#include "../../KebabOGL/Public/Renderer.h"
-#endif
 
 U32 Application::Run()
 {
-#ifdef RENDERER_DX12
-	Renderer renderer(m_pWindow->GetHandle(), m_pWindow->GetWidth(), m_pWindow->GetHeight());
-#elif defined(RENDERER_OGL)
-	Renderer renderer(m_pWindow->GetHandle(), m_pWindow->GetHeight(), m_pWindow->GetHeight());
-#endif
-	
 	m_timer.Reset();
 
 	while (!m_pWindow->ShouldClose())
@@ -39,7 +30,7 @@ U32 Application::Run()
 
 		g_eventManager.DispatchEvents();
 
-		renderer.Render();
+		m_pRenderer->Render();
 	}
 
 	return 0;

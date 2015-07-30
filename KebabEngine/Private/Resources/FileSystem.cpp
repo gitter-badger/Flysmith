@@ -7,7 +7,7 @@ struct FileSystem::Impl
 {
 	Impl();
 
-	const wchar_t* m_exePath;
+	std::wstring m_exePath;
 };
 std::unique_ptr<FileSystem::Impl> FileSystem::s_pImpl = nullptr;
 
@@ -21,7 +21,7 @@ FileSystem::FileSystem()
 
 const wchar_t* FileSystem::GetExePath() const
 {
-	return s_pImpl->m_exePath;
+	return s_pImpl->m_exePath.c_str();
 }
 
 FileSystem::Impl::Impl()

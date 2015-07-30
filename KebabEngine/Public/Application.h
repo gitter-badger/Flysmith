@@ -2,6 +2,12 @@
 #include "PublicDef.h"
 #include "Timer.h"
 
+#ifdef RENDERER_DX12
+#include "../../KebabD3D12/Public/Renderer.h"
+#elif defined(RENDERER_OGL)
+#include "../../KebabOGL/Public/Renderer.h"
+#endif
+
 
 namespace cuc
 {
@@ -14,6 +20,9 @@ namespace cuc
 		virtual ~Application();
 
 		virtual U32 Run();
+
+	protected:
+		Renderer* m_pRenderer;
 
 	private:
 		Timer m_timer;

@@ -181,6 +181,7 @@
     </FxCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Private\Mesh.cpp" />
     <ClCompile Include="Private\Renderer.cpp" />
     <ClCompile Include="Private\Resources\DescriptorHeap.cpp" />
     <ClCompile Include="Private\DXGI\DXGIAdapter.cpp" />
@@ -203,6 +204,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Public\Mesh.h" />
     <ClInclude Include="Public\PublicDef.h" />
     <ClInclude Include="Public\Renderer.h" />
     <ClInclude Include="Private\Resources\DescriptorHeap.h" />

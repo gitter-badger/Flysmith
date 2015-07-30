@@ -9,3 +9,9 @@
 #include <map>
 #include <vector>
 #include <cassert>
+#include <fstream>
+#include <cstdio>
+
+
+// TODO: Replace with api neutral math wrapper
+#include <DirectXMath.h>

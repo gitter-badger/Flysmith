@@ -15,8 +15,7 @@ class AssetLocator
 public:
 	AssetLocator();
 	const std::wstring& GetAssetDirectory(const AssetDirectory, bool bTrailingBackslash = true) const;
-	const std::wstring& GetAssetPath(const AssetDirectory, const wchar_t* filename) const;
-	const std::wstring& GetAssetPath(const AssetDirectory, const std::wstring& filename) const;
+	const bool GetAssetPath(const AssetDirectory, const std::wstring& filename, std::wstring* outPath) const;
 
 private:
 	struct Impl;

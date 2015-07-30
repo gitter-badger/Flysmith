@@ -29,18 +29,10 @@ const std::wstring& AssetLocator::GetAssetDirectory(const AssetDirectory assetTy
 	return s_pImpl->assetDirectories[assetType];
 }
 
-const std::wstring& AssetLocator::GetAssetPath(const AssetDirectory assetType, const wchar_t* filename) const
+const bool AssetLocator::GetAssetPath(const AssetDirectory assetType, const std::wstring& filename, std::wstring* outPath) const
 {
-	assert(filename != nullptr);
-	return GetAssetPath(assetType, std::wstring(filename));
-}
-
-const std::wstring& AssetLocator::GetAssetPath(const AssetDirectory assetType, const std::wstring& filename) const
-{
-	auto path = GetAssetDirectory(assetType) + filename;
-	assert(cuc::FileSystem::FileExists(path.c_str()));
-	
-	return std::move(path);
+	*outPath = GetAssetDirectory(assetType) + filename;
+	return cuc::FileSystem::FileExists(outPath->c_str());
 }
 
 AssetLocator::Impl::Impl()

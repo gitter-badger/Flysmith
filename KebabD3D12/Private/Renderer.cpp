@@ -25,8 +25,6 @@ using namespace DirectX;
 #pragma comment(lib, "d3dcompiler.lib")
 
 
-struct VERTEX { XMFLOAT3 position; XMFLOAT4 color; };
-
 // ===========================================================================================================
 // Private Renderer Implementation
 // ===========================================================================================================
@@ -116,8 +114,6 @@ Renderer::Impl::Impl(HWND hwnd, U32 windowWidth, U32 windowHeight)
 	CreateCommandQueue();
 	m_swapChain.Init(m_pCommandQueue.Get(), hwnd);
 	CreateCommandAllocator();
-
-	LoadAssets();
 }
 
 Renderer::Impl::~Impl()
@@ -152,6 +148,15 @@ void Renderer::Impl::CreateCommandAllocator()
 	assert(SUCCEEDED(hr));
 }
 
+Mesh tempMesh;
+D3D12_INDEX_BUFFER_VIEW indexBuf;
+
+void Renderer::SubmitMesh(Mesh mesh)
+{	
+	tempMesh = mesh;
+	m_pImpl->LoadAssets();
+}
+
 void Renderer::Impl::LoadAssets()
 {
 	CreateRootSignature();
@@ -160,24 +165,10 @@ void Renderer::Impl::LoadAssets()
 	CreateCommandList();
 	CreateRenderTargetView();
 
-	VERTEX triangleVerts[] =
-	{
-		{ { 0.0f, 0.5f, 0.0f }, { 1.0f, 0.0f, 0.0f, 1.0f } },
-		{ { 0.45f, -0.5, 0.0f }, { 0.0f, 1.0f, 0.0f, 1.0f } },
-		{ { -0.45f, -0.5f, 0.0f }, { 0.0f, 0.0f, 1.0f, 1.0f } }
-	};
-
-	D3D12_HEAP_PROPERTIES heapProperty;
-	heapProperty.Type = D3D12_HEAP_TYPE_UPLOAD;
-	heapProperty.CPUPageProperty = D3D12_CPU_PAGE_PROPERTY_UNKNOWN;
-	heapProperty.MemoryPoolPreference = D3D12_MEMORY_POOL_UNKNOWN;
-	heapProperty.CreationNodeMask = 0;
-	heapProperty.VisibleNodeMask = 0;
-
 	D3D12_RESOURCE_DESC descResource;
 	descResource.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
 	descResource.Alignment = 0;
-	descResource.Width = 3 * sizeof(VERTEX);
+	descResource.Width = tempMesh.verts.size() * sizeof(Vertex);
 	descResource.Height = 1;
 	descResource.DepthOrArraySize = 1;
 	descResource.MipLevels = 1;
@@ -188,11 +179,11 @@ void Renderer::Impl::LoadAssets()
 	descResource.Flags = D3D12_RESOURCE_FLAG_NONE;
 
 	m_uploadHeap.Init(m_pDevice.Get(), 1);
-	m_uploadHeap.Alloc(&m_pBufVerts, descResource, triangleVerts, sizeof(triangleVerts));
+	m_uploadHeap.Alloc(&m_pBufVerts, descResource, &tempMesh.verts[0], tempMesh.verts.size() * sizeof(Vertex));
 
 	m_descViewBufVert.BufferLocation = m_pBufVerts->GetGPUVirtualAddress();
-	m_descViewBufVert.StrideInBytes = sizeof(VERTEX);
-	m_descViewBufVert.SizeInBytes = sizeof(triangleVerts);
+	m_descViewBufVert.StrideInBytes = sizeof(Vertex);
+	m_descViewBufVert.SizeInBytes = tempMesh.verts.size() * sizeof(Vertex);
 
 	m_pDevice->CreateFence(0, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(m_pFence.GetAddressOf()));
 	m_currentFence = 1;
@@ -225,7 +216,9 @@ void Renderer::Impl::CreatePipelineStateObject()
 	auto VS = ShaderProgram::GetCompiledShader(ShaderType::VERTEX_SHADER, L"D:\\Flysmith\\KebabD3D12\\Private\\Shaders\\TestVS.hlsl");
 	auto PS = ShaderProgram::GetCompiledShader(ShaderType::PIXEL_SHADER, L"D:\\Flysmith\\KebabD3D12\\Private\\Shaders\\TestPS.hlsl");
 
-	m_pso.Init(m_pDevice.Get(), layout, 2, m_pRootSignature.Get(), nullptr, nullptr, &VS, &PS);
+	RasterizerStateConfig rastState(D3D12_FILL_MODE::D3D12_FILL_MODE_WIREFRAME);
+	
+	m_pso.Init(m_pDevice.Get(), layout, 2, m_pRootSignature.Get(), nullptr, &rastState, &VS, &PS);
 }
 
 void Renderer::Impl::CreateDescriptorHeap()
@@ -280,6 +273,8 @@ void Renderer::Impl::PopulateCommandLists()
 
 	m_pCommandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	m_pCommandList->IASetVertexBuffers(0, 1, &m_descViewBufVert);
+	//m_pCommandList->IASetIndexBuffer(&indexBuf);
+
 	U32 color[] = { 0, 0, 128, 255 };
 	m_pCommandList->SetGraphicsRoot32BitConstants(0, 4, color, 0);
 
@@ -292,8 +287,10 @@ void Renderer::Impl::PopulateCommandLists()
 	float clearColor[] = { 0.93f, 0.5f, 0.93f, 1.0f };
 	m_pCommandList->ClearRenderTargetView(m_renderTargetDescHeap.GetCPUHandle(0), clearColor, 1, &m_scissorRect);
 	m_pCommandList->OMSetRenderTargets(1, &m_renderTargetDescHeap.GetCPUHandle(0), TRUE, nullptr);
-	m_pCommandList->DrawInstanced(3, 1, 0, 0);
 
+	//m_pCommandList->DrawIndexedInstanced(tempMesh.indices.size(), 1, 0, 0, 0);
+	m_pCommandList->DrawInstanced(tempMesh.verts.size(), 1, 0, 0);
+	
 	SetResourceBarrier(
 		m_pCommandList.Get(),
 		m_pRenderTarget.Get(),

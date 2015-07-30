@@ -1,5 +1,6 @@
 #pragma once
 #include "PublicDef.h"
+#include "Mesh.h"
 
 
 namespace cuc
@@ -10,6 +11,8 @@ namespace cuc
 		Renderer(const HWND, const U32 windowWidth, const U32 windowHeight);
 		~Renderer();
 		void Render();
+
+		void SubmitMesh(Mesh);
 
 	private:
 		struct Impl;
