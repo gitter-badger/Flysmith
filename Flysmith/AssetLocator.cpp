@@ -1,18 +1,13 @@
 #include "PCH.h"
 #include "AssetLocator.h"
 #include "FileSystem.h"
-#include <string>
 
 
 struct AssetLocator::Impl
 {
 	Impl();
 
-	std::wstring m_assetsPath;
-	std::wstring m_shadersPath;
-	std::wstring m_fontsPath;
-	std::wstring m_airfoilsPath;
-
+	std::map<AssetDirectory, std::wstring> assetDirectories;
 };
 std::unique_ptr<AssetLocator::Impl> AssetLocator::s_pImpl = nullptr;
 
@@ -24,24 +19,28 @@ AssetLocator::AssetLocator()
 	}
 }
 
-const wchar_t* AssetLocator::GetAssetsPath() const
+const std::wstring& AssetLocator::GetAssetDirectory(const AssetDirectory assetType, bool bTrailingBackslash) const
 {
-	return s_pImpl->m_assetsPath.c_str();
+	if (!bTrailingBackslash)
+	{
+		return std::move(s_pImpl->assetDirectories[assetType].substr(0, s_pImpl->assetDirectories[assetType].size() - 1));
+	}
+
+	return s_pImpl->assetDirectories[assetType];
 }
 
-const wchar_t* AssetLocator::GetShadersPath() const
+const std::wstring& AssetLocator::GetAssetPath(const AssetDirectory assetType, const wchar_t* filename) const
 {
-	return s_pImpl->m_shadersPath.c_str();
+	assert(filename != nullptr);
+	return GetAssetPath(assetType, std::wstring(filename));
 }
 
-const wchar_t* AssetLocator::GetFontsPath() const
+const std::wstring& AssetLocator::GetAssetPath(const AssetDirectory assetType, const std::wstring& filename) const
 {
-	return s_pImpl->m_fontsPath.c_str();
-}
-
-const wchar_t* AssetLocator::GetAirfoilsPath() const
-{
-	return s_pImpl->m_airfoilsPath.c_str();
+	auto path = GetAssetDirectory(assetType) + filename;
+	assert(cuc::FileSystem::FileExists(path.c_str()));
+	
+	return std::move(path);
 }
 
 AssetLocator::Impl::Impl()
@@ -51,14 +50,14 @@ AssetLocator::Impl::Impl()
 
 	// For now, place all assets in a single folder in the solution directory instead of making copies for each build configuration.
 	// Configuration folder
-	fs.RemoveLastNameFromPath(&projectRootPath);
+	cuc::FileSystem::RemoveLastNameFromPath(&projectRootPath, true);
 	// Bin folder
-	fs.RemoveLastNameFromPath(&projectRootPath);
+	cuc::FileSystem::RemoveLastNameFromPath(&projectRootPath, true);
 	// Solution folder
-	fs.RemoveLastNameFromPath(&projectRootPath);
+	cuc::FileSystem::RemoveLastNameFromPath(&projectRootPath, true);
 
-	m_assetsPath = projectRootPath + L"Assets\\";
-	m_shadersPath = m_assetsPath + L"Shaders\\";
-	m_fontsPath = m_assetsPath + L"Fonts\\";
-	m_airfoilsPath = m_assetsPath + L"Airfoils\\";
+	assetDirectories[AssetDirectory::ROOT] = projectRootPath + L"Assets\\";
+	assetDirectories[AssetDirectory::SHADERS] = assetDirectories[AssetDirectory::ROOT] + L"Shaders\\";
+	assetDirectories[AssetDirectory::FONTS] = assetDirectories[AssetDirectory::ROOT] + L"Fonts\\";
+	assetDirectories[AssetDirectory::AIRFOILS] = assetDirectories[AssetDirectory::ROOT] + L"Airfoils\\";
 }

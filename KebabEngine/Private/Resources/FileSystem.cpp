@@ -47,3 +47,9 @@ void FileSystem::RemoveLastNameFromPath(std::wstring* path, bool bLeaveTrailingB
 		*path = bLeaveTrailingBackslash ? path->substr(0, backslashPos + 1) 
 									    : path->substr(0, backslashPos);
 }
+
+bool FileSystem::FileExists(const wchar_t* path)
+{
+	DWORD dwAttrib = GetFileAttributes(path);
+	return (dwAttrib != INVALID_FILE_ATTRIBUTES && !(dwAttrib & FILE_ATTRIBUTE_DIRECTORY));
+}

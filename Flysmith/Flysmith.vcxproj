@@ -151,6 +151,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Airfoil.cpp" />
     <ClCompile Include="AssetLocator.cpp" />
     <ClCompile Include="FlysmithGame.cpp" />
     <ClCompile Include="main.cpp" />
@@ -162,6 +163,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Airfoil.h" />
     <ClInclude Include="AssetLocator.h" />
     <ClInclude Include="FlysmithGame.h" />
     <ClInclude Include="PCH.h" />

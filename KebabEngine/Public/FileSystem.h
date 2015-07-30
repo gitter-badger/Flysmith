@@ -10,7 +10,9 @@ namespace cuc
 	public:
 		FileSystem();
 		const wchar_t* GetExePath() const;
-		void RemoveLastNameFromPath(std::wstring* path, bool bLeaveTrailingBackslash = true);
+		
+		static void RemoveLastNameFromPath(std::wstring* path, bool bLeaveTrailingBackslash);
+		static bool FileExists(const wchar_t* path);
 
 	private:
 		struct Impl;
