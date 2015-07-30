@@ -26,5 +26,8 @@
     <ClInclude Include="FlysmithGame.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Airfoil.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

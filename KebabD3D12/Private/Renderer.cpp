@@ -1,26 +1,31 @@
 #include "PCH.h"
 #include "Renderer.h"
-#include "SwapChainConfig.h"
-#include "ShaderProgram.h"
+#include "HardwareCaps.h"
+
 #include "StateObjects\RasterizerStateConfig.h"
 #include "StateObjects\BlendStateConfig.h"
-#include "RootSignatureFactory.h"
-#include "HardwareCaps.h"
-#include "DescriptorHeap.h"
-#include "ScissorRectangle.h"
-#include "Viewport.h"
-#include "SwapChain.h"
-#include "PipelineStateObject.h"
-#include "UploadHeap.h"
+
+#include "Resources\RootSignatureFactory.h"
+#include "Resources\DescriptorHeap.h"
+#include "Resources\UploadHeap.h"
+
+#include "Pipeline\PipelineStateObject.h"
+#include "Pipeline\ScissorRectangle.h"
+#include "Pipeline\SwapChainConfig.h"
+#include "Pipeline\ShaderProgram.h"
+#include "Pipeline\SwapChain.h"
+#include "Pipeline\Viewport.h"
+
 using namespace cuc;
 using namespace Microsoft::WRL;
+using namespace DirectX;
 
 #pragma comment(lib, "D3d12.lib")
 #pragma comment(lib, "DXGI.lib")
 #pragma comment(lib, "d3dcompiler.lib")
 
 
-struct VERTEX { FLOAT X, Y, Z; FLOAT Color[4]; };
+struct VERTEX { XMFLOAT3 position; XMFLOAT4 color; };
 
 // ===========================================================================================================
 // Private Renderer Implementation
@@ -157,9 +162,9 @@ void Renderer::Impl::LoadAssets()
 
 	VERTEX triangleVerts[] =
 	{
-		{ 0.0f, 0.5f, 0.0f,{ 1.0f, 0.0f, 0.0f, 1.0f } },
-		{ 0.45f, -0.5, 0.0f,{ 0.0f, 1.0f, 0.0f, 1.0f } },
-		{ -0.45f, -0.5f, 0.0f,{ 0.0f, 0.0f, 1.0f, 1.0f } }
+		{ { 0.0f, 0.5f, 0.0f }, { 1.0f, 0.0f, 0.0f, 1.0f } },
+		{ { 0.45f, -0.5, 0.0f }, { 0.0f, 1.0f, 0.0f, 1.0f } },
+		{ { -0.45f, -0.5f, 0.0f }, { 0.0f, 0.0f, 1.0f, 1.0f } }
 	};
 
 	D3D12_HEAP_PROPERTIES heapProperty;
