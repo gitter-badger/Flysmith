@@ -1,10 +1,10 @@
 #pragma once
-#include "PCH.h"
+#include "PublicDef.h"
 
 
 namespace cuc
 {
-	struct EventFactory
+	struct KEBAB_API EventFactory
 	{
 		EventFactory() = delete;
 		EventFactory(const EventFactory&) = delete;

@@ -89,7 +89,7 @@
       <WarningLevel>Level4</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>X86;WIN32;_DEBUG;_WINDOWS;_USRDLL;KEBABENGINE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)Dependencies;$(ProjectDir)Dependencies\FreeType</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Public\;$(ProjectDir)Private\Dependencies\;$(ProjectDir)Private\Dependencies\FreeType\;$(ProjectDir)Private\;$(ProjectDir)PCH\</AdditionalIncludeDirectories>
       <PreprocessToFile>false</PreprocessToFile>
       <PrecompiledHeaderFile>PCH.h</PrecompiledHeaderFile>
     </ClCompile>
@@ -113,7 +113,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>X86;WIN32;NDEBUG;_WINDOWS;_USRDLL;KEBABENGINE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)Dependencies;$(ProjectDir)Dependencies\FreeType</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Public\;$(ProjectDir)Private\Dependencies\;$(ProjectDir)Private\Dependencies\FreeType\;$(ProjectDir)Private\;$(ProjectDir)PCH\</AdditionalIncludeDirectories>
       <PrecompiledHeaderFile>PCH.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
@@ -132,7 +132,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)Dependencies;$(ProjectDir)Dependencies\FreeType</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Public\;$(ProjectDir)Private\Dependencies\;$(ProjectDir)Private\Dependencies\FreeType\;$(ProjectDir)Private\;$(ProjectDir)PCH\</AdditionalIncludeDirectories>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -161,7 +161,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)Dependencies;$(ProjectDir)Dependencies\FreeType</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Public\;$(ProjectDir)Private\Dependencies\;$(ProjectDir)Private\Dependencies\FreeType\;$(ProjectDir)Private\;$(ProjectDir)PCH\</AdditionalIncludeDirectories>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -190,44 +190,45 @@
     </FxCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Application\Application.cpp" />
-    <ClCompile Include="Events\WindowEvents.cpp" />
-    <ClCompile Include="Application\Timer.cpp" />
-    <ClCompile Include="Application\Window.cpp" />
-    <ClCompile Include="PCH.cpp">
+    <ClCompile Include="Private\Application\Application.cpp" />
+    <ClCompile Include="Private\Events\WindowEvents.cpp" />
+    <ClCompile Include="Private\Application\Timer.cpp" />
+    <ClCompile Include="Private\Application\Window.cpp" />
+    <ClCompile Include="PCH\PCH.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="Resources\FileSystem.cpp" />
-    <ClCompile Include="Resources\Font.cpp" />
-    <ClCompile Include="Utils\dllmain.cpp" />
-    <ClCompile Include="Events\Event.cpp" />
-    <ClCompile Include="Events\EventManager.cpp" />
-    <ClCompile Include="Events\EventListener.cpp" />
-    <ClCompile Include="Events\InputEvents.cpp" />
-    <ClCompile Include="Resources\FileReader.cpp" />
-    <ClCompile Include="Utils\Variant.cpp" />
+    <ClCompile Include="Private\Resources\FileSystem.cpp" />
+    <ClCompile Include="Private\Resources\Font.cpp" />
+    <ClCompile Include="Private\Utils\dllmain.cpp" />
+    <ClCompile Include="Private\Events\Event.cpp" />
+    <ClCompile Include="Private\Events\EventManager.cpp" />
+    <ClCompile Include="Private\Events\EventListener.cpp" />
+    <ClCompile Include="Private\Events\InputEvents.cpp" />
+    <ClCompile Include="Private\Resources\FileReader.cpp" />
+    <ClCompile Include="Private\Utils\Variant.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Application\Application.h" />
-    <ClInclude Include="Events\WindowEvents.h" />
-    <ClInclude Include="Application\Timer.h" />
-    <ClInclude Include="Application\Window.h" />
+    <ClInclude Include="Public\Application.h" />
+    <ClInclude Include="Public\WindowEvents.h" />
+    <ClInclude Include="Public\Timer.h" />
+    <ClInclude Include="Private\Application\Window.h" />
     <ClInclude Include="Events\Delegate.h" />
-    <ClInclude Include="Events\Event.h" />
-    <ClInclude Include="Events\EventFactory.h" />
-    <ClInclude Include="Events\EventManager.h" />
-    <ClInclude Include="Events\EventListener.h" />
-    <ClInclude Include="Events\InputEvents.h" />
-    <ClInclude Include="PCH.h" />
-    <ClInclude Include="Resources\FileReader.h" />
-    <ClInclude Include="Resources\FileSystem.h" />
-    <ClInclude Include="Resources\Font.h" />
-    <ClInclude Include="Utils\StringHash.h" />
-    <ClInclude Include="Utils\Types.h" />
-    <ClInclude Include="Utils\Variant.h" />
+    <ClInclude Include="Public\Event.h" />
+    <ClInclude Include="Public\EventFactory.h" />
+    <ClInclude Include="Private\Events\EventManager.h" />
+    <ClInclude Include="Public\EventListener.h" />
+    <ClInclude Include="Public\InputEvents.h" />
+    <ClInclude Include="PCH\PCH.h" />
+    <ClInclude Include="Public\FileReader.h" />
+    <ClInclude Include="Public\FileSystem.h" />
+    <ClInclude Include="Private\Resources\Font.h" />
+    <ClInclude Include="Public\StringHash.h" />
+    <ClInclude Include="Public\Types.h" />
+    <ClInclude Include="Public\Variant.h" />
+    <ClInclude Include="Public\PublicDef.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,9 +1,9 @@
 #include "PCH.h"
 #include "FileSystem.h"
+using namespace cuc;
 
 
-
-struct cuc::FileSystem::Impl
+struct FileSystem::Impl
 {
 	Impl();
 	void RemoveLastNameFromPath(std::string& path, bool bLeaveTrailingBackslash = true);
@@ -13,10 +13,10 @@ struct cuc::FileSystem::Impl
 	std::string m_shadersPath;
 	std::string m_fontsPath;
 };
-std::unique_ptr<cuc::FileSystem::Impl> cuc::FileSystem::s_pImpl = nullptr;
+std::unique_ptr<FileSystem::Impl> FileSystem::s_pImpl = nullptr;
 
 
-cuc::FileSystem::FileSystem()
+FileSystem::FileSystem()
 {
 	if (s_pImpl == nullptr)
 	{
@@ -24,27 +24,27 @@ cuc::FileSystem::FileSystem()
 	}
 }
 
-const char* cuc::FileSystem::GetExePath()
+const char* FileSystem::GetExePath()
 {
 	return s_pImpl->m_exePath.c_str();
 }
 
-const char* cuc::FileSystem::GetAssetsPath()
+const char* FileSystem::GetAssetsPath()
 {
 	return s_pImpl->m_assetsPath.c_str();
 }
 
-const char* cuc::FileSystem::GetShadersPath()
+const char* FileSystem::GetShadersPath()
 {
 	return s_pImpl->m_shadersPath.c_str();
 }
 
-const char* cuc::FileSystem::GetFontsPath()
+const char* FileSystem::GetFontsPath()
 {
 	return s_pImpl->m_fontsPath.c_str();
 }
 
-cuc::FileSystem::Impl::Impl()
+FileSystem::Impl::Impl()
 {
 	char cPath[MAX_PATH];
 	GetModuleFileNameA(NULL, cPath, MAX_PATH);
@@ -63,7 +63,7 @@ cuc::FileSystem::Impl::Impl()
 	m_fontsPath   = m_assetsPath + "Fonts\\";
 }
 
-void cuc::FileSystem::Impl::RemoveLastNameFromPath(std::string& path, bool bLeaveTrailingBackslash)
+void FileSystem::Impl::RemoveLastNameFromPath(std::string& path, bool bLeaveTrailingBackslash)
 {
 	size_t searchStartPos = path.size() - 1;
 

@@ -1,4 +1,5 @@
 #include "PCH.h"
+#include "PublicDef.h"
 
 
 #ifdef RENDERER_OGL

@@ -21,12 +21,15 @@
     <ClCompile Include="FlysmithGame.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="PCH.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FlysmithGame.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Airfoil.h">
+    <ClInclude Include="PCH.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

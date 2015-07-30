@@ -1,5 +1,5 @@
 #pragma once
-#include "PCH.h"
+#include "PublicDef.h"
 
 // Leave this in the global namespace to allow usage without "using namespace cuc"
 // i.e. allow "MyString"_HASH 

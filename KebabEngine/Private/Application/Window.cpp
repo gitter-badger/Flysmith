@@ -1,7 +1,7 @@
 #include "PCH.h"
 #include "Window.h"
-#include "Events\InputEvents.h"
-#include "Events\WindowEvents.h"
+#include "InputEvents.h"
+#include "WindowEvents.h"
 #include "Events\EventManager.h"
 using namespace cuc;
 

@@ -1,5 +1,6 @@
 #pragma once
-#include "PCH.h"
+#include "PublicDef.h"
+#include <memory>
 
 
 namespace cuc
