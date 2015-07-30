@@ -19,7 +19,7 @@ Application::~Application()
 }
 
 #ifdef RENDERER_DX12
-#include "../KebabD3D12/Renderer.h"
+#include "../KebabD3D12/Public/Renderer.h"
 #elif defined(RENDERER_OGL)
 #include "../KebabOGL/GLRenderer.h"
 #endif

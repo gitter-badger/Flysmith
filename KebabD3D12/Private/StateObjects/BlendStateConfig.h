@@ -4,7 +4,7 @@
 
 namespace cuc
 {
-	struct KEBAB12_API BlendStateConfig : public D3D12_BLEND_DESC
+	struct BlendStateConfig : public D3D12_BLEND_DESC
 	{
 		BlendStateConfig();
 	};

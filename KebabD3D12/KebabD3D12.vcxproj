@@ -22,7 +22,8 @@
     <ProjectGuid>{2D2DDCB5-46CB-47ED-8BC0-913F90BDEA7F}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>KebabD3D12</RootNamespace>
-    <TargetPlatformVersion>10.0.10069.0</TargetPlatformVersion>
+    <TargetPlatformVersion>10.0.10240.0</TargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.10240.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -96,7 +97,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;KEBABD3D12_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeaderFile>PCH.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(ProjectDir)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Private\;$(ProjectDir)Public\;$(ProjectDir)PCH\</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -117,7 +118,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;KEBABD3D12_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeaderFile>PCH.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(ProjectDir)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Private\;$(ProjectDir)Public\;$(ProjectDir)PCH\</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -140,7 +141,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;KEBABD3D12_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeaderFile>PCH.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(ProjectDir)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Private\;$(ProjectDir)Public\;$(ProjectDir)PCH\</AdditionalIncludeDirectories>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <Link>
@@ -164,7 +165,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;KEBABD3D12_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeaderFile>PCH.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(ProjectDir)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Private\;$(ProjectDir)Public\;$(ProjectDir)PCH\</AdditionalIncludeDirectories>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <Link>
@@ -180,21 +181,21 @@
     </FxCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Renderer.cpp" />
-    <ClCompile Include="DescriptorHeap.cpp" />
-    <ClCompile Include="DXGI\DXGIAdapter.cpp" />
-    <ClCompile Include="HardwareCaps.cpp" />
-    <ClCompile Include="PipelineStateObject.cpp" />
-    <ClCompile Include="RootSignatureFactory.cpp" />
-    <ClCompile Include="ScissorRectangle.cpp" />
-    <ClCompile Include="ShaderProgram.cpp" />
-    <ClCompile Include="StateObjects\BlendStateConfig.cpp" />
-    <ClCompile Include="StateObjects\RasterizerStateConfig.cpp" />
-    <ClCompile Include="SwapChain.cpp" />
-    <ClCompile Include="SwapChainConfig.cpp" />
-    <ClCompile Include="UploadHeap.cpp" />
-    <ClCompile Include="Viewport.cpp" />
-    <ClCompile Include="PCH.cpp">
+    <ClCompile Include="Private\Renderer.cpp" />
+    <ClCompile Include="Private\Resources\DescriptorHeap.cpp" />
+    <ClCompile Include="Private\DXGI\DXGIAdapter.cpp" />
+    <ClCompile Include="Private\HardwareCaps.cpp" />
+    <ClCompile Include="Private\Pipeline\PipelineStateObject.cpp" />
+    <ClCompile Include="Private\Resources\RootSignatureFactory.cpp" />
+    <ClCompile Include="Private\Pipeline\ScissorRectangle.cpp" />
+    <ClCompile Include="Private\Pipeline\ShaderProgram.cpp" />
+    <ClCompile Include="Private\StateObjects\BlendStateConfig.cpp" />
+    <ClCompile Include="Private\StateObjects\RasterizerStateConfig.cpp" />
+    <ClCompile Include="Private\Pipeline\SwapChain.cpp" />
+    <ClCompile Include="Private\Pipeline\SwapChainConfig.cpp" />
+    <ClCompile Include="Private\Resources\UploadHeap.cpp" />
+    <ClCompile Include="Private\Pipeline\Viewport.cpp" />
+    <ClCompile Include="PCH\PCH.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -202,28 +203,29 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Renderer.h" />
-    <ClInclude Include="DescriptorHeap.h" />
-    <ClInclude Include="DXGI\DXGIAdapter.h" />
-    <ClInclude Include="HardwareCaps.h" />
-    <ClInclude Include="PipelineStateObject.h" />
-    <ClInclude Include="RootSignatureFactory.h" />
-    <ClInclude Include="ScissorRectangle.h" />
-    <ClInclude Include="ShaderProgram.h" />
-    <ClInclude Include="StateObjects\BlendStateConfig.h" />
-    <ClInclude Include="StateObjects\RasterizerStateConfig.h" />
-    <ClInclude Include="SwapChain.h" />
-    <ClInclude Include="SwapChainConfig.h" />
-    <ClInclude Include="UploadHeap.h" />
-    <ClInclude Include="Viewport.h" />
-    <ClInclude Include="PCH.h" />
-    <ClInclude Include="Types.h" />
+    <ClInclude Include="Public\ExportDef.h" />
+    <ClInclude Include="Public\Renderer.h" />
+    <ClInclude Include="Private\Resources\DescriptorHeap.h" />
+    <ClInclude Include="Private\DXGI\DXGIAdapter.h" />
+    <ClInclude Include="Private\HardwareCaps.h" />
+    <ClInclude Include="Private\Pipeline\PipelineStateObject.h" />
+    <ClInclude Include="Private\Resources\RootSignatureFactory.h" />
+    <ClInclude Include="Private\Pipeline\ScissorRectangle.h" />
+    <ClInclude Include="Private\Pipeline\ShaderProgram.h" />
+    <ClInclude Include="Private\StateObjects\BlendStateConfig.h" />
+    <ClInclude Include="Private\StateObjects\RasterizerStateConfig.h" />
+    <ClInclude Include="Private\Pipeline\SwapChain.h" />
+    <ClInclude Include="Private\Pipeline\SwapChainConfig.h" />
+    <ClInclude Include="Private\Resources\UploadHeap.h" />
+    <ClInclude Include="Private\Pipeline\Viewport.h" />
+    <ClInclude Include="PCH\PCH.h" />
+    <ClInclude Include="Private\Types.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Shaders\TestHeader.hlsli" />
+    <None Include="Private\Shaders\TestHeader.hlsli" />
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="Shaders\TestPS.hlsl">
+    <FxCompile Include="Private\Shaders\TestPS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">5.0</ShaderModel>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
@@ -233,7 +235,7 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
-    <FxCompile Include="Shaders\TestVS.hlsl">
+    <FxCompile Include="Private\Shaders\TestVS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">5.0</ShaderModel>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>

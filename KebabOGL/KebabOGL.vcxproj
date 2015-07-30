@@ -22,7 +22,8 @@
     <ProjectGuid>{DCE614C9-8512-405F-8035-D56F3257AD6C}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>KebabOGL</RootNamespace>
-    <TargetPlatformVersion>10.0.10069.0</TargetPlatformVersion>
+    <TargetPlatformVersion>10.0.10240.0</TargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.10240.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
