@@ -4,10 +4,10 @@
 
 namespace cuc
 {
-	class KEBAB12_API Renderer
+	class KEBABOGL_API Renderer
 	{
 	public:
-		Renderer(const HWND, const U32 windowWidth, const U32 windowHeight);
+		Renderer(const HWND windowHandle, const U32 windowWidth, const U32 windowHeight);
 		~Renderer();
 		void Render();
 

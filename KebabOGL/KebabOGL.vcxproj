@@ -97,7 +97,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;KEBABOGL_EXPORTS;_DEBUG;_WINDOWS;_USRDLL;KEBABOGL_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeaderFile>PCH.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Public\;$(ProjectDir)Private\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -112,7 +112,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;KEBABOGL_EXPORTS;_DEBUG;_WINDOWS;_USRDLL;KEBABOGL_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeaderFile>PCH.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Public\;$(ProjectDir)Private\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -129,7 +129,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;KEBABOGL_EXPORTS;NDEBUG;_WINDOWS;_USRDLL;KEBABOGL_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeaderFile>PCH.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Public\;$(ProjectDir)Private\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -148,7 +148,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;KEBABOGL_EXPORTS;NDEBUG;_WINDOWS;_USRDLL;KEBABOGL_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeaderFile>PCH.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Public\;$(ProjectDir)Private\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -159,21 +159,22 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Dependencies\GLCore.h" />
-    <ClInclude Include="Dependencies\OpenGL\GLCore_4_5.hpp" />
-    <ClInclude Include="Dependencies\OpenGL\WGL_4_5.hpp" />
-    <ClInclude Include="Dependencies\WGL.h" />
-    <ClInclude Include="GLRenderer.h" />
-    <ClInclude Include="GLContext.h" />
-    <ClInclude Include="PCH.h" />
-    <ClInclude Include="Types.h" />
+    <ClInclude Include="Private\Dependencies\GLCore.h" />
+    <ClInclude Include="Private\Dependencies\OpenGL\GLCore_4_5.hpp" />
+    <ClInclude Include="Private\Dependencies\OpenGL\WGL_4_5.hpp" />
+    <ClInclude Include="Private\Dependencies\WGL.h" />
+    <ClInclude Include="Public\Renderer.h" />
+    <ClInclude Include="Private\GLContext.h" />
+    <ClInclude Include="Private\PCH.h" />
+    <ClInclude Include="Private\Types.h" />
+    <ClInclude Include="Public\PublicDef.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Dependencies\OpenGL\GLCore_4_5.cpp" />
-    <ClCompile Include="Dependencies\OpenGL\WGL_4_5.cpp" />
-    <ClCompile Include="GLRenderer.cpp" />
-    <ClCompile Include="GLContext.cpp" />
-    <ClCompile Include="PCH.cpp">
+    <ClCompile Include="Private\Dependencies\OpenGL\GLCore_4_5.cpp" />
+    <ClCompile Include="Private\Dependencies\OpenGL\WGL_4_5.cpp" />
+    <ClCompile Include="Private\Renderer.cpp" />
+    <ClCompile Include="Private\GLContext.cpp" />
+    <ClCompile Include="Private\PCH.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

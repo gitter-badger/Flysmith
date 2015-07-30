@@ -21,7 +21,7 @@ Application::~Application()
 #ifdef RENDERER_DX12
 #include "../../KebabD3D12/Public/Renderer.h"
 #elif defined(RENDERER_OGL)
-#include "../KebabOGL/GLRenderer.h"
+#include "../../KebabOGL/Public/Renderer.h"
 #endif
 
 U32 Application::Run()
@@ -29,7 +29,7 @@ U32 Application::Run()
 #ifdef RENDERER_DX12
 	Renderer renderer(m_pWindow->GetHandle(), m_pWindow->GetWidth(), m_pWindow->GetHeight());
 #elif defined(RENDERER_OGL)
-	GLRenderer renderer(m_pWindow->GetHandle(), m_pWindow->GetHeight(), m_pWindow->GetHeight());
+	Renderer renderer(m_pWindow->GetHandle(), m_pWindow->GetHeight(), m_pWindow->GetHeight());
 #endif
 	
 	m_timer.Reset();

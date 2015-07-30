@@ -97,7 +97,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;KEBABD3D12_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeaderFile>PCH.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(ProjectDir)Private\;$(ProjectDir)Public\;$(ProjectDir)PCH\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Private\;$(ProjectDir)Public\</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -118,7 +118,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;KEBABD3D12_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeaderFile>PCH.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(ProjectDir)Private\;$(ProjectDir)Public\;$(ProjectDir)PCH\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Private\;$(ProjectDir)Public\</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -141,7 +141,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;KEBABD3D12_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeaderFile>PCH.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(ProjectDir)Private\;$(ProjectDir)Public\;$(ProjectDir)PCH\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Private\;$(ProjectDir)Public\</AdditionalIncludeDirectories>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <Link>
@@ -165,7 +165,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;KEBABD3D12_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeaderFile>PCH.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(ProjectDir)Private\;$(ProjectDir)Public\;$(ProjectDir)PCH\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Private\;$(ProjectDir)Public\</AdditionalIncludeDirectories>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <Link>
@@ -195,7 +195,7 @@
     <ClCompile Include="Private\Pipeline\SwapChainConfig.cpp" />
     <ClCompile Include="Private\Resources\UploadHeap.cpp" />
     <ClCompile Include="Private\Pipeline\Viewport.cpp" />
-    <ClCompile Include="PCH\PCH.cpp">
+    <ClCompile Include="Private\PCH.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -203,7 +203,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Public\ExportDef.h" />
+    <ClInclude Include="Public\PublicDef.h" />
     <ClInclude Include="Public\Renderer.h" />
     <ClInclude Include="Private\Resources\DescriptorHeap.h" />
     <ClInclude Include="Private\DXGI\DXGIAdapter.h" />
@@ -218,8 +218,8 @@
     <ClInclude Include="Private\Pipeline\SwapChainConfig.h" />
     <ClInclude Include="Private\Resources\UploadHeap.h" />
     <ClInclude Include="Private\Pipeline\Viewport.h" />
-    <ClInclude Include="PCH\PCH.h" />
-    <ClInclude Include="Private\Types.h" />
+    <ClInclude Include="Private\PCH.h" />
+    <ClInclude Include="Public\Types.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Private\Shaders\TestHeader.hlsli" />

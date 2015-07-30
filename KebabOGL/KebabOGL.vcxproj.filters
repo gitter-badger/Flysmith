@@ -15,45 +15,48 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="GLRenderer.h">
+    <ClInclude Include="Private\GLContext.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Dependencies\OpenGL\GLCore_4_5.hpp">
+    <ClInclude Include="Private\PCH.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Dependencies\OpenGL\WGL_4_5.hpp">
+    <ClInclude Include="Private\Types.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Dependencies\GLCore.h">
+    <ClInclude Include="Private\Dependencies\OpenGL\GLCore_4_5.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Dependencies\WGL.h">
+    <ClInclude Include="Private\Dependencies\OpenGL\WGL_4_5.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="PCH.h">
+    <ClInclude Include="Private\Dependencies\GLCore.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Types.h">
+    <ClInclude Include="Private\Dependencies\WGL.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GLContext.h">
+    <ClInclude Include="Public\PublicDef.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Public\Renderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="GLRenderer.cpp">
+    <ClCompile Include="Private\GLContext.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Dependencies\OpenGL\GLCore_4_5.cpp">
+    <ClCompile Include="Private\PCH.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Dependencies\OpenGL\WGL_4_5.cpp">
+    <ClCompile Include="Private\Dependencies\OpenGL\GLCore_4_5.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="PCH.cpp">
+    <ClCompile Include="Private\Dependencies\OpenGL\WGL_4_5.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GLContext.cpp">
+    <ClCompile Include="Private\Renderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

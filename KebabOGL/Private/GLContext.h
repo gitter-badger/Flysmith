@@ -1,11 +1,11 @@
 #pragma once
 #include "PCH.h"
-#include <Windows.h>
+#include "PublicDef.h"
 
 
 namespace cuc
 {
-	class KEBABOGL_API GLContext
+	class GLContext
 	{
 	public:
 		GLContext(HWND, U32 width, U32 height);

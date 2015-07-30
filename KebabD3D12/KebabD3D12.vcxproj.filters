@@ -30,9 +30,6 @@
     <ClCompile Include="Private\Renderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="PCH\PCH.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Private\Pipeline\PipelineStateObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -60,6 +57,9 @@
     <ClCompile Include="Private\Pipeline\Viewport.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Private\PCH.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Private\DXGI\DXGIAdapter.h">
@@ -74,16 +74,7 @@
     <ClInclude Include="Private\HardwareCaps.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Private\Types.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Public\Renderer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Public\ExportDef.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="PCH\PCH.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Private\Pipeline\PipelineStateObject.h">
@@ -111,6 +102,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Private\Pipeline\Viewport.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Private\PCH.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Public\PublicDef.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Public\Types.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

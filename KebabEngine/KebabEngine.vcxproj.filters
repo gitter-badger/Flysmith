@@ -15,9 +15,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="PCH\PCH.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Private\Resources\FileReader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -57,12 +54,12 @@
     <ClCompile Include="Private\Application\Window.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Private\PCH.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Events\Delegate.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="PCH\PCH.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Private\Resources\Font.h">
@@ -111,6 +108,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Public\EventFactory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Private\PCH.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
