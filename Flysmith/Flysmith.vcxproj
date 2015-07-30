@@ -86,7 +86,7 @@
       <WarningLevel>Level4</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)KebabEngine\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)KebabEngine\Public\</AdditionalIncludeDirectories>
       <PrecompiledHeaderFile>PCH.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
@@ -103,7 +103,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)KebabEngine\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)KebabEngine\Public\</AdditionalIncludeDirectories>
       <PrecompiledHeaderFile>PCH.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
@@ -117,7 +117,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <WarningLevel>Level4</WarningLevel>
-      <AdditionalIncludeDirectories>$(SolutionDir)KebabEngine\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)KebabEngine\Public\</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <OmitFramePointers>false</OmitFramePointers>
@@ -132,7 +132,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <WarningLevel>Level4</WarningLevel>
-      <AdditionalIncludeDirectories>$(SolutionDir)KebabEngine\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)KebabEngine\Public\</AdditionalIncludeDirectories>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <OmitFramePointers>false</OmitFramePointers>
       <PrecompiledHeader>Use</PrecompiledHeader>
@@ -151,6 +151,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AssetLocator.cpp" />
     <ClCompile Include="FlysmithGame.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="PCH.cpp">
@@ -161,6 +162,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AssetLocator.h" />
     <ClInclude Include="FlysmithGame.h" />
     <ClInclude Include="PCH.h" />
   </ItemGroup>

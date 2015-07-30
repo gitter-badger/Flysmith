@@ -1,6 +1,6 @@
 #pragma once
 #include "PublicDef.h"
-#include <memory>
+#include <string>
 
 
 namespace cuc
@@ -9,10 +9,8 @@ namespace cuc
 	{
 	public:
 		FileSystem();
-		const char* GetExePath();
-		const char* GetAssetsPath();
-		const char* GetShadersPath();
-		const char* GetFontsPath();
+		const wchar_t* GetExePath() const;
+		void RemoveLastNameFromPath(std::wstring* path, bool bLeaveTrailingBackslash = true);
 
 	private:
 		struct Impl;

@@ -6,12 +6,9 @@ using namespace cuc;
 
 
 EventManager cuc::g_eventManager;
-#include "Resources\Font.h"
 Application::Application(HINSTANCE hInstance)
 {
 	m_pWindow = std::make_shared<Window>(hInstance, 800, 600, L"Kebab Engine", false);
-	Font font;
-	font.LoadFromFile("Aller_Rg.ttf");
 }
 
 Application::~Application()

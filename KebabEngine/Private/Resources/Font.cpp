@@ -7,17 +7,12 @@
 
 void cuc::Font::LoadFromFile(const char* path)
 {
-	FileSystem fs;
-	char fullPath[MAX_PATH];
-	strcpy(fullPath, fs.GetFontsPath());
-	strcat(fullPath, path);
-
 	FT_Library library;
 	auto ftError = FT_Init_FreeType(&library);
 	assert(!ftError);
 
 	FT_Face face;
-	ftError = FT_New_Face(library, fullPath, 0, &face);
+	ftError = FT_New_Face(library, path, 0, &face);
 	assert(!ftError);
 
 	ftError = FT_Set_Pixel_Sizes(face, 0, 48);

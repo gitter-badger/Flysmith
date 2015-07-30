@@ -1,8 +1,8 @@
 #include "PCH.h"
 #include "FlysmithGame.h"
-#include "Public\EventListener.h"
-#include "Public\Event.h"
-#include "Public\InputEvents.h"
+#include "EventListener.h"
+#include "Event.h"
+#include "InputEvents.h"
 using namespace cuc;
 
 class Listen : public EventListener

@@ -1,5 +1,5 @@
 #pragma once
-#include "Public\Application.h"
+#include "Application.h"
 
 
 class FlysmithGame : public cuc::Application
