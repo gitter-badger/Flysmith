@@ -16,6 +16,7 @@ namespace cuc
 	public:
 		UploadHeap();
 		~UploadHeap();
+		// @size - the number of resources to be stored in the upload heap
 		void Init(ID3D12Device*, const U64 size, const Type = BUFFERS_AND_SINGLE_SAMPLE_TEX);
 		
 		void Alloc(ID3D12Resource**, const D3D12_RESOURCE_DESC&, void* data, const size_t dataSize, 

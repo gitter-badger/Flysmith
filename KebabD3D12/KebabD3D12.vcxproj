@@ -187,6 +187,7 @@
     <ClCompile Include="Private\DXGI\DXGIAdapter.cpp" />
     <ClCompile Include="Private\HardwareCaps.cpp" />
     <ClCompile Include="Private\Pipeline\PipelineStateObject.cpp" />
+    <ClCompile Include="Private\Resources\ResourceConfig.cpp" />
     <ClCompile Include="Private\Resources\RootSignatureFactory.cpp" />
     <ClCompile Include="Private\Pipeline\ScissorRectangle.cpp" />
     <ClCompile Include="Private\Pipeline\ShaderProgram.cpp" />
@@ -204,6 +205,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Private\Resources\ResourceConfig.h" />
     <ClInclude Include="Public\Mesh.h" />
     <ClInclude Include="Public\PublicDef.h" />
     <ClInclude Include="Public\Renderer.h" />

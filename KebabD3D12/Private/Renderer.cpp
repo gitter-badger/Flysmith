@@ -5,6 +5,7 @@
 #include "StateObjects\RasterizerStateConfig.h"
 #include "StateObjects\BlendStateConfig.h"
 
+#include "Resources\ResourceConfig.h"
 #include "Resources\RootSignatureFactory.h"
 #include "Resources\DescriptorHeap.h"
 #include "Resources\UploadHeap.h"
@@ -165,25 +166,16 @@ void Renderer::Impl::LoadAssets()
 	CreateCommandList();
 	CreateRenderTargetView();
 
-	D3D12_RESOURCE_DESC descResource;
-	descResource.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
-	descResource.Alignment = 0;
-	descResource.Width = tempMesh.verts.size() * sizeof(Vertex);
-	descResource.Height = 1;
-	descResource.DepthOrArraySize = 1;
-	descResource.MipLevels = 1;
-	descResource.Format = DXGI_FORMAT_UNKNOWN;
-	descResource.SampleDesc.Count = 1;
-	descResource.SampleDesc.Quality = 0;
-	descResource.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
-	descResource.Flags = D3D12_RESOURCE_FLAG_NONE;
+	auto vertBufSize = tempMesh.verts.size() * sizeof(Vertex);
+
+	ResourceConfig desc(ResourceType::BUFFER, vertBufSize);
 
 	m_uploadHeap.Init(m_pDevice.Get(), 1);
-	m_uploadHeap.Alloc(&m_pBufVerts, descResource, &tempMesh.verts[0], tempMesh.verts.size() * sizeof(Vertex));
+	m_uploadHeap.Alloc(&m_pBufVerts, desc.Get(), &tempMesh.verts[0], vertBufSize);
 
 	m_descViewBufVert.BufferLocation = m_pBufVerts->GetGPUVirtualAddress();
 	m_descViewBufVert.StrideInBytes = sizeof(Vertex);
-	m_descViewBufVert.SizeInBytes = tempMesh.verts.size() * sizeof(Vertex);
+	m_descViewBufVert.SizeInBytes = vertBufSize;
 
 	m_pDevice->CreateFence(0, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(m_pFence.GetAddressOf()));
 	m_currentFence = 1;
@@ -216,7 +208,7 @@ void Renderer::Impl::CreatePipelineStateObject()
 	auto VS = ShaderProgram::GetCompiledShader(ShaderType::VERTEX_SHADER, L"D:\\Flysmith\\KebabD3D12\\Private\\Shaders\\TestVS.hlsl");
 	auto PS = ShaderProgram::GetCompiledShader(ShaderType::PIXEL_SHADER, L"D:\\Flysmith\\KebabD3D12\\Private\\Shaders\\TestPS.hlsl");
 
-	RasterizerStateConfig rastState(D3D12_FILL_MODE::D3D12_FILL_MODE_WIREFRAME);
+	RasterizerStateConfig rastState(D3D12_FILL_MODE::D3D12_FILL_MODE_SOLID);
 	
 	m_pso.Init(m_pDevice.Get(), layout, 2, m_pRootSignature.Get(), nullptr, &rastState, &VS, &PS);
 }
