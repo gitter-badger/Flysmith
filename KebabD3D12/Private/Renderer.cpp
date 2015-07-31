@@ -49,9 +49,11 @@ struct Renderer::Impl
 
 	// Resources
 	UploadHeap m_uploadHeap;
-	DescriptorHeap m_renderTargetDescHeap;
 	ComPtr<ID3D12Resource> m_pRenderTarget;
 	PipelineStateObject m_pso;
+	
+	DescriptorHeap m_cbDescHeap;
+	DescriptorHeap m_renderTargetDescHeap;
 
 	ID3D12Resource* m_pBufVerts;
 	D3D12_VERTEX_BUFFER_VIEW m_descViewBufVert;
@@ -153,12 +155,22 @@ void Renderer::Impl::CreateCommandAllocator()
 }
 
 Mesh tempMesh;
-D3D12_INDEX_BUFFER_VIEW indexBuf;
+XMMATRIX model;
+XMMATRIX view;
+XMMATRIX projection;
+XMMATRIX mvp;
+#include "Camera.h"
+Camera camera({ 0.0f, 0.0f, 0.0f });
 
 void Renderer::SubmitMesh(Mesh mesh)
 {	
 	tempMesh = mesh;
 	m_pImpl->LoadAssets();
+	
+	projection = camera.GetProjMatrix(0.8f, 800.0f / 600.0f);
+	view = camera.GetViewMatrix();
+	model = XMMatrixIdentity();
+	mvp = projection * view * model;
 }
 
 void Renderer::Impl::LoadAssets()
@@ -226,6 +238,7 @@ void Renderer::Impl::CreatePipelineStateObject()
 void Renderer::Impl::CreateDescriptorHeap()
 {
 	m_renderTargetDescHeap.Init(m_pDevice.Get(), DescHeapType::RENDER_TARGET, 1);
+	m_cbDescHeap.Init(m_pDevice.Get(), DescHeapType::CB_SR_UA, 1, true);
 }
 
 void Renderer::Impl::CreateCommandList()

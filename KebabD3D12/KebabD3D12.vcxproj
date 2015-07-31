@@ -181,6 +181,7 @@
     </FxCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Private\Camera.cpp" />
     <ClCompile Include="Private\Mesh.cpp" />
     <ClCompile Include="Private\Renderer.cpp" />
     <ClCompile Include="Private\Resources\DescriptorHeap.cpp" />
@@ -205,6 +206,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Private\Camera.h" />
     <ClInclude Include="Private\Resources\ResourceConfig.h" />
     <ClInclude Include="Public\Mesh.h" />
     <ClInclude Include="Public\PublicDef.h" />

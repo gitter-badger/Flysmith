@@ -66,6 +66,9 @@
     <ClCompile Include="Private\Resources\ResourceConfig.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Private\Camera.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Private\DXGI\DXGIAdapter.h">
@@ -78,9 +81,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Private\HardwareCaps.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Public\Renderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Private\Pipeline\PipelineStateObject.h">
@@ -113,16 +113,22 @@
     <ClInclude Include="Private\PCH.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Public\PublicDef.h">
+    <ClInclude Include="Private\Resources\ResourceConfig.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Public\Types.h">
+    <ClInclude Include="Private\Camera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Public\Mesh.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Private\Resources\ResourceConfig.h">
+    <ClInclude Include="Public\PublicDef.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Public\Renderer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Public\Types.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
