@@ -30,3 +30,9 @@ ID3D12CommandAllocator* cuc::CommandAllocator::Get()
 	return m_pCommandAllocator;
 }
 
+void cuc::CommandAllocator::Reset()
+{
+	HRESULT hr = m_pCommandAllocator->Reset();
+	assert(SUCCEEDED(hr));
+}
+

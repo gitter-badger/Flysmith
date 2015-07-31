@@ -103,7 +103,7 @@ void Renderer::Render()
 {
 	m_pImpl->PopulateCommandLists();
 	ID3D12CommandList* ppCommandLists[] = { m_pImpl->m_commandList.Get() };
-	m_pImpl->m_commandQueue.Get()->ExecuteCommandLists(_countof(ppCommandLists), ppCommandLists);
+	m_pImpl->m_commandQueue.ExecuteCommandLists(ppCommandLists);
 
 	m_pImpl->SwapBuffers();
 
@@ -185,9 +185,9 @@ void Renderer::Impl::LoadAssets()
 	m_pDevice->CreateFence(0, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(m_pFence.GetAddressOf()));
 	m_currentFence = 1;
 
-	m_commandList.Get()->Close();
+	m_commandList.Close();
 	ID3D12CommandList* ppCommandLists[] = { m_commandList.Get() };
-	m_commandQueue.Get()->ExecuteCommandLists(_countof(ppCommandLists), ppCommandLists);
+	m_commandQueue.ExecuteCommandLists(ppCommandLists);
 
 	m_handleEvent = CreateEventEx(nullptr, FALSE, FALSE, EVENT_ALL_ACCESS);
 
@@ -240,7 +240,7 @@ void Renderer::Impl::SwapBuffers()
 void Renderer::Impl::WaitForGPU()
 {
 	auto fence = m_currentFence;
-	m_commandQueue.Get()->Signal(m_pFence.Get(), fence);
+	m_commandQueue.Signal(m_pFence.Get(), fence);
 	m_currentFence++;
 
 	if (m_pFence->GetCompletedValue() < fence)
@@ -252,23 +252,20 @@ void Renderer::Impl::WaitForGPU()
 
 void Renderer::Impl::PopulateCommandLists()
 {
-	HRESULT hr = m_commandAllocator.Get()->Reset();
-	assert(SUCCEEDED(hr));
+	m_commandAllocator.Reset();
+	
+	m_commandList.Reset(m_commandAllocator.Get(), m_pso.Get()); 
+	
+	m_commandList.SetRootSignature(m_pRootSignature.Get());
+	m_commandList.SetViewports(&m_viewport);
+	m_commandList.SetScissorRects(&m_scissorRect);
 
-	hr = m_commandList.Get()->Reset(m_commandAllocator.Get(),  // The used command allocator cannot be associated with another command list.
-		m_pso.Get()); // Initial pipeline state. Not inherited from previous command list.
-	assert(SUCCEEDED(hr));
-
-	m_commandList.Get()->SetGraphicsRootSignature(m_pRootSignature.Get());
-	m_commandList.Get()->RSSetViewports(1, &m_viewport);
-	m_commandList.Get()->RSSetScissorRects(1, &m_scissorRect);
-
-	m_commandList.Get()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-	m_commandList.Get()->IASetVertexBuffers(0, 1, &m_descViewBufVert);
-	m_commandList.Get()->IASetIndexBuffer(&m_descViewBufIndices);
+	m_commandList.SetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	m_commandList.SetVertexBuffers(&m_descViewBufVert);
+	m_commandList.SetIndexBuffer(&m_descViewBufIndices);
 
 	U32 color[] = { 0, 0, 128, 255 };
-	m_commandList.Get()->SetGraphicsRoot32BitConstants(0, 4, color, 0);
+	m_commandList.SetRoot32BitConstants(0, 4, color, 0);
 
 	SetResourceBarrier(
 		m_commandList.Get(),
@@ -277,18 +274,17 @@ void Renderer::Impl::PopulateCommandLists()
 		D3D12_RESOURCE_STATE_RENDER_TARGET);
 
 	float clearColor[] = { 0.93f, 0.5f, 0.93f, 1.0f };
-	m_commandList.Get()->ClearRenderTargetView(m_renderTargetDescHeap.GetCPUHandle(0), clearColor, 1, &m_scissorRect);
-	m_commandList.Get()->OMSetRenderTargets(1, &m_renderTargetDescHeap.GetCPUHandle(0), TRUE, nullptr);
+	m_commandList.ClearRenderTargetView(m_renderTargetDescHeap.GetCPUHandle(0), clearColor, &m_scissorRect);
+	m_commandList.SetRenderTargets(1, &m_renderTargetDescHeap.GetCPUHandle(0), TRUE, nullptr);
 
-	m_commandList.Get()->DrawIndexedInstanced(tempMesh.indices.size(), 1, 0, 0, 0);
+	m_commandList.DrawIndexed(tempMesh.indices.size());
 	
-	SetResourceBarrier(
-		m_commandList.Get(),
-		m_pRenderTarget.Get(),
-		D3D12_RESOURCE_STATE_RENDER_TARGET,
-		D3D12_RESOURCE_STATE_PRESENT);
+	SetResourceBarrier(m_commandList.Get(),
+				       m_pRenderTarget.Get(),
+					   D3D12_RESOURCE_STATE_RENDER_TARGET,
+					   D3D12_RESOURCE_STATE_PRESENT);
 
-	m_commandList.Get()->Close();
+	m_commandList.Close();
 }
 
 void Renderer::Impl::SetResourceBarrier(ID3D12GraphicsCommandList* commandList, ID3D12Resource* resource, D3D12_RESOURCE_STATES stateBefore, D3D12_RESOURCE_STATES stateAfter)

@@ -36,3 +36,16 @@ ID3D12CommandQueue* cuc::CommandQueue::Get()
 	assert(m_pCommandQueue != nullptr);
 	return m_pCommandQueue;
 }
+
+void cuc::CommandQueue::ExecuteCommandLists(ID3D12CommandList *const *ppLists, U32 numLists)
+{
+	m_pCommandQueue->ExecuteCommandLists(numLists, ppLists);
+}
+
+void cuc::CommandQueue::Signal(ID3D12Fence* pFence, U64 value)
+{
+	assert(pFence != nullptr);
+	
+	HRESULT hr = m_pCommandQueue->Signal(pFence, value);
+	assert(SUCCEEDED(hr));
+}

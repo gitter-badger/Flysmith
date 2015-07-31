@@ -15,6 +15,8 @@ namespace cuc
 		void Init(ID3D12Device*, CommandListType = DIRECT);
 		ID3D12CommandAllocator* Get();
 
+		void Reset();
+
 	private:
 		ID3D12CommandAllocator* m_pCommandAllocator;
 	};
