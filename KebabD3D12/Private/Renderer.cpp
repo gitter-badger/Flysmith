@@ -14,9 +14,12 @@
 #include "Pipeline\ScissorRectangle.h"
 #include "Pipeline\SwapChainConfig.h"
 #include "Pipeline\ShaderProgram.h"
-#include "Pipeline\CommandQueue.h"
 #include "Pipeline\SwapChain.h"
 #include "Pipeline\Viewport.h"
+
+#include "Pipeline\CommandAllocator.h"
+#include "Pipeline\CommandQueue.h"
+#include "Pipeline\CommandList.h"
 
 using namespace cuc;
 using namespace Microsoft::WRL;
@@ -44,9 +47,9 @@ struct Renderer::Impl
 	
 	// Pipeline
 	ComPtr<ID3D12RootSignature> m_pRootSignature;
-	CommandQueue m_commandQueue;
-	ComPtr<ID3D12GraphicsCommandList> m_pCommandList;
-	ComPtr<ID3D12CommandAllocator> m_pCommandAllocator;
+	CommandList      m_commandList;
+	CommandQueue     m_commandQueue;
+	CommandAllocator m_commandAllocator;
 
 	// Resources
 	UploadHeap m_uploadHeap;
@@ -72,12 +75,10 @@ struct Renderer::Impl
 	Impl(HWND hwnd, U32 windowWidth, U32 windowHeight);
 	~Impl();
 	void CreateDevice();
-	void CreateCommandAllocator();
 	void LoadAssets();
 	void CreateRootSignature();
 	void CreatePipelineStateObject();
 	void CreateDescriptorHeap();
-	void CreateCommandList();
 	void CreateRenderTargetView();
 	void SwapBuffers();
 	void WaitForGPU();
@@ -101,7 +102,7 @@ Renderer::~Renderer()
 void Renderer::Render()
 {
 	m_pImpl->PopulateCommandLists();
-	ID3D12CommandList* ppCommandLists[] = { m_pImpl->m_pCommandList.Get() };
+	ID3D12CommandList* ppCommandLists[] = { m_pImpl->m_commandList.Get() };
 	m_pImpl->m_commandQueue.Get()->ExecuteCommandLists(_countof(ppCommandLists), ppCommandLists);
 
 	m_pImpl->SwapBuffers();
@@ -117,9 +118,9 @@ Renderer::Impl::Impl(HWND hwnd, U32 windowWidth, U32 windowHeight)
 	, m_scissorRect(windowWidth, windowHeight)
 {
 	CreateDevice();
-	m_commandQueue.Init(m_pDevice.Get(), CommandListType::DIRECT, CommandQueuePriority::NORMAL);
+	m_commandQueue.Init(m_pDevice.Get());
 	m_swapChain.Init(m_commandQueue.Get(), hwnd);
-	CreateCommandAllocator();
+	m_commandAllocator.Init(m_pDevice.Get());
 }
 
 Renderer::Impl::~Impl()
@@ -134,12 +135,6 @@ void Renderer::Impl::CreateDevice()
 	assert(SUCCEEDED(hr));
 
 	m_hwCaps.CheckMSAASupport(m_pDevice.Get());
-}
-
-void Renderer::Impl::CreateCommandAllocator()
-{
-	HRESULT hr = m_pDevice->CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE_DIRECT, IID_PPV_ARGS(m_pCommandAllocator.GetAddressOf()));
-	assert(SUCCEEDED(hr));
 }
 
 Mesh tempMesh;
@@ -166,7 +161,7 @@ void Renderer::Impl::LoadAssets()
 	CreateRootSignature();
 	CreatePipelineStateObject();
 	CreateDescriptorHeap();
-	CreateCommandList();
+	m_commandList.Init(m_pDevice.Get(), m_commandAllocator.Get(), m_pso.Get());
 	CreateRenderTargetView();
 
 	auto vertBufSize = tempMesh.verts.size() * sizeof(Vertex);
@@ -190,8 +185,8 @@ void Renderer::Impl::LoadAssets()
 	m_pDevice->CreateFence(0, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(m_pFence.GetAddressOf()));
 	m_currentFence = 1;
 
-	m_pCommandList->Close();
-	ID3D12CommandList* ppCommandLists[] = { m_pCommandList.Get() };
+	m_commandList.Get()->Close();
+	ID3D12CommandList* ppCommandLists[] = { m_commandList.Get() };
 	m_commandQueue.Get()->ExecuteCommandLists(_countof(ppCommandLists), ppCommandLists);
 
 	m_handleEvent = CreateEventEx(nullptr, FALSE, FALSE, EVENT_ALL_ACCESS);
@@ -229,12 +224,6 @@ void Renderer::Impl::CreateDescriptorHeap()
 	m_cbDescHeap.Init(m_pDevice.Get(), DescHeapType::CB_SR_UA, 1, true);
 }
 
-void Renderer::Impl::CreateCommandList()
-{
-	HRESULT hr = m_pDevice->CreateCommandList(0, D3D12_COMMAND_LIST_TYPE_DIRECT, m_pCommandAllocator.Get(), m_pso.Get(), IID_PPV_ARGS(m_pCommandList.GetAddressOf()));
-	assert(SUCCEEDED(hr));
-}
-
 void Renderer::Impl::CreateRenderTargetView()
 {
 	// Associate the render target with the swap chain's active surface.
@@ -263,44 +252,43 @@ void Renderer::Impl::WaitForGPU()
 
 void Renderer::Impl::PopulateCommandLists()
 {
-	HRESULT hr = m_pCommandAllocator->Reset();
+	HRESULT hr = m_commandAllocator.Get()->Reset();
 	assert(SUCCEEDED(hr));
 
-	hr = m_pCommandList->Reset(m_pCommandAllocator.Get(),  // The used command allocator cannot be associated with another command list.
+	hr = m_commandList.Get()->Reset(m_commandAllocator.Get(),  // The used command allocator cannot be associated with another command list.
 		m_pso.Get()); // Initial pipeline state. Not inherited from previous command list.
 	assert(SUCCEEDED(hr));
 
-	m_pCommandList->SetGraphicsRootSignature(m_pRootSignature.Get());
-	m_pCommandList->RSSetViewports(1, &m_viewport);
-	m_pCommandList->RSSetScissorRects(1, &m_scissorRect);
+	m_commandList.Get()->SetGraphicsRootSignature(m_pRootSignature.Get());
+	m_commandList.Get()->RSSetViewports(1, &m_viewport);
+	m_commandList.Get()->RSSetScissorRects(1, &m_scissorRect);
 
-	m_pCommandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-	m_pCommandList->IASetVertexBuffers(0, 1, &m_descViewBufVert);
-	m_pCommandList->IASetIndexBuffer(&m_descViewBufIndices);
+	m_commandList.Get()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	m_commandList.Get()->IASetVertexBuffers(0, 1, &m_descViewBufVert);
+	m_commandList.Get()->IASetIndexBuffer(&m_descViewBufIndices);
 
 	U32 color[] = { 0, 0, 128, 255 };
-	m_pCommandList->SetGraphicsRoot32BitConstants(0, 4, color, 0);
+	m_commandList.Get()->SetGraphicsRoot32BitConstants(0, 4, color, 0);
 
 	SetResourceBarrier(
-		m_pCommandList.Get(),
+		m_commandList.Get(),
 		m_pRenderTarget.Get(),
 		D3D12_RESOURCE_STATE_PRESENT,
 		D3D12_RESOURCE_STATE_RENDER_TARGET);
 
 	float clearColor[] = { 0.93f, 0.5f, 0.93f, 1.0f };
-	m_pCommandList->ClearRenderTargetView(m_renderTargetDescHeap.GetCPUHandle(0), clearColor, 1, &m_scissorRect);
-	m_pCommandList->OMSetRenderTargets(1, &m_renderTargetDescHeap.GetCPUHandle(0), TRUE, nullptr);
+	m_commandList.Get()->ClearRenderTargetView(m_renderTargetDescHeap.GetCPUHandle(0), clearColor, 1, &m_scissorRect);
+	m_commandList.Get()->OMSetRenderTargets(1, &m_renderTargetDescHeap.GetCPUHandle(0), TRUE, nullptr);
 
-	m_pCommandList->DrawIndexedInstanced(tempMesh.indices.size(), 1, 0, 0, 0);
-	//m_pCommandList->DrawInstanced(tempMesh.verts.size(), 1, 0, 0);
+	m_commandList.Get()->DrawIndexedInstanced(tempMesh.indices.size(), 1, 0, 0, 0);
 	
 	SetResourceBarrier(
-		m_pCommandList.Get(),
+		m_commandList.Get(),
 		m_pRenderTarget.Get(),
 		D3D12_RESOURCE_STATE_RENDER_TARGET,
 		D3D12_RESOURCE_STATE_PRESENT);
 
-	m_pCommandList->Close();
+	m_commandList.Get()->Close();
 }
 
 void Renderer::Impl::SetResourceBarrier(ID3D12GraphicsCommandList* commandList, ID3D12Resource* resource, D3D12_RESOURCE_STATES stateBefore, D3D12_RESOURCE_STATES stateAfter)

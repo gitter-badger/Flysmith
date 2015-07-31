@@ -1,6 +1,7 @@
 #include "PCH.h"
 #include "CommandQueue.h"
 
+
 cuc::CommandQueue::CommandQueue()
 	: m_pCommandQueue(nullptr)
 {
@@ -18,6 +19,7 @@ void cuc::CommandQueue::Init(ID3D12Device* pDevice,
 							 CommandListType type, CommandQueuePriority priority, bool bDisableGPUTimeout, U32 nodeMask)
 {
 	assert(pDevice != nullptr);
+	assert(m_pCommandQueue == nullptr);
 
 	D3D12_COMMAND_QUEUE_DESC desc;
 	desc.Type = static_cast<D3D12_COMMAND_LIST_TYPE>(type);
