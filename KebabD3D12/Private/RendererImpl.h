@@ -17,6 +17,9 @@
 #include "Pipeline\CommandQueue.h"
 #include "Pipeline\CommandList.h"
 
+#include "Descriptors\VertexBufferView.h"
+#include "Descriptors\IndexBufferView.h"
+
 
 namespace cuc
 {
@@ -44,9 +47,9 @@ namespace cuc
 		DescriptorHeap m_renderTargetDescHeap;
 
 		ID3D12Resource* m_pVertBuffer;
-		D3D12_VERTEX_BUFFER_VIEW m_vertBufferView;
+		VertexBufferView m_vertBufferView;
 		ID3D12Resource* m_pIndexBuffer;
-		D3D12_INDEX_BUFFER_VIEW m_indexBufferView;
+		IndexBufferView m_indexBufferView;
 
 		// Synchronization
 		Fence m_fence;

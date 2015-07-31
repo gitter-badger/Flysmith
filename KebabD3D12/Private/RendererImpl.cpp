@@ -4,6 +4,7 @@
 #include "Resources\RootSignatureFactory.h"
 #include "Resources\ResourceBarrier.h"
 #include "Resources\ResourceConfig.h"
+#include "Descriptors\ConstantBufferView.h"
 
 using namespace cuc;
 using namespace DirectX;
@@ -46,13 +47,8 @@ void Renderer::Impl::LoadAssets()
 	m_uploadHeap.Alloc(&m_pVertBuffer, descVBuf.Get(), &tempMesh.verts[0], vertBufSize);
 	m_uploadHeap.Alloc(&m_pIndexBuffer, descIBuf.Get(), &tempMesh.indices[0], indexBufSize);
 
-	m_vertBufferView.BufferLocation = m_pVertBuffer->GetGPUVirtualAddress();
-	m_vertBufferView.StrideInBytes = sizeof(Vertex);
-	m_vertBufferView.SizeInBytes = vertBufSize;
-
-	m_indexBufferView.BufferLocation = m_pIndexBuffer->GetGPUVirtualAddress();
-	m_indexBufferView.SizeInBytes = indexBufSize;
-	m_indexBufferView.Format = DXGI_FORMAT_R32_UINT;
+	m_vertBufferView.Init(m_pVertBuffer->GetGPUVirtualAddress(), vertBufSize, sizeof(Vertex));
+	m_indexBufferView.Init(m_pIndexBuffer->GetGPUVirtualAddress(), indexBufSize);
 
 	m_fence.Init(m_device.Get(), 0);
 	m_currentFence = 1;
@@ -140,11 +136,8 @@ void Renderer::Impl::PopulateCommandLists()
 
 	// Set root signature inline descriptors
 	XMMATRIX model = XMMatrixIdentity();
-	/*D3D12_CONSTANT_BUFFER_VIEW_DESC cbViewDesc;
-	cbViewDesc.SizeInBytes = sizeof(viewProjMat);
-	cbViewDesc.BufferLocation = gpuHandle;
-	m_device.Get()->CreateConstantBufferView(&cbViewDesc, cpuHandel);*/
-	//m_commandList.Get()->SetGraphicsRootConstantBufferView(rootDescViewProjIndex, );
+	//ConstantBufferView cbView;
+	//m_commandList.Get()->SetGraphicsRootConstantBufferView(rootDescViewProjIndex, cbView.BufferLocation);
 
 	m_commandList.SetResourceBarriers(&TransitionBarrier(m_pRenderTarget.Get(), D3D12_RESOURCE_STATE_PRESENT, D3D12_RESOURCE_STATE_RENDER_TARGET));
 

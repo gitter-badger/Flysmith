@@ -182,6 +182,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Private\Camera.cpp" />
+    <ClCompile Include="Private\Descriptors\ConstantBufferView.cpp" />
+    <ClCompile Include="Private\Descriptors\IndexBufferView.cpp" />
+    <ClCompile Include="Private\Descriptors\VertexBufferView.cpp" />
     <ClCompile Include="Private\Device.cpp" />
     <ClCompile Include="Private\Fence.cpp" />
     <ClCompile Include="Private\Pipeline\CommandAllocator.cpp" />
@@ -214,6 +217,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Private\Camera.h" />
+    <ClInclude Include="Private\Descriptors\ConstantBufferView.h" />
+    <ClInclude Include="Private\Descriptors\IndexBufferView.h" />
     <ClInclude Include="Private\Descriptors\VertexBufferView.h" />
     <ClInclude Include="Private\Device.h" />
     <ClInclude Include="Private\Fence.h" />
