@@ -18,7 +18,7 @@ void cuc::Mesh::AddVertex(DirectX::XMFLOAT2 pos)
 
 void cuc::Mesh::SetTriangle(U32 v0, U32 v1, U32 v2)
 {
-	/*indices.push_back(v0);
+	indices.push_back(v0);
 	indices.push_back(v1);
-	indices.push_back(v2);*/
+	indices.push_back(v2);
 }

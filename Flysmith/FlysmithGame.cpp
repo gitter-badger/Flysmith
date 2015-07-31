@@ -13,25 +13,21 @@ FlysmithGame::FlysmithGame(HINSTANCE hInstance)
 {
 	Airfoil foil;
 	foil.LoadFromFile(L"NACA4415.dat");
-
-	auto rot = XMMatrixRotationZ(-XM_PIDIV2);
-
+	
 	Mesh mesh;
-	auto numPoints = foil.points.size();
-	auto& points = foil.points;
-	for (int i = 1; i < numPoints; i++)
+	auto rotate = XMMatrixRotationZ(-XM_PIDIV2);
+
+	for (auto& foilPoint : foil.points)
 	{
-		auto v0 = points[i];
-		auto v1 = points[numPoints - i];
-		auto v2 = points[i - 1];
+		XMFLOAT2 vert(foilPoint);
+		XMStoreFloat2(&vert, XMVector4Transform(XMLoadFloat2(&vert), rotate));
 
-		XMStoreFloat2(&v0, XMVector4Transform(XMLoadFloat2(&v0), rot));
-		XMStoreFloat2(&v1, XMVector4Transform(XMLoadFloat2(&v1), rot));
-		XMStoreFloat2(&v2, XMVector4Transform(XMLoadFloat2(&v2), rot));
-
-		mesh.AddVertex(v0);
-		mesh.AddVertex(v1);
-		mesh.AddVertex(v2);
+		mesh.AddVertex(vert);
 	}
+
+	auto numPoints = foil.points.size();
+	for (int i = 1; i < numPoints; i++)
+		mesh.SetTriangle(i, numPoints - i, i - 1);
+	
 	m_pRenderer->SubmitMesh(mesh);
 }

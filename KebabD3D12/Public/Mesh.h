@@ -17,7 +17,7 @@ namespace cuc
 	{
 	public:
 		std::vector<Vertex> verts;
-		//std::vector<U32> indices;
+		std::vector<U32> indices;
 
 		void AddVertex(float x, float y);
 		void AddVertex(DirectX::XMFLOAT2 pos);

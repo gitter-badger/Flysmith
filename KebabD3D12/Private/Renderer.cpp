@@ -51,9 +51,12 @@ struct Renderer::Impl
 	UploadHeap m_uploadHeap;
 	DescriptorHeap m_renderTargetDescHeap;
 	ComPtr<ID3D12Resource> m_pRenderTarget;
-	ID3D12Resource* m_pBufVerts;
 	PipelineStateObject m_pso;
+
+	ID3D12Resource* m_pBufVerts;
 	D3D12_VERTEX_BUFFER_VIEW m_descViewBufVert;
+	ID3D12Resource* m_pBufIndices;
+	D3D12_INDEX_BUFFER_VIEW m_descViewBufIndices;
 	
 	// Synchronization
 	ComPtr<ID3D12Fence> m_pFence;
@@ -167,15 +170,22 @@ void Renderer::Impl::LoadAssets()
 	CreateRenderTargetView();
 
 	auto vertBufSize = tempMesh.verts.size() * sizeof(Vertex);
+	auto indexBufSize = tempMesh.indices.size() * sizeof(U32);
 
-	ResourceConfig desc(ResourceType::BUFFER, vertBufSize);
+	ResourceConfig descVBuf(ResourceType::BUFFER, vertBufSize);
+	ResourceConfig descIBuf(ResourceType::BUFFER, indexBufSize);
 
-	m_uploadHeap.Init(m_pDevice.Get(), 1);
-	m_uploadHeap.Alloc(&m_pBufVerts, desc.Get(), &tempMesh.verts[0], vertBufSize);
+	m_uploadHeap.Init(m_pDevice.Get(), 2);
+	m_uploadHeap.Alloc(&m_pBufVerts, descVBuf.Get(), &tempMesh.verts[0], vertBufSize);
+	m_uploadHeap.Alloc(&m_pBufIndices, descIBuf.Get(), &tempMesh.indices[0], indexBufSize);
 
 	m_descViewBufVert.BufferLocation = m_pBufVerts->GetGPUVirtualAddress();
 	m_descViewBufVert.StrideInBytes = sizeof(Vertex);
 	m_descViewBufVert.SizeInBytes = vertBufSize;
+	
+	m_descViewBufIndices.BufferLocation = m_pBufIndices->GetGPUVirtualAddress();
+	m_descViewBufIndices.SizeInBytes = indexBufSize;
+	m_descViewBufIndices.Format = DXGI_FORMAT_R32_UINT;
 
 	m_pDevice->CreateFence(0, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(m_pFence.GetAddressOf()));
 	m_currentFence = 1;
@@ -265,7 +275,7 @@ void Renderer::Impl::PopulateCommandLists()
 
 	m_pCommandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	m_pCommandList->IASetVertexBuffers(0, 1, &m_descViewBufVert);
-	//m_pCommandList->IASetIndexBuffer(&indexBuf);
+	m_pCommandList->IASetIndexBuffer(&m_descViewBufIndices);
 
 	U32 color[] = { 0, 0, 128, 255 };
 	m_pCommandList->SetGraphicsRoot32BitConstants(0, 4, color, 0);
@@ -280,8 +290,8 @@ void Renderer::Impl::PopulateCommandLists()
 	m_pCommandList->ClearRenderTargetView(m_renderTargetDescHeap.GetCPUHandle(0), clearColor, 1, &m_scissorRect);
 	m_pCommandList->OMSetRenderTargets(1, &m_renderTargetDescHeap.GetCPUHandle(0), TRUE, nullptr);
 
-	//m_pCommandList->DrawIndexedInstanced(tempMesh.indices.size(), 1, 0, 0, 0);
-	m_pCommandList->DrawInstanced(tempMesh.verts.size(), 1, 0, 0);
+	m_pCommandList->DrawIndexedInstanced(tempMesh.indices.size(), 1, 0, 0, 0);
+	//m_pCommandList->DrawInstanced(tempMesh.verts.size(), 1, 0, 0);
 	
 	SetResourceBarrier(
 		m_pCommandList.Get(),
