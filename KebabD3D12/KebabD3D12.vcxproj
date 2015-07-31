@@ -189,6 +189,7 @@
     <ClCompile Include="Private\Pipeline\CommandQueue.cpp" />
     <ClCompile Include="Private\Mesh.cpp" />
     <ClCompile Include="Private\Renderer.cpp" />
+    <ClCompile Include="Private\RendererImpl.cpp" />
     <ClCompile Include="Private\Resources\DescriptorHeap.cpp" />
     <ClCompile Include="Private\DXGI\DXGIAdapter.cpp" />
     <ClCompile Include="Private\HardwareCaps.cpp" />
@@ -213,8 +214,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Private\Camera.h" />
+    <ClInclude Include="Private\Descriptors\VertexBufferView.h" />
     <ClInclude Include="Private\Device.h" />
     <ClInclude Include="Private\Fence.h" />
+    <ClInclude Include="Private\RendererImpl.h" />
     <ClInclude Include="Private\Pipeline\CommandAllocator.h" />
     <ClInclude Include="Private\Pipeline\CommandList.h" />
     <ClInclude Include="Private\Pipeline\CommandQueue.h" />
