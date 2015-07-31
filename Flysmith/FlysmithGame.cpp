@@ -17,30 +17,17 @@ FlysmithGame::FlysmithGame(HINSTANCE hInstance)
 	auto rot = XMMatrixRotationZ(-XM_PIDIV2);
 
 	Mesh mesh;
-	for (int idx = 1; idx < foil.points.size(); idx++)
+	auto numPoints = foil.points.size();
+	auto& points = foil.points;
+	for (int i = 1; i < numPoints; i++)
 	{
-		auto v0 = foil.points[idx];
-		XMFLOAT2 v1 = { 0.0f, 0.0f };
-		auto v2 = foil.points[idx - 1];
+		auto v0 = points[i];
+		auto v1 = points[numPoints - i];
+		auto v2 = points[i - 1];
 
-		/*if (v0.x < 0.4f)
-			v1.y = 0.2f;
-		else if (v0.x < 0.6f)
-			v1.y = 0.5f;
-		else
-			v1.y = 0.8f;*/
-		
-		XMVECTOR rV0 = { v0.x, v0.y, 0.0f, 1.0f };
-		XMVECTOR rV1 = { v1.x, v1.y, 0.0f, 1.0f };
-		XMVECTOR rV2 = { v2.x, v2.y, 0.0f, 1.0f };
-
-		rV0 = XMVector4Transform(rV0, rot);
-		rV1 = XMVector4Transform(rV1, rot);
-		rV2 = XMVector4Transform(rV2, rot);
-
-		XMStoreFloat2(&v0, rV0);
-		XMStoreFloat2(&v1, rV1);
-		XMStoreFloat2(&v2, rV2);
+		XMStoreFloat2(&v0, XMVector4Transform(XMLoadFloat2(&v0), rot));
+		XMStoreFloat2(&v1, XMVector4Transform(XMLoadFloat2(&v1), rot));
+		XMStoreFloat2(&v2, XMVector4Transform(XMLoadFloat2(&v2), rot));
 
 		mesh.AddVertex(v0);
 		mesh.AddVertex(v1);

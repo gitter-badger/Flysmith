@@ -208,7 +208,7 @@ void Renderer::Impl::CreatePipelineStateObject()
 	auto VS = ShaderProgram::GetCompiledShader(ShaderType::VERTEX_SHADER, L"D:\\Flysmith\\KebabD3D12\\Private\\Shaders\\TestVS.hlsl");
 	auto PS = ShaderProgram::GetCompiledShader(ShaderType::PIXEL_SHADER, L"D:\\Flysmith\\KebabD3D12\\Private\\Shaders\\TestPS.hlsl");
 
-	RasterizerStateConfig rastState(D3D12_FILL_MODE::D3D12_FILL_MODE_SOLID);
+	RasterizerStateConfig rastState(D3D12_FILL_MODE::D3D12_FILL_MODE_WIREFRAME);
 	
 	m_pso.Init(m_pDevice.Get(), layout, 2, m_pRootSignature.Get(), nullptr, &rastState, &VS, &PS);
 }
