@@ -16,6 +16,15 @@ namespace cuc
 		COPY
 	};
 
+	enum PrimitiveTopology
+	{
+		POINT_LIST     = 1,
+		LINE_LIST      = 2,
+		LINE_STRIP     = 3,
+		TRIANGLE_LIST  = 4,
+		TRIANGLE_STRIP = 5
+	};
+
 	class CommandList
 	{
 	public:
@@ -32,9 +41,11 @@ namespace cuc
 		void SetRootSignature(ID3D12RootSignature*);
 		void SetViewports(D3D12_VIEWPORT*, U32 numViewports = 1);
 		void SetScissorRects(D3D12_RECT*, U32 numRects = 1);
-		void SetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY);
+		
+		void SetPrimitiveTopology(PrimitiveTopology);
 		void SetVertexBuffers(D3D12_VERTEX_BUFFER_VIEW*, U32 numViews = 1, U32 startSlot = 0);
 		void SetIndexBuffer(D3D12_INDEX_BUFFER_VIEW*);
+		void SetPrimitive(PrimitiveTopology, D3D12_VERTEX_BUFFER_VIEW*, D3D12_INDEX_BUFFER_VIEW*);
 		
 		void SetRoot32BitConstants(U32 rootParamIndex, U32 numValues, void* pData, U32 offsetIn32BitValues);
 		
@@ -45,6 +56,8 @@ namespace cuc
 		void DrawIndexedInstanced(U32 numPerInstance, U32 numInstances = 1, U32 startIndexLoc = 0, I32 baseVertLoc = 0, U32 startInstanceLoc = 0);
 		void DrawIndexed(U32 numIndices, U32 startIndexLoc = 0, I32 baseVertLoc = 0);
 		void Draw(U32 numVertices, U32 startVertexLoc = 0);
+
+		void SetResourceBarriers(D3D12_RESOURCE_BARRIER* pBarriers, U32 numBarriers = 1);
 
 	private:
 		ID3D12GraphicsCommandList* m_pCommandList;

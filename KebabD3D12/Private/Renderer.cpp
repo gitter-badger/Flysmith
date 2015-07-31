@@ -5,8 +5,9 @@
 #include "StateObjects\RasterizerStateConfig.h"
 #include "StateObjects\BlendStateConfig.h"
 
-#include "Resources\ResourceConfig.h"
 #include "Resources\RootSignatureFactory.h"
+#include "Resources\ResourceBarrier.h"
+#include "Resources\ResourceConfig.h"
 #include "Resources\DescriptorHeap.h"
 #include "Resources\UploadHeap.h"
 
@@ -59,10 +60,10 @@ struct Renderer::Impl
 	DescriptorHeap m_cbDescHeap;
 	DescriptorHeap m_renderTargetDescHeap;
 
-	ID3D12Resource* m_pBufVerts;
-	D3D12_VERTEX_BUFFER_VIEW m_descViewBufVert;
-	ID3D12Resource* m_pBufIndices;
-	D3D12_INDEX_BUFFER_VIEW m_descViewBufIndices;
+	ID3D12Resource* m_pVertBuffer;
+	D3D12_VERTEX_BUFFER_VIEW m_vertBufferView;
+	ID3D12Resource* m_pIndexBuffer;
+	D3D12_INDEX_BUFFER_VIEW m_indexBufferView;
 	
 	// Synchronization
 	ComPtr<ID3D12Fence> m_pFence;
@@ -83,7 +84,6 @@ struct Renderer::Impl
 	void SwapBuffers();
 	void WaitForGPU();
 	void PopulateCommandLists();
-	void SetResourceBarrier(ID3D12GraphicsCommandList* commandList, ID3D12Resource* resource, D3D12_RESOURCE_STATES stateBefore, D3D12_RESOURCE_STATES stateAfter);
 };
 
 // ===========================================================================================================
@@ -125,7 +125,8 @@ Renderer::Impl::Impl(HWND hwnd, U32 windowWidth, U32 windowHeight)
 
 Renderer::Impl::~Impl()
 {
-	m_pBufVerts->Release();
+	if (m_pVertBuffer) m_pVertBuffer->Release();
+	if (m_pIndexBuffer) m_pIndexBuffer->Release();
 }
 
 void Renderer::Impl::CreateDevice()
@@ -138,21 +139,18 @@ void Renderer::Impl::CreateDevice()
 }
 
 Mesh tempMesh;
-XMMATRIX model;
-XMMATRIX view;
-XMMATRIX projection;
 XMMATRIX mvp;
 #include "Camera.h"
-Camera camera({ 0.0f, 0.0f, 0.0f });
 
 void Renderer::SubmitMesh(Mesh mesh)
 {	
 	tempMesh = mesh;
 	m_pImpl->LoadAssets();
 	
-	projection = camera.GetProjMatrix(0.8f, 800.0f / 600.0f);
-	view = camera.GetViewMatrix();
-	model = XMMatrixIdentity();
+	Camera camera({ 0.0f, 0.0f, 0.0f });
+	XMMATRIX projection = camera.GetProjMatrix(0.8f, 800.0f / 600.0f);
+	XMMATRIX view = camera.GetViewMatrix();
+	XMMATRIX model = XMMatrixIdentity();
 	mvp = projection * view * model;
 }
 
@@ -171,16 +169,16 @@ void Renderer::Impl::LoadAssets()
 	ResourceConfig descIBuf(ResourceType::BUFFER, indexBufSize);
 
 	m_uploadHeap.Init(m_pDevice.Get(), 2);
-	m_uploadHeap.Alloc(&m_pBufVerts, descVBuf.Get(), &tempMesh.verts[0], vertBufSize);
-	m_uploadHeap.Alloc(&m_pBufIndices, descIBuf.Get(), &tempMesh.indices[0], indexBufSize);
+	m_uploadHeap.Alloc(&m_pVertBuffer, descVBuf.Get(), &tempMesh.verts[0], vertBufSize);
+	m_uploadHeap.Alloc(&m_pIndexBuffer, descIBuf.Get(), &tempMesh.indices[0], indexBufSize);
 
-	m_descViewBufVert.BufferLocation = m_pBufVerts->GetGPUVirtualAddress();
-	m_descViewBufVert.StrideInBytes = sizeof(Vertex);
-	m_descViewBufVert.SizeInBytes = vertBufSize;
+	m_vertBufferView.BufferLocation = m_pVertBuffer->GetGPUVirtualAddress();
+	m_vertBufferView.StrideInBytes = sizeof(Vertex);
+	m_vertBufferView.SizeInBytes = vertBufSize;
 	
-	m_descViewBufIndices.BufferLocation = m_pBufIndices->GetGPUVirtualAddress();
-	m_descViewBufIndices.SizeInBytes = indexBufSize;
-	m_descViewBufIndices.Format = DXGI_FORMAT_R32_UINT;
+	m_indexBufferView.BufferLocation = m_pIndexBuffer->GetGPUVirtualAddress();
+	m_indexBufferView.SizeInBytes = indexBufSize;
+	m_indexBufferView.Format = DXGI_FORMAT_R32_UINT;
 
 	m_pDevice->CreateFence(0, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(m_pFence.GetAddressOf()));
 	m_currentFence = 1;
@@ -197,9 +195,7 @@ void Renderer::Impl::LoadAssets()
 void Renderer::Impl::CreateRootSignature()
 {
 	RootSignatureFactory rootSigFactory(RootSignatureFactory::ALLOW_IA_LAYOUT);
-
 	rootSigFactory.AddParameterConstants(4);
-
 	m_pRootSignature = rootSigFactory.BuildRootSignature(m_pDevice.Get());
 }
 
@@ -260,43 +256,20 @@ void Renderer::Impl::PopulateCommandLists()
 	m_commandList.SetViewports(&m_viewport);
 	m_commandList.SetScissorRects(&m_scissorRect);
 
-	m_commandList.SetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-	m_commandList.SetVertexBuffers(&m_descViewBufVert);
-	m_commandList.SetIndexBuffer(&m_descViewBufIndices);
-
+	m_commandList.SetPrimitive(TRIANGLE_LIST, &m_vertBufferView, &m_indexBufferView);
+	
 	U32 color[] = { 0, 0, 128, 255 };
 	m_commandList.SetRoot32BitConstants(0, 4, color, 0);
 
-	SetResourceBarrier(
-		m_commandList.Get(),
-		m_pRenderTarget.Get(),
-		D3D12_RESOURCE_STATE_PRESENT,
-		D3D12_RESOURCE_STATE_RENDER_TARGET);
-
+	m_commandList.SetResourceBarriers(&TransitionBarrier(m_pRenderTarget.Get(), D3D12_RESOURCE_STATE_PRESENT, D3D12_RESOURCE_STATE_RENDER_TARGET));
+	
 	float clearColor[] = { 0.93f, 0.5f, 0.93f, 1.0f };
 	m_commandList.ClearRenderTargetView(m_renderTargetDescHeap.GetCPUHandle(0), clearColor, &m_scissorRect);
 	m_commandList.SetRenderTargets(1, &m_renderTargetDescHeap.GetCPUHandle(0), TRUE, nullptr);
 
 	m_commandList.DrawIndexed(tempMesh.indices.size());
 	
-	SetResourceBarrier(m_commandList.Get(),
-				       m_pRenderTarget.Get(),
-					   D3D12_RESOURCE_STATE_RENDER_TARGET,
-					   D3D12_RESOURCE_STATE_PRESENT);
+	m_commandList.SetResourceBarriers(&TransitionBarrier(m_pRenderTarget.Get(), D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PRESENT));
 
 	m_commandList.Close();
-}
-
-void Renderer::Impl::SetResourceBarrier(ID3D12GraphicsCommandList* commandList, ID3D12Resource* resource, D3D12_RESOURCE_STATES stateBefore, D3D12_RESOURCE_STATES stateAfter)
-{
-	D3D12_RESOURCE_BARRIER descBarrier;
-	ZeroMemory(&descBarrier, sizeof(descBarrier));
-
-	descBarrier.Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;
-	descBarrier.Transition.pResource = resource;
-	descBarrier.Transition.Subresource = D3D12_RESOURCE_BARRIER_ALL_SUBRESOURCES;
-	descBarrier.Transition.StateBefore = stateBefore;
-	descBarrier.Transition.StateAfter = stateAfter;
-
-	commandList->ResourceBarrier(1, &descBarrier);
 }

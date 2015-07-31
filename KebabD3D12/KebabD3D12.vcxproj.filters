@@ -78,6 +78,9 @@
     <ClCompile Include="Private\Pipeline\CommandList.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Private\Resources\ResourceBarrier.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Private\DXGI\DXGIAdapter.h">
@@ -147,6 +150,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Private\Pipeline\CommandList.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Private\Resources\ResourceBarrier.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

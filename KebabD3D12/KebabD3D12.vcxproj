@@ -191,6 +191,7 @@
     <ClCompile Include="Private\DXGI\DXGIAdapter.cpp" />
     <ClCompile Include="Private\HardwareCaps.cpp" />
     <ClCompile Include="Private\Pipeline\PipelineStateObject.cpp" />
+    <ClCompile Include="Private\Resources\ResourceBarrier.cpp" />
     <ClCompile Include="Private\Resources\ResourceConfig.cpp" />
     <ClCompile Include="Private\Resources\RootSignatureFactory.cpp" />
     <ClCompile Include="Private\Pipeline\ScissorRectangle.cpp" />
@@ -213,6 +214,7 @@
     <ClInclude Include="Private\Pipeline\CommandAllocator.h" />
     <ClInclude Include="Private\Pipeline\CommandList.h" />
     <ClInclude Include="Private\Pipeline\CommandQueue.h" />
+    <ClInclude Include="Private\Resources\ResourceBarrier.h" />
     <ClInclude Include="Private\Resources\ResourceConfig.h" />
     <ClInclude Include="Public\Mesh.h" />
     <ClInclude Include="Public\PublicDef.h" />

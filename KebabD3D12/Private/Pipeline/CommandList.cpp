@@ -63,9 +63,9 @@ void cuc::CommandList::SetScissorRects(D3D12_RECT* pRects, U32 numRects)
 	m_pCommandList->RSSetScissorRects(numRects, pRects);
 }
 
-void cuc::CommandList::SetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY topology)
+void cuc::CommandList::SetPrimitiveTopology(PrimitiveTopology topology)
 {
-	m_pCommandList->IASetPrimitiveTopology(topology);
+	m_pCommandList->IASetPrimitiveTopology(static_cast<D3D12_PRIMITIVE_TOPOLOGY>(topology));
 }
 
 void cuc::CommandList::SetVertexBuffers(D3D12_VERTEX_BUFFER_VIEW* pViews, U32 numViews, U32 startSlot)
@@ -76,6 +76,13 @@ void cuc::CommandList::SetVertexBuffers(D3D12_VERTEX_BUFFER_VIEW* pViews, U32 nu
 void cuc::CommandList::SetIndexBuffer(D3D12_INDEX_BUFFER_VIEW* pView)
 {
 	m_pCommandList->IASetIndexBuffer(pView);
+}
+
+void cuc::CommandList::SetPrimitive(PrimitiveTopology topology, D3D12_VERTEX_BUFFER_VIEW* pVertBufView, D3D12_INDEX_BUFFER_VIEW* pIndBufView)
+{
+	SetPrimitiveTopology(topology);
+	SetVertexBuffers(pVertBufView);
+	SetIndexBuffer(pIndBufView);
 }
 
 void cuc::CommandList::SetRoot32BitConstants(U32 rootParamIndex, U32 numValues, void* pData, U32 offset)
@@ -106,4 +113,9 @@ void cuc::CommandList::DrawIndexed(U32 numIndices, U32 startIndexLoc, I32 baseVe
 void cuc::CommandList::Draw(U32 numVertices, U32 startVertexLoc)
 {
 	m_pCommandList->DrawInstanced(numVertices, 1, startVertexLoc, 0);
+}
+
+void cuc::CommandList::SetResourceBarriers(D3D12_RESOURCE_BARRIER* pBarriers, U32 numBarriers)
+{
+	m_pCommandList->ResourceBarrier(numBarriers, pBarriers);
 }
