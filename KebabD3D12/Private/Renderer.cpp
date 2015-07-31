@@ -14,6 +14,7 @@
 #include "Pipeline\ScissorRectangle.h"
 #include "Pipeline\SwapChainConfig.h"
 #include "Pipeline\ShaderProgram.h"
+#include "Pipeline\CommandQueue.h"
 #include "Pipeline\SwapChain.h"
 #include "Pipeline\Viewport.h"
 
@@ -43,7 +44,7 @@ struct Renderer::Impl
 	
 	// Pipeline
 	ComPtr<ID3D12RootSignature> m_pRootSignature;
-	ComPtr<ID3D12CommandQueue> m_pCommandQueue;
+	CommandQueue m_commandQueue;
 	ComPtr<ID3D12GraphicsCommandList> m_pCommandList;
 	ComPtr<ID3D12CommandAllocator> m_pCommandAllocator;
 
@@ -71,7 +72,6 @@ struct Renderer::Impl
 	Impl(HWND hwnd, U32 windowWidth, U32 windowHeight);
 	~Impl();
 	void CreateDevice();
-	void CreateCommandQueue();
 	void CreateCommandAllocator();
 	void LoadAssets();
 	void CreateRootSignature();
@@ -102,7 +102,7 @@ void Renderer::Render()
 {
 	m_pImpl->PopulateCommandLists();
 	ID3D12CommandList* ppCommandLists[] = { m_pImpl->m_pCommandList.Get() };
-	m_pImpl->m_pCommandQueue->ExecuteCommandLists(_countof(ppCommandLists), ppCommandLists);
+	m_pImpl->m_commandQueue.Get()->ExecuteCommandLists(_countof(ppCommandLists), ppCommandLists);
 
 	m_pImpl->SwapBuffers();
 
@@ -117,8 +117,8 @@ Renderer::Impl::Impl(HWND hwnd, U32 windowWidth, U32 windowHeight)
 	, m_scissorRect(windowWidth, windowHeight)
 {
 	CreateDevice();
-	CreateCommandQueue();
-	m_swapChain.Init(m_pCommandQueue.Get(), hwnd);
+	m_commandQueue.Init(m_pDevice.Get(), CommandListType::DIRECT, CommandQueuePriority::NORMAL);
+	m_swapChain.Init(m_commandQueue.Get(), hwnd);
 	CreateCommandAllocator();
 }
 
@@ -134,18 +134,6 @@ void Renderer::Impl::CreateDevice()
 	assert(SUCCEEDED(hr));
 
 	m_hwCaps.CheckMSAASupport(m_pDevice.Get());
-}
-
-void Renderer::Impl::CreateCommandQueue()
-{
-	D3D12_COMMAND_QUEUE_DESC queueDesc;
-	queueDesc.Type = D3D12_COMMAND_LIST_TYPE_DIRECT;
-	queueDesc.Priority = D3D12_COMMAND_QUEUE_PRIORITY_NORMAL;
-	queueDesc.Flags = D3D12_COMMAND_QUEUE_FLAG_NONE;
-	queueDesc.NodeMask = 0;
-
-	HRESULT hr = m_pDevice->CreateCommandQueue(&queueDesc, IID_PPV_ARGS(&m_pCommandQueue));
-	assert(SUCCEEDED(hr));
 }
 
 void Renderer::Impl::CreateCommandAllocator()
@@ -204,7 +192,7 @@ void Renderer::Impl::LoadAssets()
 
 	m_pCommandList->Close();
 	ID3D12CommandList* ppCommandLists[] = { m_pCommandList.Get() };
-	m_pCommandQueue->ExecuteCommandLists(_countof(ppCommandLists), ppCommandLists);
+	m_commandQueue.Get()->ExecuteCommandLists(_countof(ppCommandLists), ppCommandLists);
 
 	m_handleEvent = CreateEventEx(nullptr, FALSE, FALSE, EVENT_ALL_ACCESS);
 
@@ -263,7 +251,7 @@ void Renderer::Impl::SwapBuffers()
 void Renderer::Impl::WaitForGPU()
 {
 	auto fence = m_currentFence;
-	m_pCommandQueue->Signal(m_pFence.Get(), fence);
+	m_commandQueue.Get()->Signal(m_pFence.Get(), fence);
 	m_currentFence++;
 
 	if (m_pFence->GetCompletedValue() < fence)

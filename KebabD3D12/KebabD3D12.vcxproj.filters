@@ -69,6 +69,9 @@
     <ClCompile Include="Private\Camera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Private\Pipeline\CommandQueue.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Private\DXGI\DXGIAdapter.h">
@@ -129,6 +132,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Public\Types.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Private\Pipeline\CommandQueue.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
