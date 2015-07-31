@@ -1,6 +1,9 @@
 #include "PCH.h"
-#include "Renderer.h"
+
 #include "HardwareCaps.h"
+#include "Renderer.h"
+#include "Device.h"
+#include "Fence.h"
 
 #include "StateObjects\RasterizerStateConfig.h"
 #include "StateObjects\BlendStateConfig.h"
@@ -44,7 +47,7 @@ struct Renderer::Impl
 	ScissorRectangle m_scissorRect;
 	HardwareCaps m_hwCaps;
 	SwapChain m_swapChain;
-	ComPtr<ID3D12Device> m_pDevice;
+	Device m_device;
 	
 	// Pipeline
 	ComPtr<ID3D12RootSignature> m_pRootSignature;
@@ -66,7 +69,7 @@ struct Renderer::Impl
 	D3D12_INDEX_BUFFER_VIEW m_indexBufferView;
 	
 	// Synchronization
-	ComPtr<ID3D12Fence> m_pFence;
+	Fence m_fence;
 	U64 m_currentFence;
 	HANDLE m_handleEvent;
 
@@ -117,25 +120,19 @@ Renderer::Impl::Impl(HWND hwnd, U32 windowWidth, U32 windowHeight)
 	: m_viewport(static_cast<F32>(windowWidth), static_cast<F32>(windowHeight))
 	, m_scissorRect(windowWidth, windowHeight)
 {
-	CreateDevice();
-	m_commandQueue.Init(m_pDevice.Get());
+	auto pAdapter = m_hwCaps.GetDisplayAdapters()[0].Get();
+	m_device.Init(pAdapter.Get());
+	m_hwCaps.CheckMSAASupport(m_device.Get());
+
+	m_commandQueue.Init(m_device.Get());
 	m_swapChain.Init(m_commandQueue.Get(), hwnd);
-	m_commandAllocator.Init(m_pDevice.Get());
+	m_commandAllocator.Init(m_device.Get());
 }
 
 Renderer::Impl::~Impl()
 {
 	if (m_pVertBuffer) m_pVertBuffer->Release();
 	if (m_pIndexBuffer) m_pIndexBuffer->Release();
-}
-
-void Renderer::Impl::CreateDevice()
-{
-	auto pAdapter = m_hwCaps.GetDisplayAdapters()[0].Get();
-	HRESULT hr = D3D12CreateDevice(pAdapter.Get(), D3D_FEATURE_LEVEL_11_0, IID_PPV_ARGS(&m_pDevice));
-	assert(SUCCEEDED(hr));
-
-	m_hwCaps.CheckMSAASupport(m_pDevice.Get());
 }
 
 Mesh tempMesh;
@@ -159,7 +156,7 @@ void Renderer::Impl::LoadAssets()
 	CreateRootSignature();
 	CreatePipelineStateObject();
 	CreateDescriptorHeap();
-	m_commandList.Init(m_pDevice.Get(), m_commandAllocator.Get(), m_pso.Get());
+	m_commandList.Init(m_device.Get(), m_commandAllocator.Get(), m_pso.Get());
 	CreateRenderTargetView();
 
 	auto vertBufSize = tempMesh.verts.size() * sizeof(Vertex);
@@ -168,7 +165,7 @@ void Renderer::Impl::LoadAssets()
 	ResourceConfig descVBuf(ResourceType::BUFFER, vertBufSize);
 	ResourceConfig descIBuf(ResourceType::BUFFER, indexBufSize);
 
-	m_uploadHeap.Init(m_pDevice.Get(), 2);
+	m_uploadHeap.Init(m_device.Get(), 2);
 	m_uploadHeap.Alloc(&m_pVertBuffer, descVBuf.Get(), &tempMesh.verts[0], vertBufSize);
 	m_uploadHeap.Alloc(&m_pIndexBuffer, descIBuf.Get(), &tempMesh.indices[0], indexBufSize);
 
@@ -180,7 +177,7 @@ void Renderer::Impl::LoadAssets()
 	m_indexBufferView.SizeInBytes = indexBufSize;
 	m_indexBufferView.Format = DXGI_FORMAT_R32_UINT;
 
-	m_pDevice->CreateFence(0, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(m_pFence.GetAddressOf()));
+	m_fence.Init(m_device.Get(), 0);
 	m_currentFence = 1;
 
 	m_commandList.Close();
@@ -196,7 +193,8 @@ void Renderer::Impl::CreateRootSignature()
 {
 	RootSignatureFactory rootSigFactory(RootSignatureFactory::ALLOW_IA_LAYOUT);
 	rootSigFactory.AddParameterConstants(4);
-	m_pRootSignature = rootSigFactory.BuildRootSignature(m_pDevice.Get());
+	rootSigFactory.
+	m_pRootSignature = rootSigFactory.BuildRootSignature(m_device.Get());
 }
 
 void Renderer::Impl::CreatePipelineStateObject()
@@ -211,20 +209,20 @@ void Renderer::Impl::CreatePipelineStateObject()
 
 	RasterizerStateConfig rastState(D3D12_FILL_MODE::D3D12_FILL_MODE_WIREFRAME);
 	
-	m_pso.Init(m_pDevice.Get(), layout, 2, m_pRootSignature.Get(), nullptr, &rastState, &VS, &PS);
+	m_pso.Init(m_device.Get(), layout, 2, m_pRootSignature.Get(), nullptr, &rastState, &VS, &PS);
 }
 
 void Renderer::Impl::CreateDescriptorHeap()
 {
-	m_renderTargetDescHeap.Init(m_pDevice.Get(), DescHeapType::RENDER_TARGET, 1);
-	m_cbDescHeap.Init(m_pDevice.Get(), DescHeapType::CB_SR_UA, 1, true);
+	m_renderTargetDescHeap.Init(m_device.Get(), DescHeapType::RENDER_TARGET, 1);
+	m_cbDescHeap.Init(m_device.Get(), DescHeapType::CB_SR_UA, 1, true);
 }
 
 void Renderer::Impl::CreateRenderTargetView()
 {
 	// Associate the render target with the swap chain's active surface.
 	m_swapChain.GetBuffer(m_pRenderTarget.GetAddressOf());
-	m_pDevice->CreateRenderTargetView(m_pRenderTarget.Get(), nullptr, m_renderTargetDescHeap.GetCPUHandle(0));
+	m_device.Get()->CreateRenderTargetView(m_pRenderTarget.Get(), nullptr, m_renderTargetDescHeap.GetCPUHandle(0));
 }
 
 void Renderer::Impl::SwapBuffers()
@@ -236,12 +234,12 @@ void Renderer::Impl::SwapBuffers()
 void Renderer::Impl::WaitForGPU()
 {
 	auto fence = m_currentFence;
-	m_commandQueue.Signal(m_pFence.Get(), fence);
+	m_commandQueue.Signal(m_fence.Get(), fence);
 	m_currentFence++;
 
-	if (m_pFence->GetCompletedValue() < fence)
+	if (m_fence.GetCompletedValue() < fence)
 	{
-		m_pFence->SetEventOnCompletion(fence, m_handleEvent);
+		m_fence.SetEventOnCompletion(fence, m_handleEvent);
 		WaitForSingleObject(m_handleEvent, INFINITE);
 	}
 }

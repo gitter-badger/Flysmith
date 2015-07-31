@@ -182,6 +182,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Private\Camera.cpp" />
+    <ClCompile Include="Private\Device.cpp" />
+    <ClCompile Include="Private\Fence.cpp" />
     <ClCompile Include="Private\Pipeline\CommandAllocator.cpp" />
     <ClCompile Include="Private\Pipeline\CommandList.cpp" />
     <ClCompile Include="Private\Pipeline\CommandQueue.cpp" />
@@ -211,6 +213,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Private\Camera.h" />
+    <ClInclude Include="Private\Device.h" />
+    <ClInclude Include="Private\Fence.h" />
     <ClInclude Include="Private\Pipeline\CommandAllocator.h" />
     <ClInclude Include="Private\Pipeline\CommandList.h" />
     <ClInclude Include="Private\Pipeline\CommandQueue.h" />
