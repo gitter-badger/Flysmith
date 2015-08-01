@@ -17,6 +17,7 @@
 #include "Pipeline\CommandQueue.h"
 #include "Pipeline\CommandList.h"
 
+#include "Descriptors\ConstantBufferView.h"
 #include "Descriptors\VertexBufferView.h"
 #include "Descriptors\IndexBufferView.h"
 
@@ -40,16 +41,16 @@ namespace cuc
 
 		// Resources
 		UploadHeap m_uploadHeap;
-		Microsoft::WRL::ComPtr<ID3D12Resource> m_pRenderTarget;
 		PipelineStateObject m_pso;
 
 		DescriptorHeap m_cbDescHeap;
-		DescriptorHeap m_renderTargetDescHeap;
 
 		ID3D12Resource* m_pVertBuffer;
 		VertexBufferView m_vertBufferView;
 		ID3D12Resource* m_pIndexBuffer;
 		IndexBufferView m_indexBufferView;
+		ID3D12Resource* m_pConstantBuffer;
+		ConstantBufferView m_cbView;
 
 		// Synchronization
 		Fence m_fence;
@@ -63,7 +64,6 @@ namespace cuc
 		void CreateRootSignature();
 		void CreatePipelineStateObject();
 		void CreateDescriptorHeap();
-		void CreateRenderTargetView();
 		void SwapBuffers();
 		void WaitForGPU();
 		void PopulateCommandLists();

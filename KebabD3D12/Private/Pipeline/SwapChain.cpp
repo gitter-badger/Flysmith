@@ -4,23 +4,28 @@ using namespace cuc;
 
 
 SwapChain::SwapChain()
-	: m_bInitialized(false)
-	, m_pSwapChain(nullptr)
+	: m_pSwapChain(nullptr)
+	, m_pRenderTarget(nullptr)
 	, m_indexLastBufSwap(0)
 {
 }
 
 SwapChain::~SwapChain()
 {
-	m_pSwapChain->Release();
+	if (m_pSwapChain)
+		m_pSwapChain->Release();
+
+	if (m_pRenderTarget)
+		m_pRenderTarget->Release();
 }
 
-void SwapChain::Init(ID3D12CommandQueue* pCommandQueue, const HWND windowHandle)
+void SwapChain::Init(ID3D12Device* pDevice, ID3D12CommandQueue* pCommandQueue, const HWND windowHandle)
 {
 	assert(pCommandQueue != nullptr);
+	assert(pDevice != nullptr);
 
 	IDXGIFactory2* pDXGIFactory = nullptr;
-	HRESULT hr = CreateDXGIFactory1(__uuidof(IDXGIFactory2), reinterpret_cast<void**>(&pDXGIFactory));
+	HRESULT hr = CreateDXGIFactory1(IID_PPV_ARGS(&pDXGIFactory));
 	assert(SUCCEEDED(hr));
 
 	DXGI_SWAP_CHAIN_DESC1 desc;
@@ -42,17 +47,22 @@ void SwapChain::Init(ID3D12CommandQueue* pCommandQueue, const HWND windowHandle)
 
 	pDXGIFactory->Release();
 
-	m_bInitialized = true;
+	// Create render target
+	m_rtDescHeap.Init(pDevice, DescHeapType::RENDER_TARGET, 1);
+	CreateRTV(pDevice);
 }
 
-void SwapChain::Present(const bool bVsync)
+void SwapChain::Present(ID3D12Device* pDevice, const bool bVsync)
 {
-	assert(m_bInitialized);
+	assert(pDevice != nullptr);
+	assert(m_pRenderTarget != nullptr);
 
 	U32 syncInterval = 1 ? bVsync : 0;
 	m_pSwapChain->Present(syncInterval, 0);
 	
 	m_indexLastBufSwap = (1 + m_indexLastBufSwap) % 2;
+
+	CreateRTV(pDevice);
 }
 
 void SwapChain::Resize(const U32 width, const U32 height)
@@ -60,11 +70,22 @@ void SwapChain::Resize(const U32 width, const U32 height)
 	m_pSwapChain->ResizeBuffers(2, width, height, DXGI_FORMAT_UNKNOWN, DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH);
 }
 
-void SwapChain::GetBuffer(ID3D12Resource** ppResource)
+ID3D12Resource* SwapChain::GetRenderTarget()
 {
-	assert(m_bInitialized);
-	assert(ppResource != nullptr);
+	assert(m_pRenderTarget != nullptr);
+	return m_pRenderTarget;
+}
 
-	HRESULT hr = m_pSwapChain->GetBuffer(m_indexLastBufSwap, __uuidof(ID3D12Resource), reinterpret_cast<void**>(ppResource));
+D3D12_CPU_DESCRIPTOR_HANDLE cuc::SwapChain::GetRTVLocation()
+{
+	return m_rtDescHeap.GetCPUHandle(0);
+}
+
+void SwapChain::CreateRTV(ID3D12Device* pDevice)
+{
+	assert(pDevice != nullptr);
+
+	HRESULT hr = m_pSwapChain->GetBuffer(m_indexLastBufSwap, IID_PPV_ARGS(&m_pRenderTarget));
 	assert(SUCCEEDED(hr));
+	pDevice->CreateRenderTargetView(m_pRenderTarget, nullptr, m_rtDescHeap.GetCPUHandle(0));
 }

@@ -4,7 +4,6 @@
 #include "Resources\RootSignatureFactory.h"
 #include "Resources\ResourceBarrier.h"
 #include "Resources\ResourceConfig.h"
-#include "Descriptors\ConstantBufferView.h"
 
 using namespace cuc;
 using namespace DirectX;
@@ -19,7 +18,7 @@ Renderer::Impl::Impl(HWND hwnd, U32 windowWidth, U32 windowHeight)
 	m_hwCaps.CheckMSAASupport(m_device.Get());
 
 	m_commandQueue.Init(m_device.Get());
-	m_swapChain.Init(m_commandQueue.Get(), hwnd);
+	m_swapChain.Init(m_device.Get(), m_commandQueue.Get(), hwnd);
 	m_commandAllocator.Init(m_device.Get());
 }
 
@@ -31,31 +30,39 @@ Renderer::Impl::~Impl()
 
 void Renderer::Impl::LoadAssets()
 {
+	// 1. Create RootSignature
 	CreateRootSignature();
+
+	// 2. Create PSO
 	CreatePipelineStateObject();
-	CreateDescriptorHeap();
-	m_commandList.Init(m_device.Get(), m_commandAllocator.Get(), m_pso.Get());
-	CreateRenderTargetView();
 
+	// 3. Create Resource Heaps
+	m_uploadHeap.Init(m_device.Get(), 3);
+
+	// 4. Create Resources
 	auto vertBufSize = tempMesh.verts.size() * sizeof(Vertex);
-	auto indexBufSize = tempMesh.indices.size() * sizeof(U32);
-
 	ResourceConfig descVBuf(ResourceType::BUFFER, vertBufSize);
-	ResourceConfig descIBuf(ResourceType::BUFFER, indexBufSize);
-
-	m_uploadHeap.Init(m_device.Get(), 2);
 	m_uploadHeap.Alloc(&m_pVertBuffer, descVBuf.Get(), &tempMesh.verts[0], vertBufSize);
+	
+	auto indexBufSize = tempMesh.indices.size() * sizeof(U32);
+	ResourceConfig descIBuf(ResourceType::BUFFER, indexBufSize);
 	m_uploadHeap.Alloc(&m_pIndexBuffer, descIBuf.Get(), &tempMesh.indices[0], indexBufSize);
 
+	// 5. Create Descriptor Heaps
+	CreateDescriptorHeap();
+	
+	// 6. Create Command List
+	m_commandList.Init(m_device.Get(), m_commandAllocator.Get(), m_pso.Get());
+	
+	// 7. Create Resource Descriptors
 	m_vertBufferView.Init(m_pVertBuffer->GetGPUVirtualAddress(), vertBufSize, sizeof(Vertex));
 	m_indexBufferView.Init(m_pIndexBuffer->GetGPUVirtualAddress(), indexBufSize);
-
+	
+	// 8. Synchronize
 	m_fence.Init(m_device.Get(), 0);
 	m_currentFence = 1;
 
 	m_commandList.Close();
-	ID3D12CommandList* ppCommandLists[] = { m_commandList.Get() };
-	m_commandQueue.ExecuteCommandLists(ppCommandLists);
 
 	m_handleEvent = CreateEventEx(nullptr, FALSE, FALSE, EVENT_ALL_ACCESS);
 
@@ -87,21 +94,12 @@ void Renderer::Impl::CreatePipelineStateObject()
 
 void Renderer::Impl::CreateDescriptorHeap()
 {
-	m_renderTargetDescHeap.Init(m_device.Get(), DescHeapType::RENDER_TARGET, 1);
 	m_cbDescHeap.Init(m_device.Get(), DescHeapType::CB_SR_UA, 1, true);
-}
-
-void Renderer::Impl::CreateRenderTargetView()
-{
-	// Associate the render target with the swap chain's active surface.
-	m_swapChain.GetBuffer(m_pRenderTarget.GetAddressOf());
-	m_device.Get()->CreateRenderTargetView(m_pRenderTarget.Get(), nullptr, m_renderTargetDescHeap.GetCPUHandle(0));
 }
 
 void Renderer::Impl::SwapBuffers()
 {
-	m_swapChain.Present();
-	CreateRenderTargetView();
+	m_swapChain.Present(m_device.Get());
 }
 
 void Renderer::Impl::WaitForGPU()
@@ -139,15 +137,15 @@ void Renderer::Impl::PopulateCommandLists()
 	//ConstantBufferView cbView;
 	//m_commandList.Get()->SetGraphicsRootConstantBufferView(rootDescViewProjIndex, cbView.BufferLocation);
 
-	m_commandList.SetResourceBarriers(&TransitionBarrier(m_pRenderTarget.Get(), D3D12_RESOURCE_STATE_PRESENT, D3D12_RESOURCE_STATE_RENDER_TARGET));
+	m_commandList.SetResourceBarriers(&TransitionBarrier(m_swapChain.GetRenderTarget(), D3D12_RESOURCE_STATE_PRESENT, D3D12_RESOURCE_STATE_RENDER_TARGET));
 
 	float clearColor[] = { 0.93f, 0.5f, 0.93f, 1.0f };
-	m_commandList.ClearRenderTargetView(m_renderTargetDescHeap.GetCPUHandle(0), clearColor, &m_scissorRect);
-	m_commandList.SetRenderTargets(1, &m_renderTargetDescHeap.GetCPUHandle(0), TRUE, nullptr);
+	m_commandList.ClearRenderTargetView(m_swapChain.GetRTVLocation(), clearColor, &m_scissorRect);
+	m_commandList.SetRenderTargets(1, &m_swapChain.GetRTVLocation(), TRUE, nullptr);
 
 	m_commandList.DrawIndexed(tempMesh.indices.size());
 
-	m_commandList.SetResourceBarriers(&TransitionBarrier(m_pRenderTarget.Get(), D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PRESENT));
+	m_commandList.SetResourceBarriers(&TransitionBarrier(m_swapChain.GetRenderTarget(), D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PRESENT));
 
 	m_commandList.Close();
 }

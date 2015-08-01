@@ -52,7 +52,7 @@ void UploadHeap::Init(ID3D12Device* pDevice, const U64 size, const Type type)
 	description.Alignment = s_heapAlignment.at(type); 
 	description.SizeInBytes = m_size;
 
-	HRESULT hr = m_pDevice->CreateHeap(&description, __uuidof(ID3D12Heap), reinterpret_cast<void**>(&m_pHeap));
+	HRESULT hr = m_pDevice->CreateHeap(&description, IID_PPV_ARGS(&m_pHeap));
 	assert(SUCCEEDED(hr));
 	
 	m_bInitialized = true;
@@ -61,9 +61,12 @@ void UploadHeap::Init(ID3D12Device* pDevice, const U64 size, const Type type)
 void UploadHeap::Alloc(ID3D12Resource** ppResource, const D3D12_RESOURCE_DESC& desc, void* data, const size_t dataSize, 
 					   const D3D12_RESOURCE_STATES initialState, const D3D12_CLEAR_VALUE* clearValue)
 {
+	// Check if there's any space left.
 	assert(m_currentOffset < m_size);
-	HRESULT hr = m_pDevice->CreatePlacedResource(m_pHeap, m_currentOffset, &desc, initialState, clearValue, __uuidof(ID3D12Resource), reinterpret_cast<void**>(ppResource));
+	
+	HRESULT hr = m_pDevice->CreatePlacedResource(m_pHeap, m_currentOffset, &desc, initialState, clearValue, IID_PPV_ARGS(ppResource));
 	assert(SUCCEEDED(hr));
+
 	m_currentOffset += s_heapAlignment.at(m_type);
 
 	UINT8* dataBegin = nullptr;
