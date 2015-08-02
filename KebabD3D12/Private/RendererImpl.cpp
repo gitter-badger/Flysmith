@@ -12,6 +12,7 @@ using namespace DirectX;
 Renderer::Impl::Impl(HWND hwnd, U32 windowWidth, U32 windowHeight)
 	: m_viewport(static_cast<F32>(windowWidth), static_cast<F32>(windowHeight))
 	, m_scissorRect(windowWidth, windowHeight)
+	, m_camera({ 0.0f, 0.0f, 0.0f })
 {
 	auto pAdapter = m_hwCaps.GetDisplayAdapters()[0].Get();
 	m_device.Init(pAdapter.Get());
@@ -47,6 +48,26 @@ void Renderer::Impl::LoadAssets()
 	auto indexBufSize = tempMesh.indices.size() * sizeof(U32);
 	ResourceConfig descIBuf(ResourceType::BUFFER, indexBufSize);
 	m_uploadHeap.Alloc(&m_pIndexBuffer, descIBuf.Get(), &tempMesh.indices[0], indexBufSize);
+
+	D3D12_HEAP_PROPERTIES heapProperties;
+	heapProperties.Type = D3D12_HEAP_TYPE_UPLOAD;
+	heapProperties.CPUPageProperty = D3D12_CPU_PAGE_PROPERTY_UNKNOWN;
+	heapProperties.MemoryPoolPreference = D3D12_MEMORY_POOL_UNKNOWN;
+	heapProperties.CreationNodeMask = 0;
+	heapProperties.VisibleNodeMask = 0;
+
+	auto cbSize = sizeof(m_viewProjMat);
+
+	ResourceConfig descCB(ResourceType::BUFFER, cbSize);
+
+	m_device.Get()->CreateCommittedResource(&heapProperties, 
+											D3D12_HEAP_FLAG_NONE, 
+											&descCB.Get(), 
+											D3D12_RESOURCE_STATE_GENERIC_READ, 
+											nullptr,
+											IID_PPV_ARGS(&m_pConstantBuffer));
+
+	m_pConstantBuffer->Map(0, nullptr, reinterpret_cast<void**>(&m_viewProjMat));
 
 	// 5. Create Descriptor Heaps
 	CreateDescriptorHeap();
@@ -95,11 +116,6 @@ void Renderer::Impl::CreatePipelineStateObject()
 void Renderer::Impl::CreateDescriptorHeap()
 {
 	m_cbDescHeap.Init(m_device.Get(), DescHeapType::CB_SR_UA, 1, true);
-}
-
-void Renderer::Impl::SwapBuffers()
-{
-	m_swapChain.Present(m_device.Get());
 }
 
 void Renderer::Impl::WaitForGPU()

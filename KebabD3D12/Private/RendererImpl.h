@@ -2,6 +2,7 @@
 #include "Renderer.h"
 
 #include "HardwareCaps.h"
+#include "Camera.h"
 #include "Device.h"
 #include "Fence.h"
 
@@ -47,10 +48,14 @@ namespace cuc
 
 		ID3D12Resource* m_pVertBuffer;
 		VertexBufferView m_vertBufferView;
+		
 		ID3D12Resource* m_pIndexBuffer;
 		IndexBufferView m_indexBufferView;
+		
 		ID3D12Resource* m_pConstantBuffer;
 		ConstantBufferView m_cbView;
+		DirectX::XMFLOAT4X4 m_viewProjMat;
+		Camera m_camera;
 
 		// Synchronization
 		Fence m_fence;
