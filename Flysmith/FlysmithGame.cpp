@@ -8,6 +8,7 @@ using namespace cuc;
 #include "Airfoil.h"
 using namespace DirectX;
 
+
 FlysmithGame::FlysmithGame(HINSTANCE hInstance)
 	: Application(hInstance)
 {

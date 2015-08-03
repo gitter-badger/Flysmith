@@ -45,3 +45,8 @@ XMMATRIX cuc::Camera::GetProjMatrix(float fov, float aspectRatio, float nearPlan
 {
 	return XMMatrixPerspectiveFovRH(fov, aspectRatio, nearPlane, farPlane);
 }
+
+void cuc::Camera::SetPosition(const DirectX::XMFLOAT3& newPosition)
+{
+	m_pImpl->m_position = newPosition;
+}

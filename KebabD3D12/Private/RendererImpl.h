@@ -54,7 +54,9 @@ namespace cuc
 		
 		ID3D12Resource* m_pConstantBuffer;
 		ConstantBufferView m_cbView;
+		U8* m_pCBDataBegin;
 		DirectX::XMFLOAT4X4 m_viewProjMat;
+		DirectX::XMFLOAT3 m_offset;
 		Camera m_camera;
 
 		// Synchronization
@@ -69,7 +71,6 @@ namespace cuc
 		void CreateRootSignature();
 		void CreatePipelineStateObject();
 		void CreateDescriptorHeap();
-		void SwapBuffers();
 		void WaitForGPU();
 		void PopulateCommandLists();
 

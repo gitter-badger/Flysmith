@@ -56,9 +56,7 @@ void Renderer::Impl::LoadAssets()
 	heapProperties.CreationNodeMask = 0;
 	heapProperties.VisibleNodeMask = 0;
 
-	auto cbSize = sizeof(m_viewProjMat);
-
-	ResourceConfig descCB(ResourceType::BUFFER, cbSize);
+	ResourceConfig descCB(ResourceType::BUFFER, sizeof(m_offset));
 
 	m_device.Get()->CreateCommittedResource(&heapProperties, 
 											D3D12_HEAP_FLAG_NONE, 
@@ -67,7 +65,10 @@ void Renderer::Impl::LoadAssets()
 											nullptr,
 											IID_PPV_ARGS(&m_pConstantBuffer));
 
-	m_pConstantBuffer->Map(0, nullptr, reinterpret_cast<void**>(&m_viewProjMat));
+	m_offset = { 0.0f, 0.0f,0.0f };
+
+	m_pConstantBuffer->Map(0, nullptr, reinterpret_cast<void**>(&m_pCBDataBegin));
+	memcpy(m_pCBDataBegin, &m_offset, sizeof(m_offset));
 
 	// 5. Create Descriptor Heaps
 	CreateDescriptorHeap();
@@ -150,8 +151,7 @@ void Renderer::Impl::PopulateCommandLists()
 
 	// Set root signature inline descriptors
 	XMMATRIX model = XMMatrixIdentity();
-	//ConstantBufferView cbView;
-	//m_commandList.Get()->SetGraphicsRootConstantBufferView(rootDescViewProjIndex, cbView.BufferLocation);
+	m_commandList.Get()->SetGraphicsRootConstantBufferView(rootDescViewProjIndex, m_pConstantBuffer->GetGPUVirtualAddress());
 
 	m_commandList.SetResourceBarriers(&TransitionBarrier(m_swapChain.GetRenderTarget(), D3D12_RESOURCE_STATE_PRESENT, D3D12_RESOURCE_STATE_RENDER_TARGET));
 

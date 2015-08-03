@@ -14,6 +14,8 @@ namespace cuc
 		~Camera();
 		DirectX::XMMATRIX GetViewMatrix();
 		DirectX::XMMATRIX GetProjMatrix(float fov, float aspectRatio, float nearPlane = 1.0f, float farPlane = 1000.0f);
+		
+		void SetPosition(const DirectX::XMFLOAT3&);
 
 	private:
 		struct Impl;

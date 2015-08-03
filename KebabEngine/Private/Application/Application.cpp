@@ -9,7 +9,6 @@ EventManager cuc::g_eventManager;
 Application::Application(HINSTANCE hInstance)
 {
 	m_pWindow = std::make_shared<Window>(hInstance, 800, 600, L"Kebab Engine", false);
-
 	m_pRenderer = new Renderer(m_pWindow->GetHandle(), m_pWindow->GetWidth(), m_pWindow->GetHeight());
 }
 
@@ -30,6 +29,7 @@ U32 Application::Run()
 
 		g_eventManager.DispatchEvents();
 
+		m_pRenderer->Update();
 		m_pRenderer->Render();
 	}
 

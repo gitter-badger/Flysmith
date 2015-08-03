@@ -19,6 +19,18 @@ Renderer::~Renderer()
 {
 	delete m_pImpl;
 }
+#include <cmath>
+XMFLOAT3 pos = { 0.0f, 0.0f, 0.0f };
+void Renderer::Update()
+{
+	float yOffset = ((rand() % 200) / 100.0f - 1.0f) / 100.0f;
+	pos.x++;
+	m_pImpl->m_camera.SetPosition(pos);
+	//memcpy(m_pImpl->m_pCBDataBegin, &m_pImpl->m_viewProjMat, sizeof(m_pImpl->m_viewProjMat));
+	m_pImpl->m_offset.x -= 0.001f;
+	m_pImpl->m_offset.y += yOffset;
+	memcpy(m_pImpl->m_pCBDataBegin, &m_pImpl->m_offset, sizeof(m_pImpl->m_offset));
+}
 
 void Renderer::Render()
 {
