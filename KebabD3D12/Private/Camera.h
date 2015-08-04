@@ -2,9 +2,6 @@
 #include "PublicDef.h"
 
 
-struct DirectX::XMMATRIX;
-struct DirectX::XMFLOAT3;
-
 namespace cuc
 {
 	class Camera

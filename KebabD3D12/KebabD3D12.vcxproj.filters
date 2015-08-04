@@ -99,6 +99,9 @@
     <ClCompile Include="Private\Descriptors\ConstantBufferView.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Private\Transform.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Private\DXGI\DXGIAdapter.h">
@@ -189,6 +192,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Private\Descriptors\ConstantBufferView.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Public\Transform.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -1,6 +1,7 @@
 #include "PCH.h"
 #include "Renderer.h"
 #include "RendererImpl.h"
+#include "Transform.h"
 
 using namespace cuc;
 using namespace DirectX;
@@ -19,36 +20,38 @@ Renderer::~Renderer()
 {
 	delete m_pImpl;
 }
-#include <cmath>
-XMFLOAT3 pos = { 0.0f, 0.0f, 0.0f };
+
+#define DEG2RAD(deg) ((deg)*((XM_PI)/(180.0)));
+Transform objTransform;
+float angle = 1.0f;
 void Renderer::Update()
 {
-	float yOffset = ((rand() % 200) / 100.0f - 1.0f) / 100.0f;
-	pos.x++;
-	m_pImpl->m_camera.SetPosition(pos);
-	//memcpy(m_pImpl->m_pCBDataBegin, &m_pImpl->m_viewProjMat, sizeof(m_pImpl->m_viewProjMat));
-	m_pImpl->m_offset.x -= 0.001f;
-	m_pImpl->m_offset.y += yOffset;
-	memcpy(m_pImpl->m_pCBDataBegin, &m_pImpl->m_offset, sizeof(m_pImpl->m_offset));
+	float rangle = DEG2RAD(angle);
+	objTransform.SetPosition(0.0f, 0.0f, 0.5f);
+	objTransform.RotateZ(rangle);
+	objTransform.RotateX(rangle);
+	m_pImpl->m_viewProjMat = objTransform.GetMatrix();
+	
+	/*XMStoreFloat4x4(&m_pImpl->m_viewProjMat, m_pImpl->m_camera.GetProjMatrix(0.8f, 800.0f / 600.0f) *
+											 m_pImpl->m_camera.GetViewMatrix() *
+											 XMMatrixTranslationFromVector(XMLoadFloat3(&posObj)));
+	*/
+	memcpy(m_pImpl->m_pCBDataBegin, &m_pImpl->m_viewProjMat, sizeof(m_pImpl->m_viewProjMat));
 }
 
 void Renderer::Render()
 {
-	// 1. Update per-frame data
-	XMStoreFloat4x4(&m_pImpl->m_viewProjMat, m_pImpl->m_camera.GetProjMatrix(0.8f, 800.0f / 600.0f) *
-											 m_pImpl->m_camera.GetViewMatrix());
-	
-	// 2. Populate command lists
+	// Populate command lists
 	m_pImpl->PopulateCommandLists();
 
-	// 3. Execute command lists
+	// Execute command lists
 	ID3D12CommandList* ppCommandLists[] = { m_pImpl->m_commandList.Get() };
 	m_pImpl->m_commandQueue.ExecuteCommandLists(ppCommandLists);
 
-	// 4. Swap buffers
+	// Swap buffers
 	m_pImpl->m_swapChain.Present(m_pImpl->m_device.Get());
 
-	// 5. Synchronize
+	// Synchronize
 	m_pImpl->WaitForGPU();
 }
 	

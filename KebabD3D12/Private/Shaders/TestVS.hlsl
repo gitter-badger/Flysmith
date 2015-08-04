@@ -3,8 +3,7 @@
 
 cbuffer cbPerDraw : register(b1)
 {
-	//float4x4 viewProjMat;
-	float3 offset;
+	float4x4 viewProjMat;
 };
 
 cbuffer cbPerObject : register(b2)
@@ -19,9 +18,8 @@ VS_OUT main(VS_IN vsin)
 								  0, 1, 0, 0,
 								  0, 0, 1, 0,
 								  0, 0, 0, 1);
-	//float4x4 worldViewProjMat = viewProjMat * worldMatV;
-	//output.pos = mul(float4(vsin.pos, 1.0f), worldViewProjMat);
-	output.pos = float4(vsin.pos + offset, 1.0f);
+	float4x4 worldViewProjMat = viewProjMat * worldMatV;
+	output.pos = mul(float4(vsin.pos, 1.0f), viewProjMat);
 	output.color = vsin.color;
 
 	return output;

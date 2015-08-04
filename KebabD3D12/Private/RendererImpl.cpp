@@ -56,7 +56,7 @@ void Renderer::Impl::LoadAssets()
 	heapProperties.CreationNodeMask = 0;
 	heapProperties.VisibleNodeMask = 0;
 
-	ResourceConfig descCB(ResourceType::BUFFER, sizeof(m_offset));
+	ResourceConfig descCB(ResourceType::BUFFER, sizeof(m_viewProjMat));
 
 	m_device.Get()->CreateCommittedResource(&heapProperties, 
 											D3D12_HEAP_FLAG_NONE, 
@@ -65,10 +65,8 @@ void Renderer::Impl::LoadAssets()
 											nullptr,
 											IID_PPV_ARGS(&m_pConstantBuffer));
 
-	m_offset = { 0.0f, 0.0f,0.0f };
-
 	m_pConstantBuffer->Map(0, nullptr, reinterpret_cast<void**>(&m_pCBDataBegin));
-	memcpy(m_pCBDataBegin, &m_offset, sizeof(m_offset));
+	memcpy(m_pCBDataBegin, &m_viewProjMat, sizeof(m_viewProjMat));
 
 	// 5. Create Descriptor Heaps
 	CreateDescriptorHeap();
@@ -109,7 +107,7 @@ void Renderer::Impl::CreatePipelineStateObject()
 	auto VS = ShaderProgram::GetCompiledShader(ShaderType::VERTEX_SHADER, L"D:\\Flysmith\\KebabD3D12\\Private\\Shaders\\TestVS.hlsl");
 	auto PS = ShaderProgram::GetCompiledShader(ShaderType::PIXEL_SHADER, L"D:\\Flysmith\\KebabD3D12\\Private\\Shaders\\TestPS.hlsl");
 
-	RasterizerStateConfig rastState(D3D12_FILL_MODE::D3D12_FILL_MODE_WIREFRAME);
+	RasterizerStateConfig rastState(D3D12_FILL_MODE_WIREFRAME, D3D12_CULL_MODE_NONE);
 
 	m_pso.Init(m_device.Get(), layout, 2, m_pRootSignature.Get(), nullptr, &rastState, &VS, &PS);
 }
@@ -150,7 +148,6 @@ void Renderer::Impl::PopulateCommandLists()
 	m_commandList.SetRoot32BitConstants(rootConstColorIndex, 4, color, 0);
 
 	// Set root signature inline descriptors
-	XMMATRIX model = XMMatrixIdentity();
 	m_commandList.Get()->SetGraphicsRootConstantBufferView(rootDescViewProjIndex, m_pConstantBuffer->GetGPUVirtualAddress());
 
 	m_commandList.SetResourceBarriers(&TransitionBarrier(m_swapChain.GetRenderTarget(), D3D12_RESOURCE_STATE_PRESENT, D3D12_RESOURCE_STATE_RENDER_TARGET));
