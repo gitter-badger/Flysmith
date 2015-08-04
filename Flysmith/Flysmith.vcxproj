@@ -166,6 +166,7 @@
   <ItemGroup>
     <ClInclude Include="Airfoil.h" />
     <ClInclude Include="AssetLocator.h" />
+    <ClInclude Include="CameraController.h" />
     <ClInclude Include="FlysmithGame.h" />
     <ClInclude Include="PCH.h" />
   </ItemGroup>

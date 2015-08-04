@@ -1,5 +1,6 @@
 #include "PCH.h"
 #include "Application.h"
+#include "GameStateEvents.h"
 #include "Events\EventManager.h"
 #include "Window.h"
 using namespace cuc;
@@ -21,27 +22,24 @@ U32 Application::Run()
 {
 	m_timer.Reset();
 	
-	Transform tempObjTransform;
-	Transform tempCamTransform;
-
 	while (!m_pWindow->ShouldClose())
 	{
 		m_pWindow->RunMessageLoop();
 		
 		m_timer.Update();
-
+		g_eventManager.PostEvent(TickEvent::Create(m_timer.GetElapsed()));
 		g_eventManager.DispatchEvents();
+		UpdateScene();
 
-		// Do stuff with tempObjTransform
-		tempObjTransform.TranslateX(.0001f);
-		// Do stuff with tempCamTransform
-
-		// Copy scene data to renderer
-		m_pRenderer->UpdateView(tempCamTransform);
-		m_pRenderer->UpdateScene(tempObjTransform);
-
+		CopyRenderData();
 		m_pRenderer->Render();
 	}
 
 	return 0;
+}
+
+void cuc::Application::CopyRenderData()
+{
+	m_pRenderer->UpdateScene(m_scene.objTransforms[0]);
+	m_pRenderer->UpdateView(m_scene.camTransform);
 }

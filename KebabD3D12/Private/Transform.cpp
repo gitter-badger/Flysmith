@@ -88,7 +88,7 @@ bool cuc::operator==(const cuc::Transform& lhs, const cuc::Transform& rhs)
 	{
 		for (U8 col = 0; col < 4; col++)
 		{
-			if (lhs.m_transformMatrix.m[line][col] != rhs.m_transformMatrix.m[line][col])
+			if (lhs.m_transformMatrix(line, col) != rhs.m_transformMatrix(line, col))
 				return false;
 		}
 	}
@@ -102,7 +102,7 @@ bool cuc::operator!=(const cuc::Transform& lhs, const cuc::Transform& rhs)
 	{
 		for (U8 col = 0; col < 4; col++)
 		{
-			if (lhs.m_transformMatrix.m[line][col] != rhs.m_transformMatrix.m[line][col])
+			if (lhs.m_transformMatrix(line, col) != rhs.m_transformMatrix(line, col))
 				return true;
 		}
 	}

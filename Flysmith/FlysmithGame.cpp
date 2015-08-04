@@ -1,16 +1,14 @@
 #include "PCH.h"
 #include "FlysmithGame.h"
-#include "EventListener.h"
-#include "Event.h"
-#include "InputEvents.h"
-using namespace cuc;
-#include "../KebabD3D12/Public/Mesh.h"
 #include "Airfoil.h"
+#include "../KebabD3D12/Public/Mesh.h"
+using namespace cuc;
 using namespace DirectX;
 
 
 FlysmithGame::FlysmithGame(HINSTANCE hInstance)
 	: Application(hInstance)
+	, m_camController(&m_scene.camTransform)
 {
 	Airfoil foil;
 	foil.LoadFromFile(L"NACA4415.dat");
@@ -31,4 +29,13 @@ FlysmithGame::FlysmithGame(HINSTANCE hInstance)
 		mesh.SetTriangle(i, numPoints - i, i - 1);
 	
 	m_pRenderer->SubmitMesh(mesh);
+
+	m_scene.objTransforms.push_back(Transform());
+}
+
+void FlysmithGame::UpdateScene()
+{
+	// Do stuff with tempObjTransform
+	//m_scene.objTransforms[0].TranslateX(.0001f);
+	// Do stuff with tempCamTransform
 }

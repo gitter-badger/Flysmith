@@ -57,6 +57,9 @@
     <ClCompile Include="Private\PCH.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Private\Events\GameStateEvents.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Events\Delegate.h">
@@ -111,6 +114,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Private\PCH.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Public\Scene.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Public\GameStateEvents.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

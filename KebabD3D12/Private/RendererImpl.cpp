@@ -66,7 +66,6 @@ void Renderer::Impl::LoadAssets()
 											IID_PPV_ARGS(&m_pConstantBuffer));
 
 	m_pConstantBuffer->Map(0, nullptr, reinterpret_cast<void**>(&m_pCBDataBegin));
-	memcpy(m_pCBDataBegin, &m_viewProjMat, sizeof(m_viewProjMat));
 
 	// 5. Create Descriptor Heaps
 	CreateDescriptorHeap();

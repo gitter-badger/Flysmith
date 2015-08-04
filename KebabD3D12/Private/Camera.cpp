@@ -8,7 +8,7 @@ Camera::Camera(float aspectRatio, float fov, float nearPlane, float farPlane)
 	, m_fieldOfView(fov)
 	, m_nearPlane(nearPlane)
 	, m_farPlane(farPlane)
-	, m_lookDirection(0.0f, 0.0f, -1.0f)
+	, m_lookDirection(0.0f, 0.0f, 1.0f)
 	, m_upDirection(0.0f, 1.0f, 0.0f)
 {
 	CacheViewProjMatrices();
@@ -65,13 +65,14 @@ void cuc::Camera::SetPosition(const XMFLOAT3& newPosition)
 
 void cuc::Camera::CacheViewProjMatrices()
 {
-	auto viewMat = XMMatrixLookToRH(XMLoadFloat3(&m_transform.GetPosition()),
+	auto viewMat = XMMatrixLookToLH(XMLoadFloat3(&m_transform.GetPosition()),
 									XMLoadFloat3(&m_lookDirection),
 									XMLoadFloat3(&m_upDirection));
 
-	auto projMat = XMMatrixPerspectiveFovRH(m_fieldOfView, m_aspectRatio, m_nearPlane, m_farPlane);
-
+	// Rarely updated. To split.
+	auto projMat = XMMatrixPerspectiveFovLH(m_fieldOfView, m_aspectRatio, m_nearPlane, m_farPlane);
+	
 	XMStoreFloat4x4(&m_viewMatrix, viewMat);
 	XMStoreFloat4x4(&m_projMatrix, projMat);
-	XMStoreFloat4x4(&m_viewProjMatrix, projMat * viewMat);
+	XMStoreFloat4x4(&m_viewProjMatrix, viewMat * projMat);
 }

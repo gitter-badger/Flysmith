@@ -210,9 +210,12 @@
     <ClCompile Include="Private\Events\InputEvents.cpp" />
     <ClCompile Include="Private\Resources\FileReader.cpp" />
     <ClCompile Include="Private\Utils\Variant.cpp" />
+    <ClCompile Include="Private\Events\GameStateEvents.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Public\Application.h" />
+    <ClInclude Include="Public\GameStateEvents.h" />
+    <ClInclude Include="Public\Scene.h" />
     <ClInclude Include="Public\WindowEvents.h" />
     <ClInclude Include="Public\Timer.h" />
     <ClInclude Include="Private\Application\Window.h" />
