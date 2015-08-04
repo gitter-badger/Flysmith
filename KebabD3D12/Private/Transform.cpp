@@ -3,160 +3,221 @@
 
 
 cuc::Transform::Transform()
-	: position(0.0f, 0.0f, 0.0f)
-	, rotation(0.0f, 0.0f, 0.0f)
-	, scale(1.0f, 1.0f, 1.0f)
+	: m_position(0.0f, 0.0f, 0.0f)
+	, m_rotation(0.0f, 0.0f, 0.0f)
+	, m_scale(1.0f, 1.0f, 1.0f)
 {
 	CacheTransform();
 }
 
-DirectX::XMFLOAT4X4 cuc::Transform::GetMatrix() const
+cuc::Transform::Transform(const XMFLOAT3& position)
+	: m_position(position)
+	, m_rotation(0.0f, 0.0f, 0.0f)
+	, m_scale(1.0f, 1.0f, 1.0f)
+{
+	CacheTransform();
+}
+
+cuc::Transform::Transform(const XMFLOAT3& position, const XMFLOAT3& rotation)
+	: m_position(position)
+	, m_rotation(rotation)
+	, m_scale(1.0f, 1.0f, 1.0f)
+{
+	CacheTransform();
+}
+
+cuc::Transform::Transform(const XMFLOAT3& position, float pitch, float yaw, float roll)
+	: m_position(position)
+	, m_rotation(pitch, yaw, roll)
+	, m_scale(1.0f, 1.0f, 1.0f)
+{
+	CacheTransform();
+}
+
+cuc::Transform::Transform(const XMFLOAT3& position, const XMFLOAT3& rotation, const XMFLOAT3& scale)
+	: m_position(position)
+	, m_rotation(rotation)
+	, m_scale(scale)
+{
+	CacheTransform();
+}
+
+const XMFLOAT4X4& cuc::Transform::GetMatrix() const
 {
 	return transformMatrix;
 }
 
+const XMFLOAT3& cuc::Transform::GetPosition() const
+{
+	return m_position;
+}
+
+const XMFLOAT3& cuc::Transform::GetRotation() const
+{
+	return m_rotation;
+}
+
+const XMFLOAT3& cuc::Transform::GetScale() const
+{
+	return m_scale;
+}
+
 void cuc::Transform::SetPosition(const DirectX::XMFLOAT3& newPosition)
 {
-	position = newPosition;
+	m_position = newPosition;
 	CacheTransform();
 }
 
 void cuc::Transform::SetPosition(float x, float y, float z)
 {
-	position = { x, y, z };
+	m_position = { x, y, z };
 	CacheTransform();
 }
 
 void cuc::Transform::SetRotation(const DirectX::XMFLOAT3& newRotation)
 {
-	rotation = newRotation;
+	m_rotation = newRotation;
 	CacheTransform();
 }
 
 void cuc::Transform::SetRotation(float x, float y, float z)
 {
-	rotation = { x, y, z };
+	m_rotation = { x, y, z };
+	CacheTransform();
+}
+
+void cuc::Transform::SetScale(float byUniformScale)
+{
+	m_scale = { byUniformScale, byUniformScale, byUniformScale };
 	CacheTransform();
 }
 
 void cuc::Transform::SetScale(const DirectX::XMFLOAT3& newScale)
 {
-	scale = newScale;
+	m_scale = newScale;
 	CacheTransform();
 }
 
 void cuc::Transform::SetScale(float x, float y, float z)
 {
-	scale = { x, y, z };
+	m_scale = { x, y, z };
 	CacheTransform();
 }
 
 void cuc::Transform::Translate(const DirectX::XMFLOAT3& dPosition)
 {
-	position.x += dPosition.x;
-	position.y += dPosition.y;
-	position.z += dPosition.z;
+	m_position.x += dPosition.x;
+	m_position.y += dPosition.y;
+	m_position.z += dPosition.z;
 	CacheTransform();
 }
 
 void cuc::Transform::Translate(float dX, float dY, float dZ)
 {
-	position.x += dX;
-	position.y += dY;
-	position.z += dZ;
+	m_position.x += dX;
+	m_position.y += dY;
+	m_position.z += dZ;
 	CacheTransform();
 }
 
 void cuc::Transform::TranslateX(float dX)
 {
-	position.x += dX;
+	m_position.x += dX;
 	CacheTransform();
 }
 
 void cuc::Transform::TranslateY(float dY)
 {
-	position.y += dY;
+	m_position.y += dY;
 	CacheTransform();
 }
 
 void cuc::Transform::TranslateZ(float dZ)
 {
-	position.z += dZ;
+	m_position.z += dZ;
 	CacheTransform();
 }
 
 void cuc::Transform::Rotate(const DirectX::XMFLOAT3& dRotation)
 {
-	rotation.x += dRotation.x;
-	rotation.y += dRotation.y;
-	rotation.z += dRotation.z;
+	m_rotation.x += dRotation.x;
+	m_rotation.y += dRotation.y;
+	m_rotation.z += dRotation.z;
 	CacheTransform();
 }
 
 void cuc::Transform::Rotate(float dPitchAngle, float dYawAngle, float dRollAngle)
 {
-	rotation.x += dPitchAngle;
-	rotation.y += dYawAngle;
-	rotation.z += dRollAngle;
+	m_rotation.x += dPitchAngle;
+	m_rotation.y += dYawAngle;
+	m_rotation.z += dRollAngle;
 	CacheTransform();
 }
 
 void cuc::Transform::RotateX(float dPitchAngle)
 {
-	rotation.x += dPitchAngle;
+	m_rotation.x += dPitchAngle;
 	CacheTransform();
 }
 
 void cuc::Transform::RotateY(float dYawAngle)
 {
-	rotation.y += dYawAngle;
+	m_rotation.y += dYawAngle;
 	CacheTransform();
 }
 
 void cuc::Transform::RotateZ(float dRollAngle)
 {
-	rotation.z += dRollAngle;
+	m_rotation.z += dRollAngle;
+	CacheTransform();
+}
+
+void cuc::Transform::Scale(float uniformScale)
+{
+	m_scale.x *= uniformScale;
+	m_scale.y *= uniformScale;
+	m_scale.z *= uniformScale;
 	CacheTransform();
 }
 
 void cuc::Transform::Scale(const DirectX::XMFLOAT3& dScale)
 {
-	scale.x *= dScale.x;
-	scale.y *= dScale.y;
-	scale.z *= dScale.z;
+	m_scale.x *= dScale.x;
+	m_scale.y *= dScale.y;
+	m_scale.z *= dScale.z;
 	CacheTransform();
 }
 
 void cuc::Transform::Scale(float byX, float byY, float byZ)
 {
-	scale.x *= byX;
-	scale.y *= byY;
-	scale.z *= byZ;
+	m_scale.x *= byX;
+	m_scale.y *= byY;
+	m_scale.z *= byZ;
 	CacheTransform();
 }
 
 void cuc::Transform::ScaleX(float byX)
 {
-	scale.x *= byX;
+	m_scale.x *= byX;
 	CacheTransform();
 }
 
 void cuc::Transform::ScaleY(float byY)
 {
-	scale.y *= byY;
+	m_scale.y *= byY;
 	CacheTransform();
 }
 
 void cuc::Transform::ScaleZ(float byZ)
 {
-	scale.z *= byZ;
+	m_scale.z *= byZ;
 	CacheTransform();
 }
 
 void cuc::Transform::CacheTransform()
 {
 	// Scale -> Rotate -> Translate
-	XMStoreFloat4x4(&transformMatrix, XMMatrixScalingFromVector(XMLoadFloat3(&scale)) *
-									  XMMatrixRotationRollPitchYawFromVector(XMLoadFloat3(&rotation)) *
-									  XMMatrixTranslationFromVector(XMLoadFloat3(&position)));
+	XMStoreFloat4x4(&transformMatrix, XMMatrixScalingFromVector(XMLoadFloat3(&m_scale)) *
+									  XMMatrixRotationRollPitchYawFromVector(XMLoadFloat3(&m_rotation)) *
+									  XMMatrixTranslationFromVector(XMLoadFloat3(&m_position)));
 }

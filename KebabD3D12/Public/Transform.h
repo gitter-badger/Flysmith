@@ -9,8 +9,16 @@ namespace cuc
 	{
 	public:
 		Transform();
+		Transform(const XMFLOAT3& position);
+		Transform(const XMFLOAT3& position, const XMFLOAT3& rotation);
+		Transform(const XMFLOAT3& position, float pitch, float yaw, float roll);
+		Transform(const XMFLOAT3& position, const XMFLOAT3& rotation, const XMFLOAT3& scale);
 
-		XMFLOAT4X4 GetMatrix() const;
+		const XMFLOAT4X4& GetMatrix() const;
+
+		const XMFLOAT3& GetPosition() const;
+		const XMFLOAT3& GetRotation() const;
+		const XMFLOAT3& GetScale() const;
 
 		// Absolute values
 		void SetPosition(const XMFLOAT3&);
@@ -19,6 +27,7 @@ namespace cuc
 		void SetRotation(const XMFLOAT3&);
 		void SetRotation(float pitchAngle, float yawAngle, float rollAngle);
 		
+		void SetScale(float uniformScale);
 		void SetScale(const XMFLOAT3&);
 		void SetScale(float x, float y, float z);
 
@@ -35,6 +44,7 @@ namespace cuc
 		void RotateY(float dYawAngle);
 		void RotateZ(float dRollAngle);
 
+		void Scale(float byUniformScale);
 		void Scale(const XMFLOAT3&);
 		void Scale(float byX, float byY, float byZ);
 		void ScaleX(float byX);
@@ -45,8 +55,8 @@ namespace cuc
 		void CacheTransform();
 		XMFLOAT4X4 transformMatrix;
 
-		XMFLOAT3 position;
-		XMFLOAT3 rotation;
-		XMFLOAT3 scale;
+		XMFLOAT3 m_position;
+		XMFLOAT3 m_rotation;
+		XMFLOAT3 m_scale;
 	};
 }

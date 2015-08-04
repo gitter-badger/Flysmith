@@ -28,14 +28,15 @@ void Renderer::Update()
 {
 	float rangle = DEG2RAD(angle);
 	objTransform.SetPosition(0.0f, 0.0f, 0.5f);
+	objTransform.SetScale(2.0f);
 	objTransform.RotateZ(rangle);
 	objTransform.RotateX(rangle);
 	m_pImpl->m_viewProjMat = objTransform.GetMatrix();
 	
 	/*XMStoreFloat4x4(&m_pImpl->m_viewProjMat, m_pImpl->m_camera.GetProjMatrix(0.8f, 800.0f / 600.0f) *
 											 m_pImpl->m_camera.GetViewMatrix() *
-											 XMMatrixTranslationFromVector(XMLoadFloat3(&posObj)));
-	*/
+											 XMLoadFloat4x4(&objTransform.GetMatrix()));*/
+	
 	memcpy(m_pImpl->m_pCBDataBegin, &m_pImpl->m_viewProjMat, sizeof(m_pImpl->m_viewProjMat));
 }
 
