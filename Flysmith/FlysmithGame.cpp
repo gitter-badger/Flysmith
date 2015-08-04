@@ -27,7 +27,7 @@ FlysmithGame::FlysmithGame(HINSTANCE hInstance)
 	}
 
 	auto numPoints = foil.points.size();
-	for (int i = 1; i < numPoints; i++)
+	for (U32 i = 1; i < numPoints; i++)
 		mesh.SetTriangle(i, numPoints - i, i - 1);
 	
 	m_pRenderer->SubmitMesh(mesh);

@@ -149,9 +149,6 @@
     <ClInclude Include="Private\Resources\ResourceConfig.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Private\Camera.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Public\Mesh.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -195,6 +192,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Public\Transform.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Private\Camera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

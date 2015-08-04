@@ -1,8 +1,11 @@
 #pragma once
 #include "PublicDef.h"
+#include <DirectXMath.h>
 using namespace DirectX;
 
 
+#pragma warning(push)
+#pragma warning(disable:4251)
 namespace cuc
 {
 	class KEBAB12_API Transform
@@ -15,10 +18,21 @@ namespace cuc
 		Transform(const XMFLOAT3& position, const XMFLOAT3& rotation, const XMFLOAT3& scale);
 
 		const XMFLOAT4X4& GetMatrix() const;
+		const XMMATRIX GetMatrixXM() const;
 
 		const XMFLOAT3& GetPosition() const;
+		const XMVECTOR GetPositionXM() const;
+		
 		const XMFLOAT3& GetRotation() const;
+		const XMVECTOR GetRotationXM() const;
+
 		const XMFLOAT3& GetScale() const;
+		const XMVECTOR GetScaleXM() const;
+
+		// TODO: Transform concatenation
+
+		friend bool operator==(const Transform&, const Transform&);
+		friend bool operator!=(const Transform&, const Transform&);
 
 		// Absolute values
 		void SetPosition(const XMFLOAT3&);
@@ -53,10 +67,11 @@ namespace cuc
 
 	private:
 		void CacheTransform();
-		XMFLOAT4X4 transformMatrix;
+		XMFLOAT4X4 m_transformMatrix;
 
 		XMFLOAT3 m_position;
 		XMFLOAT3 m_rotation;
 		XMFLOAT3 m_scale;
 	};
 }
+#pragma warning(pop)

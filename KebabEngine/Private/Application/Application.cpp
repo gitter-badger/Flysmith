@@ -20,6 +20,9 @@ Application::~Application()
 U32 Application::Run()
 {
 	m_timer.Reset();
+	
+	Transform tempObjTransform;
+	Transform tempCamTransform;
 
 	while (!m_pWindow->ShouldClose())
 	{
@@ -29,7 +32,14 @@ U32 Application::Run()
 
 		g_eventManager.DispatchEvents();
 
-		m_pRenderer->Update();
+		// Do stuff with tempObjTransform
+		tempObjTransform.TranslateX(.0001f);
+		// Do stuff with tempCamTransform
+
+		// Copy scene data to renderer
+		m_pRenderer->UpdateView(tempCamTransform);
+		m_pRenderer->UpdateScene(tempObjTransform);
+
 		m_pRenderer->Render();
 	}
 

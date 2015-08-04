@@ -21,22 +21,21 @@ Renderer::~Renderer()
 	delete m_pImpl;
 }
 
-#define DEG2RAD(deg) ((deg)*((XM_PI)/(180.0)));
 Transform objTransform;
-float angle = 1.0f;
-void Renderer::Update()
+
+// Copy visible render components
+void Renderer::UpdateScene(const Transform& tempSingleEntity)
 {
-	float rangle = DEG2RAD(angle);
-	objTransform.SetPosition(0.0f, 0.0f, 0.5f);
-	objTransform.SetScale(2.0f);
-	objTransform.RotateZ(rangle);
-	objTransform.RotateX(rangle);
+	objTransform = tempSingleEntity;
+
 	m_pImpl->m_viewProjMat = objTransform.GetMatrix();
-	
-	/*XMStoreFloat4x4(&m_pImpl->m_viewProjMat, m_pImpl->m_camera.GetProjMatrix(0.8f, 800.0f / 600.0f) *
-											 m_pImpl->m_camera.GetViewMatrix() *
-											 XMLoadFloat4x4(&objTransform.GetMatrix()));*/
-	
+	memcpy(m_pImpl->m_pCBDataBegin, &m_pImpl->m_viewProjMat, sizeof(m_pImpl->m_viewProjMat));
+}
+
+// Copy camera state
+void Renderer::UpdateView(const Transform& camTransform)
+{
+	XMStoreFloat4x4(&m_pImpl->m_viewProjMat, m_pImpl->m_camera.GetViewProjMatrixXM() * objTransform.GetMatrixXM());
 	memcpy(m_pImpl->m_pCBDataBegin, &m_pImpl->m_viewProjMat, sizeof(m_pImpl->m_viewProjMat));
 }
 

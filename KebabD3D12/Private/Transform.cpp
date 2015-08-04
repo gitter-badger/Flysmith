@@ -44,7 +44,12 @@ cuc::Transform::Transform(const XMFLOAT3& position, const XMFLOAT3& rotation, co
 
 const XMFLOAT4X4& cuc::Transform::GetMatrix() const
 {
-	return transformMatrix;
+	return m_transformMatrix;
+}
+
+const XMMATRIX cuc::Transform::GetMatrixXM() const
+{
+	return XMLoadFloat4x4(&m_transformMatrix);
 }
 
 const XMFLOAT3& cuc::Transform::GetPosition() const
@@ -52,14 +57,57 @@ const XMFLOAT3& cuc::Transform::GetPosition() const
 	return m_position;
 }
 
+const XMVECTOR cuc::Transform::GetPositionXM() const
+{
+	return XMLoadFloat3(&m_position);
+}
+
 const XMFLOAT3& cuc::Transform::GetRotation() const
 {
 	return m_rotation;
 }
 
+const XMVECTOR cuc::Transform::GetRotationXM() const
+{
+	return XMLoadFloat3(&m_rotation);
+}
+
 const XMFLOAT3& cuc::Transform::GetScale() const
 {
 	return m_scale;
+}
+
+const XMVECTOR cuc::Transform::GetScaleXM() const
+{
+	return XMLoadFloat3(&m_scale);
+}
+
+bool cuc::operator==(const cuc::Transform& lhs, const cuc::Transform& rhs)
+{
+	for (U8 line = 0; line < 4; line++)
+	{
+		for (U8 col = 0; col < 4; col++)
+		{
+			if (lhs.m_transformMatrix.m[line][col] != rhs.m_transformMatrix.m[line][col])
+				return false;
+		}
+	}
+
+	return true;
+}
+
+bool cuc::operator!=(const cuc::Transform& lhs, const cuc::Transform& rhs)
+{
+	for (U8 line = 0; line < 4; line++)
+	{
+		for (U8 col = 0; col < 4; col++)
+		{
+			if (lhs.m_transformMatrix.m[line][col] != rhs.m_transformMatrix.m[line][col])
+				return true;
+		}
+	}
+
+	return false;
 }
 
 void cuc::Transform::SetPosition(const DirectX::XMFLOAT3& newPosition)
@@ -217,7 +265,7 @@ void cuc::Transform::ScaleZ(float byZ)
 void cuc::Transform::CacheTransform()
 {
 	// Scale -> Rotate -> Translate
-	XMStoreFloat4x4(&transformMatrix, XMMatrixScalingFromVector(XMLoadFloat3(&m_scale)) *
-									  XMMatrixRotationRollPitchYawFromVector(XMLoadFloat3(&m_rotation)) *
-									  XMMatrixTranslationFromVector(XMLoadFloat3(&m_position)));
+	XMStoreFloat4x4(&m_transformMatrix, XMMatrixScalingFromVector(XMLoadFloat3(&m_scale)) *
+									    XMMatrixRotationRollPitchYawFromVector(XMLoadFloat3(&m_rotation)) *
+									    XMMatrixTranslationFromVector(XMLoadFloat3(&m_position)));
 }

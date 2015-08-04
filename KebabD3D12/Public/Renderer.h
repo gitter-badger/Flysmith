@@ -1,6 +1,7 @@
 #pragma once
 #include "PublicDef.h"
 #include "Mesh.h"
+#include "Transform.h"
 
 
 namespace cuc
@@ -11,7 +12,12 @@ namespace cuc
 		Renderer(const HWND, const U32 windowWidth, const U32 windowHeight);
 		~Renderer();
 
-		void Update();
+		// Copy visible render components
+		void UpdateScene(const Transform& tempSingleEntity);
+
+		// Copy camera transform
+		void UpdateView(const Transform&);
+		
 		void Render();
 
 		void SubmitMesh(Mesh);
