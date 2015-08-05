@@ -5,7 +5,7 @@
 CameraController::CameraController(XMFLOAT3* camPosition, XMFLOAT4* camRotation)
 	: m_camPosition(camPosition)
 	, m_camRotation(camRotation)
-	, m_keys{'W', 'A', 'S', 'D'}
+	, m_keys{'W', 'A', 'S', 'D', 'J', 'L', 'I', 'K', 'Q', 'E'}
 {
 	RegisterForEvent(KeyboardEvent::KeyUpId);
 	RegisterForEvent(KeyboardEvent::KeyDownId);
@@ -15,40 +15,48 @@ CameraController::CameraController(XMFLOAT3* camPosition, XMFLOAT4* camRotation)
 
 void CameraController::Update(F32 dt)
 {
-	float distance = 10.0f * dt;
-	float turnSpeed = 1.0f;
+	float lDistance = 10.0f * dt;
+	float rDistance = 1.0f * dt;
+
+	static XMFLOAT3 xAxis(1.0f, 0.0f, 0.0f),
+					yAxis(0.0f, 1.0f, 0.0f),
+					zAxis(0.0f, 0.0f, 1.0f);
 
 	if (m_bPressed['W'])
-	{
-		XMVECTOR move;
-		move = GetLookAt();
-		move *= distance;
-		Move(move);
-	}
+		Move(GetLookAt() * lDistance);
 
 	if (m_bPressed['S'])
-	{
-		XMVECTOR move;
-		move = -GetLookAt();
-		move *= distance;
-		Move(move);
-	}
+		Move(-GetLookAt() * lDistance);
 
 	if (m_bPressed['A'])
-	{
-		XMVECTOR move;
-		move = -GetRight();
-		move *= distance;
-		Move(move);
-	}
+		Move(-GetRight() * lDistance);
 
 	if (m_bPressed['D'])
-	{
-		XMVECTOR move;
-		move = GetRight();
-		move *= distance;
-		Move(move);
-	}
+		Move(GetRight() * lDistance);
+
+	if (m_bPressed['I'])
+		Rotate(xAxis, rDistance);
+
+	if (m_bPressed['K'])
+		Rotate(xAxis, -rDistance);
+
+	if (m_bPressed['J'])
+		Rotate(yAxis, rDistance);
+
+	if (m_bPressed['L'])
+		Rotate(yAxis, -rDistance);
+
+	if (m_bPressed['Q'])
+		Rotate(zAxis, -rDistance);
+
+	if (m_bPressed['E'])
+		Rotate(zAxis, rDistance);
+}
+
+void CameraController::Rotate(const XMFLOAT3& axis, float angle)
+{
+	XMVECTOR rot = XMQuaternionRotationAxis(XMLoadFloat3(&axis), angle);
+	XMStoreFloat4(m_camRotation, XMQuaternionMultiply(XMLoadFloat4(m_camRotation), rot));
 }
 
 XMVECTOR CameraController::GetLookAt()

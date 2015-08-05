@@ -20,6 +20,7 @@ public:
 private:
 	void Init();
 	void Move(CXMVECTOR);
+	void Rotate(const XMFLOAT3& axis, float angle);
 	void SetFocalPointAndPosition(CXMVECTOR focalPoint, CXMVECTOR position);
 	void SetAxis(CXMVECTOR lookAt, CXMVECTOR up, CXMVECTOR right);
 	XMVECTOR GetRight();
