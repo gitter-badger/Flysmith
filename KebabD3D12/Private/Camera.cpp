@@ -4,13 +4,13 @@ using namespace cuc;
 
 
 Camera::Camera(float aspectRatio, float fov, float nearPlane, float farPlane)
-	: m_aspectRatio(aspectRatio)
+	: m_position(0.0f, 0.0f, 0.0f)
+	, m_aspectRatio(aspectRatio)
 	, m_fieldOfView(fov)
 	, m_nearPlane(nearPlane)
 	, m_farPlane(farPlane)
-	, m_lookDirection(0.0f, 0.0f, 1.0f)
-	, m_upDirection(0.0f, 1.0f, 0.0f)
 {
+	XMStoreFloat4(&m_rotation, XMQuaternionIdentity());
 	CacheViewProjMatrices();
 }
 
@@ -48,27 +48,20 @@ const XMMATRIX Camera::GetViewProjMatrixXM() const
 	return XMLoadFloat4x4(&m_viewProjMatrix);
 }
 
-void cuc::Camera::SetTransform(const Transform& transform)
+void cuc::Camera::Update(const XMFLOAT3& position, const XMFLOAT4& rotation)
 {
-	if (transform != m_transform)
-	{
-		m_transform = transform;
-		CacheViewProjMatrices();
-	}
-}
-
-void cuc::Camera::SetPosition(const XMFLOAT3& newPosition)
-{
-	m_transform.SetPosition(newPosition);
+	m_position = position;
+	m_rotation = rotation;
 	CacheViewProjMatrices();
 }
 
 void cuc::Camera::CacheViewProjMatrices()
 {
-	auto viewMat = XMMatrixLookToLH(XMLoadFloat3(&m_transform.GetPosition()),
-									XMLoadFloat3(&m_lookDirection),
-									XMLoadFloat3(&m_upDirection));
-
+	auto translate = XMMatrixTranslation(-m_position.x, -m_position.y, -m_position.z);
+	
+	auto viewMat = translate * XMMatrixRotationQuaternion(XMLoadFloat4(&m_rotation));
+	//XMStoreFloat4x4(&m_viewMatrix, m_transform.GetMatrixXM() * XMLoadFloat4x4(&m_viewMatrix));
+	
 	// Rarely updated. To split.
 	auto projMat = XMMatrixPerspectiveFovLH(m_fieldOfView, m_aspectRatio, m_nearPlane, m_farPlane);
 	

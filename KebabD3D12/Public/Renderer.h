@@ -16,7 +16,7 @@ namespace cuc
 		void UpdateScene(const Transform& tempSingleEntity);
 
 		// Copy camera transform
-		void UpdateView(const Transform&);
+		void UpdateView(const XMFLOAT3& position, const XMFLOAT4& rotation);
 		
 		void Render();
 

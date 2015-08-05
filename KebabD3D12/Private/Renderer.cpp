@@ -33,9 +33,9 @@ void Renderer::UpdateScene(const Transform& tempSingleEntity)
 }
 
 // Copy camera state
-void Renderer::UpdateView(const Transform& camTransform)
+void Renderer::UpdateView(const XMFLOAT3& position, const XMFLOAT4& rotation)
 {
-	m_pImpl->m_camera.SetTransform(camTransform);
+	m_pImpl->m_camera.Update(position, rotation);
 
 	//auto wvp = XMMatrixTranspose(objTransform.GetMatrixXM()) * XMMatrixTranspose(m_pImpl->m_camera.GetViewMatrixXM()) * XMMatrixTranspose(m_pImpl->m_camera.GetProjMatrixXM());
 	auto wvp = objTransform.GetMatrixXM() * m_pImpl->m_camera.GetViewProjMatrixXM();
@@ -98,6 +98,6 @@ void Renderer::SubmitMesh(Mesh mesh)
 		, 4, 2, 6
 	};
 	
-	m_pImpl->tempMesh = mesh;
+	//m_pImpl->tempMesh = mesh;
 	m_pImpl->LoadAssets();
 }

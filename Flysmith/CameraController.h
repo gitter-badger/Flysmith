@@ -5,67 +5,28 @@
 #include "GameStateEvents.h"
 #include <memory>
 #include "../../KebabD3D12/Public/Transform.h"
+#include "StringHash.h"
+#include <map>
 using namespace cuc;
 
 
 class CameraController : public EventListener
 {
 public:
-	CameraController(Transform* camTransform)
-		: m_camTransform(camTransform)
-	{
-		RegisterForEvent(KeyboardEvent::KeyUpId);
-		RegisterForEvent(KeyboardEvent::KeyDownId);
-		RegisterForEvent("Tick"_HASH);
-	}
-
-	Transform* m_camTransform;
-
-	void HandleEvent(const Event& ev)
-	{
-		float velocity = 1.0f;
-
-		switch (ev.type)
-		{
-		case "Tick"_HASH:
-		{
-			float disp = velocity * ev[0].GetFloat();
-			if (bPressedW)
-				m_camTransform->TranslateZ(disp);
-			if (bPressedS)
-				m_camTransform->TranslateZ(-disp);
-			if (bPressedA)
-				m_camTransform->TranslateX(-disp);
-			if (bPressedD)
-				m_camTransform->TranslateX(disp);
-			break;
-		}
-		case KeyboardEvent::KeyUpId:
-			if (ev[KeyboardEvent::U32_KEY_CODE].GetUnsignedInt() == 'W')
-				bPressedW = false;
-			if (ev[KeyboardEvent::U32_KEY_CODE].GetUnsignedInt() == 'A')
-				bPressedA = false;
-			if (ev[KeyboardEvent::U32_KEY_CODE].GetUnsignedInt() == 'S')
-				bPressedS = false;
-			if (ev[KeyboardEvent::U32_KEY_CODE].GetUnsignedInt() == 'D')
-				bPressedD = false;
-			break;
-		case KeyboardEvent::KeyDownId:
-			if (ev[KeyboardEvent::U32_KEY_CODE].GetUnsignedInt() == 'W')
-				bPressedW = true;
-			if (ev[KeyboardEvent::U32_KEY_CODE].GetUnsignedInt() == 'A')
-				bPressedA = true;
-			if (ev[KeyboardEvent::U32_KEY_CODE].GetUnsignedInt() == 'S')
-				bPressedS = true;
-			if (ev[KeyboardEvent::U32_KEY_CODE].GetUnsignedInt() == 'D')
-				bPressedD = true;
-			break;
-		}
-	}
+	CameraController(XMFLOAT3* camPosition, XMFLOAT4* camRotation);
+	void Update(F32 dt);
+	void HandleEvent(const Event& ev);
 
 private:
-	bool bPressedW = false,
-		 bPressedS = false,
-		 bPressedA = false,
-		 bPressedD = false;
+	void Init();
+	void Move(CXMVECTOR);
+	void SetFocalPointAndPosition(CXMVECTOR focalPoint, CXMVECTOR position);
+	void SetAxis(CXMVECTOR lookAt, CXMVECTOR up, CXMVECTOR right);
+	XMVECTOR GetRight();
+	XMVECTOR GetLookAt();
+
+	XMFLOAT3* m_camPosition;
+	XMFLOAT4* m_camRotation;
+	std::map<char, bool> m_bPressed;
+	std::vector<char> m_keys;
 };

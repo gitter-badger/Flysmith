@@ -9,7 +9,8 @@ namespace cuc
 	class KEBAB_API Scene
 	{
 	public:
-		Transform camTransform;
+		XMFLOAT3 m_camPosition;
+		XMFLOAT4 m_camRotation;
 		std::vector<Transform> objTransforms;
 	};
 }
