@@ -191,6 +191,7 @@
     <ClCompile Include="Private\Pipeline\CommandList.cpp" />
     <ClCompile Include="Private\Pipeline\CommandQueue.cpp" />
     <ClCompile Include="Private\Mesh.cpp" />
+    <ClCompile Include="Private\Math\Quaternion.cpp" />
     <ClCompile Include="Private\Renderer.cpp" />
     <ClCompile Include="Private\RendererImpl.cpp" />
     <ClCompile Include="Private\Resources\DescriptorHeap.cpp" />
@@ -214,7 +215,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="Private\Transform.cpp" />
+    <ClCompile Include="Private\Math\Transform.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Private\Camera.h" />
@@ -231,6 +232,7 @@
     <ClInclude Include="Private\Resources\ResourceConfig.h" />
     <ClInclude Include="Public\Mesh.h" />
     <ClInclude Include="Public\PublicDef.h" />
+    <ClInclude Include="Public\Quaternion.h" />
     <ClInclude Include="Public\Renderer.h" />
     <ClInclude Include="Private\Resources\DescriptorHeap.h" />
     <ClInclude Include="Private\DXGI\DXGIAdapter.h" />

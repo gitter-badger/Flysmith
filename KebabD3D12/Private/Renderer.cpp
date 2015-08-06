@@ -33,7 +33,7 @@ void Renderer::UpdateScene(const Transform& tempSingleEntity)
 }
 
 // Copy camera state
-void Renderer::UpdateView(const XMFLOAT3& position, const XMFLOAT4& rotation)
+void Renderer::UpdateView(const XMFLOAT3& position, const Quaternion& rotation)
 {
 	m_pImpl->m_camera.Update(position, rotation);
 

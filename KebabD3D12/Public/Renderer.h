@@ -2,6 +2,7 @@
 #include "PublicDef.h"
 #include "Mesh.h"
 #include "Transform.h"
+#include "Quaternion.h"
 
 
 namespace cuc
@@ -16,7 +17,7 @@ namespace cuc
 		void UpdateScene(const Transform& tempSingleEntity);
 
 		// Copy camera transform
-		void UpdateView(const XMFLOAT3& position, const XMFLOAT4& rotation);
+		void UpdateView(const XMFLOAT3& position, const Quaternion& rotation);
 		
 		void Render();
 

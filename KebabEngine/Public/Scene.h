@@ -1,6 +1,7 @@
 #pragma once
 #include "PublicDef.h"
 #include "../../KebabD3D12/Public/Transform.h"
+#include "../../KebabD3D12/Public/Quaternion.h"
 #include <vector>
 
 
@@ -10,7 +11,7 @@ namespace cuc
 	{
 	public:
 		XMFLOAT3 m_camPosition;
-		XMFLOAT4 m_camRotation;
+		Quaternion m_camRotation;
 		std::vector<Transform> objTransforms;
 	};
 }

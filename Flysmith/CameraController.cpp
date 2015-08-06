@@ -2,7 +2,7 @@
 #include "CameraController.h"
 
 
-CameraController::CameraController(XMFLOAT3* camPosition, XMFLOAT4* camRotation)
+CameraController::CameraController(XMFLOAT3* camPosition, Quaternion* camRotation)
 	: m_camPosition(camPosition)
 	, m_camRotation(camRotation)
 	, m_keys{'W', 'A', 'S', 'D', 'J', 'L', 'I', 'K', 'Q', 'E'}
@@ -35,44 +35,36 @@ void CameraController::Update(F32 dt)
 		Move(GetRight() * lDistance);
 
 	if (m_bPressed['I'])
-		Rotate(xAxis, rDistance);
+		m_camRotation->Concat(xAxis, rDistance);
 
 	if (m_bPressed['K'])
-		Rotate(xAxis, -rDistance);
+		m_camRotation->Concat(xAxis, -rDistance);
 
 	if (m_bPressed['J'])
-		Rotate(yAxis, rDistance);
+		m_camRotation->Concat(yAxis, rDistance);
 
 	if (m_bPressed['L'])
-		Rotate(yAxis, -rDistance);
+		m_camRotation->Concat(yAxis, -rDistance);
 
 	if (m_bPressed['Q'])
-		Rotate(zAxis, -rDistance);
+		m_camRotation->Concat(zAxis, -rDistance);
 
 	if (m_bPressed['E'])
-		Rotate(zAxis, rDistance);
-}
-
-void CameraController::Rotate(const XMFLOAT3& axis, float angle)
-{
-	XMVECTOR rot = XMQuaternionRotationAxis(XMLoadFloat3(&axis), angle);
-	XMStoreFloat4(m_camRotation, XMQuaternionMultiply(XMLoadFloat4(m_camRotation), rot));
+		m_camRotation->Concat(zAxis, rDistance);
 }
 
 XMVECTOR CameraController::GetLookAt()
 {
-	auto rot = XMMatrixRotationQuaternion(XMLoadFloat4(m_camRotation));
 	XMFLOAT4X4 mRot;
-	XMStoreFloat4x4(&mRot, rot);
+	XMStoreFloat4x4(&mRot, m_camRotation->GetMatrixXM());
 	XMFLOAT3 lookAtVec{ mRot(0, 2), mRot(1, 2), mRot(2, 2) };
 	return XMLoadFloat3(&lookAtVec);
 }
 
 XMVECTOR CameraController::GetRight()
 {
-	auto rot = XMMatrixRotationQuaternion(XMLoadFloat4(m_camRotation));
 	XMFLOAT4X4 mRot;
-	XMStoreFloat4x4(&mRot, rot);
+	XMStoreFloat4x4(&mRot, m_camRotation->GetMatrixXM());
 	XMFLOAT3 rightVec{ mRot(0, 0), mRot(1, 0), mRot(2, 0) };
 	return XMLoadFloat3(&rightVec);
 }
@@ -80,20 +72,13 @@ XMVECTOR CameraController::GetRight()
 void CameraController::Init()
 {
 	XMFLOAT3 vFocalPoint(0.0f, 0.0f, 0.0f);
-	XMFLOAT3 position(0.0f, 0.0f, -20.0f);
+	XMVECTOR focalPoint = XMLoadFloat3(&vFocalPoint);
 
-	SetFocalPointAndPosition(XMLoadFloat3(&vFocalPoint), XMLoadFloat3(&position));
-}
-
-void CameraController::Move(CXMVECTOR disp)
-{
-	XMStoreFloat3(m_camPosition, XMLoadFloat3(m_camPosition) + disp);
-}
-
-void CameraController::SetFocalPointAndPosition(CXMVECTOR focalPoint, CXMVECTOR position)
-{
 	XMFLOAT3 vUp(0.0f, 1.0f, 0.0f);
 	XMVECTOR up = XMLoadFloat3(&vUp);
+
+	XMFLOAT3 vPosition(0.0f, 0.0f, -20.0f);
+	XMVECTOR position = XMLoadFloat3(&vPosition);
 
 	XMStoreFloat3(m_camPosition, position);
 
@@ -102,6 +87,11 @@ void CameraController::SetFocalPointAndPosition(CXMVECTOR focalPoint, CXMVECTOR 
 	XMVECTOR upVec = XMVector3Normalize(XMVector3Cross(lookAt, right));
 
 	SetAxis(lookAt, upVec, right);
+}
+
+void CameraController::Move(CXMVECTOR disp)
+{
+	XMStoreFloat3(m_camPosition, XMLoadFloat3(m_camPosition) + disp);
 }
 
 void CameraController::SetAxis(CXMVECTOR lookAt, CXMVECTOR up, CXMVECTOR right)
@@ -126,7 +116,7 @@ void CameraController::SetAxis(CXMVECTOR lookAt, CXMVECTOR up, CXMVECTOR right)
 	rot(2, 1) = upVec.z;
 	rot(2, 2) = lookAtVec.z;
 
-	XMStoreFloat4(m_camRotation, XMQuaternionRotationMatrix(XMLoadFloat4x4(&rot)));
+	m_camRotation->SetFromMatrix(rot);
 }
 
 void CameraController::HandleEvent(const Event& ev)

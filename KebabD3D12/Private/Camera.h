@@ -1,6 +1,7 @@
 #pragma once
 #include "PublicDef.h"
 #include "Transform.h"
+#include "Quaternion.h"
 using namespace DirectX;
 
 
@@ -21,7 +22,7 @@ namespace cuc
 		const XMFLOAT4X4& GetViewProjMatrix() const;
 		const XMMATRIX GetViewProjMatrixXM() const;
 		
-		void Update(const XMFLOAT3& position, const XMFLOAT4& rotation);
+		void Update(const XMFLOAT3& position, const Quaternion& rotation);
 
 	private:
 		void CacheViewProjMatrices();
@@ -32,7 +33,7 @@ namespace cuc
 		float m_farPlane;
 
 		XMFLOAT3 m_position;
-		XMFLOAT4 m_rotation;
+		Quaternion m_rotation;
 
 		XMFLOAT4X4 m_projMatrix;
 		XMFLOAT4X4 m_viewMatrix;

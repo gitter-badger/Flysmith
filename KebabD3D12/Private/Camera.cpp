@@ -10,7 +10,6 @@ Camera::Camera(float aspectRatio, float fov, float nearPlane, float farPlane)
 	, m_nearPlane(nearPlane)
 	, m_farPlane(farPlane)
 {
-	XMStoreFloat4(&m_rotation, XMQuaternionIdentity());
 	CacheViewProjMatrices();
 }
 
@@ -48,7 +47,7 @@ const XMMATRIX Camera::GetViewProjMatrixXM() const
 	return XMLoadFloat4x4(&m_viewProjMatrix);
 }
 
-void cuc::Camera::Update(const XMFLOAT3& position, const XMFLOAT4& rotation)
+void cuc::Camera::Update(const XMFLOAT3& position, const Quaternion& rotation)
 {
 	m_position = position;
 	m_rotation = rotation;
@@ -59,7 +58,7 @@ void cuc::Camera::CacheViewProjMatrices()
 {
 	auto translate = XMMatrixTranslation(-m_position.x, -m_position.y, -m_position.z);
 	
-	auto viewMat = translate * XMMatrixRotationQuaternion(XMLoadFloat4(&m_rotation));
+	auto viewMat = translate * m_rotation.GetMatrixXM();
 	//XMStoreFloat4x4(&m_viewMatrix, m_transform.GetMatrixXM() * XMLoadFloat4x4(&m_viewMatrix));
 	
 	// Rarely updated. To split.
