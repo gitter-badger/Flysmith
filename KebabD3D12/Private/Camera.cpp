@@ -46,7 +46,7 @@ const XMMATRIX Camera::GetViewProjMatrixXM() const
 	return XMLoadFloat4x4(&m_viewProjMatrix);
 }
 
-void cuc::Camera::Update(const Transform& transform)
+void cuc::Camera::Update(const TransformNoScale& transform)
 {
 	m_transform = transform;
 	CacheViewProjMatrices();

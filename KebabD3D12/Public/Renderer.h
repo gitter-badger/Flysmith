@@ -17,7 +17,7 @@ namespace cuc
 		void UpdateScene(const Transform& tempSingleEntity);
 
 		// Copy camera transform
-		void UpdateView(const Transform& rotation);
+		void UpdateView(const TransformNoScale& camTransform);
 		
 		void Render();
 

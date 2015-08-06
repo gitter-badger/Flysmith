@@ -105,6 +105,9 @@
     <ClCompile Include="Private\Math\Transform.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Private\Math\TransformNoScale.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Private\DXGI\DXGIAdapter.h">
@@ -201,6 +204,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Public\Quaternion.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Public\TransformNoScale.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

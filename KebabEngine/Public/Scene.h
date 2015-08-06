@@ -9,7 +9,7 @@ namespace cuc
 	class KEBAB_API Scene
 	{
 	public:
-		Transform m_camTransform;
+		TransformNoScale m_camTransform;
 		std::vector<Transform> objTransforms;
 	};
 }

@@ -33,7 +33,7 @@ void Renderer::UpdateScene(const Transform& tempSingleEntity)
 }
 
 // Copy camera state
-void Renderer::UpdateView(const Transform& transform)
+void Renderer::UpdateView(const TransformNoScale& transform)
 {
 	m_pImpl->m_camera.Update(transform);
 

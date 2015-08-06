@@ -2,7 +2,7 @@
 #include "CameraController.h"
 
 
-CameraController::CameraController(Transform* camTransform)
+CameraController::CameraController(TransformNoScale* camTransform)
 	: m_camTransform(camTransform)
 	, m_keys{'W', 'A', 'S', 'D', 'J', 'L', 'I', 'K', 'Q', 'E'}
 {
@@ -16,10 +16,6 @@ void CameraController::Update(F32 dt)
 {
 	float lDistance = 10.0f * dt;
 	float rDistance = 1.0f * dt;
-
-	static XMFLOAT3 xAxis(1.0f, 0.0f, 0.0f),
-					yAxis(0.0f, 1.0f, 0.0f),
-					zAxis(0.0f, 0.0f, 1.0f);
 
 	if (m_bPressed['W'])
 		m_camTransform->Translate(GetLookAt() * lDistance);
