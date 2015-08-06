@@ -6,16 +6,23 @@ using namespace DirectX;
 
 namespace cuc
 {
+#pragma warning(push)
+#pragma warning(disable:4251)
 	class KEBAB12_API Quaternion
 	{
 	public:
 		Quaternion();
+		Quaternion(const Quaternion&);
+		Quaternion& operator=(const Quaternion&);
 		explicit Quaternion(CXMMATRIX mat);
 		explicit Quaternion(const XMFLOAT4X4& mat);
 		explicit Quaternion(const XMFLOAT3& axis, float angle);
 		explicit Quaternion(const XMFLOAT4& quaternion);
+		explicit Quaternion(float pitch, float yaw, float roll);
 		explicit Quaternion(CXMVECTOR quaternion);
 
+		void SetFromEuler(float pitch, float yaw, float roll);
+		void SetFromEuler(const XMFLOAT3&);
 		void SetFromMatrix(CXMMATRIX mat);
 		void SetFromMatrix(const XMFLOAT4X4& mat);
 		
@@ -27,8 +34,15 @@ namespace cuc
 		void Concat(CXMVECTOR quaternion);
 		void Concat(const Quaternion& other);
 		Quaternion operator*=(const Quaternion&);
+		Quaternion operator*(const Quaternion&);
 
 	private:
 		XMFLOAT4 quat;
 	};
+
+	const XMFLOAT3 xAxis = { 1.0f, 0.0f, 0.0f },
+				   yAxis = { 0.0f, 1.0f, 0.0f },
+				   zAxis = { 0.0f, 0.0f, 1.0f };
+
+#pragma warning(pop)
 }

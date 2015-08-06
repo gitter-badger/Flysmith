@@ -6,6 +6,8 @@
 
 namespace cuc
 {
+#pragma warning(push)
+#pragma warning(disable:4251)
 	class KEBAB12_API Vertex
 	{
 	public:
@@ -24,4 +26,5 @@ namespace cuc
 		// CCW order
 		void SetTriangle(U32 v0, U32 v1, U32 v2);
 	};
+#pragma warning(pop)
 }

@@ -22,7 +22,7 @@ namespace cuc
 		const XMFLOAT4X4& GetViewProjMatrix() const;
 		const XMMATRIX GetViewProjMatrixXM() const;
 		
-		void Update(const XMFLOAT3& position, const Quaternion& rotation);
+		void Update(const Transform&);
 
 	private:
 		void CacheViewProjMatrices();
@@ -32,8 +32,7 @@ namespace cuc
 		float m_nearPlane;
 		float m_farPlane;
 
-		XMFLOAT3 m_position;
-		Quaternion m_rotation;
+		Transform m_transform;
 
 		XMFLOAT4X4 m_projMatrix;
 		XMFLOAT4X4 m_viewMatrix;

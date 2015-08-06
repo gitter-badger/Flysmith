@@ -8,6 +8,17 @@ Quaternion::Quaternion()
 	XMStoreFloat4(&quat, XMQuaternionIdentity());
 }
 
+cuc::Quaternion::Quaternion(const Quaternion& other)
+	: quat(other.quat)
+{
+}
+
+Quaternion& cuc::Quaternion::operator=(const Quaternion& other)
+{
+	quat = other.quat;
+	return *this;
+}
+
 Quaternion::Quaternion(CXMMATRIX mat)
 {
 	SetFromMatrix(mat);
@@ -28,9 +39,24 @@ Quaternion::Quaternion(const XMFLOAT4& quaternion)
 	XMStoreFloat4(&quat, XMLoadFloat4(&quaternion));
 }
 
+cuc::Quaternion::Quaternion(float pitch, float yaw, float roll)
+{
+	SetFromEuler(pitch, yaw, roll);
+}
+
 Quaternion::Quaternion(CXMVECTOR quaternion)
 {
 	XMStoreFloat4(&quat, quaternion);
+}
+
+void cuc::Quaternion::SetFromEuler(float pitch, float yaw, float roll)
+{
+	*this = Quaternion(xAxis, pitch) * Quaternion(yAxis, yaw) * Quaternion(zAxis, roll);
+}
+
+void cuc::Quaternion::SetFromEuler(const XMFLOAT3& vec)
+{
+	SetFromEuler(vec.x, vec.y, vec.z);
 }
 
 void Quaternion::SetFromMatrix(CXMMATRIX mat)
@@ -79,4 +105,9 @@ Quaternion Quaternion::operator*=(const Quaternion& other)
 {
 	Concat(other);
 	return *this;
+}
+
+Quaternion cuc::Quaternion::operator*(const Quaternion& other)
+{
+	return Quaternion(XMQuaternionMultiply(XMLoadFloat4(&quat), XMLoadFloat4(&other.quat)));
 }

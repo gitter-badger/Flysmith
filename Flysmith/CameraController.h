@@ -14,19 +14,17 @@ using namespace cuc;
 class CameraController : public EventListener
 {
 public:
-	CameraController(XMFLOAT3* camPosition, Quaternion* camRotation);
+	CameraController(Transform* camRotation);
 	void Update(F32 dt);
 	void HandleEvent(const Event& ev);
 
 private:
 	void Init();
-	void Move(CXMVECTOR);
 	void SetAxis(CXMVECTOR lookAt, CXMVECTOR up, CXMVECTOR right);
 	XMVECTOR GetRight();
 	XMVECTOR GetLookAt();
 
-	XMFLOAT3* m_camPosition;
-	Quaternion* m_camRotation;
+	Transform* m_camTransform;
 	std::map<char, bool> m_bPressed;
 	std::vector<unsigned char> m_keys;
 };

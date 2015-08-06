@@ -41,5 +41,5 @@ U32 Application::Run()
 void cuc::Application::CopyRenderData()
 {
 	m_pRenderer->UpdateScene(m_scene.objTransforms[0]);
-	m_pRenderer->UpdateView(m_scene.m_camPosition, m_scene.m_camRotation);
+	m_pRenderer->UpdateView(m_scene.m_camTransform);
 }

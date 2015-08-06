@@ -33,9 +33,9 @@ void Renderer::UpdateScene(const Transform& tempSingleEntity)
 }
 
 // Copy camera state
-void Renderer::UpdateView(const XMFLOAT3& position, const Quaternion& rotation)
+void Renderer::UpdateView(const Transform& transform)
 {
-	m_pImpl->m_camera.Update(position, rotation);
+	m_pImpl->m_camera.Update(transform);
 
 	//auto wvp = XMMatrixTranspose(objTransform.GetMatrixXM()) * XMMatrixTranspose(m_pImpl->m_camera.GetViewMatrixXM()) * XMMatrixTranspose(m_pImpl->m_camera.GetProjMatrixXM());
 	auto wvp = objTransform.GetMatrixXM() * m_pImpl->m_camera.GetViewProjMatrixXM();

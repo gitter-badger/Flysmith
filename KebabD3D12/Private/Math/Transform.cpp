@@ -18,7 +18,7 @@ cuc::Transform::Transform(const XMFLOAT3& position)
 	CacheTransform();
 }
 
-cuc::Transform::Transform(const XMFLOAT3& position, const XMFLOAT3& rotation)
+cuc::Transform::Transform(const XMFLOAT3& position, const Quaternion& rotation)
 	: m_position(position)
 	, m_rotation(rotation)
 	, m_scale(1.0f, 1.0f, 1.0f)
@@ -34,7 +34,7 @@ cuc::Transform::Transform(const XMFLOAT3& position, float pitch, float yaw, floa
 	CacheTransform();
 }
 
-cuc::Transform::Transform(const XMFLOAT3& position, const XMFLOAT3& rotation, const XMFLOAT3& scale)
+cuc::Transform::Transform(const XMFLOAT3& position, const Quaternion& rotation, const XMFLOAT3& scale)
 	: m_position(position)
 	, m_rotation(rotation)
 	, m_scale(scale)
@@ -52,6 +52,11 @@ const XMMATRIX cuc::Transform::GetMatrixXM() const
 	return XMLoadFloat4x4(&m_transformMatrix);
 }
 
+const XMMATRIX cuc::Transform::GetRotationMatrixXM() const
+{
+	return m_rotation.GetMatrixXM();
+}
+
 const XMFLOAT3& cuc::Transform::GetPosition() const
 {
 	return m_position;
@@ -60,16 +65,6 @@ const XMFLOAT3& cuc::Transform::GetPosition() const
 const XMVECTOR cuc::Transform::GetPositionXM() const
 {
 	return XMLoadFloat3(&m_position);
-}
-
-const XMFLOAT3& cuc::Transform::GetRotation() const
-{
-	return m_rotation;
-}
-
-const XMVECTOR cuc::Transform::GetRotationXM() const
-{
-	return XMLoadFloat3(&m_rotation);
 }
 
 const XMFLOAT3& cuc::Transform::GetScale() const
@@ -110,6 +105,12 @@ bool cuc::operator!=(const cuc::Transform& lhs, const cuc::Transform& rhs)
 	return false;
 }
 
+void cuc::Transform::SetPosition(CXMVECTOR newPosition)
+{
+	XMStoreFloat3(&m_position, newPosition);
+	CacheTransform();
+}
+
 void cuc::Transform::SetPosition(const DirectX::XMFLOAT3& newPosition)
 {
 	m_position = newPosition;
@@ -122,15 +123,33 @@ void cuc::Transform::SetPosition(float x, float y, float z)
 	CacheTransform();
 }
 
+void cuc::Transform::SetRotation(CXMMATRIX rotMatrix)
+{
+	m_rotation.SetFromMatrix(rotMatrix);
+	CacheTransform();
+}
+
+void cuc::Transform::SetRotation(const XMFLOAT4X4& rotMatrix)
+{
+	m_rotation.SetFromMatrix(rotMatrix);
+	CacheTransform();
+}
+
 void cuc::Transform::SetRotation(const DirectX::XMFLOAT3& newRotation)
 {
-	m_rotation = newRotation;
+	m_rotation.SetFromEuler(newRotation);
 	CacheTransform();
 }
 
 void cuc::Transform::SetRotation(float x, float y, float z)
 {
-	m_rotation = { x, y, z };
+	m_rotation.SetFromEuler(x, y, z);
+	CacheTransform();
+}
+
+void cuc::Transform::SetRotation(const Quaternion& rotation)
+{
+	m_rotation = rotation;
 	CacheTransform();
 }
 
@@ -149,6 +168,12 @@ void cuc::Transform::SetScale(const DirectX::XMFLOAT3& newScale)
 void cuc::Transform::SetScale(float x, float y, float z)
 {
 	m_scale = { x, y, z };
+	CacheTransform();
+}
+
+void cuc::Transform::Translate(CXMVECTOR other)
+{
+	XMStoreFloat3(&m_position, XMLoadFloat3(&m_position) + other);
 	CacheTransform();
 }
 
@@ -186,37 +211,27 @@ void cuc::Transform::TranslateZ(float dZ)
 	CacheTransform();
 }
 
-void cuc::Transform::Rotate(const DirectX::XMFLOAT3& dRotation)
+void cuc::Transform::Rotate(const Quaternion& other)
 {
-	m_rotation.x += dRotation.x;
-	m_rotation.y += dRotation.y;
-	m_rotation.z += dRotation.z;
-	CacheTransform();
-}
-
-void cuc::Transform::Rotate(float dPitchAngle, float dYawAngle, float dRollAngle)
-{
-	m_rotation.x += dPitchAngle;
-	m_rotation.y += dYawAngle;
-	m_rotation.z += dRollAngle;
+	m_rotation.Concat(other);
 	CacheTransform();
 }
 
 void cuc::Transform::RotateX(float dPitchAngle)
 {
-	m_rotation.x += dPitchAngle;
+	m_rotation.Concat(xAxis, dPitchAngle);
 	CacheTransform();
 }
 
 void cuc::Transform::RotateY(float dYawAngle)
 {
-	m_rotation.y += dYawAngle;
+	m_rotation.Concat(yAxis, dYawAngle);
 	CacheTransform();
 }
 
 void cuc::Transform::RotateZ(float dRollAngle)
 {
-	m_rotation.z += dRollAngle;
+	m_rotation.Concat(zAxis, dRollAngle);
 	CacheTransform();
 }
 
@@ -266,6 +281,6 @@ void cuc::Transform::CacheTransform()
 {
 	// Scale -> Rotate -> Translate
 	XMStoreFloat4x4(&m_transformMatrix, XMMatrixScalingFromVector(XMLoadFloat3(&m_scale)) *
-									    XMMatrixRotationRollPitchYawFromVector(XMLoadFloat3(&m_rotation)) *
+									    m_rotation.GetMatrixXM() *
 									    XMMatrixTranslationFromVector(XMLoadFloat3(&m_position)));
 }

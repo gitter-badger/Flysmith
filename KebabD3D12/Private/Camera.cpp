@@ -4,8 +4,7 @@ using namespace cuc;
 
 
 Camera::Camera(float aspectRatio, float fov, float nearPlane, float farPlane)
-	: m_position(0.0f, 0.0f, 0.0f)
-	, m_aspectRatio(aspectRatio)
+	: m_aspectRatio(aspectRatio)
 	, m_fieldOfView(fov)
 	, m_nearPlane(nearPlane)
 	, m_farPlane(farPlane)
@@ -47,19 +46,17 @@ const XMMATRIX Camera::GetViewProjMatrixXM() const
 	return XMLoadFloat4x4(&m_viewProjMatrix);
 }
 
-void cuc::Camera::Update(const XMFLOAT3& position, const Quaternion& rotation)
+void cuc::Camera::Update(const Transform& transform)
 {
-	m_position = position;
-	m_rotation = rotation;
+	m_transform = transform;
 	CacheViewProjMatrices();
 }
 
 void cuc::Camera::CacheViewProjMatrices()
 {
-	auto translate = XMMatrixTranslation(-m_position.x, -m_position.y, -m_position.z);
-	
-	auto viewMat = translate * m_rotation.GetMatrixXM();
-	//XMStoreFloat4x4(&m_viewMatrix, m_transform.GetMatrixXM() * XMLoadFloat4x4(&m_viewMatrix));
+	auto posVec = m_transform.GetPosition();
+	auto translateMat = XMMatrixTranslation(-posVec.x, -posVec.y, -posVec.z);
+	auto viewMat = translateMat * m_transform.GetRotationMatrixXM();
 	
 	// Rarely updated. To split.
 	auto projMat = XMMatrixPerspectiveFovLH(m_fieldOfView, m_aspectRatio, m_nearPlane, m_farPlane);

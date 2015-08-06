@@ -8,7 +8,7 @@ using namespace DirectX;
 
 FlysmithGame::FlysmithGame(HINSTANCE hInstance)
 	: Application(hInstance)
-	, m_camController(&m_scene.m_camPosition, &m_scene.m_camRotation)
+	, m_camController(&m_scene.m_camTransform)
 {
 	Airfoil foil;
 	foil.LoadFromFile(L"NACA4415.dat");
