@@ -25,8 +25,6 @@ Renderer::Impl::Impl(HWND hwnd, U32 windowWidth, U32 windowHeight)
 
 Renderer::Impl::~Impl()
 {
-	if (m_pVertBuffer) m_pVertBuffer->Release();
-	if (m_pIndexBuffer) m_pIndexBuffer->Release();
 }
 
 void Renderer::Impl::LoadAssets()
@@ -37,47 +35,17 @@ void Renderer::Impl::LoadAssets()
 	// 2. Create PSO
 	CreatePipelineStateObject();
 
-	// 3. Create Resource Heaps
-	m_uploadHeap.Init(m_device.Get(), 3);
-
-	// 4. Create Resources
-	auto vertBufSize = tempMesh.verts.size() * sizeof(Vertex);
-	ResourceConfig descVBuf(ResourceType::BUFFER, vertBufSize);
-	m_uploadHeap.Alloc(&m_pVertBuffer, descVBuf.Get(), &tempMesh.verts[0], vertBufSize);
-	
-	auto indexBufSize = tempMesh.indices.size() * sizeof(U32);
-	ResourceConfig descIBuf(ResourceType::BUFFER, indexBufSize);
-	m_uploadHeap.Alloc(&m_pIndexBuffer, descIBuf.Get(), &tempMesh.indices[0], indexBufSize);
-
-	D3D12_HEAP_PROPERTIES heapProperties;
-	heapProperties.Type = D3D12_HEAP_TYPE_UPLOAD;
-	heapProperties.CPUPageProperty = D3D12_CPU_PAGE_PROPERTY_UNKNOWN;
-	heapProperties.MemoryPoolPreference = D3D12_MEMORY_POOL_UNKNOWN;
-	heapProperties.CreationNodeMask = 0;
-	heapProperties.VisibleNodeMask = 0;
-
+	// 3. Create Resources
 	ResourceConfig descCB(ResourceType::BUFFER, sizeof(m_viewProjMat));
+	m_wvpConstBuffer.CreateCommited(m_device.Get(), descCB, &m_pWVPDataBegin);
 
-	m_device.Get()->CreateCommittedResource(&heapProperties, 
-											D3D12_HEAP_FLAG_NONE, 
-											&descCB.Get(), 
-											D3D12_RESOURCE_STATE_GENERIC_READ, 
-											nullptr,
-											IID_PPV_ARGS(&m_pConstantBuffer));
-
-	m_pConstantBuffer->Map(0, nullptr, reinterpret_cast<void**>(&m_pCBDataBegin));
-
-	// 5. Create Descriptor Heaps
-	CreateDescriptorHeap();
+	// 4. Create Descriptor Heaps
+	m_cbDescHeap.Init(m_device.Get(), DescHeapType::CB_SR_UA, 1, true);
 	
-	// 6. Create Command List
+	// 5. Create Command List
 	m_commandList.Init(m_device.Get(), m_commandAllocator.Get(), m_pso.Get());
-	
-	// 7. Create Resource Descriptors
-	m_vertBufferView.Init(m_pVertBuffer->GetGPUVirtualAddress(), vertBufSize, sizeof(Vertex));
-	m_indexBufferView.Init(m_pIndexBuffer->GetGPUVirtualAddress(), indexBufSize);
-	
-	// 8. Synchronize
+
+	// 6. Synchronize
 	m_fence.Init(m_device.Get(), 0);
 	m_currentFence = 1;
 
@@ -86,6 +54,29 @@ void Renderer::Impl::LoadAssets()
 	m_handleEvent = CreateEventEx(nullptr, FALSE, FALSE, EVENT_ALL_ACCESS);
 
 	WaitForGPU();
+}
+bool bInit = false;
+void Renderer::Impl::CreateMeshResources()
+{
+	if (!bInit)
+	{
+		LoadAssets();
+		bInit = true;
+	}
+
+	m_vertBuffer.Reset();
+	auto vertBufSize = tempMesh.verts.size() * sizeof(Vertex);
+	ResourceConfig descVBuf(ResourceType::BUFFER, vertBufSize);
+	m_vertBuffer.CreateCommited(m_device.Get(), descVBuf, nullptr, &tempMesh.verts[0], vertBufSize);
+
+	m_indexBuffer.Reset();
+	auto indexBufSize = tempMesh.indices.size() * sizeof(U32);
+	ResourceConfig descIBuf(ResourceType::BUFFER, indexBufSize);
+	m_indexBuffer.CreateCommited(m_device.Get(), descIBuf, nullptr, &tempMesh.indices[0], indexBufSize);
+
+	// Create resource descriptors
+	m_vertBufferView.Init(m_vertBuffer.GetGPUVirtualAddress(), vertBufSize, sizeof(Vertex));
+	m_indexBufferView.Init(m_indexBuffer.GetGPUVirtualAddress(), indexBufSize);
 }
 
 void Renderer::Impl::CreateRootSignature()
@@ -109,11 +100,6 @@ void Renderer::Impl::CreatePipelineStateObject()
 	RasterizerStateConfig rastState(D3D12_FILL_MODE_WIREFRAME, D3D12_CULL_MODE_NONE);
 
 	m_pso.Init(m_device.Get(), layout, 2, m_pRootSignature.Get(), nullptr, &rastState, &VS, &PS);
-}
-
-void Renderer::Impl::CreateDescriptorHeap()
-{
-	m_cbDescHeap.Init(m_device.Get(), DescHeapType::CB_SR_UA, 1, true);
 }
 
 void Renderer::Impl::WaitForGPU()
@@ -147,7 +133,7 @@ void Renderer::Impl::PopulateCommandLists()
 	m_commandList.SetRoot32BitConstants(rootConstColorIndex, 4, color, 0);
 
 	// Set root signature inline descriptors
-	m_commandList.Get()->SetGraphicsRootConstantBufferView(rootDescViewProjIndex, m_pConstantBuffer->GetGPUVirtualAddress());
+	m_commandList.Get()->SetGraphicsRootConstantBufferView(rootDescViewProjIndex, m_wvpConstBuffer.GetGPUVirtualAddress());
 
 	m_commandList.SetResourceBarriers(&TransitionBarrier(m_swapChain.GetRenderTarget(), D3D12_RESOURCE_STATE_PRESENT, D3D12_RESOURCE_STATE_RENDER_TARGET));
 

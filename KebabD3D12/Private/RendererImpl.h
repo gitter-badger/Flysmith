@@ -8,6 +8,7 @@
 
 #include "Resources\DescriptorHeap.h"
 #include "Resources\UploadHeap.h"
+#include "Resources\Resource.h"
 
 #include "Pipeline\PipelineStateObject.h"
 #include "Pipeline\ScissorRectangle.h"
@@ -46,15 +47,14 @@ namespace cuc
 
 		DescriptorHeap m_cbDescHeap;
 
-		ID3D12Resource* m_pVertBuffer;
+		Resource m_vertBuffer;
 		VertexBufferView m_vertBufferView;
 		
-		ID3D12Resource* m_pIndexBuffer;
+		Resource m_indexBuffer;
 		IndexBufferView m_indexBufferView;
 		
-		ID3D12Resource* m_pConstantBuffer;
-		ConstantBufferView m_cbView;
-		U8* m_pCBDataBegin;
+		Resource m_wvpConstBuffer;
+		U8* m_pWVPDataBegin;
 		DirectX::XMFLOAT4X4 m_viewProjMat;
 		Camera m_camera;
 
@@ -69,9 +69,9 @@ namespace cuc
 		void LoadAssets();
 		void CreateRootSignature();
 		void CreatePipelineStateObject();
-		void CreateDescriptorHeap();
 		void WaitForGPU();
 		void PopulateCommandLists();
+		void CreateMeshResources();
 
 		Mesh tempMesh;
 		U32 rootConstColorIndex;

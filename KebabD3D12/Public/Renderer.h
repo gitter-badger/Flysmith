@@ -1,8 +1,7 @@
 #pragma once
 #include "PublicDef.h"
-#include "Mesh.h"
 #include "Transform.h"
-#include "Quaternion.h"
+#include "Mesh.h"
 
 
 namespace cuc
