@@ -23,7 +23,7 @@ bool Airfoil::LoadFromFile(const wchar_t* filename)
 
 	std::ifstream file(path);
 	std::string desc;
-	file >> desc;
+	std::getline(file, desc);
 
 	float x, y;
 	while ((file >> x) && (file >> y))

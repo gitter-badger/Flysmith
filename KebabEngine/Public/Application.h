@@ -23,7 +23,7 @@ namespace cuc
 		virtual U32 Run();
 
 	protected:
-		virtual void UpdateScene() = 0;
+		virtual void UpdateScene(float dt) = 0;
 		Scene m_scene;
 		Timer m_timer;
 		Renderer* m_pRenderer;

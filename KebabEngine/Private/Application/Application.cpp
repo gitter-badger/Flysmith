@@ -29,7 +29,7 @@ U32 Application::Run()
 		m_timer.Update();
 		g_eventManager.PostEvent(TickEvent::Create(m_timer.GetElapsed()));
 		g_eventManager.DispatchEvents();
-		UpdateScene();
+		UpdateScene(m_timer.GetElapsed());
 
 		CopyRenderData();
 		m_pRenderer->Render();
