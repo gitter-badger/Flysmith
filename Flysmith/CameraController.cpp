@@ -2,9 +2,9 @@
 #include "CameraController.h"
 
 
-CameraController::CameraController(TransformNoScale* camTransform)
-	: m_camTransform(camTransform)
-	, m_keys{'W', 'A', 'S', 'D', 'J', 'L', 'I', 'K', 'Q', 'E'}
+CameraController::CameraController(TransformNoScale* pCamTransform)
+	: m_pCamTransform(pCamTransform)
+	, m_keys{'W', 'A', 'S', 'D', 'J', 'L', 'I', 'K', 'Q', 'E', 'T', 'G'}
 {
 	RegisterForEvent(KeyboardEvent::KeyUpId);
 	RegisterForEvent(KeyboardEvent::KeyDownId);
@@ -18,49 +18,60 @@ void CameraController::Update(F32 dt)
 	float rDistance = 1.0f * dt;
 
 	if (m_bPressed['W'])
-		m_camTransform->Translate(GetLookAt() * lDistance);
+		m_pCamTransform->Translate(GetLookAt() * lDistance);
 
 	if (m_bPressed['S'])
-		m_camTransform->Translate(-GetLookAt() * lDistance);
+		m_pCamTransform->Translate(-GetLookAt() * lDistance);
 
 	if (m_bPressed['A'])
-		m_camTransform->Translate(-GetRight() * lDistance);
+		m_pCamTransform->Translate(-GetRight() * lDistance);
 
 	if (m_bPressed['D'])
-		m_camTransform->Translate(GetRight() * lDistance);
+		m_pCamTransform->Translate(GetRight() * lDistance);
+
+	if (m_bPressed['T'])
+		m_pCamTransform->Translate(GetUp() * lDistance);
+
+	if (m_bPressed['G'])
+		m_pCamTransform->Translate(GetUp() * -lDistance);
 
 	if (m_bPressed['I'])
-		m_camTransform->RotateX(rDistance);
+		m_pCamTransform->RotateX(rDistance);
 
 	if (m_bPressed['K'])
-		m_camTransform->RotateX(-rDistance);
+		m_pCamTransform->RotateX(-rDistance);
 
 	if (m_bPressed['J'])
-		m_camTransform->RotateY(rDistance);
+		m_pCamTransform->RotateY(rDistance);
 
 	if (m_bPressed['L'])
-		m_camTransform->RotateY(-rDistance);
+		m_pCamTransform->RotateY(-rDistance);
 
 	if (m_bPressed['Q'])
-		m_camTransform->RotateZ(-rDistance);
+		m_pCamTransform->RotateZ(-rDistance);
 
 	if (m_bPressed['E'])
-		m_camTransform->RotateZ(rDistance);
+		m_pCamTransform->RotateZ(rDistance);
+}
+
+XMVECTOR CameraController::GetUp()
+{
+	auto rotMat = m_pCamTransform->GetRotationMatrix();
+	XMFLOAT3 upVec{ rotMat(0, 1), rotMat(1, 1), rotMat(2, 1) };
+	return XMLoadFloat3(&upVec);
 }
 
 XMVECTOR CameraController::GetLookAt()
 {
-	XMFLOAT4X4 mRot;
-	XMStoreFloat4x4(&mRot, m_camTransform->GetRotationMatrixXM());
-	XMFLOAT3 lookAtVec{ mRot(0, 2), mRot(1, 2), mRot(2, 2) };
+	auto rotMat = m_pCamTransform->GetRotationMatrix();
+	XMFLOAT3 lookAtVec{ rotMat(0, 2), rotMat(1, 2), rotMat(2, 2) };
 	return XMLoadFloat3(&lookAtVec);
 }
 
 XMVECTOR CameraController::GetRight()
 {
-	XMFLOAT4X4 mRot;
-	XMStoreFloat4x4(&mRot, m_camTransform->GetRotationMatrixXM());
-	XMFLOAT3 rightVec{ mRot(0, 0), mRot(1, 0), mRot(2, 0) };
+	auto rotMat = m_pCamTransform->GetRotationMatrix();
+	XMFLOAT3 rightVec{ rotMat(0, 0), rotMat(1, 0), rotMat(2, 0) };
 	return XMLoadFloat3(&rightVec);
 }
 
@@ -75,7 +86,7 @@ void CameraController::Init()
 	XMFLOAT3 vPosition(0.0f, 0.0f, -20.0f);
 	XMVECTOR position = XMLoadFloat3(&vPosition);
 
-	m_camTransform->SetPosition(position);
+	m_pCamTransform->SetPosition(position);
 
 	XMVECTOR lookAt = XMVector3Normalize(focalPoint - position);
 	XMVECTOR right = XMVector3Normalize(XMVector3Cross(up, lookAt));
@@ -106,7 +117,7 @@ void CameraController::SetAxis(CXMVECTOR lookAt, CXMVECTOR up, CXMVECTOR right)
 	rot(2, 1) = upVec.z;
 	rot(2, 2) = lookAtVec.z;
 
-	m_camTransform->SetRotation(rot);
+	m_pCamTransform->SetRotation(rot);
 }
 
 void CameraController::HandleEvent(const Event& ev)

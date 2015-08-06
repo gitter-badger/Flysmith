@@ -14,7 +14,7 @@ using namespace cuc;
 class CameraController : public EventListener
 {
 public:
-	CameraController(TransformNoScale* camRotation);
+	CameraController(TransformNoScale* pCamTransform);
 	void Update(F32 dt);
 	void HandleEvent(const Event& ev);
 
@@ -23,8 +23,9 @@ private:
 	void SetAxis(CXMVECTOR lookAt, CXMVECTOR up, CXMVECTOR right);
 	XMVECTOR GetRight();
 	XMVECTOR GetLookAt();
+	XMVECTOR GetUp();
 
-	TransformNoScale* m_camTransform;
+	TransformNoScale* m_pCamTransform;
 	std::map<char, bool> m_bPressed;
 	std::vector<unsigned char> m_keys;
 };

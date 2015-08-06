@@ -40,6 +40,11 @@ const XMMATRIX TransformNoScale::GetMatrixXM() const
 	return XMLoadFloat4x4(&m_transformMatrix);
 }
 
+const XMFLOAT4X4 cuc::TransformNoScale::GetRotationMatrix() const
+{
+	return m_rotation.GetMatrix();
+}
+
 const XMMATRIX TransformNoScale::GetRotationMatrixXM() const
 {
 	return m_rotation.GetMatrixXM();
