@@ -138,6 +138,6 @@ void cuc::Transform::CacheTransform()
 {
 	// Scale -> Rotate -> Translate
 	XMStoreFloat4x4(&m_transformMatrix, XMMatrixScalingFromVector(XMLoadFloat3(&m_scale)) *
-									    m_rotation.GetMatrixXM() *
+									    m_rotation.GetMatrixFormXM() *
 									    XMMatrixTranslationFromVector(XMLoadFloat3(&m_position)));
 }

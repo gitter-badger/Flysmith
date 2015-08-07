@@ -20,9 +20,8 @@ namespace cuc
 		const XMFLOAT4X4& GetMatrix() const;
 		const XMMATRIX GetMatrixXM() const;
 
-		const XMFLOAT4X4 GetRotationMatrix() const;
-		const XMMATRIX GetRotationMatrixXM() const;
-
+		const Quaternion& GetRotationQuat() const;
+		
 		const XMFLOAT3& GetPosition() const;
 		const XMVECTOR GetPositionXM() const;
 

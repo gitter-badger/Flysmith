@@ -12,7 +12,7 @@ using namespace DirectX;
 Renderer::Impl::Impl(HWND hwnd, U32 windowWidth, U32 windowHeight)
 	: m_viewport(static_cast<F32>(windowWidth), static_cast<F32>(windowHeight))
 	, m_scissorRect(windowWidth, windowHeight)
-	, m_camera(800.0f / 600.0f)
+	, m_camera(800.0f, 600.0f)
 {
 	auto pAdapter = m_hwCaps.GetDisplayAdapters()[0].Get();
 	m_device.Init(pAdapter.Get());

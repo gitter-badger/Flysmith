@@ -21,9 +21,6 @@ public:
 private:
 	void Init();
 	void SetAxis(CXMVECTOR lookAt, CXMVECTOR up, CXMVECTOR right);
-	XMVECTOR GetRight();
-	XMVECTOR GetLookAt();
-	XMVECTOR GetUp();
 
 	TransformNoScale* m_pCamTransform;
 	std::map<char, bool> m_bPressed;

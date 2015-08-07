@@ -181,12 +181,15 @@
     </FxCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Private\Math\PerspectiveMatrix.cpp" />
     <ClCompile Include="Private\Camera.cpp" />
     <ClCompile Include="Private\Descriptors\ConstantBufferView.cpp" />
     <ClCompile Include="Private\Descriptors\IndexBufferView.cpp" />
     <ClCompile Include="Private\Descriptors\VertexBufferView.cpp" />
     <ClCompile Include="Private\Device.cpp" />
     <ClCompile Include="Private\Fence.cpp" />
+    <ClCompile Include="Private\Math\OrthographicMatrix.cpp" />
+    <ClCompile Include="Private\Math\ProjectionMatrix.cpp" />
     <ClCompile Include="Private\Math\TransformNoScale.cpp" />
     <ClCompile Include="Private\Pipeline\CommandAllocator.cpp" />
     <ClCompile Include="Private\Pipeline\CommandList.cpp" />
@@ -226,6 +229,9 @@
     <ClInclude Include="Private\Descriptors\VertexBufferView.h" />
     <ClInclude Include="Private\Device.h" />
     <ClInclude Include="Private\Fence.h" />
+    <ClInclude Include="Private\Math\OrthographicMatrix.h" />
+    <ClInclude Include="Private\Math\PerspectiveMatrix.h" />
+    <ClInclude Include="Private\Math\ProjectionMatrix.h" />
     <ClInclude Include="Private\RendererImpl.h" />
     <ClInclude Include="Private\Pipeline\CommandAllocator.h" />
     <ClInclude Include="Private\Pipeline\CommandList.h" />

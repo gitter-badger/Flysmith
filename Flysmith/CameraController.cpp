@@ -16,24 +16,25 @@ void CameraController::Update(F32 dt)
 {
 	float lDistance = 10.0f * dt;
 	float rDistance = 1.0f * dt;
+	auto& rotationQuat = m_pCamTransform->GetRotationQuat();
 
 	if (m_bPressed['W'])
-		m_pCamTransform->Translate(GetLookAt() * lDistance);
+		m_pCamTransform->Translate(rotationQuat.GetForwardVectorXM() * lDistance);
 
 	if (m_bPressed['S'])
-		m_pCamTransform->Translate(-GetLookAt() * lDistance);
-
-	if (m_bPressed['A'])
-		m_pCamTransform->Translate(-GetRight() * lDistance);
+		m_pCamTransform->Translate(rotationQuat.GetForwardVectorXM() * -lDistance);
 
 	if (m_bPressed['D'])
-		m_pCamTransform->Translate(GetRight() * lDistance);
+		m_pCamTransform->Translate(rotationQuat.GetRightVectorXM() * lDistance);
+	
+	if (m_bPressed['A'])
+		m_pCamTransform->Translate(rotationQuat.GetRightVectorXM() * -lDistance);
 
 	if (m_bPressed['T'])
-		m_pCamTransform->Translate(GetUp() * lDistance);
+		m_pCamTransform->Translate(rotationQuat.GetUpVectorXM() * lDistance * 0.5f);
 
 	if (m_bPressed['G'])
-		m_pCamTransform->Translate(GetUp() * -lDistance);
+		m_pCamTransform->Translate(rotationQuat.GetUpVectorXM() * -lDistance * 0.5f);
 
 	if (m_bPressed['I'])
 		m_pCamTransform->RotateX(rDistance);
@@ -54,27 +55,6 @@ void CameraController::Update(F32 dt)
 		m_pCamTransform->RotateZ(rDistance);
 }
 
-XMVECTOR CameraController::GetUp()
-{
-	auto rotMat = m_pCamTransform->GetRotationMatrix();
-	XMFLOAT3 upVec{ rotMat(0, 1), rotMat(1, 1), rotMat(2, 1) };
-	return XMLoadFloat3(&upVec);
-}
-
-XMVECTOR CameraController::GetLookAt()
-{
-	auto rotMat = m_pCamTransform->GetRotationMatrix();
-	XMFLOAT3 lookAtVec{ rotMat(0, 2), rotMat(1, 2), rotMat(2, 2) };
-	return XMLoadFloat3(&lookAtVec);
-}
-
-XMVECTOR CameraController::GetRight()
-{
-	auto rotMat = m_pCamTransform->GetRotationMatrix();
-	XMFLOAT3 rightVec{ rotMat(0, 0), rotMat(1, 0), rotMat(2, 0) };
-	return XMLoadFloat3(&rightVec);
-}
-
 void CameraController::Init()
 {
 	XMFLOAT3 vFocalPoint(0.0f, 0.0f, 0.0f);
@@ -83,7 +63,7 @@ void CameraController::Init()
 	XMFLOAT3 vUp(0.0f, 1.0f, 0.0f);
 	XMVECTOR up = XMLoadFloat3(&vUp);
 
-	XMFLOAT3 vPosition(0.0f, 0.0f, -20.0f);
+	XMFLOAT3 vPosition(0.0f, 0.0f, -3.0f);
 	XMVECTOR position = XMLoadFloat3(&vPosition);
 
 	m_pCamTransform->SetPosition(position);

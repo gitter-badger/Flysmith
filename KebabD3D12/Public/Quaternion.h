@@ -14,6 +14,7 @@ namespace cuc
 		Quaternion();
 		Quaternion(const Quaternion&);
 		Quaternion& operator=(const Quaternion&);
+
 		explicit Quaternion(CXMMATRIX mat);
 		explicit Quaternion(const XMFLOAT4X4& mat);
 		explicit Quaternion(const XMFLOAT3& axis, float angle);
@@ -26,8 +27,17 @@ namespace cuc
 		void SetFromMatrix(CXMMATRIX mat);
 		void SetFromMatrix(const XMFLOAT4X4& mat);
 		
-		XMFLOAT4X4 GetMatrix() const;
-		XMMATRIX GetMatrixXM() const;
+		XMFLOAT4X4 GetMatrixForm() const;
+		XMMATRIX GetMatrixFormXM() const;
+
+		// X Axis
+		XMVECTOR GetRightVectorXM() const;
+	
+		// Y Axis
+		XMVECTOR GetUpVectorXM() const;
+
+		// Z Axis
+		XMVECTOR GetForwardVectorXM() const;
 
 		void Concat(const XMFLOAT3& axis, float angle);
 		void Concat(const XMFLOAT4& quaternion);

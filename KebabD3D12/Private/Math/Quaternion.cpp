@@ -69,16 +69,37 @@ void Quaternion::SetFromMatrix(const XMFLOAT4X4& mat)
 	SetFromMatrix(XMLoadFloat4x4(&mat));
 }
 
-XMFLOAT4X4 Quaternion::GetMatrix() const
+XMFLOAT4X4 Quaternion::GetMatrixForm() const
 {
 	XMFLOAT4X4 rotMatrix;
 	XMStoreFloat4x4(&rotMatrix, XMMatrixRotationQuaternion(XMLoadFloat4(&quat)));
 	return rotMatrix;
 }
 
-XMMATRIX Quaternion::GetMatrixXM() const
+XMMATRIX Quaternion::GetMatrixFormXM() const
 {
 	return XMMatrixRotationQuaternion(XMLoadFloat4(&quat));
+}
+
+XMVECTOR Quaternion::GetUpVectorXM() const
+{
+	auto rotMat = GetMatrixForm();
+	XMFLOAT3 up(rotMat(0, 1), rotMat(1, 1), rotMat(2, 1));
+	return XMLoadFloat3(&up);
+}
+
+XMVECTOR Quaternion::GetForwardVectorXM() const
+{
+	auto rotMat = GetMatrixForm();
+	XMFLOAT3 forward(rotMat(0, 2), rotMat(1, 2), rotMat(2, 2));
+	return XMLoadFloat3(&forward);
+}
+
+XMVECTOR Quaternion::GetRightVectorXM() const
+{
+	auto rotMat = GetMatrixForm();
+	XMFLOAT3 right(rotMat(0, 0), rotMat(1, 0), rotMat(2, 0));
+	return XMLoadFloat3(&right);
 }
 
 void Quaternion::Concat(const XMFLOAT3& axis, float angle)

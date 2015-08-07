@@ -40,14 +40,9 @@ const XMMATRIX TransformNoScale::GetMatrixXM() const
 	return XMLoadFloat4x4(&m_transformMatrix);
 }
 
-const XMFLOAT4X4 cuc::TransformNoScale::GetRotationMatrix() const
+const Quaternion& cuc::TransformNoScale::GetRotationQuat() const
 {
-	return m_rotation.GetMatrix();
-}
-
-const XMMATRIX TransformNoScale::GetRotationMatrixXM() const
-{
-	return m_rotation.GetMatrixXM();
+	return m_rotation;
 }
 
 const XMFLOAT3& TransformNoScale::GetPosition() const
@@ -203,5 +198,5 @@ void TransformNoScale::RotateZ(float dRollAngle)
 void TransformNoScale::CacheTransform()
 {
 	// Scale -> Rotate -> Translate
-	XMStoreFloat4x4(&m_transformMatrix, m_rotation.GetMatrixXM() * XMMatrixTranslationFromVector(XMLoadFloat3(&m_position)));
+	XMStoreFloat4x4(&m_transformMatrix, m_rotation.GetMatrixFormXM() * XMMatrixTranslationFromVector(XMLoadFloat3(&m_position)));
 }
