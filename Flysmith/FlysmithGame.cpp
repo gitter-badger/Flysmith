@@ -1,7 +1,6 @@
 #include "PCH.h"
 #include "FlysmithGame.h"
 #include "Airfoil.h"
-#include "../KebabD3D12/Public/Mesh.h"
 #include "InputEvents.h"
 using namespace cuc;
 using namespace DirectX;
@@ -47,20 +46,25 @@ void FlysmithGame::GenerateFoilMesh(const std::wstring& foilName)
 	Airfoil foil;
 	foil.LoadFromFile(foilName.c_str());
 
-	Mesh mesh;
+	std::vector<Vertex> verts;
+	std::vector<U32> indices;
 	for (auto& foilPoint : foil.points)
 	{
 		XMFLOAT2 vert(foilPoint);
 		vert.x -= .5f;
 		vert.y -= .5f;
-		mesh.AddVertex(vert);
+		verts.push_back({ { vert.x, vert.y, 0.0f }, {0.0f, 0.0f, 0.0f, 1.0f} });
 	}
 
 	auto numPoints = foil.points.size();
 	for (U32 i = 1; i < numPoints; i++)
-		mesh.SetTriangle(i, numPoints - i, i - 1);
+	{
+		indices.push_back(i);
+		indices.push_back(numPoints - i);
+		indices.push_back(i - 1);
+	}
 
-	m_pRenderer->CacheMesh(mesh);
+	m_pRenderer->CacheMesh(verts, indices);
 }
 
 void FlysmithGame::UpdateScene(float dt)

@@ -41,9 +41,9 @@ void Renderer::Impl::LoadAssets()
 
 	// 4. Create Descriptor Heaps
 	m_cbDescHeap.Init(m_device.Get(), DescHeapType::CB_SR_UA, 1, true);
-	
+
 	// 5. Create Command List
-	m_commandList.Init(m_device.Get(), m_commandAllocator.Get(), m_pso.Get());
+	m_commandList.Init(m_device.Get(), m_commandAllocator.Get());
 
 	// 6. Synchronize
 	m_fence.Init(m_device.Get(), 0);
@@ -54,17 +54,6 @@ void Renderer::Impl::LoadAssets()
 	m_handleEvent = CreateEventEx(nullptr, FALSE, FALSE, EVENT_ALL_ACCESS);
 
 	WaitForGPU();
-}
-bool bInit = false;
-void Renderer::Impl::CreateMeshResources()
-{
-	if (!bInit)
-	{
-		LoadAssets();
-		bInit = true;
-	}
-
-	m_tempMesh.Init(m_device.Get(), m_resCache.GetMesh(0));
 }
 
 void Renderer::Impl::CreateRootSignature()
@@ -126,8 +115,8 @@ void Renderer::Impl::PopulateCommandLists()
 	m_commandList.ClearRenderTargetView(m_swapChain.GetRTVLocation(), clearColor, &m_scissorRect);
 	m_commandList.SetRenderTargets(1, &m_swapChain.GetRTVLocation(), TRUE, nullptr);
 
-	m_commandList.SetPrimitive(TRIANGLE_LIST, &m_tempMesh.GetVertBufferView(), &m_tempMesh.GetIndexBufferView());
-	m_commandList.DrawIndexed(m_tempMesh.GetNumIndices());
+	m_commandList.SetPrimitive(TRIANGLE_LIST, &m_resCache.GetMesh(0).GetVertBufferView(), &m_resCache.GetMesh(0).GetIndexBufferView());
+	m_commandList.DrawIndexed(m_resCache.GetMesh(0).GetNumIndices());
 
 	m_commandList.SetResourceBarriers(&TransitionBarrier(m_swapChain.GetRenderTarget(), D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PRESENT));
 

@@ -37,9 +37,7 @@ void Renderer::UpdateView(const TransformNoScale& transform)
 {
 	m_pImpl->m_camera.Update(transform);
 
-	//auto wvp = XMMatrixTranspose(objTransform.GetMatrixXM()) * XMMatrixTranspose(m_pImpl->m_camera.GetViewMatrixXM()) * XMMatrixTranspose(m_pImpl->m_camera.GetProjMatrixXM());
 	auto wvp = objTransform.GetMatrixXM() * m_pImpl->m_camera.GetViewProjMatrixXM();
-	//XMStoreFloat4x4(&m_pImpl->m_viewProjMat, XMMatrixTranspose(wvp));
 	XMStoreFloat4x4(&m_pImpl->m_viewProjMat, wvp);
 	memcpy(m_pImpl->m_pWVPDataBegin, &m_pImpl->m_viewProjMat, sizeof(m_pImpl->m_viewProjMat));
 }
@@ -60,13 +58,9 @@ void Renderer::Render()
 	m_pImpl->WaitForGPU();
 }
 	
-ResourceHandle Renderer::CacheMesh(const Mesh& mesh)
+ResourceHandle Renderer::CacheMesh(const std::vector<Vertex>& verts, const std::vector<U32>& indices)
 {
-	auto newMeshHandle = m_pImpl->m_resCache.AddMesh(mesh);
-	m_pImpl->CreateMeshResources();
+	m_pImpl->LoadAssets();
+	auto newMeshHandle = m_pImpl->m_resCache.AddMesh(m_pImpl->m_device.Get(), verts, indices);
 	return newMeshHandle;
-}
-
-void Renderer::UpdateMesh(ResourceHandle meshHandle, const Mesh& updatedMesh)
-{
 }

@@ -3,6 +3,7 @@
 #include <vector>
 #include "Mesh.h"
 
+
 namespace cuc
 {
 	class ResourceCache
@@ -10,8 +11,7 @@ namespace cuc
 	public:
 		ResourceCache();
 		
-		ResourceHandle AddMesh(const Mesh&);
-		void UpdateMesh(ResourceHandle, const Mesh&);
+		ResourceHandle AddMesh(ID3D12Device*, const std::vector<Vertex>& verts, const std::vector<U32>& indices);
 		bool ExistsMesh(ResourceHandle);
 		Mesh& GetMesh(ResourceHandle);
 

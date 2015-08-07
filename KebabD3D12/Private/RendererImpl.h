@@ -1,7 +1,6 @@
 #pragma once
 #include "Renderer.h"
 
-#include "MeshRenderData.h"
 #include "RenderObject.h"
 #include "HardwareCaps.h"
 #include "Camera.h"
@@ -47,8 +46,6 @@ namespace cuc
 		PipelineStateObject m_pso;
 
 		DescriptorHeap m_cbDescHeap;
-		
-		MeshRenderData m_tempMesh;
 
 		Resource m_wvpConstBuffer;
 		U8* m_pWVPDataBegin;
@@ -62,13 +59,12 @@ namespace cuc
 
 		Impl(HWND hwnd, U32 windowWidth, U32 windowHeight);
 		~Impl();
+		void CreatePipelineStateObject();
+		void PopulateCommandLists();
+		void CreateRootSignature();
 		void CreateDevice();
 		void LoadAssets();
-		void CreateRootSignature();
-		void CreatePipelineStateObject();
 		void WaitForGPU();
-		void PopulateCommandLists();
-		void CreateMeshResources();
 
 		ResourceCache m_resCache;
 		std::vector<RenderObject> m_renderObjects;

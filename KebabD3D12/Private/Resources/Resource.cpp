@@ -13,6 +13,7 @@ Resource::~Resource()
 	if (m_pResource)
 	{
 		m_pResource->Release();
+		m_pResource = nullptr;
 	}
 }
 

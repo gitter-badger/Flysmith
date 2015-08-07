@@ -9,5 +9,7 @@ namespace cuc
 	{
 		Transform transform;
 		ResourceHandle meshHandle;
+		ResourceHandle vertShaderHandle;
+		ResourceHandle pixelShaderHandle;
 	};
 }

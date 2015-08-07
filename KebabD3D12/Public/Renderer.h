@@ -1,7 +1,7 @@
 #pragma once
 #include "PublicDef.h"
 #include "Transform.h"
-#include "Mesh.h"
+#include "Vertex.h"
 
 
 namespace cuc
@@ -21,8 +21,7 @@ namespace cuc
 		void Render();
 
 		// TODO: Queue resource caching requests for later 
-		ResourceHandle CacheMesh(const Mesh&);
-		void UpdateMesh(ResourceHandle, const Mesh&);
+		ResourceHandle CacheMesh(const std::vector<Vertex>& verts, const std::vector<U32>& indices);
 		
 	private:
 		struct Impl;

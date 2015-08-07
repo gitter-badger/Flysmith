@@ -7,16 +7,14 @@ ResourceCache::ResourceCache()
 {
 }
 
-ResourceHandle ResourceCache::AddMesh(const Mesh& mesh)
+ResourceHandle ResourceCache::AddMesh(ID3D12Device* pDevice, const std::vector<Vertex>& verts, const std::vector<U32>& indices)
 {
-	m_meshes.push_back(mesh);
+	Mesh mesh;
+	mesh.verts = verts;
+	mesh.indices = indices;
+	mesh.Init(pDevice);
+	m_meshes.push_back(std::move(mesh));
 	return m_meshes.size() - 1;
-}
-
-void ResourceCache::UpdateMesh(ResourceHandle handle, const Mesh& updatedMesh)
-{
-	assert(ExistsMesh(handle));
-	m_meshes[handle] = updatedMesh;
 }
 
 bool cuc::ResourceCache::ExistsMesh(ResourceHandle handle)
