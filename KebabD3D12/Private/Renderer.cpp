@@ -60,8 +60,13 @@ void Renderer::Render()
 	m_pImpl->WaitForGPU();
 }
 	
-void Renderer::SubmitMesh(Mesh mesh)
-{	
-	m_pImpl->tempMesh = mesh;
+ResourceHandle Renderer::CacheMesh(const Mesh& mesh)
+{
+	auto newMeshHandle = m_pImpl->m_resCache.AddMesh(mesh);
 	m_pImpl->CreateMeshResources();
+	return newMeshHandle;
+}
+
+void Renderer::UpdateMesh(ResourceHandle meshHandle, const Mesh& updatedMesh)
+{
 }

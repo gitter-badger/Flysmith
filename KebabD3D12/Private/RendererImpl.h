@@ -1,12 +1,15 @@
 #pragma once
 #include "Renderer.h"
 
+#include "MeshRenderData.h"
+#include "RenderObject.h"
 #include "HardwareCaps.h"
 #include "Camera.h"
 #include "Device.h"
 #include "Fence.h"
 
 #include "Resources\DescriptorHeap.h"
+#include "Resources\ResourceCache.h"
 #include "Resources\UploadHeap.h"
 #include "Resources\Resource.h"
 
@@ -20,8 +23,6 @@
 #include "Pipeline\CommandList.h"
 
 #include "Descriptors\ConstantBufferView.h"
-#include "Descriptors\VertexBufferView.h"
-#include "Descriptors\IndexBufferView.h"
 
 
 namespace cuc
@@ -46,13 +47,9 @@ namespace cuc
 		PipelineStateObject m_pso;
 
 		DescriptorHeap m_cbDescHeap;
+		
+		MeshRenderData m_tempMesh;
 
-		Resource m_vertBuffer;
-		VertexBufferView m_vertBufferView;
-		
-		Resource m_indexBuffer;
-		IndexBufferView m_indexBufferView;
-		
 		Resource m_wvpConstBuffer;
 		U8* m_pWVPDataBegin;
 		DirectX::XMFLOAT4X4 m_viewProjMat;
@@ -73,7 +70,8 @@ namespace cuc
 		void PopulateCommandLists();
 		void CreateMeshResources();
 
-		Mesh tempMesh;
+		ResourceCache m_resCache;
+		std::vector<RenderObject> m_renderObjects;
 		U32 rootConstColorIndex;
 		U32 rootDescViewProjIndex;
 	};

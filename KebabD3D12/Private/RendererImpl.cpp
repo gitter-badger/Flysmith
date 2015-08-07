@@ -64,19 +64,7 @@ void Renderer::Impl::CreateMeshResources()
 		bInit = true;
 	}
 
-	m_vertBuffer.Reset();
-	auto vertBufSize = tempMesh.verts.size() * sizeof(Vertex);
-	ResourceConfig descVBuf(ResourceType::BUFFER, vertBufSize);
-	m_vertBuffer.CreateCommited(m_device.Get(), descVBuf, nullptr, &tempMesh.verts[0], vertBufSize);
-
-	m_indexBuffer.Reset();
-	auto indexBufSize = tempMesh.indices.size() * sizeof(U32);
-	ResourceConfig descIBuf(ResourceType::BUFFER, indexBufSize);
-	m_indexBuffer.CreateCommited(m_device.Get(), descIBuf, nullptr, &tempMesh.indices[0], indexBufSize);
-
-	// Create resource descriptors
-	m_vertBufferView.Init(m_vertBuffer.GetGPUVirtualAddress(), vertBufSize, sizeof(Vertex));
-	m_indexBufferView.Init(m_indexBuffer.GetGPUVirtualAddress(), indexBufSize);
+	m_tempMesh.Init(m_device.Get(), m_resCache.GetMesh(0));
 }
 
 void Renderer::Impl::CreateRootSignature()
@@ -118,13 +106,10 @@ void Renderer::Impl::WaitForGPU()
 void Renderer::Impl::PopulateCommandLists()
 {
 	m_commandAllocator.Reset();
-
 	m_commandList.Reset(m_commandAllocator.Get(), m_pso.Get());
 
 	m_commandList.SetViewports(&m_viewport);
 	m_commandList.SetScissorRects(&m_scissorRect);
-
-	m_commandList.SetPrimitive(TRIANGLE_LIST, &m_vertBufferView, &m_indexBufferView);
 
 	m_commandList.SetRootSignature(m_pRootSignature.Get());
 
@@ -141,7 +126,8 @@ void Renderer::Impl::PopulateCommandLists()
 	m_commandList.ClearRenderTargetView(m_swapChain.GetRTVLocation(), clearColor, &m_scissorRect);
 	m_commandList.SetRenderTargets(1, &m_swapChain.GetRTVLocation(), TRUE, nullptr);
 
-	m_commandList.DrawIndexed(tempMesh.indices.size());
+	m_commandList.SetPrimitive(TRIANGLE_LIST, &m_tempMesh.GetVertBufferView(), &m_tempMesh.GetIndexBufferView());
+	m_commandList.DrawIndexed(m_tempMesh.GetNumIndices());
 
 	m_commandList.SetResourceBarriers(&TransitionBarrier(m_swapChain.GetRenderTarget(), D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PRESENT));
 

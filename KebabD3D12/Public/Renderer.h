@@ -20,8 +20,10 @@ namespace cuc
 		
 		void Render();
 
-		void SubmitMesh(Mesh);
-
+		// TODO: Queue resource caching requests for later 
+		ResourceHandle CacheMesh(const Mesh&);
+		void UpdateMesh(ResourceHandle, const Mesh&);
+		
 	private:
 		struct Impl;
 		Impl* m_pImpl;

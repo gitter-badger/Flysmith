@@ -60,7 +60,7 @@ void FlysmithGame::GenerateFoilMesh(const std::wstring& foilName)
 	for (U32 i = 1; i < numPoints; i++)
 		mesh.SetTriangle(i, numPoints - i, i - 1);
 
-	m_pRenderer->SubmitMesh(mesh);
+	m_pRenderer->CacheMesh(mesh);
 }
 
 void FlysmithGame::UpdateScene(float dt)

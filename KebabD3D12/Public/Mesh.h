@@ -6,6 +6,8 @@
 
 namespace cuc
 {
+	using ResourceHandle = U32;
+
 #pragma warning(push)
 #pragma warning(disable:4251)
 	class KEBAB12_API Vertex
