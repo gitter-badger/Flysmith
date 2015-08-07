@@ -27,3 +27,20 @@ Mesh& cuc::ResourceCache::GetMesh(ResourceHandle handle)
 	assert(ExistsMesh(handle));
 	return m_meshes[handle];
 }
+
+ResourceHandle cuc::ResourceCache::AddShader(ShaderType type, const wchar_t* path)
+{
+	m_shaders.push_back(ShaderProgram::GetCompiledShader(type, path));
+	return m_shaders.size() - 1;
+}
+
+bool cuc::ResourceCache::ExistsShader(ResourceHandle handle)
+{
+	return m_shaders.size() > handle;
+}
+
+D3D12_SHADER_BYTECODE& cuc::ResourceCache::GetShader(ResourceHandle handle)
+{
+	assert(ExistsShader(handle));
+	return m_shaders[handle];
+}

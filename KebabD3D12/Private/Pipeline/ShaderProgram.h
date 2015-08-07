@@ -25,5 +25,15 @@ namespace cuc
 													   const D3D_SHADER_MACRO* pDefines = nullptr,
 													   const bool bAllowIncludes = true,
 													   UINT flags = 0);
+
+		static D3D12_SHADER_BYTECODE GetCompiledShader(const ShaderType,
+													   const void* pData,
+													   const size_t dataSize,
+													   const char* sourceName = nullptr,
+													   const char* entryPoint = "main",
+													   const char* shaderModel = "5_1",
+													   const D3D_SHADER_MACRO* pDefines = nullptr,
+													   const bool bAllowIncludes = true,
+													   UINT flags = 0);
 	};
 }
