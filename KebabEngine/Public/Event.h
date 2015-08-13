@@ -6,38 +6,53 @@
 
 namespace cuc
 {
-	// Individual events are created by factories, which fill up an Event object.
-	// i.e. if there are 10 events, instead of deriving 10 classes from Event, there
-	// are 10 factories, each one putting together an event according to its needs.
-	// The system seems shittier than the previous polymorhpism-based one, but it works, for now.
-
-	// Usage:
-	// Event event = PlayerDiedEvent::Create(attribute1, attribute2);
-	// if(event.type == "PlayerDied")
-	// {
-	//		DoAttribute1Stuff(event.attributes[PlayerDiedEvent::ATTRIBUTE1_KEY]);
-	//		DoAttribute2Stuff(event.attributes[PlayerDiedEvent::ATTRIBUTE2_KEY]);
-	// }
-	// Individual event classes provide a creation function and an enumeration of its attributes.
-	class KEBAB_API Event final
+	enum class DataType : U32
 	{
-	public:
-		// Required to avoid 2 copies for each event submitted to the manager(one to the PostEvent() - copy needed, and one to the queues - move used instead).
-		// Also factory creation functions make use of moves when returning a created event.
-		Event(Event&&);
-		Event& operator=(Event&&);
-
-		Event(const U32 hashedType);
-		Event(const U32 hashedType, const std::vector<Variant32>&);
-
-		// Get an attribute without going through the attributes vector:
-		// Event event;
-		// event[0] is the event's first attribute
-		const Variant32 operator[](const std::size_t) const;
-
-		U32 type; 
-
-		// Will use a pool allocator shared by all events.
-		std::vector<Variant32> attributes;
+		U8,
+		U16,
+		U32,
+		BOOL,
+		FLOAT
 	};
+
+	struct EventData
+	{
+		EventData() {}
+		explicit EventData(U8 data) : type(DataType::U8) { asU8 = data; }
+		explicit EventData(U16 data) : type(DataType::U16) { asU16 = data; }
+		explicit EventData(U32 data) : type(DataType::U32) { asU32 = data; }
+		explicit EventData(bool data) : type(DataType::BOOL) { asBool = data; }
+		explicit EventData(float data) : type(DataType::FLOAT) { asFloat = data; }
+
+		DataType type; // 4 bytes
+		union
+		{
+			U8    asU8;
+			U16   asU16;
+			U32   asU32;
+			bool  asBool;
+			float asFloat;
+		}; // 4 bytes
+	};
+
+	// Maximum amount of 'data', or arguments, an event may have.
+	const U32 MAX_EVENT_DATA = 7;
+
+	// Hashed human-readable event name
+	using EventType = U32;
+
+	// length - 4 bytes
+	// type   - 4 bytes
+	// data   - 56 bytes
+	// Total  - 64 bytes / Event 
+	struct Event final
+	{
+		U32       length;
+		EventType type;
+		EventData data[MAX_EVENT_DATA];
+
+		Event();
+	};
+
+	inline Event::Event() : type("UNKNOWN"_HASH), length(0) { }
 };
