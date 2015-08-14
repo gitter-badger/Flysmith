@@ -1,19 +1,19 @@
 #pragma once
-#include "PublicDef.h"
-#include "EventFactory.h"
 #include "Event.h"
+#include <utility>
 
 
 namespace cuc
 {
-	struct KEBAB_API WindowResizeEvent : EventFactory
+	inline KEBAB_API
+	Event&& CreateWindowResizeEvent(U32 width, U32 height)
 	{
-		enum Params
-		{
-			U32_WIDTH,
-			U32_HEIGHT
-		};
+		Event ev;
+		ev.type = "WindowResize"_HASH;
+		ev.length = 2;
+		ev.data[0] = EventData(width);
+		ev.data[1] = EventData(height);
 
-		static Event Create(const U32 width, const U32 height);
-	};
+		return std::move(ev);
+	}
 }

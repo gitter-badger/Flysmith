@@ -6,7 +6,7 @@
 namespace cuc
 {
 	class EventListener;
-	class Event;
+	struct Event;
 
 	class EventManager
 	{

@@ -192,7 +192,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Private\Application\Application.cpp" />
-    <ClCompile Include="Private\Events\WindowEvents.cpp" />
     <ClCompile Include="Private\Application\Timer.cpp" />
     <ClCompile Include="Private\Application\Window.cpp" />
     <ClCompile Include="Private\PCH.cpp">
@@ -204,15 +203,14 @@
     <ClCompile Include="Private\Resources\FileSystem.cpp" />
     <ClCompile Include="Private\Resources\Font.cpp" />
     <ClCompile Include="Private\Utils\dllmain.cpp" />
-    <ClCompile Include="Private\Events\Event.cpp" />
     <ClCompile Include="Private\Events\EventManager.cpp" />
     <ClCompile Include="Private\Events\EventListener.cpp" />
-    <ClCompile Include="Private\Events\InputEvents.cpp" />
     <ClCompile Include="Private\Resources\FileReader.cpp" />
     <ClCompile Include="Private\Utils\Variant.cpp" />
-    <ClCompile Include="Private\Events\GameStateEvents.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Public\KeyboardEvents.h" />
+    <ClInclude Include="Public\MouseEvents.h" />
     <ClInclude Include="Public\Application.h" />
     <ClInclude Include="Public\GameStateEvents.h" />
     <ClInclude Include="Public\Scene.h" />
@@ -221,10 +219,8 @@
     <ClInclude Include="Private\Application\Window.h" />
     <ClInclude Include="Events\Delegate.h" />
     <ClInclude Include="Public\Event.h" />
-    <ClInclude Include="Public\EventFactory.h" />
     <ClInclude Include="Private\Events\EventManager.h" />
     <ClInclude Include="Public\EventListener.h" />
-    <ClInclude Include="Public\InputEvents.h" />
     <ClInclude Include="Private\PCH.h" />
     <ClInclude Include="Public\FileReader.h" />
     <ClInclude Include="Public\FileSystem.h" />

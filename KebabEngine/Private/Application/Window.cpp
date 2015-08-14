@@ -1,7 +1,8 @@
 #include "PCH.h"
 #include "Window.h"
-#include "InputEvents.h"
+#include "MouseEvents.h"
 #include "WindowEvents.h"
+#include "KeyboardEvents.h"
 #include "Events\EventManager.h"
 using namespace cuc;
 
@@ -79,94 +80,68 @@ Window::~Window()
 	s_windows.erase(m_hWnd);
 }
 
-void Window::HandleWindowEvent(HWND hwnd, UINT msg, WPARAM, LPARAM lParam)
+LRESULT CALLBACK Window::WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
+	U32 xPosition = GET_X_LPARAM(lParam);
+	U32 yPosition = GET_Y_LPARAM(lParam);
+
 	switch (msg)
 	{
+	// Window Events
+	case WM_CREATE:
+		return 0;
+
 	case WM_DESTROY:
 		PostQuitMessage(0);
 		break;
 
 	case WM_SIZE:
-		if (!s_windows.size())
-			return;
-		g_eventManager.PostEvent(WindowResizeEvent::Create(LOWORD(lParam), HIWORD(lParam)));
-		s_windows[hwnd]->m_width = LOWORD(lParam);
-		s_windows[hwnd]->m_height = HIWORD(lParam);
-		break;
-	}
-}
-
-void Window::HandleMouseEvent(UINT msg, WPARAM, LPARAM lParam)
-{
-	F32 xPosition = static_cast<F32>(GET_X_LPARAM(lParam));
-	F32 yPosition = static_cast<F32>(GET_Y_LPARAM(lParam));
-
-#define PostMouseEv(WindowsMessage, EventId) \
-	case WindowsMessage: \
-		g_eventManager.PostEvent(MouseEvent::Create(MouseEvent::EventId, xPosition, yPosition)); \
+		if (s_windows.size())
+		{
+			g_eventManager.PostEvent(CreateWindowResizeEvent(LOWORD(lParam), HIWORD(lParam)));
+			s_windows[hwnd]->m_width = LOWORD(lParam);
+			s_windows[hwnd]->m_height = HIWORD(lParam);
+		}
 		break;
 
-	switch (msg)
-	{
-		PostMouseEv(WM_LBUTTONUP,   LMouseUpId)
-		PostMouseEv(WM_LBUTTONDOWN, LMouseDownId)
-		PostMouseEv(WM_RBUTTONUP,   RMouseUpId)
-		PostMouseEv(WM_RBUTTONDOWN, RMouseDownId)
-	}
-}
+	// Mouse Events
+	case WM_LBUTTONUP:
+		g_eventManager.PostEvent(CreateLMouseUpEv(xPosition, yPosition));
+		break;
+	case WM_LBUTTONDOWN:
+		g_eventManager.PostEvent(CreateLMouseDownEv(xPosition, yPosition));
+		break;
+	case WM_RBUTTONUP:
+		g_eventManager.PostEvent(CreateRMouseUpEv(xPosition, yPosition));
+		break;
+	case WM_RBUTTONDOWN:
+		g_eventManager.PostEvent(CreateRMouseDownEv(xPosition, yPosition));
+		break;
+	case WM_MOUSEMOVE:
+		g_eventManager.PostEvent(CreateMouseMoveEv(xPosition, yPosition));
+		break;
+	case WM_MOUSEWHEEL:
+		g_eventManager.PostEvent(CreateMouseWheelEv(GET_WHEEL_DELTA_WPARAM(wParam)));
+		break;
 
-void Window::HandleKeyboardEvent(UINT msg, WPARAM wParam, LPARAM)
-{
-	switch (msg)
-	{
+	// Keyboard Events
 	case WM_CHAR:
-		g_eventManager.PostEvent(KeyboardEvent::Create(KeyboardEvent::KeyCharId, wParam));
+		g_eventManager.PostEvent(CreateKeyCharEvent(wParam));
 		break;
 
 	case WM_KEYUP:
-		g_eventManager.PostEvent(KeyboardEvent::Create(KeyboardEvent::KeyUpId, wParam));
+		g_eventManager.PostEvent(CreateKeyUpEvent(wParam));
 		break;
 
 	case WM_KEYDOWN:
-		g_eventManager.PostEvent(KeyboardEvent::Create(KeyboardEvent::KeyDownId, wParam));
+		g_eventManager.PostEvent(CreateKeyDownEvent(wParam));
 		break;
 
 	case WM_SYSCOMMAND:
 		if (wParam == SC_CLOSE)
 		{
 			//g_eventManager.PostEvent({ Event::EngineEvents::EXIT });
-			return;
 		}
-		break;
-	}
-}
-
-LRESULT CALLBACK Window::WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
-{
-	switch (msg)
-	{
-	case WM_CREATE:
-		return 0;
-
-	case WM_DESTROY:
-	case WM_SIZE:
-		HandleWindowEvent(hwnd, msg, wParam, lParam);
-		break;
-
-	case WM_LBUTTONUP:
-	case WM_LBUTTONDOWN:
-	case WM_RBUTTONUP:
-	case WM_RBUTTONDOWN:
-	case WM_MOUSEWHEEL:
-		HandleMouseEvent(msg, wParam, lParam);
-		break;
-
-	case WM_CHAR:
-	case WM_KEYUP:
-	case WM_KEYDOWN:
-	case WM_SYSCOMMAND:
-		HandleKeyboardEvent(msg, wParam, lParam);
 		break;
 	}
 

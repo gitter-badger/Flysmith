@@ -5,7 +5,7 @@
 
 namespace cuc
 {
-	class Event;
+	struct Event;
 
 	class KEBAB_API EventListener
 	{

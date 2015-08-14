@@ -1,7 +1,5 @@
 #pragma once
 #include "PublicDef.h"
-#include "Variant.h"
-#include <vector>
 
 
 namespace cuc
@@ -15,7 +13,7 @@ namespace cuc
 		FLOAT
 	};
 
-	struct EventData
+	struct KEBAB_API EventData final
 	{
 		EventData() {}
 		explicit EventData(U8 data) : type(DataType::U8) { asU8 = data; }
@@ -38,17 +36,14 @@ namespace cuc
 	// Maximum amount of 'data', or arguments, an event may have.
 	const U32 MAX_EVENT_DATA = 7;
 
-	// Hashed human-readable event name
-	using EventType = U32;
-
 	// length - 4 bytes
 	// type   - 4 bytes
 	// data   - 56 bytes
 	// Total  - 64 bytes / Event 
-	struct Event final
+	struct KEBAB_API Event final
 	{
 		U32       length;
-		EventType type;
+		U32       type;
 		EventData data[MAX_EVENT_DATA];
 
 		Event();

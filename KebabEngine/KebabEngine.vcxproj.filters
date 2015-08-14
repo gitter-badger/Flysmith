@@ -30,19 +30,10 @@
     <ClCompile Include="Private\Utils\Variant.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Private\Events\Event.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Private\Events\EventListener.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Private\Events\EventManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Private\Events\InputEvents.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Private\Events\WindowEvents.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Private\Application\Application.cpp">
@@ -55,9 +46,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Private\PCH.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Private\Events\GameStateEvents.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -95,9 +83,6 @@
     <ClInclude Include="Public\WindowEvents.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Public\InputEvents.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Public\EventListener.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -110,9 +95,6 @@
     <ClInclude Include="Public\Timer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Public\EventFactory.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Private\PCH.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -120,6 +102,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Public\GameStateEvents.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Public\MouseEvents.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Public\KeyboardEvents.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

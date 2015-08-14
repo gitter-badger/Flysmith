@@ -31,9 +31,5 @@ namespace cuc
 	private:
 		static LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
 		static std::map<HWND, Window*> s_windows;
-
-		static void HandleWindowEvent(HWND, UINT, WPARAM, LPARAM);
-		static void HandleMouseEvent(UINT, WPARAM, LPARAM);
-		static void HandleKeyboardEvent(UINT, WPARAM, LPARAM);
 	};
 }

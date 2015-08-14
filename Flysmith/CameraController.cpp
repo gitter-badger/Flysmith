@@ -6,8 +6,8 @@ CameraController::CameraController(TransformNoScale* pCamTransform)
 	: m_pCamTransform(pCamTransform)
 	, m_keys{'W', 'A', 'S', 'D', 'J', 'L', 'I', 'K', 'Q', 'E', 'T', 'G'}
 {
-	RegisterForEvent(KeyboardEvent::KeyUpId);
-	RegisterForEvent(KeyboardEvent::KeyDownId);
+	RegisterForEvent("KeyUp"_HASH);
+	RegisterForEvent("KeyDown"_HASH);
 	RegisterForEvent("Tick"_HASH);
 	Init();
 }
@@ -105,19 +105,19 @@ void CameraController::HandleEvent(const Event& ev)
 	switch (ev.type)
 	{
 	case "Tick"_HASH:
-		Update(ev[0].GetFloat());
+		Update(ev.data[0].asFloat);
 		break;
-	case KeyboardEvent::KeyUpId:
+	case "KeyUp"_HASH:
 		for (auto key : m_keys)
-			if (ev[KeyboardEvent::U32_KEY_CODE].GetUnsignedInt() == key)
+			if (ev.data[0].asU32 == key)
 			{
 				m_bPressed[key] = false;
 				break;
 			}
 		break;
-	case KeyboardEvent::KeyDownId:
+	case "KeyDown"_HASH:
 		for (auto key : m_keys)
-			if (ev[KeyboardEvent::U32_KEY_CODE].GetUnsignedInt() == key)
+			if (ev.data[0].asU32 == key)
 			{
 				m_bPressed[key] = true;
 				break;

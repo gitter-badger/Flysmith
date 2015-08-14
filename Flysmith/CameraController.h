@@ -1,13 +1,8 @@
 #pragma once
-#include <string>
 #include "EventListener.h"
-#include "InputEvents.h"
 #include "GameStateEvents.h"
-#include <memory>
 #include "../../KebabD3D12/Public/Transform.h"
 #include "../../KebabD3D12/Public/Quaternion.h"
-#include "StringHash.h"
-#include <map>
 using namespace cuc;
 
 

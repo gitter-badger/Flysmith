@@ -1,7 +1,7 @@
 #include "PCH.h"
 #include "FlysmithGame.h"
 #include "Airfoil.h"
-#include "InputEvents.h"
+#include "KeyboardEvents.h"
 using namespace cuc;
 using namespace DirectX;
 
@@ -21,7 +21,7 @@ FlysmithGame::FlysmithGame(HINSTANCE hInstance)
 	: Application(hInstance)
 	, m_camController(&m_scene.m_camTransform)
 {
-	RegisterForEvent(KeyboardEvent::KeyUpId);
+	RegisterForEvent("KeyUp"_HASH);
 
 	GenerateFoilMesh(foils[foilIdx]);
 	m_scene.objTransforms.push_back(Transform());
@@ -31,8 +31,8 @@ void FlysmithGame::HandleEvent(const Event& ev)
 {
 	switch (ev.type)
 	{
-	case KeyboardEvent::KeyUpId:
-		if (ev[0].GetUnsignedInt() == 'B')
+	case "KeyUp"_HASH:
+		if (ev.data[0].asU32 == 'B')
 		{
 			foilIdx = (foilIdx + 1) % numFoils;
 			GenerateFoilMesh(foils[foilIdx]);

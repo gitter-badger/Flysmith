@@ -1,23 +1,18 @@
 #pragma once
-#include "PublicDef.h"
-#include "EventFactory.h"
 #include "Event.h"
+#include <utility>
 
 
 namespace cuc
 {
-	struct KEBAB_API TickEvent : EventFactory
+	inline KEBAB_API
+	Event&& CreateTickEvent(F32 dt)
 	{
-		enum Params
-		{
-			F32_DELTA_TIME
-		};
+		Event ev;
+		ev.type = "Tick"_HASH;
+		ev.length = 1;
+		ev.data[0] = EventData(dt);
 
-		enum EventIds : U32
-		{
-			TickId = "Tick"_HASH
-		};
-
-		static Event Create(const F32 dt);
-	};
+		return std::move(ev);
+	}
 }
