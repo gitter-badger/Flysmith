@@ -3,39 +3,36 @@
 #include "PublicDef.h"
 
 
-namespace cuc
+class EventListener;
+struct Event;
+
+class EventManager
 {
-	class EventListener;
-	struct Event;
+public:
+	EventManager();
+	~EventManager();
 
-	class EventManager
+	void RegisterListener(U32 eventType, EventListener*);
+	void RemoveListener(EventListener*);
+
+	void PostEvent(Event);
+	void TriggerEvent(Event);
+
+	void DispatchEvents();
+
+private:
+	enum EventQueueChannel
 	{
-	public:
-		EventManager();
-		~EventManager();
-
-		void RegisterListener(U32 eventType, EventListener*);
-		void RemoveListener(EventListener*);
-
-		void PostEvent(Event);
-		void TriggerEvent(Event);
-
-		void DispatchEvents();
-
-	private:
-		enum EventQueueChannel
-		{
-			ACTIVE,
-			SECONDARY,
-			NUM_CHANNELS
-		};
-
-		std::vector<Event> m_eventQueues[NUM_CHANNELS];
-		std::unordered_map<U32, std::vector<EventListener*>> m_listeners;
-	
-		static bool s_bInstantiated;
+		ACTIVE,
+		SECONDARY,
+		NUM_CHANNELS
 	};
 
-	// The global still makes me uneasy.
-	extern EventManager g_eventManager;
-}
+	std::vector<Event> m_eventQueues[NUM_CHANNELS];
+	std::unordered_map<U32, std::vector<EventListener*>> m_listeners;
+
+	static bool s_bInstantiated;
+};
+
+// The global still makes me uneasy.
+extern EventManager g_eventManager;

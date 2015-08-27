@@ -1,6 +1,5 @@
 #include "PCH.h"
 #include "FileSystem.h"
-using namespace cuc;
 
 
 struct FileSystem::Impl

@@ -1,7 +1,6 @@
 #include "PCH.h"
 #include "EventListener.h"
 #include "EventManager.h"
-using namespace cuc;
 
 
 const std::vector<U32>& EventListener::GetEvents() const

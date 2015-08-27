@@ -5,7 +5,7 @@
 #include "ResourceRegistry.h"
 
 
-class FlysmithGame : public cuc::Application, public EventListener
+class FlysmithGame : public Application, public EventListener
 {
 public:
 	FlysmithGame(HINSTANCE);

@@ -32,21 +32,21 @@ const std::wstring& AssetLocator::GetAssetDirectory(const AssetDirectory assetTy
 const bool AssetLocator::GetAssetPath(const AssetDirectory assetType, const std::wstring& filename, std::wstring* outPath) const
 {
 	*outPath = GetAssetDirectory(assetType) + filename;
-	return cuc::FileSystem::FileExists(outPath->c_str());
+	return FileSystem::FileExists(outPath->c_str());
 }
 
 AssetLocator::Impl::Impl()
 {
-	cuc::FileSystem fs;
+	FileSystem fs;
 	std::wstring projectRootPath(fs.GetExePath());
 
 	// For now, place all assets in a single folder in the solution directory instead of making copies for each build configuration.
 	// Configuration folder
-	cuc::FileSystem::RemoveLastNameFromPath(&projectRootPath, true);
+	FileSystem::RemoveLastNameFromPath(&projectRootPath, true);
 	// Bin folder
-	cuc::FileSystem::RemoveLastNameFromPath(&projectRootPath, true);
+	FileSystem::RemoveLastNameFromPath(&projectRootPath, true);
 	// Solution folder
-	cuc::FileSystem::RemoveLastNameFromPath(&projectRootPath, true);
+	FileSystem::RemoveLastNameFromPath(&projectRootPath, true);
 
 	assetDirectories[AssetDirectory::ROOT] = projectRootPath + L"Assets\\";
 	assetDirectories[AssetDirectory::SHADERS] = assetDirectories[AssetDirectory::ROOT] + L"Shaders\\";

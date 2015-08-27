@@ -1,6 +1,5 @@
 #include "PCH.h"
 #include "FileReader.h"
-using namespace cuc;
 
 
 FileReader::FileReader()

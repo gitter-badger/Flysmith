@@ -1,11 +1,8 @@
 #pragma once
 
 
-namespace cuc
+class Font
 {
-	class Font
-	{
-	public:
-		void LoadFromFile(const char* path);
-	};
-}
+public:
+	void LoadFromFile(const char* path);
+};

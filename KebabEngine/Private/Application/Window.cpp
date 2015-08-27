@@ -4,7 +4,6 @@
 #include "WindowEvents.h"
 #include "KeyboardEvents.h"
 #include "Events\EventManager.h"
-using namespace cuc;
 
 
 std::map<HWND, Window*> Window::s_windows = {};
@@ -158,12 +157,12 @@ const HWND Window::GetHandle() const
 	return m_hWnd;
 }
 
-const U32 cuc::Window::GetWidth() const
+const U32 Window::GetWidth() const
 {
 	return m_width;
 }
 
-const U32 cuc::Window::GetHeight() const
+const U32 Window::GetHeight() const
 {
 	return m_height;
 }

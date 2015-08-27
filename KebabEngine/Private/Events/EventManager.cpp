@@ -2,7 +2,6 @@
 #include "EventManager.h"
 #include "EventListener.h"
 #include "Event.h"
-using namespace cuc;
 
 
 bool EventManager::s_bInstantiated = false;

@@ -3,14 +3,13 @@
 #include "GameStateEvents.h"
 #include "Events\EventManager.h"
 #include "Window.h"
-using namespace cuc;
 
 
-EventManager cuc::g_eventManager;
+EventManager g_eventManager;
 Application::Application(HINSTANCE hInstance)
 {
 	m_pWindow = std::make_shared<Window>(hInstance, 800, 600, L"Kebab Engine", false);
-	m_pRenderer = new Renderer(m_pWindow->GetHandle(), m_pWindow->GetWidth(), m_pWindow->GetHeight());
+	m_pRenderer = new cuc::Renderer(m_pWindow->GetHandle(), m_pWindow->GetWidth(), m_pWindow->GetHeight());
 }
 
 Application::~Application()
@@ -38,7 +37,7 @@ U32 Application::Run()
 	return 0;
 }
 
-void cuc::Application::CopyRenderData()
+void Application::CopyRenderData()
 {
 	m_pRenderer->UpdateScene(m_scene.m_renderComponents);
 	m_pRenderer->UpdateView(m_scene.m_camTransform);

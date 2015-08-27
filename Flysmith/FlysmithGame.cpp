@@ -3,7 +3,6 @@
 #include "Airfoil.h"
 #include "KeyboardEvents.h"
 #include "../KebabD3D12/Public/RenderComponent.h"
-using namespace cuc;
 using namespace DirectX;
 
 

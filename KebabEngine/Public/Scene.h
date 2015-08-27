@@ -5,13 +5,10 @@
 #include <vector>
 
 
-namespace cuc
+class KEBAB_API Scene
 {
-	class KEBAB_API Scene
-	{
-	public:
-		TransformNoScale m_camTransform;
-		// TEMP
-		std::vector<RenderComponent> m_renderComponents;
-	};
-}
+public:
+	cuc::TransformNoScale m_camTransform;
+	// TEMP
+	std::vector<cuc::RenderComponent> m_renderComponents;
+};

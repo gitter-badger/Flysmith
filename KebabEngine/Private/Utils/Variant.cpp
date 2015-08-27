@@ -1,6 +1,5 @@
 #include "PCH.h"
 #include "Variant.h"
-using namespace cuc;
 
 
 inline Variant32::Variant32()

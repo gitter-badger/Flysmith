@@ -5,7 +5,7 @@
 #include FT_FREETYPE_H
 
 
-void cuc::Font::LoadFromFile(const char* path)
+void Font::LoadFromFile(const char* path)
 {
 	FT_Library library;
 	auto ftError = FT_Init_FreeType(&library);

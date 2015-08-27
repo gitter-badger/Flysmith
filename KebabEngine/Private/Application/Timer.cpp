@@ -1,6 +1,5 @@
 #include "PCH.h"
 #include "Timer.h"
-using namespace cuc;
 
 
 U64 Timer::s_ticksPerSecond = 0;
