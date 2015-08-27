@@ -2,6 +2,7 @@
 #include "Renderer.h"
 #include "RendererImpl.h"
 #include "Transform.h"
+#include "RenderComponent.h"
 
 using namespace cuc;
 using namespace DirectX;
@@ -21,12 +22,31 @@ Renderer::~Renderer()
 	delete m_pImpl;
 }
 
+RenderItemHandle Renderer::AddRenderItem(ResourceHandle mesh, ResourceHandle vertexShader, ResourceHandle pixelShader)
+{
+	m_pImpl->m_renderItemCacheQueue.push_back(RenderItem(mesh, vertexShader, pixelShader));
+	return m_pImpl->m_renderItems.size() - 1 + m_pImpl->m_renderItemCacheQueue.size();
+}
+
 Transform objTransform;
 
 // Copy visible render components
-void Renderer::UpdateScene(const Transform& tempSingleEntity)
+void Renderer::UpdateScene(const std::vector<RenderComponent>& renderables)
 {
-	objTransform = tempSingleEntity;
+	for (auto& cacheRequest : m_pImpl->m_renderItemCacheQueue)
+	{
+		m_pImpl->m_renderItems.push_back(cacheRequest);
+	}
+	m_pImpl->m_renderItemCacheQueue.erase(m_pImpl->m_renderItemCacheQueue.begin(), m_pImpl->m_renderItemCacheQueue.end());
+
+	m_pImpl->m_renderQueueEnd = 0;
+	for (auto& renderable : renderables)
+	{
+		auto itemHandle = renderable.GetRenderItem();
+		objTransform = renderables[0].m_transform;
+		//m_renderItems[itemId].SetTransform(component.m_transform.GetMatrix());
+		//m_renderQueue[m_renderQueueEnd++] = itemId;
+	}
 
 	m_pImpl->m_viewProjMat = objTransform.GetMatrix();
 	memcpy(m_pImpl->m_pWVPDataBegin, &m_pImpl->m_viewProjMat, sizeof(m_pImpl->m_viewProjMat));
@@ -63,4 +83,10 @@ ResourceHandle Renderer::CacheMesh(const std::vector<Vertex>& verts, const std::
 	m_pImpl->LoadAssets();
 	auto newMeshHandle = m_pImpl->m_resCache.AddMesh(m_pImpl->m_device.Get(), verts, indices);
 	return newMeshHandle;
+}
+
+ResourceHandle Renderer::CacheShader(ShaderType type, const std::wstring& fullPath)
+{
+	auto handle = m_pImpl->m_resCache.AddShader(type, fullPath.c_str());
+	return handle;
 }

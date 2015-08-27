@@ -13,16 +13,12 @@ std::map<ShaderType, const char*> shaderTypeStringNames = {
 	{ ShaderType::PIXEL_SHADER, "ps" }
 };
 
-std::unordered_set<const wchar_t*> loadedShaders;
 
-
-D3D12_SHADER_BYTECODE ShaderProgram::GetCompiledShader(const ShaderType type, const wchar_t* path, const char* entryPoint, const char* shaderModel,
-													   const D3D_SHADER_MACRO* pDefines, const bool bAllowIncludes, UINT flags)
+D3D12_SHADER_BYTECODE ShaderProgram::GetCompiledShader(ShaderType type, const wchar_t* path, const char* entryPoint, const char* shaderModel,
+													   D3D_SHADER_MACRO* pDefines, const bool bAllowIncludes, UINT flags)
 {
 	assert(path != nullptr);
-	assert(loadedShaders.find(path) == loadedShaders.end());
-	loadedShaders.insert(path);
-
+	
 	ID3DInclude* pIncludeFlag = nullptr;
 	if (bAllowIncludes)
 		pIncludeFlag = D3D_COMPILE_STANDARD_FILE_INCLUDE;
@@ -70,9 +66,9 @@ D3D12_SHADER_BYTECODE ShaderProgram::GetCompiledShader(const ShaderType type, co
 	return result;
 }
 
-D3D12_SHADER_BYTECODE cuc::ShaderProgram::GetCompiledShader(const ShaderType type, const void* pData, const size_t dataSize, const char* sourceName, 
+D3D12_SHADER_BYTECODE cuc::ShaderProgram::GetCompiledShader(ShaderType type, const void* pData, const size_t dataSize, const char* sourceName, 
 															const char* entryPoint, const char* shaderModel, 
-															const D3D_SHADER_MACRO* pDefines, const bool bAllowIncludes, UINT flags)
+															D3D_SHADER_MACRO* pDefines, const bool bAllowIncludes, UINT flags)
 {
 	ID3DInclude* pIncludeFlag = nullptr;
 	if (bAllowIncludes)

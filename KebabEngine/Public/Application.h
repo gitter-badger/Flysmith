@@ -27,7 +27,7 @@ namespace cuc
 		Scene m_scene;
 		Timer m_timer;
 		Renderer* m_pRenderer;
-
+		
 	private:
 		void CopyRenderData();
 		std::shared_ptr<Window> m_pWindow;

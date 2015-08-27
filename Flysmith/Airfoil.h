@@ -1,11 +1,13 @@
 #pragma once
 #include "PCH.h"
+#include "Mesh.h"
 
 
 class Airfoil
 {
 public:
-	bool LoadFromFile(const wchar_t* filename);
+	Airfoil(const std::wstring& filename);
+	Mesh GenerateMesh();
 
 	std::vector<DirectX::XMFLOAT2> points;
 };

@@ -1,8 +1,6 @@
 #pragma once
 #include "EventListener.h"
-#include "GameStateEvents.h"
-#include "../../KebabD3D12/Public/Transform.h"
-#include "../../KebabD3D12/Public/Quaternion.h"
+#include "../../KebabD3D12/Public/TransformNoScale.h"
 using namespace cuc;
 
 

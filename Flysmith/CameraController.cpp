@@ -1,5 +1,6 @@
 #include "PCH.h"
 #include "CameraController.h"
+#include "GameStateEvents.h"
 
 
 CameraController::CameraController(TransformNoScale* pCamTransform)

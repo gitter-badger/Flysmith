@@ -1,6 +1,7 @@
 #include "PCH.h"
 #include "Airfoil.h"
 #include "AssetLocator.h"
+using namespace DirectX;
 
 
 // Point order: 
@@ -12,14 +13,11 @@
 //
 
 
-bool Airfoil::LoadFromFile(const wchar_t* filename)
+Airfoil::Airfoil(const std::wstring& filename)
 {
 	AssetLocator al;
 	std::wstring path;
-	if (!al.GetAssetPath(AssetDirectory::AIRFOILS, filename, &path))
-	{
-		return false;
-	}
+	assert(al.GetAssetPath(AssetDirectory::AIRFOILS, filename, &path) == true);
 
 	std::ifstream file(path);
 	std::string desc;
@@ -30,6 +28,27 @@ bool Airfoil::LoadFromFile(const wchar_t* filename)
 	{
 		points.push_back({ x, y });
 	}
+}
 
-	return true;
+Mesh Airfoil::GenerateMesh()
+{
+	Mesh mesh;
+
+	for (auto& foilPoint : points)
+	{
+		XMFLOAT2 vert(foilPoint);
+		vert.x -= .5f;
+		vert.y -= .5f;
+		mesh.verts.push_back({ { vert.x, vert.y, 0.0f },{ 0.0f, 0.0f, 0.0f, 1.0f } });
+	}
+
+	auto numPoints = points.size();
+	for (U32 i = 1; i < numPoints; i++)
+	{
+		mesh.indices.push_back(i);
+		mesh.indices.push_back(numPoints - i);
+		mesh.indices.push_back(i - 1);
+	}
+
+	return mesh;
 }

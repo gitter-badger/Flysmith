@@ -72,9 +72,6 @@ void Renderer::Impl::CreatePipelineStateObject()
 		{ "COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 12, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 }
 	};
 
-	m_resCache.AddShader(VERTEX_SHADER, L"D:\\Flysmith\\KebabD3D12\\Private\\Shaders\\TestVS.hlsl");
-	m_resCache.AddShader(PIXEL_SHADER, L"D:\\Flysmith\\KebabD3D12\\Private\\Shaders\\TestPS.hlsl");
-
 	RasterizerStateConfig rastState(D3D12_FILL_MODE_WIREFRAME, D3D12_CULL_MODE_NONE);
 
 	m_pso.Init(m_device.Get(), layout, 2, m_pRootSignature.Get(), nullptr, &rastState, &m_resCache.GetShader(0), &m_resCache.GetShader(1));

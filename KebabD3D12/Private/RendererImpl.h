@@ -23,6 +23,8 @@
 
 #include "Descriptors\ConstantBufferView.h"
 
+#include "RenderItem.h"
+
 
 namespace cuc
 {
@@ -67,8 +69,18 @@ namespace cuc
 		void WaitForGPU();
 
 		ResourceCache m_resCache;
-		std::vector<RenderObject> m_renderObjects;
 		U32 rootConstColorIndex;
 		U32 rootDescViewProjIndex;
+
+		static const size_t MAX_RENDER_QUEUE_ITEMS = 100;
+
+		// Holds handles of render items that are going to be rendered this frame.
+		RenderItemHandle m_renderQueue[MAX_RENDER_QUEUE_ITEMS];
+		size_t m_renderQueueEnd;
+		
+		// Holds all render items, whether they are to be rendered or not.
+		std::vector<RenderItem> m_renderItems;
+
+		std::vector<RenderItem> m_renderItemCacheQueue;
 	};
 }

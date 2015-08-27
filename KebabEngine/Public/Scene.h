@@ -1,6 +1,7 @@
 #pragma once
 #include "PublicDef.h"
 #include "../../KebabD3D12/Public/Transform.h"
+#include "../../KebabD3D12/Public/RenderComponent.h"
 #include <vector>
 
 
@@ -10,6 +11,7 @@ namespace cuc
 	{
 	public:
 		TransformNoScale m_camTransform;
-		std::vector<Transform> objTransforms;
+		// TEMP
+		std::vector<RenderComponent> m_renderComponents;
 	};
 }

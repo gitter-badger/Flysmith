@@ -123,6 +123,9 @@
     <ClCompile Include="Private\Resources\ResourceCache.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Private\RenderComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Private\DXGI\DXGIAdapter.h">
@@ -144,9 +147,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Private\Resources\DescriptorHeap.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Private\Pipeline\ShaderProgram.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Private\Resources\UploadHeap.h">
@@ -243,6 +243,18 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Private\Mesh.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Private\RenderItem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Public\ShaderTypes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Private\Pipeline\ShaderProgram.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Public\RenderComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
