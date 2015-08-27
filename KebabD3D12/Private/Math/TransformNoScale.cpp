@@ -197,6 +197,6 @@ void TransformNoScale::RotateZ(float dRollAngle)
 
 void TransformNoScale::CacheTransform()
 {
-	// Scale -> Rotate -> Translate
-	XMStoreFloat4x4(&m_transformMatrix, m_rotation.GetMatrixFormXM() * XMMatrixTranslationFromVector(XMLoadFloat3(&m_position)));
+	// Rotate -> Translate
+	XMStoreFloat4x4(&m_transformMatrix, XMMatrixTranslationFromVector(XMLoadFloat3(&m_position)) * m_rotation.GetMatrixFormXM());
 }

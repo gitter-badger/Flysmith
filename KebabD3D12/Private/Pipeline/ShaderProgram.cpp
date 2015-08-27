@@ -22,8 +22,6 @@ D3D12_SHADER_BYTECODE ShaderProgram::GetCompiledShader(ShaderType type, const wc
 	if (bAllowIncludes)
 		pIncludeFlag = D3D_COMPILE_STANDARD_FILE_INCLUDE;
 
-	// TODO: Remove row major flag
-	flags |= D3DCOMPILE_PACK_MATRIX_ROW_MAJOR;
 #ifdef _DEBUG
 	flags |= D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION | D3DCOMPILE_WARNINGS_ARE_ERRORS;
 #endif
@@ -73,8 +71,6 @@ D3D12_SHADER_BYTECODE ShaderProgram::GetCompiledShader(ShaderType type, const vo
 	if (bAllowIncludes)
 		pIncludeFlag = D3D_COMPILE_STANDARD_FILE_INCLUDE;
 
-	// TODO: Remove row major flag
-	flags |= D3DCOMPILE_PACK_MATRIX_ROW_MAJOR; 
 #ifdef _DEBUG
 	flags |= D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION | D3DCOMPILE_WARNINGS_ARE_ERRORS;
 #endif

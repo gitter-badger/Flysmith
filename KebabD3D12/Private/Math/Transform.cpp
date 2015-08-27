@@ -137,7 +137,7 @@ void Transform::ScaleZ(float byZ)
 void Transform::CacheTransform()
 {
 	// Scale -> Rotate -> Translate
-	XMStoreFloat4x4(&m_transformMatrix, XMMatrixScalingFromVector(XMLoadFloat3(&m_scale)) *
+	XMStoreFloat4x4(&m_transformMatrix, XMMatrixTranslationFromVector(XMLoadFloat3(&m_position))*
 									    m_rotation.GetMatrixFormXM() *
-									    XMMatrixTranslationFromVector(XMLoadFloat3(&m_position)));
+										XMMatrixScalingFromVector(XMLoadFloat3(&m_scale)));
 }

@@ -62,8 +62,7 @@ void Renderer::Impl::CreateRootSignature()
 	rootDescViewProjIndex = rootSigFactory.AddParameterDescriptor(RootParameterType::INL_CONSTANT_BUFFER, 1);
 	m_pRootSignature = rootSigFactory.BuildRootSignature(m_device.Get());
 }
-#include <fstream>
-#include <string>
+
 void Renderer::Impl::CreatePipelineStateObject()
 {
 	D3D12_INPUT_ELEMENT_DESC layout[] = {

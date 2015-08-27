@@ -47,7 +47,7 @@ void Renderer::UpdateScene(const std::vector<RenderComponent>& renderables)
 		//m_renderQueue[m_renderQueueEnd++] = itemId;
 	}
 
-	m_pImpl->m_viewProjMat = objTransform.GetMatrix();
+	XMStoreFloat4x4(&m_pImpl->m_viewProjMat, XMMatrixTranspose(objTransform.GetMatrixXM()));
 	memcpy(m_pImpl->m_pWVPDataBegin, &m_pImpl->m_viewProjMat, sizeof(m_pImpl->m_viewProjMat));
 }
 
@@ -57,6 +57,7 @@ void Renderer::UpdateView(const TransformNoScale& transform)
 	m_pImpl->m_camera.Update(transform);
 
 	auto wvp = objTransform.GetMatrixXM() * m_pImpl->m_camera.GetViewProjMatrixXM();
+	wvp = XMMatrixTranspose(wvp);
 	XMStoreFloat4x4(&m_pImpl->m_viewProjMat, wvp);
 	memcpy(m_pImpl->m_pWVPDataBegin, &m_pImpl->m_viewProjMat, sizeof(m_pImpl->m_viewProjMat));
 }
