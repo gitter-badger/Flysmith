@@ -3,11 +3,7 @@
 #include "Timer.h"
 #include "Scene.h"
 
-#ifdef RENDERER_DX12
 #include "../../KebabD3D12/Public/Renderer.h"
-#elif defined(RENDERER_OGL)
-#include "../../KebabOGL/Public/Renderer.h"
-#endif
 
 
 namespace cuc
