@@ -3,31 +3,28 @@
 #include "DXGI\DXGIAdapter.h"
 
 
-namespace cuc
+struct MSAAConfig
 {
-	struct MSAAConfig
-	{
-		MSAAConfig(U32 sampleCount = 1, U32 sampleQuality = 0);
-		int sampleCount;
-		int sampleQuality;
-	};
+	MSAAConfig(U32 sampleCount = 1, U32 sampleQuality = 0);
+	int sampleCount;
+	int sampleQuality;
+};
 
-	class HardwareCaps
-	{
-	public:
-		HardwareCaps();
+class HardwareCaps
+{
+public:
+	HardwareCaps();
 
-		// Requires existing D3D12 Device
-		// Returns the highest level of MSAA available
-		const MSAAConfig CheckMSAASupport(ID3D12Device*);
+	// Requires existing D3D12 Device
+	// Returns the highest level of MSAA available
+	const MSAAConfig CheckMSAASupport(ID3D12Device*);
 
-		const std::vector<DXGIAdapter>& GetDisplayAdapters() const;
-		const MSAAConfig GetMSAASupport() const;
-	
-	private:
-		std::vector<DXGIAdapter> m_displayAdapters;
-		MSAAConfig m_msaaSupport;
+	const std::vector<DXGIAdapter>& GetDisplayAdapters() const;
+	const MSAAConfig GetMSAASupport() const;
 
-		void EnumerateDisplayAdapters();
-	};
-}
+private:
+	std::vector<DXGIAdapter> m_displayAdapters;
+	MSAAConfig m_msaaSupport;
+
+	void EnumerateDisplayAdapters();
+};

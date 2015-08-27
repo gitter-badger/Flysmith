@@ -1,6 +1,5 @@
 #include "PCH.h"
 #include "Quaternion.h"
-using namespace cuc;
 
 
 Quaternion::Quaternion()
@@ -8,12 +7,12 @@ Quaternion::Quaternion()
 	XMStoreFloat4(&quat, XMQuaternionIdentity());
 }
 
-cuc::Quaternion::Quaternion(const Quaternion& other)
+Quaternion::Quaternion(const Quaternion& other)
 	: quat(other.quat)
 {
 }
 
-Quaternion& cuc::Quaternion::operator=(const Quaternion& other)
+Quaternion& Quaternion::operator=(const Quaternion& other)
 {
 	quat = other.quat;
 	return *this;
@@ -39,7 +38,7 @@ Quaternion::Quaternion(const XMFLOAT4& quaternion)
 	XMStoreFloat4(&quat, XMLoadFloat4(&quaternion));
 }
 
-cuc::Quaternion::Quaternion(float pitch, float yaw, float roll)
+Quaternion::Quaternion(float pitch, float yaw, float roll)
 {
 	SetFromEuler(pitch, yaw, roll);
 }
@@ -49,12 +48,12 @@ Quaternion::Quaternion(CXMVECTOR quaternion)
 	XMStoreFloat4(&quat, quaternion);
 }
 
-void cuc::Quaternion::SetFromEuler(float pitch, float yaw, float roll)
+void Quaternion::SetFromEuler(float pitch, float yaw, float roll)
 {
 	*this = Quaternion(xAxis, pitch) * Quaternion(yAxis, yaw) * Quaternion(zAxis, roll);
 }
 
-void cuc::Quaternion::SetFromEuler(const XMFLOAT3& vec)
+void Quaternion::SetFromEuler(const XMFLOAT3& vec)
 {
 	SetFromEuler(vec.x, vec.y, vec.z);
 }
@@ -128,7 +127,7 @@ Quaternion Quaternion::operator*=(const Quaternion& other)
 	return *this;
 }
 
-Quaternion cuc::Quaternion::operator*(const Quaternion& other)
+Quaternion Quaternion::operator*(const Quaternion& other)
 {
 	return Quaternion(XMQuaternionMultiply(XMLoadFloat4(&quat), XMLoadFloat4(&other.quat)));
 }

@@ -1,6 +1,5 @@
 #include "PCH.h"
 #include "DescriptorHeap.h"
-using namespace cuc;
 
 
 DescriptorHeap::DescriptorHeap()

@@ -7,5 +7,5 @@
 struct Mesh
 {
 	std::vector<U32> indices;
-	std::vector<cuc::Vertex> verts;
+	std::vector<Vertex> verts;
 };

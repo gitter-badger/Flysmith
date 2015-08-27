@@ -1,6 +1,5 @@
 #include "PCH.h"
 #include "DXGIAdapter.h"
-using namespace cuc;
 using namespace Microsoft::WRL;
 
 

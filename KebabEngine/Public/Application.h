@@ -20,7 +20,7 @@ protected:
 	virtual void UpdateScene(float dt) = 0;
 	Scene m_scene;
 	Timer m_timer;
-	cuc::Renderer* m_pRenderer;
+	Renderer* m_pRenderer;
 
 private:
 	void CopyRenderData();

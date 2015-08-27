@@ -1,6 +1,5 @@
 #include "PCH.h"
 #include "Mesh.h"
-using namespace cuc;
 
 
 Mesh::Mesh()

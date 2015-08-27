@@ -1,6 +1,5 @@
 #include "PCH.h"
 #include "RasterizerStateConfig.h"
-using namespace cuc;
 
 
 RasterizerStateConfig::RasterizerStateConfig(const D3D12_FILL_MODE fillMode, const D3D12_CULL_MODE cullMode)

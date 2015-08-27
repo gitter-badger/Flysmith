@@ -1,6 +1,5 @@
 #include "PCH.h"
 #include "Resource.h"
-using namespace cuc;
 
 
 Resource::Resource()

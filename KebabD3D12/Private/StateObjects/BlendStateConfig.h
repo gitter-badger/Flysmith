@@ -2,12 +2,9 @@
 #include "PCH.h"
 
 
-namespace cuc
+struct BlendStateConfig : public D3D12_BLEND_DESC
 {
-	struct BlendStateConfig : public D3D12_BLEND_DESC
-	{
-		BlendStateConfig();
-	};
+	BlendStateConfig();
+};
 
-	const BlendStateConfig kDefaultBlendState;
-}
+const BlendStateConfig kDefaultBlendState;

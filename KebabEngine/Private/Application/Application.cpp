@@ -9,7 +9,7 @@ EventManager g_eventManager;
 Application::Application(HINSTANCE hInstance)
 {
 	m_pWindow = std::make_shared<Window>(hInstance, 800, 600, L"Kebab Engine", false);
-	m_pRenderer = new cuc::Renderer(m_pWindow->GetHandle(), m_pWindow->GetWidth(), m_pWindow->GetHeight());
+	m_pRenderer = new Renderer(m_pWindow->GetHandle(), m_pWindow->GetWidth(), m_pWindow->GetHeight());
 }
 
 Application::~Application()

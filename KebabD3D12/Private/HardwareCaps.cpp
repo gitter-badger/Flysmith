@@ -1,7 +1,6 @@
 #include "PCH.h"
 #include "HardwareCaps.h"
 #include <dxgi1_4.h>
-using namespace cuc;
 
 
 MSAAConfig::MSAAConfig(U32 sampleCount, U32 sampleQuality)

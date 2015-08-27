@@ -3,13 +3,10 @@
 #include "Transform.h"
 
 
-namespace cuc
+struct RenderObject
 {
-	struct RenderObject
-	{
-		Transform transform;
-		ResourceHandle meshHandle;
-		ResourceHandle vertShaderHandle;
-		ResourceHandle pixelShaderHandle;
-	};
-}
+	Transform transform;
+	ResourceHandle meshHandle;
+	ResourceHandle vertShaderHandle;
+	ResourceHandle pixelShaderHandle;
+};

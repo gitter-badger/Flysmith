@@ -1,6 +1,5 @@
 #include "PCH.h"
 #include "BlendStateConfig.h"
-using namespace cuc;
 
 
 BlendStateConfig::BlendStateConfig()

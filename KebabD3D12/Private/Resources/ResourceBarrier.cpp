@@ -2,7 +2,7 @@
 #include "ResourceBarrier.h"
 
 
-cuc::TransitionBarrier::TransitionBarrier(ID3D12Resource* pResource, D3D12_RESOURCE_STATES stateBefore, D3D12_RESOURCE_STATES stateAfter, BarrierFlag flag)
+TransitionBarrier::TransitionBarrier(ID3D12Resource* pResource, D3D12_RESOURCE_STATES stateBefore, D3D12_RESOURCE_STATES stateAfter, BarrierFlag flag)
 {
 	assert(pResource != nullptr);
 
@@ -14,19 +14,19 @@ cuc::TransitionBarrier::TransitionBarrier(ID3D12Resource* pResource, D3D12_RESOU
 	Transition.StateAfter = stateAfter;
 }
 
-void cuc::TransitionBarrier::SetResource(ID3D12Resource* pResource)
+void TransitionBarrier::SetResource(ID3D12Resource* pResource)
 {
 	assert(pResource != nullptr);
 	Transition.pResource = pResource;
 }
 
-void cuc::TransitionBarrier::SetTransition(D3D12_RESOURCE_STATES stateBefore, D3D12_RESOURCE_STATES stateAfter)
+void TransitionBarrier::SetTransition(D3D12_RESOURCE_STATES stateBefore, D3D12_RESOURCE_STATES stateAfter)
 {
 	Transition.StateBefore = stateBefore;
 	Transition.StateAfter = stateAfter;
 }
 
-cuc::AliasingBarrier::AliasingBarrier(ID3D12Resource* pResourceBefore, ID3D12Resource* pResourceAfter, BarrierFlag flag)
+AliasingBarrier::AliasingBarrier(ID3D12Resource* pResourceBefore, ID3D12Resource* pResourceAfter, BarrierFlag flag)
 {
 	Type = D3D12_RESOURCE_BARRIER_TYPE_ALIASING;
 	Flags = static_cast<D3D12_RESOURCE_BARRIER_FLAGS>(flag);
@@ -34,7 +34,7 @@ cuc::AliasingBarrier::AliasingBarrier(ID3D12Resource* pResourceBefore, ID3D12Res
 	Aliasing.pResourceAfter = pResourceAfter;
 }
 
-cuc::UAVBarrier::UAVBarrier(ID3D12Resource* pResource, BarrierFlag flag)
+UAVBarrier::UAVBarrier(ID3D12Resource* pResource, BarrierFlag flag)
 {
 	Type = D3D12_RESOURCE_BARRIER_TYPE_UAV;
 	Flags = static_cast<D3D12_RESOURCE_BARRIER_FLAGS>(flag);

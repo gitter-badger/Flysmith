@@ -1,6 +1,5 @@
 #include "PCH.h"
 #include "SwapChain.h"
-using namespace cuc;
 
 
 SwapChain::SwapChain()
@@ -76,7 +75,7 @@ ID3D12Resource* SwapChain::GetRenderTarget()
 	return m_pRenderTarget;
 }
 
-D3D12_CPU_DESCRIPTOR_HANDLE cuc::SwapChain::GetRTVLocation()
+D3D12_CPU_DESCRIPTOR_HANDLE SwapChain::GetRTVLocation()
 {
 	return m_rtDescHeap.GetCPUHandle(0);
 }

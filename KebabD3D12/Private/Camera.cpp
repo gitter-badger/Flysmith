@@ -1,6 +1,5 @@
 #include "PCH.h"
 #include "Camera.h"
-using namespace cuc;
 
 
 Camera::Camera(float viewWidth, float viewHeight, float fovY, float nearPlane, float farPlane)
@@ -33,13 +32,13 @@ const XMMATRIX Camera::GetViewProjMatrixXM() const
 	return XMLoadFloat4x4(&m_viewProjMatrix);
 }
 
-void cuc::Camera::Update(const TransformNoScale& transform)
+void Camera::Update(const TransformNoScale& transform)
 {
 	m_transform = transform;
 	CacheViewProjMatrices();
 }
 
-void cuc::Camera::CacheViewProjMatrices()
+void Camera::CacheViewProjMatrices()
 {
 	auto posVec = m_transform.GetPosition();
 	auto translateMat = XMMatrixTranslation(-posVec.x, -posVec.y, -posVec.z);

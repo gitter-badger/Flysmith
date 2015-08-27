@@ -4,7 +4,6 @@
 #include "Transform.h"
 #include "RenderComponent.h"
 
-using namespace cuc;
 using namespace DirectX;
 
 #pragma comment(lib, "D3d12.lib")

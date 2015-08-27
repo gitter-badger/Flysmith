@@ -2,12 +2,12 @@
 #include "CommandAllocator.h"
 
 
-cuc::CommandAllocator::CommandAllocator()
+CommandAllocator::CommandAllocator()
 	: m_pCommandAllocator(nullptr)
 {
 }
 
-cuc::CommandAllocator::~CommandAllocator()
+CommandAllocator::~CommandAllocator()
 {
 	if (m_pCommandAllocator)
 	{
@@ -15,7 +15,7 @@ cuc::CommandAllocator::~CommandAllocator()
 	}
 }
 
-void cuc::CommandAllocator::Init(ID3D12Device* pDevice, CommandListType type)
+void CommandAllocator::Init(ID3D12Device* pDevice, CommandListType type)
 {
 	assert(pDevice != nullptr);
 	assert(m_pCommandAllocator == nullptr);
@@ -24,13 +24,13 @@ void cuc::CommandAllocator::Init(ID3D12Device* pDevice, CommandListType type)
 	assert(SUCCEEDED(hr));
 }
 
-ID3D12CommandAllocator* cuc::CommandAllocator::Get()
+ID3D12CommandAllocator* CommandAllocator::Get()
 {
 	assert(m_pCommandAllocator != nullptr);
 	return m_pCommandAllocator;
 }
 
-void cuc::CommandAllocator::Reset()
+void CommandAllocator::Reset()
 {
 	HRESULT hr = m_pCommandAllocator->Reset();
 	assert(SUCCEEDED(hr));

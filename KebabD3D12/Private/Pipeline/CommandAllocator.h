@@ -5,19 +5,16 @@
 struct ID3D12Device;
 struct ID3D12CommandAllocator;
 
-namespace cuc
+class CommandAllocator
 {
-	class CommandAllocator
-	{
-	public:
-		CommandAllocator();
-		~CommandAllocator();
-		void Init(ID3D12Device*, CommandListType = DIRECT);
-		ID3D12CommandAllocator* Get();
+public:
+	CommandAllocator();
+	~CommandAllocator();
+	void Init(ID3D12Device*, CommandListType = DIRECT);
+	ID3D12CommandAllocator* Get();
 
-		void Reset();
+	void Reset();
 
-	private:
-		ID3D12CommandAllocator* m_pCommandAllocator;
-	};
-}
+private:
+	ID3D12CommandAllocator* m_pCommandAllocator;
+};

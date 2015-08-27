@@ -2,51 +2,51 @@
 #include "Transform.h"
 
 
-cuc::Transform::Transform()
+Transform::Transform()
 	: m_scale(1.0f, 1.0f, 1.0f)
 {
 	CacheTransform();
 }
 
-cuc::Transform::Transform(const XMFLOAT3& position)
+Transform::Transform(const XMFLOAT3& position)
 	: TransformNoScale(position)
 	, m_scale(1.0f, 1.0f, 1.0f)
 {
 	CacheTransform();
 }
 
-cuc::Transform::Transform(const XMFLOAT3& position, const Quaternion& rotation)
+Transform::Transform(const XMFLOAT3& position, const Quaternion& rotation)
 	: TransformNoScale(position, rotation)
 	, m_scale(1.0f, 1.0f, 1.0f)
 {
 	CacheTransform();
 }
 
-cuc::Transform::Transform(const XMFLOAT3& position, float pitch, float yaw, float roll)
+Transform::Transform(const XMFLOAT3& position, float pitch, float yaw, float roll)
 	: TransformNoScale(position, pitch, yaw, roll)
 	, m_scale(1.0f, 1.0f, 1.0f)
 {
 	CacheTransform();
 }
 
-cuc::Transform::Transform(const XMFLOAT3& position, const Quaternion& rotation, const XMFLOAT3& scale)
+Transform::Transform(const XMFLOAT3& position, const Quaternion& rotation, const XMFLOAT3& scale)
 	: TransformNoScale(position, rotation)
 	, m_scale(scale)
 {
 	CacheTransform();
 }
 
-const XMFLOAT3& cuc::Transform::GetScale() const
+const XMFLOAT3& Transform::GetScale() const
 {
 	return m_scale;
 }
 
-const XMVECTOR cuc::Transform::GetScaleXM() const
+const XMVECTOR Transform::GetScaleXM() const
 {
 	return XMLoadFloat3(&m_scale);
 }
 
-bool cuc::operator==(const cuc::Transform& lhs, const cuc::Transform& rhs)
+bool operator==(const Transform& lhs, const Transform& rhs)
 {
 	for (U8 line = 0; line < 4; line++)
 	{
@@ -60,7 +60,7 @@ bool cuc::operator==(const cuc::Transform& lhs, const cuc::Transform& rhs)
 	return true;
 }
 
-bool cuc::operator!=(const cuc::Transform& lhs, const cuc::Transform& rhs)
+bool operator!=(const Transform& lhs, const Transform& rhs)
 {
 	for (U8 line = 0; line < 4; line++)
 	{
@@ -74,25 +74,25 @@ bool cuc::operator!=(const cuc::Transform& lhs, const cuc::Transform& rhs)
 	return false;
 }
 
-void cuc::Transform::SetScale(float byUniformScale)
+void Transform::SetScale(float byUniformScale)
 {
 	m_scale = { byUniformScale, byUniformScale, byUniformScale };
 	CacheTransform();
 }
 
-void cuc::Transform::SetScale(const DirectX::XMFLOAT3& newScale)
+void Transform::SetScale(const DirectX::XMFLOAT3& newScale)
 {
 	m_scale = newScale;
 	CacheTransform();
 }
 
-void cuc::Transform::SetScale(float x, float y, float z)
+void Transform::SetScale(float x, float y, float z)
 {
 	m_scale = { x, y, z };
 	CacheTransform();
 }
 
-void cuc::Transform::Scale(float uniformScale)
+void Transform::Scale(float uniformScale)
 {
 	m_scale.x *= uniformScale;
 	m_scale.y *= uniformScale;
@@ -100,7 +100,7 @@ void cuc::Transform::Scale(float uniformScale)
 	CacheTransform();
 }
 
-void cuc::Transform::Scale(const DirectX::XMFLOAT3& dScale)
+void Transform::Scale(const DirectX::XMFLOAT3& dScale)
 {
 	m_scale.x *= dScale.x;
 	m_scale.y *= dScale.y;
@@ -108,7 +108,7 @@ void cuc::Transform::Scale(const DirectX::XMFLOAT3& dScale)
 	CacheTransform();
 }
 
-void cuc::Transform::Scale(float byX, float byY, float byZ)
+void Transform::Scale(float byX, float byY, float byZ)
 {
 	m_scale.x *= byX;
 	m_scale.y *= byY;
@@ -116,25 +116,25 @@ void cuc::Transform::Scale(float byX, float byY, float byZ)
 	CacheTransform();
 }
 
-void cuc::Transform::ScaleX(float byX)
+void Transform::ScaleX(float byX)
 {
 	m_scale.x *= byX;
 	CacheTransform();
 }
 
-void cuc::Transform::ScaleY(float byY)
+void Transform::ScaleY(float byY)
 {
 	m_scale.y *= byY;
 	CacheTransform();
 }
 
-void cuc::Transform::ScaleZ(float byZ)
+void Transform::ScaleZ(float byZ)
 {
 	m_scale.z *= byZ;
 	CacheTransform();
 }
 
-void cuc::Transform::CacheTransform()
+void Transform::CacheTransform()
 {
 	// Scale -> Rotate -> Translate
 	XMStoreFloat4x4(&m_transformMatrix, XMMatrixScalingFromVector(XMLoadFloat3(&m_scale)) *

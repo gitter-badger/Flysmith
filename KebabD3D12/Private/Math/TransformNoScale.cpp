@@ -1,6 +1,6 @@
 #include "PCH.h"
 #include "TransformNoScale.h"
-using namespace cuc;
+
 
 TransformNoScale::TransformNoScale()
 	: m_position(0.0f, 0.0f, 0.0f)
@@ -40,7 +40,7 @@ const XMMATRIX TransformNoScale::GetMatrixXM() const
 	return XMLoadFloat4x4(&m_transformMatrix);
 }
 
-const Quaternion& cuc::TransformNoScale::GetRotationQuat() const
+const Quaternion& TransformNoScale::GetRotationQuat() const
 {
 	return m_rotation;
 }
@@ -55,7 +55,7 @@ const XMVECTOR TransformNoScale::GetPositionXM() const
 	return XMLoadFloat3(&m_position);
 }
 
-bool cuc::operator==(const TransformNoScale& lhs, const TransformNoScale& rhs)
+bool operator==(const TransformNoScale& lhs, const TransformNoScale& rhs)
 {
 	for (U8 line = 0; line < 4; line++)
 	{
@@ -69,7 +69,7 @@ bool cuc::operator==(const TransformNoScale& lhs, const TransformNoScale& rhs)
 	return true;
 }
 
-bool cuc::operator!=(const TransformNoScale& lhs, const TransformNoScale& rhs)
+bool operator!=(const TransformNoScale& lhs, const TransformNoScale& rhs)
 {
 	for (U8 line = 0; line < 4; line++)
 	{

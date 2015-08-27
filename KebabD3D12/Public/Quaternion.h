@@ -4,55 +4,52 @@
 using namespace DirectX;
 
 
-namespace cuc
-{
 #pragma warning(push)
 #pragma warning(disable:4251)
-	class KEBAB12_API Quaternion
-	{
-	public:
-		Quaternion();
-		Quaternion(const Quaternion&);
-		Quaternion& operator=(const Quaternion&);
+class KEBAB12_API Quaternion
+{
+public:
+	Quaternion();
+	Quaternion(const Quaternion&);
+	Quaternion& operator=(const Quaternion&);
 
-		explicit Quaternion(CXMMATRIX mat);
-		explicit Quaternion(const XMFLOAT4X4& mat);
-		explicit Quaternion(const XMFLOAT3& axis, float angle);
-		explicit Quaternion(const XMFLOAT4& quaternion);
-		explicit Quaternion(float pitch, float yaw, float roll);
-		explicit Quaternion(CXMVECTOR quaternion);
+	explicit Quaternion(CXMMATRIX mat);
+	explicit Quaternion(const XMFLOAT4X4& mat);
+	explicit Quaternion(const XMFLOAT3& axis, float angle);
+	explicit Quaternion(const XMFLOAT4& quaternion);
+	explicit Quaternion(float pitch, float yaw, float roll);
+	explicit Quaternion(CXMVECTOR quaternion);
 
-		void SetFromEuler(float pitch, float yaw, float roll);
-		void SetFromEuler(const XMFLOAT3&);
-		void SetFromMatrix(CXMMATRIX mat);
-		void SetFromMatrix(const XMFLOAT4X4& mat);
-		
-		XMFLOAT4X4 GetMatrixForm() const;
-		XMMATRIX GetMatrixFormXM() const;
+	void SetFromEuler(float pitch, float yaw, float roll);
+	void SetFromEuler(const XMFLOAT3&);
+	void SetFromMatrix(CXMMATRIX mat);
+	void SetFromMatrix(const XMFLOAT4X4& mat);
 
-		// X Axis
-		XMVECTOR GetRightVectorXM() const;
-	
-		// Y Axis
-		XMVECTOR GetUpVectorXM() const;
+	XMFLOAT4X4 GetMatrixForm() const;
+	XMMATRIX GetMatrixFormXM() const;
 
-		// Z Axis
-		XMVECTOR GetForwardVectorXM() const;
+	// X Axis
+	XMVECTOR GetRightVectorXM() const;
 
-		void Concat(const XMFLOAT3& axis, float angle);
-		void Concat(const XMFLOAT4& quaternion);
-		void Concat(CXMVECTOR quaternion);
-		void Concat(const Quaternion& other);
-		Quaternion operator*=(const Quaternion&);
-		Quaternion operator*(const Quaternion&);
+	// Y Axis
+	XMVECTOR GetUpVectorXM() const;
 
-	private:
-		XMFLOAT4 quat;
-	};
+	// Z Axis
+	XMVECTOR GetForwardVectorXM() const;
 
-	const XMFLOAT3 xAxis = { 1.0f, 0.0f, 0.0f },
-				   yAxis = { 0.0f, 1.0f, 0.0f },
-				   zAxis = { 0.0f, 0.0f, 1.0f };
+	void Concat(const XMFLOAT3& axis, float angle);
+	void Concat(const XMFLOAT4& quaternion);
+	void Concat(CXMVECTOR quaternion);
+	void Concat(const Quaternion& other);
+	Quaternion operator*=(const Quaternion&);
+	Quaternion operator*(const Quaternion&);
+
+private:
+	XMFLOAT4 quat;
+};
+
+const XMFLOAT3 xAxis = { 1.0f, 0.0f, 0.0f },
+yAxis = { 0.0f, 1.0f, 0.0f },
+zAxis = { 0.0f, 0.0f, 1.0f };
 
 #pragma warning(pop)
-}

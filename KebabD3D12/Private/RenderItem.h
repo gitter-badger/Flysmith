@@ -1,15 +1,12 @@
 #pragma once
 
 
-namespace cuc
+struct RenderItem
 {
-	struct RenderItem
-	{
-		RenderItem(ResourceHandle mesh_, ResourceHandle vertShader_, ResourceHandle pixelShader_)
-			: mesh(mesh_), vertShader(vertShader_), pixelShader(pixelShader_) {}
+	RenderItem(ResourceHandle mesh_, ResourceHandle vertShader_, ResourceHandle pixelShader_)
+		: mesh(mesh_), vertShader(vertShader_), pixelShader(pixelShader_) {}
 
-		ResourceHandle mesh;
-		ResourceHandle vertShader;
-		ResourceHandle pixelShader;
-	};
-}
+	ResourceHandle mesh;
+	ResourceHandle vertShader;
+	ResourceHandle pixelShader;
+};

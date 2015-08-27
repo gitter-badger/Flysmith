@@ -1,7 +1,6 @@
 #include "PCH.h"
 #include "ShaderProgram.h"
 #include <d3dcompiler.h>
-using namespace cuc;
 
 
 std::map<ShaderType, const char*> shaderTypeStringNames = {
@@ -66,7 +65,7 @@ D3D12_SHADER_BYTECODE ShaderProgram::GetCompiledShader(ShaderType type, const wc
 	return result;
 }
 
-D3D12_SHADER_BYTECODE cuc::ShaderProgram::GetCompiledShader(ShaderType type, const void* pData, const size_t dataSize, const char* sourceName, 
+D3D12_SHADER_BYTECODE ShaderProgram::GetCompiledShader(ShaderType type, const void* pData, const size_t dataSize, const char* sourceName, 
 															const char* entryPoint, const char* shaderModel, 
 															D3D_SHADER_MACRO* pDefines, const bool bAllowIncludes, UINT flags)
 {

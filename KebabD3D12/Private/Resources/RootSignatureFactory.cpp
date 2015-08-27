@@ -1,6 +1,5 @@
 #include "PCH.h"
 #include "RootSignatureFactory.h"
-using namespace cuc;
 using namespace Microsoft::WRL;
 
 

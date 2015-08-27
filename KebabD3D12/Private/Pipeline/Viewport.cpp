@@ -1,6 +1,5 @@
 #include "PCH.h"
 #include "Viewport.h"
-using namespace cuc;
 
 
 Viewport::Viewport()

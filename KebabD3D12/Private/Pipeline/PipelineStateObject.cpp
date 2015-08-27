@@ -1,6 +1,5 @@
 #include "PCH.h"
 #include "PipelineStateObject.h"
-using namespace cuc;
 
 
 PipelineStateObject::PipelineStateObject()

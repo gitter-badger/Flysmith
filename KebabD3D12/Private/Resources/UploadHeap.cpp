@@ -1,6 +1,5 @@
 #include "PCH.h"
 #include "UploadHeap.h"
-using namespace cuc;
 using namespace Microsoft::WRL;
 
 

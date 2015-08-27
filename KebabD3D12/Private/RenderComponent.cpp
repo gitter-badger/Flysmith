@@ -1,6 +1,5 @@
 #include "PCH.h"
 #include "RenderComponent.h"
-using namespace cuc;
 
 
 RenderComponent::RenderComponent(Renderer* pRenderer, U32 mesh, U32 vertShader, U32 pixelShader)

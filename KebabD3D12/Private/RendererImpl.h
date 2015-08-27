@@ -26,61 +26,58 @@
 #include "RenderItem.h"
 
 
-namespace cuc
+struct Renderer::Impl
 {
-	struct Renderer::Impl
-	{
-		// Device
-		Viewport m_viewport;
-		ScissorRectangle m_scissorRect;
-		HardwareCaps m_hwCaps;
-		SwapChain m_swapChain;
-		Device m_device;
+	// Device
+	Viewport m_viewport;
+	ScissorRectangle m_scissorRect;
+	HardwareCaps m_hwCaps;
+	SwapChain m_swapChain;
+	Device m_device;
 
-		// Pipeline
-		Microsoft::WRL::ComPtr<ID3D12RootSignature> m_pRootSignature;
-		CommandList      m_commandList;
-		CommandQueue     m_commandQueue;
-		CommandAllocator m_commandAllocator;
+	// Pipeline
+	Microsoft::WRL::ComPtr<ID3D12RootSignature> m_pRootSignature;
+	CommandList      m_commandList;
+	CommandQueue     m_commandQueue;
+	CommandAllocator m_commandAllocator;
 
-		// Resources
-		UploadHeap m_uploadHeap;
-		PipelineStateObject m_pso;
+	// Resources
+	UploadHeap m_uploadHeap;
+	PipelineStateObject m_pso;
 
-		DescriptorHeap m_cbDescHeap;
+	DescriptorHeap m_cbDescHeap;
 
-		Resource m_wvpConstBuffer;
-		U8* m_pWVPDataBegin;
-		DirectX::XMFLOAT4X4 m_viewProjMat;
-		Camera m_camera;
+	Resource m_wvpConstBuffer;
+	U8* m_pWVPDataBegin;
+	DirectX::XMFLOAT4X4 m_viewProjMat;
+	Camera m_camera;
 
-		// Synchronization
-		Fence m_fence;
-		U64 m_currentFence;
-		HANDLE m_handleEvent;
+	// Synchronization
+	Fence m_fence;
+	U64 m_currentFence;
+	HANDLE m_handleEvent;
 
-		Impl(HWND hwnd, U32 windowWidth, U32 windowHeight);
-		~Impl();
-		void CreatePipelineStateObject();
-		void PopulateCommandLists();
-		void CreateRootSignature();
-		void CreateDevice();
-		void LoadAssets();
-		void WaitForGPU();
+	Impl(HWND hwnd, U32 windowWidth, U32 windowHeight);
+	~Impl();
+	void CreatePipelineStateObject();
+	void PopulateCommandLists();
+	void CreateRootSignature();
+	void CreateDevice();
+	void LoadAssets();
+	void WaitForGPU();
 
-		ResourceCache m_resCache;
-		U32 rootConstColorIndex;
-		U32 rootDescViewProjIndex;
+	ResourceCache m_resCache;
+	U32 rootConstColorIndex;
+	U32 rootDescViewProjIndex;
 
-		static const size_t MAX_RENDER_QUEUE_ITEMS = 100;
+	static const size_t MAX_RENDER_QUEUE_ITEMS = 100;
 
-		// Holds handles of render items that are going to be rendered this frame.
-		RenderItemHandle m_renderQueue[MAX_RENDER_QUEUE_ITEMS];
-		size_t m_renderQueueEnd;
-		
-		// Holds all render items, whether they are to be rendered or not.
-		std::vector<RenderItem> m_renderItems;
+	// Holds handles of render items that are going to be rendered this frame.
+	RenderItemHandle m_renderQueue[MAX_RENDER_QUEUE_ITEMS];
+	size_t m_renderQueueEnd;
 
-		std::vector<RenderItem> m_renderItemCacheQueue;
-	};
-}
+	// Holds all render items, whether they are to be rendered or not.
+	std::vector<RenderItem> m_renderItems;
+
+	std::vector<RenderItem> m_renderItemCacheQueue;
+};

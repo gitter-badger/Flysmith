@@ -5,34 +5,31 @@
 #include "Vertex.h"
 
 
-namespace cuc
+class Mesh
 {
-	class Mesh
-	{
-	public:
-		Mesh();
+public:
+	Mesh();
 
-		Mesh(Mesh&& other);
-		Mesh& operator=(Mesh&& other);
+	Mesh(Mesh&& other);
+	Mesh& operator=(Mesh&& other);
 
-		Mesh(const Mesh&) = delete;
-		Mesh& operator=(const Mesh&) = delete;
+	Mesh(const Mesh&) = delete;
+	Mesh& operator=(const Mesh&) = delete;
 
-		void Init(ID3D12Device* pDevice);
+	void Init(ID3D12Device* pDevice);
 
-		VertexBufferView& GetVertBufferView();
-		IndexBufferView& GetIndexBufferView();
-		U32 GetNumIndices();
-		
-	public:
-		std::vector<Vertex> verts;
-		std::vector<U32> indices;
+	VertexBufferView& GetVertBufferView();
+	IndexBufferView& GetIndexBufferView();
+	U32 GetNumIndices();
 
-	private:
-		Resource m_vertBuffer;
-		VertexBufferView m_vertBufferView;
+public:
+	std::vector<Vertex> verts;
+	std::vector<U32> indices;
 
-		Resource m_indexBuffer;
-		IndexBufferView m_indexBufferView;
-	};
-}
+private:
+	Resource m_vertBuffer;
+	VertexBufferView m_vertBufferView;
+
+	Resource m_indexBuffer;
+	IndexBufferView m_indexBufferView;
+};

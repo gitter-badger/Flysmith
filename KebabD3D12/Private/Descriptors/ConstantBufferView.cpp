@@ -2,7 +2,7 @@
 #include "ConstantBufferView.h"
 
 
-void cuc::ConstantBufferView::Init(ID3D12Device* pDevice, D3D12_GPU_VIRTUAL_ADDRESS location, U32 size)
+void ConstantBufferView::Init(ID3D12Device* pDevice, D3D12_GPU_VIRTUAL_ADDRESS location, U32 size)
 {
 	assert(pDevice != nullptr);
 

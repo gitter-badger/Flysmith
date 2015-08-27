@@ -5,7 +5,6 @@
 #include "Resources\ResourceBarrier.h"
 #include "Resources\ResourceConfig.h"
 
-using namespace cuc;
 using namespace DirectX;
 
 

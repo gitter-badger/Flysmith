@@ -1,6 +1,5 @@
 #include "PCH.h"
 #include "ScissorRectangle.h"
-using namespace cuc;
 
 
 ScissorRectangle::ScissorRectangle()

@@ -2,12 +2,12 @@
 #include "CommandQueue.h"
 
 
-cuc::CommandQueue::CommandQueue()
+CommandQueue::CommandQueue()
 	: m_pCommandQueue(nullptr)
 {
 }
 
-cuc::CommandQueue::~CommandQueue()
+CommandQueue::~CommandQueue()
 {
 	if (m_pCommandQueue)
 	{
@@ -15,7 +15,7 @@ cuc::CommandQueue::~CommandQueue()
 	}
 }
 
-void cuc::CommandQueue::Init(ID3D12Device* pDevice, 
+void CommandQueue::Init(ID3D12Device* pDevice, 
 							 CommandListType type, CommandQueuePriority priority, bool bDisableGPUTimeout, U32 nodeMask)
 {
 	assert(pDevice != nullptr);
@@ -31,18 +31,18 @@ void cuc::CommandQueue::Init(ID3D12Device* pDevice,
 	assert(SUCCEEDED(hr));
 }
 
-ID3D12CommandQueue* cuc::CommandQueue::Get()
+ID3D12CommandQueue* CommandQueue::Get()
 {
 	assert(m_pCommandQueue != nullptr);
 	return m_pCommandQueue;
 }
 
-void cuc::CommandQueue::ExecuteCommandLists(ID3D12CommandList *const *ppLists, U32 numLists)
+void CommandQueue::ExecuteCommandLists(ID3D12CommandList *const *ppLists, U32 numLists)
 {
 	m_pCommandQueue->ExecuteCommandLists(numLists, ppLists);
 }
 
-void cuc::CommandQueue::Signal(ID3D12Fence* pFence, U64 value)
+void CommandQueue::Signal(ID3D12Fence* pFence, U64 value)
 {
 	assert(pFence != nullptr);
 	

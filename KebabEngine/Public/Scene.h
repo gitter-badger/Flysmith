@@ -8,7 +8,7 @@
 class KEBAB_API Scene
 {
 public:
-	cuc::TransformNoScale m_camTransform;
+	TransformNoScale m_camTransform;
 	// TEMP
-	std::vector<cuc::RenderComponent> m_renderComponents;
+	std::vector<RenderComponent> m_renderComponents;
 };
