@@ -30,7 +30,7 @@ PipelineStateObject::~PipelineStateObject()
 
 void PipelineStateObject::Init(ID3D12Device* pDevice, const D3D12_GRAPHICS_PIPELINE_STATE_DESC& desc)
 {
-	HRESULT hr = pDevice->CreateGraphicsPipelineState(&desc, __uuidof(ID3D12PipelineState), reinterpret_cast<void**>(&m_pState));
+	HRESULT hr = pDevice->CreateGraphicsPipelineState(&desc, IID_PPV_ARGS(&m_pState));
 	assert(SUCCEEDED(hr));
 }
 

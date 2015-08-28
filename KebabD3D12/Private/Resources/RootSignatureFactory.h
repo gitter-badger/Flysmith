@@ -53,18 +53,18 @@ public:
 		const D3D12_SHADER_VISIBILITY = D3D12_SHADER_VISIBILITY_ALL,
 		const U32 registerSpace = 0); // Leave 0 if using a shader targeting an older model than 5.1
 
-									  // Incurs a 4 DWORDs cost.
-									  // Fails if the new parameter can't fit in the root signature.
+	// Incurs a 4 DWORDs cost.
+	// Fails if the new parameter can't fit in the root signature.								  
 	U32 AddParameterDescriptor(const RootParameterType type,
-		const U32 shaderRegister = 0,
-		const D3D12_SHADER_VISIBILITY = D3D12_SHADER_VISIBILITY_ALL,
-		const U32 registerSpace = 0); // Leave 0 if using a shader targeting an older model than 5.1
+							   const U32 shaderRegister = 0,
+							   const D3D12_SHADER_VISIBILITY = D3D12_SHADER_VISIBILITY_ALL,
+							   const U32 registerSpace = 0); // Leave 0 if using a shader targeting an older model than 5.1
 
-									  // Incurs a 4 DWORDs cost.
-									  // Fails if the new parameter can't fit in the root signature.
+	// Incurs a 4 DWORDs cost.
+	// Fails if the new parameter can't fit in the root signature.
 	U32 AddParameterDescTable(const U32 numDescriptorRanges,
-		const D3D12_DESCRIPTOR_RANGE* pDescriptorRanges,
-		const D3D12_SHADER_VISIBILITY = D3D12_SHADER_VISIBILITY_ALL);
+							  const D3D12_DESCRIPTOR_RANGE* pDescriptorRanges,
+							  const D3D12_SHADER_VISIBILITY = D3D12_SHADER_VISIBILITY_ALL);
 
 	void AddStaticSampler(const D3D12_STATIC_SAMPLER_DESC&);
 

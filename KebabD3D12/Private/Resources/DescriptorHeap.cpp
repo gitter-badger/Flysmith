@@ -78,3 +78,8 @@ D3D12_GPU_DESCRIPTOR_HANDLE DescriptorHeap::GetGPUHandle(U32 index) const
 	D3D12_GPU_DESCRIPTOR_HANDLE handle{ m_startHandleGPU.ptr + (index * m_handleIncrement) };
 	return handle;
 }
+
+ID3D12DescriptorHeap* DescriptorHeap::Get()
+{
+	return m_pDescHeap;
+}

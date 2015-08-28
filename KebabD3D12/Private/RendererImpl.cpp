@@ -41,6 +41,10 @@ void Renderer::Impl::LoadAssets()
 
 	// 4. Create Descriptor Heaps
 	m_cbDescHeap.Init(m_device.Get(), DescHeapType::CB_SR_UA, 1, true);
+	D3D12_CONSTANT_BUFFER_VIEW_DESC cbDesc;
+	cbDesc.BufferLocation = m_worldMatConstBuffer.GetGPUVirtualAddress();
+	cbDesc.SizeInBytes = (sizeof(XMFLOAT4X4) + 255) & ~255;
+	m_device.Get()->CreateConstantBufferView(&cbDesc, m_cbDescHeap.GetCPUHandle(0));
 
 	// 5. Create Command List
 	m_commandList.Init(m_device.Get(), m_commandAllocator.Get());
@@ -61,6 +65,13 @@ void Renderer::Impl::CreateRootSignature()
 	RootSignatureFactory rootSigFactory(RootSignatureFactory::ALLOW_IA_LAYOUT);
 	rootConstColorIndex = rootSigFactory.AddParameterConstants(4);
 	rootDescViewProjIndex = rootSigFactory.AddParameterDescriptor(RootParameterType::INL_CONSTANT_BUFFER, 1);
+	D3D12_DESCRIPTOR_RANGE range;
+	range.NumDescriptors = 1;
+	range.RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_CBV;
+	range.BaseShaderRegister = 2;
+	range.RegisterSpace = 0;
+	range.OffsetInDescriptorsFromTableStart = 0; // or 1?
+	rootSigFactory.AddParameterDescTable(1, &range);
 	m_pRootSignature = rootSigFactory.BuildRootSignature(m_device.Get());
 }
 
@@ -98,6 +109,13 @@ void Renderer::Impl::PopulateCommandLists()
 	m_commandList.SetScissorRects(&m_scissorRect);
 
 	m_commandList.SetRootSignature(m_pRootSignature.Get());
+
+	ID3D12DescriptorHeap* ppHeaps[] = { m_cbDescHeap.Get() };
+	m_commandList.Get()->SetDescriptorHeaps(1, ppHeaps);
+
+	auto gpuHandle = m_cbDescHeap.GetGPUHandle(0);
+	auto clist = m_commandList.Get();
+	clist->SetGraphicsRootDescriptorTable(2, gpuHandle);
 
 	// Set root signature inline constants
 	U32 color[] = { 0, 0, 128, 255 };

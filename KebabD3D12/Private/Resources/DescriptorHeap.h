@@ -40,6 +40,8 @@ public:
 	// Will fail if the heap is not shader visible.
 	D3D12_GPU_DESCRIPTOR_HANDLE GetGPUHandle(U32 index) const;
 
+	ID3D12DescriptorHeap* Get();
+
 private:
 	ID3D12DescriptorHeap* m_pDescHeap;
 	D3D12_CPU_DESCRIPTOR_HANDLE m_startHandleCPU;

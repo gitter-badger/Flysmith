@@ -57,11 +57,7 @@ void Renderer::UpdateView(const TransformNoScale& transform)
 {
 	m_pImpl->m_camera.Update(transform);
 
-	// TEMP
-	// Will only work with view proj
-	auto wvp = objTransform.GetMatrixXM() * m_pImpl->m_camera.GetViewProjMatrixXM();
-	wvp = XMMatrixTranspose(wvp);
-
+	auto wvp = XMMatrixTranspose(m_pImpl->m_camera.GetViewProjMatrixXM());
 	XMFLOAT4X4 wvpMat;
 	XMStoreFloat4x4(&wvpMat, wvp);
 	memcpy(m_pImpl->m_pViewProjDataBegin, &wvpMat, sizeof(XMFLOAT4X4));
