@@ -35,8 +35,9 @@ void Renderer::Impl::LoadAssets()
 	CreatePipelineStateObject();
 
 	// 3. Create Resources
-	ResourceConfig descCB(ResourceType::BUFFER, sizeof(m_viewProjMat));
-	m_wvpConstBuffer.CreateCommited(m_device.Get(), descCB, &m_pWVPDataBegin);
+	ResourceConfig descCB(ResourceType::BUFFER, sizeof(XMFLOAT4X4));
+	m_viewProjConstBuffer.CreateCommited(m_device.Get(), descCB, &m_pViewProjDataBegin);
+	m_worldMatConstBuffer.CreateCommited(m_device.Get(), descCB, &m_pWorldMatDataBegin);
 
 	// 4. Create Descriptor Heaps
 	m_cbDescHeap.Init(m_device.Get(), DescHeapType::CB_SR_UA, 1, true);
@@ -103,7 +104,7 @@ void Renderer::Impl::PopulateCommandLists()
 	m_commandList.SetRoot32BitConstants(rootConstColorIndex, 4, color, 0);
 
 	// Set root signature inline descriptors
-	m_commandList.Get()->SetGraphicsRootConstantBufferView(rootDescViewProjIndex, m_wvpConstBuffer.GetGPUVirtualAddress());
+	m_commandList.Get()->SetGraphicsRootConstantBufferView(rootDescViewProjIndex, m_viewProjConstBuffer.GetGPUVirtualAddress());
 
 	m_commandList.SetResourceBarriers(&TransitionBarrier(m_swapChain.GetRenderTarget(), D3D12_RESOURCE_STATE_PRESENT, D3D12_RESOURCE_STATE_RENDER_TARGET));
 

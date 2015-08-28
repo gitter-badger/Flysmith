@@ -47,9 +47,10 @@ struct Renderer::Impl
 
 	DescriptorHeap m_cbDescHeap;
 
-	Resource m_wvpConstBuffer;
-	U8* m_pWVPDataBegin;
-	DirectX::XMFLOAT4X4 m_viewProjMat;
+	Resource m_viewProjConstBuffer;
+	U8* m_pViewProjDataBegin;
+	Resource m_worldMatConstBuffer;
+	U8* m_pWorldMatDataBegin;
 	Camera m_camera;
 
 	// Synchronization

@@ -47,8 +47,9 @@ void Renderer::UpdateScene(const std::vector<RenderComponent>& renderables)
 		//m_renderQueue[m_renderQueueEnd++] = itemId;
 	}
 
-	XMStoreFloat4x4(&m_pImpl->m_viewProjMat, XMMatrixTranspose(objTransform.GetMatrixXM()));
-	memcpy(m_pImpl->m_pWVPDataBegin, &m_pImpl->m_viewProjMat, sizeof(m_pImpl->m_viewProjMat));
+	XMFLOAT4X4 worldMat;
+	XMStoreFloat4x4(&worldMat, XMMatrixTranspose(objTransform.GetMatrixXM()));
+	memcpy(m_pImpl->m_pWorldMatDataBegin, &worldMat, sizeof(XMFLOAT4X4));
 }
 
 // Copy camera state
@@ -56,10 +57,14 @@ void Renderer::UpdateView(const TransformNoScale& transform)
 {
 	m_pImpl->m_camera.Update(transform);
 
+	// TEMP
+	// Will only work with view proj
 	auto wvp = objTransform.GetMatrixXM() * m_pImpl->m_camera.GetViewProjMatrixXM();
 	wvp = XMMatrixTranspose(wvp);
-	XMStoreFloat4x4(&m_pImpl->m_viewProjMat, wvp);
-	memcpy(m_pImpl->m_pWVPDataBegin, &m_pImpl->m_viewProjMat, sizeof(m_pImpl->m_viewProjMat));
+
+	XMFLOAT4X4 wvpMat;
+	XMStoreFloat4x4(&wvpMat, wvp);
+	memcpy(m_pImpl->m_pViewProjDataBegin, &wvpMat, sizeof(XMFLOAT4X4));
 }
 
 void Renderer::Render()
