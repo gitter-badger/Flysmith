@@ -1,7 +1,7 @@
 #pragma once
 #include "PCH.h"
 #include <dxgi1_4.h>
-#include "Resources\DescriptorHeap.h"
+#include "Descriptors\DescriptorHeap.h"
 
 
 class SwapChain

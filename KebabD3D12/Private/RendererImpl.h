@@ -7,7 +7,8 @@
 #include "Device.h"
 #include "Fence.h"
 
-#include "Resources\DescriptorHeap.h"
+#include "Descriptors\DescriptorHeap.h"
+
 #include "Resources\ResourceCache.h"
 #include "Resources\UploadHeap.h"
 #include "Resources\Resource.h"
@@ -20,8 +21,6 @@
 #include "Pipeline\CommandAllocator.h"
 #include "Pipeline\CommandQueue.h"
 #include "Pipeline\CommandList.h"
-
-#include "Descriptors\ConstantBufferView.h"
 
 #include "RenderItem.h"
 

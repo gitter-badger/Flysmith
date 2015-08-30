@@ -181,7 +181,7 @@
     </FxCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Private\Descriptors\DescriptorRange.cpp" />
+    <ClCompile Include="Private\Descriptors\DescriptorTable.cpp" />
     <ClCompile Include="Private\Math\PerspectiveMatrix.cpp" />
     <ClCompile Include="Private\Camera.cpp" />
     <ClCompile Include="Private\Descriptors\ConstantBufferView.cpp" />
@@ -199,7 +199,7 @@
     <ClCompile Include="Private\Math\Quaternion.cpp" />
     <ClCompile Include="Private\Renderer.cpp" />
     <ClCompile Include="Private\RendererImpl.cpp" />
-    <ClCompile Include="Private\Resources\DescriptorHeap.cpp" />
+    <ClCompile Include="Private\Descriptors\DescriptorHeap.cpp" />
     <ClCompile Include="Private\DXGI\DXGIAdapter.cpp" />
     <ClCompile Include="Private\HardwareCaps.cpp" />
     <ClCompile Include="Private\Pipeline\PipelineStateObject.cpp" />
@@ -228,7 +228,7 @@
   <ItemGroup>
     <ClInclude Include="Private\Camera.h" />
     <ClInclude Include="Private\Descriptors\ConstantBufferView.h" />
-    <ClInclude Include="Private\Descriptors\DescriptorRange.h" />
+    <ClInclude Include="Private\Descriptors\DescriptorTable.h" />
     <ClInclude Include="Private\Descriptors\IndexBufferView.h" />
     <ClInclude Include="Private\Descriptors\VertexBufferView.h" />
     <ClInclude Include="Private\Device.h" />
@@ -250,7 +250,7 @@
     <ClInclude Include="Public\PublicDef.h" />
     <ClInclude Include="Public\Quaternion.h" />
     <ClInclude Include="Public\Renderer.h" />
-    <ClInclude Include="Private\Resources\DescriptorHeap.h" />
+    <ClInclude Include="Private\Descriptors\DescriptorHeap.h" />
     <ClInclude Include="Private\DXGI\DXGIAdapter.h" />
     <ClInclude Include="Private\HardwareCaps.h" />
     <ClInclude Include="Private\Pipeline\PipelineStateObject.h" />

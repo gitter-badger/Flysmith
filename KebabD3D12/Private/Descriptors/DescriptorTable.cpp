@@ -1,8 +1,8 @@
 #include "PCH.h"
-#include "DescriptorRange.h"
+#include "DescriptorTable.h"
 
 
-DescriptorRange::DescriptorRange(DescriptorRangeType type, U32 numDescriptors, U32 baseShaderRegister, U32 offset, U32 registerSpace)
+DescriptorTable::DescriptorTable(DescriptorTableType type, U32 numDescriptors, U32 baseShaderRegister, U32 offset, U32 registerSpace)
 {
 	RangeType = static_cast<D3D12_DESCRIPTOR_RANGE_TYPE>(type);
 	NumDescriptors = numDescriptors;

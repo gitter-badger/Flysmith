@@ -36,9 +36,6 @@
     <ClCompile Include="Private\Resources\RootSignatureFactory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Private\Resources\DescriptorHeap.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Private\Pipeline\ShaderProgram.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -126,7 +123,10 @@
     <ClCompile Include="Private\RenderComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Private\Descriptors\DescriptorRange.cpp">
+    <ClCompile Include="Private\Descriptors\DescriptorTable.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Private\Descriptors\DescriptorHeap.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -147,9 +147,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Private\Resources\RootSignatureFactory.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Private\Resources\DescriptorHeap.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Private\Resources\UploadHeap.h">
@@ -260,7 +257,10 @@
     <ClInclude Include="Public\RenderComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Private\Descriptors\DescriptorRange.h">
+    <ClInclude Include="Private\Descriptors\DescriptorTable.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Private\Descriptors\DescriptorHeap.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

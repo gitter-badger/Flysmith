@@ -5,7 +5,8 @@
 #include "Resources\ResourceBarrier.h"
 #include "Resources\ResourceConfig.h"
 
-#include "Descriptors\DescriptorRange.h"
+#include "Descriptors\DescriptorTable.h"
+#include "Descriptors\ConstantBufferView.h"
 
 using namespace DirectX;
 
@@ -64,7 +65,7 @@ void Renderer::Impl::CreateRootSignature()
 	RootSignatureFactory rootSigFactory(RootSignatureFactory::ALLOW_IA_LAYOUT);
 	rootConstColorIndex = rootSigFactory.AddParameterConstants(4);
 	rootDescViewProjIndex = rootSigFactory.AddParameterDescriptor(RootParameterType::INL_CONSTANT_BUFFER, 1);
-	DescriptorRange range(DescriptorRangeType::CBV, 1, 2, 0);
+	DescriptorTable range(DescriptorTableType::CBV, 1, 2, 0);
 	rootSigFactory.AddParameterDescTable(1, &range);
 	m_pRootSignature = rootSigFactory.BuildRootSignature(m_device.Get());
 }

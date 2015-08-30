@@ -39,7 +39,7 @@ void DescriptorHeap::Init(ID3D12Device* pDevice, DescHeapType type, U32 numDescr
 		desc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
 	}
 
-	HRESULT hr = pDevice->CreateDescriptorHeap(&desc, __uuidof(ID3D12DescriptorHeap), reinterpret_cast<void**>(&m_pDescHeap));
+	HRESULT hr = pDevice->CreateDescriptorHeap(&desc, IID_PPV_ARGS(&m_pDescHeap));
 	assert(SUCCEEDED(hr));
 
 	m_numDescriptors = numDescriptors;
