@@ -29,12 +29,9 @@ struct Renderer::Impl
 
 	// Pipeline
 	Microsoft::WRL::ComPtr<ID3D12RootSignature> m_pRootSignature;
-	CommandQueue     m_commandQueue;
 	CommandAllocator m_commandAllocator;
-
-	static const size_t MAX_COMMAND_LISTS = 100;
-	CommandList m_commandLists[MAX_COMMAND_LISTS];
-	size_t m_numCommandLists;
+	CommandQueue     m_commandQueue;
+	CommandList		 m_commandList;
 
 	// Resources
 	UploadHeap m_uploadHeap;
@@ -57,7 +54,6 @@ struct Renderer::Impl
 	void WaitForGPU();
 
 	void PopulateCommandLists();
-	void PopulateCommandList(size_t commandListIndex, RenderItem& renderItem);
 	void ExecuteCommandLists();
 	void Present();
 

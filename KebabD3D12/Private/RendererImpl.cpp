@@ -30,11 +30,8 @@ Renderer::Impl::Impl(HWND hwnd, U32 windowWidth, U32 windowHeight)
 	// Create Descriptor Heaps
 	m_cbDescHeap.Init(m_device.Get(), DescHeapType::CB_SR_UA, MAX_RENDER_ITEMS, true);
 
-	for (auto& commandList : m_commandLists)
-	{
-		commandList.Init(m_device.Get(), m_commandAllocator.Get());
-		commandList.Close();
-	}
+	m_commandList.Init(m_device.Get(), m_commandAllocator.Get());
+	m_commandList.Close();
 
 	// Create synchronization objects
 	m_fence.Init(m_device.Get(), 0);
@@ -68,63 +65,46 @@ void Renderer::Impl::WaitForGPU()
 	}
 }
 
-void Renderer::Impl::PopulateCommandList(size_t commandListIndex, RenderItem& renderItem)
-{
-	auto& commandList = m_commandLists[commandListIndex];
-
-	// TODO: TEMP: May move somewhere else.
-	commandList.Reset(m_commandAllocator.Get(), renderItem.pso.Get());
-
-	commandList.SetViewports(&m_viewport);
-	commandList.SetScissorRects(&m_scissorRect);
-
-	commandList.SetRootSignature(m_pRootSignature.Get());
-
-	ID3D12DescriptorHeap* ppHeaps[] = { m_cbDescHeap.Get() };
-	commandList.Get()->SetDescriptorHeaps(1, ppHeaps);
-
-	commandList.SetRootInlineDescriptor(m_rootDescViewProjIndex, m_viewProjConstBuffer.GetGPUVirtualAddress());
-	//commandList.SetRootDescriptorTable(m_rootDescTableIndex, m_cbDescHeap.GetGPUHandle(0)); //TODO: m_cbDescHeap.GetGPUHandle(commandListIndex) ? 
-	commandList.SetRootDescriptorTable(m_rootDescTableIndex, m_cbDescHeap.GetGPUHandle(commandListIndex));
-	commandList.SetRoot32BitConstants(m_rootConstColorIndex, 4, m_vertColor, 0);
-
-	commandList.SetResourceBarriers(&TransitionBarrier(m_swapChain.GetRenderTarget(), D3D12_RESOURCE_STATE_PRESENT, D3D12_RESOURCE_STATE_RENDER_TARGET));
-
-	commandList.ClearRenderTargetView(m_swapChain.GetRTVLocation(), m_clearColor, &m_scissorRect);
-	commandList.SetRenderTargets(1, &m_swapChain.GetRTVLocation(), TRUE, nullptr);
-
-	auto& mesh = m_resCache.GetMesh(renderItem.mesh);
-	commandList.SetPrimitive(TRIANGLE_LIST, &mesh.GetVertBufferView(), &mesh.GetIndexBufferView());
-	commandList.DrawIndexed(mesh.GetNumIndices());
-
-	commandList.SetRootDescriptorTable(m_rootDescTableIndex, m_cbDescHeap.GetGPUHandle(commandListIndex + 1));
-	auto& mesh2 = m_resCache.GetMesh(m_renderItems[1].mesh);
-	commandList.SetPrimitive(TRIANGLE_LIST, &mesh2.GetVertBufferView(), &mesh2.GetIndexBufferView());
-	commandList.DrawIndexed(mesh2.GetNumIndices());
-
-	commandList.SetResourceBarriers(&TransitionBarrier(m_swapChain.GetRenderTarget(), D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PRESENT));
-
-	commandList.Close();
-	
-	m_numCommandLists++;
-}
-
 void Renderer::Impl::PopulateCommandLists()
 {
 	m_commandAllocator.Reset();
 	
-	m_numCommandLists = 0;
-	for (size_t i = 0; i < 1; i++)
-		PopulateCommandList(i, m_renderItems[m_renderQueue[i]]);
+	m_commandList.Reset(m_commandAllocator.Get(), m_renderItems[0].pso.Get());
+
+	m_commandList.SetViewports(&m_viewport);
+	m_commandList.SetScissorRects(&m_scissorRect);
+
+	m_commandList.SetRootSignature(m_pRootSignature.Get());
+
+	ID3D12DescriptorHeap* ppHeaps[] = { m_cbDescHeap.Get() };
+	m_commandList.Get()->SetDescriptorHeaps(1, ppHeaps);
+
+	m_commandList.SetRootInlineDescriptor(m_rootDescViewProjIndex, m_viewProjConstBuffer.GetGPUVirtualAddress());
+	m_commandList.SetRoot32BitConstants(m_rootConstColorIndex, 4, m_vertColor, 0);
+
+	m_commandList.SetResourceBarriers(&TransitionBarrier(m_swapChain.GetRenderTarget(), D3D12_RESOURCE_STATE_PRESENT, D3D12_RESOURCE_STATE_RENDER_TARGET));
+
+	m_commandList.ClearRenderTargetView(m_swapChain.GetRTVLocation(), m_clearColor, &m_scissorRect);
+	m_commandList.SetRenderTargets(1, &m_swapChain.GetRTVLocation(), TRUE, nullptr);
+
+	for (size_t i = 0; i < m_renderQueueEnd; i++)
+	{
+		auto& renderItem = m_renderItems[m_renderQueue[i]];
+		m_commandList.SetRootDescriptorTable(m_rootDescTableIndex, m_cbDescHeap.GetGPUHandle(m_renderQueue[i])); // TODO: Change how indexing in the descriptor heap works
+		auto& mesh = m_resCache.GetMesh(renderItem.mesh);
+		m_commandList.SetPrimitive(TRIANGLE_LIST, &mesh.GetVertBufferView(), &mesh.GetIndexBufferView());
+		m_commandList.DrawIndexed(mesh.GetNumIndices());
+	}
+
+	m_commandList.SetResourceBarriers(&TransitionBarrier(m_swapChain.GetRenderTarget(), D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PRESENT));
+
+	m_commandList.Close();
 }
 
 void Renderer::Impl::ExecuteCommandLists()
 {
-	//ID3D12CommandList* ppCommandLists[MAX_COMMAND_LISTS];
-	//for (size_t i = 0; i < m_numCommandLists; i++)
-	//	ppCommandLists[i] = m_commandLists[i].Get();
-	ID3D12CommandList* ppCommandLists[] = { m_commandLists[0].Get() };
-	m_commandQueue.ExecuteCommandLists(ppCommandLists, m_numCommandLists);
+	ID3D12CommandList* ppCommandLists[] = { m_commandList.Get() };
+	m_commandQueue.ExecuteCommandLists(ppCommandLists);
 }
 
 void Renderer::Impl::Present()
