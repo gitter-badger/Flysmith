@@ -224,6 +224,7 @@
     <ClCompile Include="Private\Math\Transform.cpp" />
     <ClCompile Include="Private\Resources\ResourceCache.cpp" />
     <ClCompile Include="Private\RenderComponent.cpp" />
+    <ClCompile Include="Private\RenderItem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Private\Camera.h" />
