@@ -13,7 +13,6 @@
 #include "Resources\UploadHeap.h"
 #include "Resources\Resource.h"
 
-#include "Pipeline\PipelineStateObject.h"
 #include "Pipeline\ScissorRectangle.h"
 #include "Pipeline\SwapChain.h"
 #include "Pipeline\Viewport.h"
@@ -40,7 +39,6 @@ struct Renderer::Impl
 
 	// Resources
 	UploadHeap m_uploadHeap;
-	PipelineStateObject m_pso;
 
 	DescriptorHeap m_cbDescHeap;
 
@@ -56,7 +54,6 @@ struct Renderer::Impl
 	Impl(HWND hwnd, U32 windowWidth, U32 windowHeight);
 	~Impl();
 
-	void CreatePipelineStateObject();
 	void CreateRootSignature();
 	void CreateDevice();
 	void LoadAssets();

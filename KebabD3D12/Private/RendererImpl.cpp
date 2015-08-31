@@ -34,23 +34,20 @@ Renderer::Impl::~Impl()
 
 void Renderer::Impl::LoadAssets()
 {
-	// 1. Create RootSignature
+	// Create RootSignature
 	CreateRootSignature();
 
-	// 2. Create PSO
-	CreatePipelineStateObject();
-
-	// 3. Create Resources
+	// Create Resources
 	ResourceConfig descCB(ResourceType::BUFFER, sizeof(XMFLOAT4X4));
 	m_viewProjConstBuffer.CreateCommited(m_device.Get(), descCB, &m_pViewProjDataBegin);
 
-	// 4. Create Descriptor Heaps
+	// Create Descriptor Heaps
 	m_cbDescHeap.Init(m_device.Get(), DescHeapType::CB_SR_UA, 1, true);
 
-	// 5. Create Command List
+	// Create Command List
 	m_commandList.Init(m_device.Get(), m_commandAllocator.Get());
 
-	// 6. Synchronize
+	// Synchronize
 	m_fence.Init(m_device.Get(), 0);
 	m_currentFence = 1;
 
@@ -71,18 +68,6 @@ void Renderer::Impl::CreateRootSignature()
 	m_pRootSignature = rootSigFactory.BuildRootSignature(m_device.Get());
 }
 
-void Renderer::Impl::CreatePipelineStateObject()
-{
-	D3D12_INPUT_ELEMENT_DESC layout[] = {
-		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
-		{ "COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 12, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 }
-	};
-
-	RasterizerStateConfig rastState(D3D12_FILL_MODE_WIREFRAME, D3D12_CULL_MODE_NONE);
-
-	m_pso.Init(m_device.Get(), layout, 2, m_pRootSignature.Get(), nullptr, &rastState, &m_resCache.GetShader(0), &m_resCache.GetShader(1));
-}
-
 void Renderer::Impl::WaitForGPU()
 {
 	auto fence = m_currentFence;
@@ -99,7 +84,7 @@ void Renderer::Impl::WaitForGPU()
 void Renderer::Impl::PopulateCommandLists()
 {
 	m_commandAllocator.Reset();
-	m_commandList.Reset(m_commandAllocator.Get(), m_pso.Get());
+	m_commandList.Reset(m_commandAllocator.Get(), m_renderItems[0].pso.Get());
 
 	m_commandList.SetViewports(&m_viewport);
 	m_commandList.SetScissorRects(&m_scissorRect);

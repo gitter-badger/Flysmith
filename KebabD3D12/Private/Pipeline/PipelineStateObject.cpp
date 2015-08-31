@@ -25,7 +25,11 @@ PipelineStateObject::PipelineStateObject(ID3D12Device* pDevice, const D3D12_INPU
 
 PipelineStateObject::~PipelineStateObject()
 {
-	m_pState->Release();
+	if (m_pState)
+	{
+		m_pState->Release();
+		m_pState = nullptr;
+	}
 }
 
 void PipelineStateObject::Init(ID3D12Device* pDevice, const D3D12_GRAPHICS_PIPELINE_STATE_DESC& desc)
