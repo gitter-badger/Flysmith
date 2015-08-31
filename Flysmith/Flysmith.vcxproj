@@ -163,7 +163,6 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="Plane.cpp" />
     <ClCompile Include="ResourceRegistry.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -173,8 +172,8 @@
     <ClInclude Include="FlysmithGame.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="PCH.h" />
-    <ClInclude Include="Plane.h" />
     <ClInclude Include="ResourceRegistry.h" />
+    <ClInclude Include="Wing.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

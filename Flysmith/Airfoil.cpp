@@ -26,7 +26,8 @@ Airfoil::Airfoil(const std::wstring& filename)
 	float x, y;
 	while ((file >> x) && (file >> y))
 	{
-		points.push_back({ x, y });
+		// Center at (0, 0)
+		points.push_back({ x - 0.5f, y - 0.5f });
 	}
 }
 
@@ -37,9 +38,7 @@ Mesh Airfoil::GenerateMesh()
 	for (auto& foilPoint : points)
 	{
 		XMFLOAT2 vert(foilPoint);
-		vert.x -= .5f;
-		vert.y -= .5f;
-		mesh.verts.push_back({ { vert.x, vert.y, 0.0f },{ 0.0f, 0.0f, 0.0f, 1.0f } });
+		mesh.verts.push_back({ { vert.x, vert.y, 0.0f }, { 0.0f, 0.0f, 0.0f, 1.0f } });
 	}
 
 	auto numPoints = points.size();
