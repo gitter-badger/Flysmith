@@ -45,9 +45,11 @@ public:
 	void SetIndexBuffer(D3D12_INDEX_BUFFER_VIEW*);
 	void SetPrimitive(PrimitiveTopology, D3D12_VERTEX_BUFFER_VIEW*, D3D12_INDEX_BUFFER_VIEW*);
 
-	void SetRoot32BitConstants(U32 rootParamIndex, U32 numValues, void* pData, U32 offsetIn32BitValues);
+	void SetRoot32BitConstants(U32 rootParamIndex, U32 numValues, const void* pData, U32 offsetIn32BitValues);
+	void SetRootDescriptorTable(U32 rootParamIndex, D3D12_GPU_DESCRIPTOR_HANDLE baseDescriptor);
+	void SetRootInlineDescriptor(U32 rootParamIndex, D3D12_GPU_VIRTUAL_ADDRESS bufferLocation);
 
-	void ClearRenderTargetView(D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle, F32* cleaColor, D3D12_RECT*, U32 numRects = 1);
+	void ClearRenderTargetView(D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle, const F32* cleaColor, D3D12_RECT*, U32 numRects = 1);
 	void SetRenderTargets(U32 numRenderTargetDescriptors, D3D12_CPU_DESCRIPTOR_HANDLE* pRTVDescriptors,
 		BOOL bSingleHandleToDescriptorRange, D3D12_CPU_DESCRIPTOR_HANDLE* pDepthStencilDescriptor);
 

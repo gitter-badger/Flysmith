@@ -20,7 +20,7 @@ public:
 	void Init(ID3D12Device*, CommandListType = DIRECT, CommandQueuePriority = NORMAL, bool bDisableGPUTimeout = false, U32 nodeMask = 0);
 	ID3D12CommandQueue* Get();
 
-	void ExecuteCommandLists(ID3D12CommandList*const*, U32 numLists = 1);
+	void ExecuteCommandLists(ID3D12CommandList* const*, U32 numLists);
 	void Signal(ID3D12Fence*, U64 value);
 
 private:

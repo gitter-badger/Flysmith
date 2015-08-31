@@ -1,14 +1,8 @@
 #include "PCH.h"
 #include "RendererImpl.h"
-
 #include "Resources\RootSignatureFactory.h"
 #include "Resources\ResourceBarrier.h"
-#include "Resources\ResourceConfig.h"
-
 #include "Descriptors\DescriptorTable.h"
-#include "Descriptors\ConstantBufferView.h"
-
-using namespace DirectX;
 
 
 Renderer::Impl::Impl(HWND hwnd, U32 windowWidth, U32 windowHeight)
@@ -26,15 +20,7 @@ Renderer::Impl::Impl(HWND hwnd, U32 windowWidth, U32 windowHeight)
 	m_commandQueue.Init(m_device.Get());
 	m_swapChain.Init(m_device.Get(), m_commandQueue.Get(), hwnd);
 	m_commandAllocator.Init(m_device.Get());
-}
 
-Renderer::Impl::~Impl()
-{
-}
-
-void Renderer::Impl::LoadAssets()
-{
-	// Create RootSignature
 	CreateRootSignature();
 
 	// Create Resources
@@ -44,27 +30,30 @@ void Renderer::Impl::LoadAssets()
 	// Create Descriptor Heaps
 	m_cbDescHeap.Init(m_device.Get(), DescHeapType::CB_SR_UA, 1, true);
 
-	// Create Command List
-	m_commandList.Init(m_device.Get(), m_commandAllocator.Get());
+	// TODO: Move somewhere else
+	for (size_t i = 0; i < MAX_COMMAND_LISTS; i++)
+		InitCommandList(m_commandLists[i]);
 
 	// Synchronize
 	m_fence.Init(m_device.Get(), 0);
 	m_currentFence = 1;
-
-	m_commandList.Close();
-
 	m_handleEvent = CreateEventEx(nullptr, FALSE, FALSE, EVENT_ALL_ACCESS);
-
 	WaitForGPU();
+}
+
+void Renderer::Impl::InitCommandList(CommandList& commandList)
+{
+	commandList.Init(m_device.Get(), m_commandAllocator.Get());
+	commandList.Close();
 }
 
 void Renderer::Impl::CreateRootSignature()
 {
 	RootSignatureFactory rootSigFactory(RootSignatureFactory::ALLOW_IA_LAYOUT);
-	rootConstColorIndex = rootSigFactory.AddParameterConstants(4);
-	rootDescViewProjIndex = rootSigFactory.AddParameterDescriptor(RootParameterType::INL_CONSTANT_BUFFER, 1);
+	m_rootConstColorIndex = rootSigFactory.AddParameterConstants(4);
+	m_rootDescViewProjIndex = rootSigFactory.AddParameterDescriptor(RootParameterType::INL_CONSTANT_BUFFER, 1);
 	DescriptorTable range(DescriptorTableType::CBV, 1, 2, 0);
-	rootSigFactory.AddParameterDescTable(1, &range);
+	m_rootDescTableIndex = rootSigFactory.AddParameterDescTable(1, &range);
 	m_pRootSignature = rootSigFactory.BuildRootSignature(m_device.Get());
 }
 
@@ -81,46 +70,54 @@ void Renderer::Impl::WaitForGPU()
 	}
 }
 
+void Renderer::Impl::PopulateCommandList(CommandList& commandList, RenderItem& renderItem)
+{
+	// TODO: TEMP: May move somewhere else.
+	commandList.Reset(m_commandAllocator.Get(), renderItem.pso.Get());
+
+	commandList.SetViewports(&m_viewport);
+	commandList.SetScissorRects(&m_scissorRect);
+
+	commandList.SetRootSignature(m_pRootSignature.Get());
+
+	ID3D12DescriptorHeap* ppHeaps[] = { m_cbDescHeap.Get() };
+	commandList.Get()->SetDescriptorHeaps(1, ppHeaps);
+
+	commandList.SetRootInlineDescriptor(m_rootDescViewProjIndex, m_viewProjConstBuffer.GetGPUVirtualAddress());
+	commandList.SetRootDescriptorTable(m_rootDescTableIndex, m_cbDescHeap.GetGPUHandle(0));
+	commandList.SetRoot32BitConstants(m_rootConstColorIndex, 4, m_vertColor, 0);
+
+	commandList.SetResourceBarriers(&TransitionBarrier(m_swapChain.GetRenderTarget(), D3D12_RESOURCE_STATE_PRESENT, D3D12_RESOURCE_STATE_RENDER_TARGET));
+
+	commandList.ClearRenderTargetView(m_swapChain.GetRTVLocation(), m_clearColor, &m_scissorRect);
+	commandList.SetRenderTargets(1, &m_swapChain.GetRTVLocation(), TRUE, nullptr);
+
+	auto& mesh = m_resCache.GetMesh(renderItem.mesh);
+	commandList.SetPrimitive(TRIANGLE_LIST, &mesh.GetVertBufferView(), &mesh.GetIndexBufferView());
+	commandList.DrawIndexed(mesh.GetNumIndices());
+
+	commandList.SetResourceBarriers(&TransitionBarrier(m_swapChain.GetRenderTarget(), D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PRESENT));
+
+	commandList.Close();
+	
+	m_numCommandLists++;
+}
+
 void Renderer::Impl::PopulateCommandLists()
 {
 	m_commandAllocator.Reset();
-	m_commandList.Reset(m_commandAllocator.Get(), m_renderItems[0].pso.Get());
-
-	m_commandList.SetViewports(&m_viewport);
-	m_commandList.SetScissorRects(&m_scissorRect);
-
-	m_commandList.SetRootSignature(m_pRootSignature.Get());
-
-	ID3D12DescriptorHeap* ppHeaps[] = { m_cbDescHeap.Get() };
-	m_commandList.Get()->SetDescriptorHeaps(1, ppHeaps);
-
-	m_commandList.Get()->SetGraphicsRootDescriptorTable(2, m_cbDescHeap.GetGPUHandle(0));
-
-	// Set root signature inline constants
-	U32 color[] = { 0, 0, 128, 255 };
-	m_commandList.SetRoot32BitConstants(rootConstColorIndex, 4, color, 0);
-
-	// Set root signature inline descriptors
-	m_commandList.Get()->SetGraphicsRootConstantBufferView(rootDescViewProjIndex, m_viewProjConstBuffer.GetGPUVirtualAddress());
-
-	m_commandList.SetResourceBarriers(&TransitionBarrier(m_swapChain.GetRenderTarget(), D3D12_RESOURCE_STATE_PRESENT, D3D12_RESOURCE_STATE_RENDER_TARGET));
-
-	float clearColor[] = { 0.93f, 0.5f, 0.93f, 1.0f };
-	m_commandList.ClearRenderTargetView(m_swapChain.GetRTVLocation(), clearColor, &m_scissorRect);
-	m_commandList.SetRenderTargets(1, &m_swapChain.GetRTVLocation(), TRUE, nullptr);
-
-	m_commandList.SetPrimitive(TRIANGLE_LIST, &m_resCache.GetMesh(0).GetVertBufferView(), &m_resCache.GetMesh(0).GetIndexBufferView());
-	m_commandList.DrawIndexed(m_resCache.GetMesh(0).GetNumIndices());
-
-	m_commandList.SetResourceBarriers(&TransitionBarrier(m_swapChain.GetRenderTarget(), D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PRESENT));
-
-	m_commandList.Close();
+	
+	m_numCommandLists = 0;
+	for (size_t i = 0; i < m_renderQueueEnd; i++)
+		PopulateCommandList(m_commandLists[m_numCommandLists], m_renderItems[m_renderQueue[i]]);
 }
 
 void Renderer::Impl::ExecuteCommandLists()
 {
-	ID3D12CommandList* ppCommandLists[] = { m_commandList.Get() };
-	m_commandQueue.ExecuteCommandLists(ppCommandLists);
+	ID3D12CommandList* ppCommandLists[MAX_COMMAND_LISTS];
+	for (size_t i = 0; i < m_numCommandLists; i++)
+		ppCommandLists[i] = m_commandLists[i].Get();
+	m_commandQueue.ExecuteCommandLists(ppCommandLists, m_numCommandLists);
 }
 
 void Renderer::Impl::Present()

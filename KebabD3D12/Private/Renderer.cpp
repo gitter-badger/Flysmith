@@ -59,8 +59,6 @@ void Renderer::Render()
 	
 ResourceHandle Renderer::CacheMesh(const std::vector<Vertex>& verts, const std::vector<U32>& indices)
 {
-	// TODO: temp
-	m_pImpl->LoadAssets();
 	return m_pImpl->m_resCache.AddMesh(m_pImpl->m_device.Get(), verts, indices);
 }
 

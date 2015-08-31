@@ -7,11 +7,8 @@
 #include "Device.h"
 #include "Fence.h"
 
-#include "Descriptors\DescriptorHeap.h"
-
 #include "Resources\ResourceCache.h"
 #include "Resources\UploadHeap.h"
-#include "Resources\Resource.h"
 
 #include "Pipeline\ScissorRectangle.h"
 #include "Pipeline\SwapChain.h"
@@ -19,7 +16,6 @@
 
 #include "Pipeline\CommandAllocator.h"
 #include "Pipeline\CommandQueue.h"
-#include "Pipeline\CommandList.h"
 
 
 struct Renderer::Impl
@@ -33,9 +29,12 @@ struct Renderer::Impl
 
 	// Pipeline
 	Microsoft::WRL::ComPtr<ID3D12RootSignature> m_pRootSignature;
-	CommandList      m_commandList;
 	CommandQueue     m_commandQueue;
 	CommandAllocator m_commandAllocator;
+
+	static const size_t MAX_COMMAND_LISTS = 100;
+	CommandList m_commandLists[MAX_COMMAND_LISTS];
+	size_t m_numCommandLists;
 
 	// Resources
 	UploadHeap m_uploadHeap;
@@ -52,20 +51,24 @@ struct Renderer::Impl
 	HANDLE m_handleEvent;
 
 	Impl(HWND hwnd, U32 windowWidth, U32 windowHeight);
-	~Impl();
 
 	void CreateRootSignature();
 	void CreateDevice();
-	void LoadAssets();
 	void WaitForGPU();
 
 	void PopulateCommandLists();
+	void InitCommandList(CommandList&);
+	void PopulateCommandList(CommandList&, RenderItem& renderItem);
 	void ExecuteCommandLists();
 	void Present();
 
 	ResourceCache m_resCache;
-	U32 rootConstColorIndex;
-	U32 rootDescViewProjIndex;
+	U32 m_rootConstColorIndex;
+	U32 m_rootDescViewProjIndex;
+	U32 m_rootDescTableIndex;
+	// TODO: Temp
+	const U32 m_vertColor[4] = { 0, 0, 128, 255 };
+	const F32 m_clearColor[4] = { 0.93f, 0.5f, 0.93f, 1.0f };
 
 	static const size_t MAX_RENDER_QUEUE_ITEMS = 100;
 	static const size_t MAX_RENDER_ITEMS = 100;

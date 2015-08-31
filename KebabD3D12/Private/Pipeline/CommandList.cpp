@@ -86,12 +86,22 @@ void CommandList::SetPrimitive(PrimitiveTopology topology, D3D12_VERTEX_BUFFER_V
 	SetIndexBuffer(pIndBufView);
 }
 
-void CommandList::SetRoot32BitConstants(U32 rootParamIndex, U32 numValues, void* pData, U32 offset)
+void CommandList::SetRoot32BitConstants(U32 rootParamIndex, U32 numValues, const void* pData, U32 offset)
 {
 	m_pCommandList->SetGraphicsRoot32BitConstants(rootParamIndex, numValues, pData, offset);
 }
 
-void CommandList::ClearRenderTargetView(D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle, F32* cleaColor, D3D12_RECT* pRects, U32 numRects)
+void CommandList::SetRootDescriptorTable(U32 rootParamIndex, D3D12_GPU_DESCRIPTOR_HANDLE baseDescriptor)
+{
+	m_pCommandList->SetGraphicsRootDescriptorTable(rootParamIndex, baseDescriptor);
+}
+
+void CommandList::SetRootInlineDescriptor(U32 rootParamIndex, D3D12_GPU_VIRTUAL_ADDRESS bufferLocation)
+{
+	m_pCommandList->SetGraphicsRootConstantBufferView(rootParamIndex, bufferLocation);
+}
+
+void CommandList::ClearRenderTargetView(D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle, const F32* cleaColor, D3D12_RECT* pRects, U32 numRects)
 {
 	m_pCommandList->ClearRenderTargetView(rtvHandle, cleaColor, numRects, pRects);
 }
