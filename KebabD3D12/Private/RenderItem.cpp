@@ -39,7 +39,7 @@ RenderItem::RenderItem()
 {
 }
 
-void RenderItem::Init(ResourceHandle mesh_, ResourceHandle vertShader_, ResourceHandle pixelShader_, ID3D12Device* pDevice, DescriptorHeap* pDescHeap, ID3D12RootSignature* pRootSignature, ResourceCache* pResCache)
+void RenderItem::Init(ResourceHandle mesh_, ResourceHandle vertShader_, ResourceHandle pixelShader_, ID3D12Device* pDevice, D3D12_CPU_DESCRIPTOR_HANDLE descHeapSlot, ID3D12RootSignature* pRootSignature, ResourceCache* pResCache)
 {
 	mesh = mesh_;
 	vertShader = vertShader_;
@@ -48,7 +48,7 @@ void RenderItem::Init(ResourceHandle mesh_, ResourceHandle vertShader_, Resource
 	// TODO: Consider caching
 	ResourceConfig descCB(ResourceType::BUFFER, sizeof(XMFLOAT4X4));
 	worldMatConstBuffer.CreateCommited(pDevice, descCB, &pWorldMatDataBegin);
-	ConstantBufferView cbView(pDevice, worldMatConstBuffer.GetGPUVirtualAddress(), sizeof(XMFLOAT4X4), pDescHeap->GetCPUHandle(0));
+	ConstantBufferView cbView(pDevice, worldMatConstBuffer.GetGPUVirtualAddress(), sizeof(XMFLOAT4X4), descHeapSlot);
 
 	D3D12_INPUT_ELEMENT_DESC layout[] = {
 		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },

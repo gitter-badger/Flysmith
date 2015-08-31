@@ -25,7 +25,14 @@ void Renderer::UpdateScene(const std::vector<RenderComponent>& renderables)
 	for (size_t i = 0; i < m_pImpl->m_numRenderItemCacheRequests; i++)
 	{
 		auto& request = m_pImpl->m_renderItemCacheQueue[i];
-		m_pImpl->m_renderItems[m_pImpl->m_numRenderItems++].Init(request.mesh, request.vertShader, request.pixelShader, m_pImpl->m_device.Get(), &m_pImpl->m_cbDescHeap, m_pImpl->m_pRootSignature.Get(), &m_pImpl->m_resCache);
+		m_pImpl->m_renderItems[m_pImpl->m_numRenderItems++].Init(request.mesh, 
+																 request.vertShader, 
+																 request.pixelShader, 
+																 m_pImpl->m_device.Get(), 
+																 //m_pImpl->m_cbDescHeap.GetCPUHandle(0), // TODO: m_pImpl->m_cbDescHeap.GetCPUHandle(m_pImpl->m_numRenderItems - 1) ?  
+																 m_pImpl->m_cbDescHeap.GetCPUHandle(m_pImpl->m_numRenderItems - 1),
+																 m_pImpl->m_pRootSignature.Get(), 
+																 &m_pImpl->m_resCache);
 	}
 	m_pImpl->m_numRenderItemCacheRequests = 0;
 	

@@ -15,7 +15,7 @@ struct RenderItem
 	RenderItem(const RenderItem&&) = delete;
 	RenderItem& operator=(const RenderItem&) = delete;
 
-	void Init(ResourceHandle mesh_, ResourceHandle vertShader_, ResourceHandle pixelShader_, ID3D12Device* pDevice, DescriptorHeap* pDescHeap, ID3D12RootSignature*, ResourceCache*);
+	void Init(ResourceHandle mesh_, ResourceHandle vertShader_, ResourceHandle pixelShader_, ID3D12Device* pDevice, D3D12_CPU_DESCRIPTOR_HANDLE descHeapSlot, ID3D12RootSignature*, ResourceCache*);
 	void UpdateTransform(const Transform&);
 
 	Transform transform;

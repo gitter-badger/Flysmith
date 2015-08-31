@@ -57,7 +57,7 @@ struct Renderer::Impl
 	void WaitForGPU();
 
 	void PopulateCommandLists();
-	void PopulateCommandList(CommandList&, RenderItem& renderItem);
+	void PopulateCommandList(size_t commandListIndex, RenderItem& renderItem);
 	void ExecuteCommandLists();
 	void Present();
 

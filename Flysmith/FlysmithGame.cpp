@@ -15,10 +15,14 @@ FlysmithGame::FlysmithGame(HINSTANCE hInstance)
 	LoadResources();
 
 	U32 mesh = m_resources.GetHandle("NACA2412");
+	U32 mesh2 = m_resources.GetHandle("NACA4415");
 	U32 vert = m_resources.GetHandle("TestVS");
 	U32 pixel = m_resources.GetHandle("TestPS");
-	RenderComponent fuckyoufuckyoufuckyou(m_pRenderer, mesh, vert, pixel);
-	m_scene.m_renderComponents.push_back(fuckyoufuckyoufuckyou);
+
+	RenderComponent comp1(m_pRenderer, mesh, vert, pixel);
+	RenderComponent comp2(m_pRenderer, mesh2, vert, pixel);
+	m_scene.m_renderComponents.push_back(comp1);
+	m_scene.m_renderComponents.push_back(comp2);
 }
 
 void FlysmithGame::HandleEvent(const Event& ev)
@@ -36,11 +40,16 @@ void FlysmithGame::LoadResources()
 	Airfoil airfoil(L"NACA2412.dat");
 	auto mesh = airfoil.GenerateMesh();
 	m_resources.AddResource("NACA2412", m_pRenderer->CacheMesh(mesh.verts, mesh.indices));
+
+	Airfoil airfoil2(L"NACA4415.dat");
+	auto mesh2 = airfoil2.GenerateMesh();
+	m_resources.AddResource("NACA4415", m_pRenderer->CacheMesh(mesh2.verts, mesh2.indices));
 }
 
 void FlysmithGame::UpdateScene(float dt)
 {
 	// Do stuff with tempObjTransform
-	m_scene.m_renderComponents[0].m_transform.RotateY(1.0f * dt);
+	m_scene.m_renderComponents[0].m_transform.RotateZ(-1.0f * dt);
+	m_scene.m_renderComponents[1].m_transform.RotateY(1.0f * dt);
 	// Do stuff with tempCamTransform
 }
