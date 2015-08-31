@@ -130,3 +130,15 @@ void Renderer::Impl::PopulateCommandLists()
 
 	m_commandList.Close();
 }
+
+void Renderer::Impl::ExecuteCommandLists()
+{
+	ID3D12CommandList* ppCommandLists[] = { m_commandList.Get() };
+	m_commandQueue.ExecuteCommandLists(ppCommandLists);
+}
+
+void Renderer::Impl::Present()
+{
+	// Swap buffers
+	m_swapChain.Present(m_device.Get());
+}

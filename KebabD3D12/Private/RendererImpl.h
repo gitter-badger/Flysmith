@@ -1,8 +1,8 @@
 #pragma once
 #include "Renderer.h"
 
-#include "RenderObject.h"
 #include "HardwareCaps.h"
+#include "RenderItem.h"
 #include "Camera.h"
 #include "Device.h"
 #include "Fence.h"
@@ -21,8 +21,6 @@
 #include "Pipeline\CommandAllocator.h"
 #include "Pipeline\CommandQueue.h"
 #include "Pipeline\CommandList.h"
-
-#include "RenderItem.h"
 
 
 struct Renderer::Impl
@@ -59,12 +57,16 @@ struct Renderer::Impl
 
 	Impl(HWND hwnd, U32 windowWidth, U32 windowHeight);
 	~Impl();
+
 	void CreatePipelineStateObject();
-	void PopulateCommandLists();
 	void CreateRootSignature();
 	void CreateDevice();
 	void LoadAssets();
 	void WaitForGPU();
+
+	void PopulateCommandLists();
+	void ExecuteCommandLists();
+	void Present();
 
 	ResourceCache m_resCache;
 	U32 rootConstColorIndex;

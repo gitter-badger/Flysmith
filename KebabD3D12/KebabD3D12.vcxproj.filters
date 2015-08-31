@@ -236,9 +236,6 @@
     <ClInclude Include="Private\Resources\ResourceCache.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Private\RenderObject.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Public\Vertex.h">
       <Filter>Header Files</Filter>
     </ClInclude>

@@ -241,7 +241,6 @@
     <ClInclude Include="Private\Pipeline\CommandAllocator.h" />
     <ClInclude Include="Private\Pipeline\CommandList.h" />
     <ClInclude Include="Private\Pipeline\CommandQueue.h" />
-    <ClInclude Include="Private\RenderObject.h" />
     <ClInclude Include="Private\Resources\Resource.h" />
     <ClInclude Include="Private\Resources\ResourceBarrier.h" />
     <ClInclude Include="Private\Resources\ResourceConfig.h" />
