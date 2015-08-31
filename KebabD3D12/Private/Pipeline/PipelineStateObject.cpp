@@ -76,10 +76,10 @@ void PipelineStateObject::Init(ID3D12Device* pDevice,
 	m_description.SampleMask = UINT_MAX;
 
 	// Rasterizer state
-	if(!pRasterizerState)
-		m_description.RasterizerState = static_cast<D3D12_RASTERIZER_DESC>(kDefaultRasterizerState);
+	if (!pRasterizerState)
+		m_description.RasterizerState = kDefaultRasterizerState.Get();
 	else
-		m_description.RasterizerState = static_cast<D3D12_RASTERIZER_DESC>(*pRasterizerState);
+		m_description.RasterizerState = pRasterizerState->Get();
 
 	// Depth-stencil state
 	m_description.DepthStencilState.DepthEnable = FALSE;

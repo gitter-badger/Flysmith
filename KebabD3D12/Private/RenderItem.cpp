@@ -55,8 +55,8 @@ void RenderItem::Init(ResourceHandle mesh_, ResourceHandle vertShader_, Resource
 		{ "COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 12, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 }
 	};
 
-	RasterizerStateConfig rastState(D3D12_FILL_MODE_WIREFRAME, D3D12_CULL_MODE_NONE);
-	pso.Init(pDevice, layout, 2, pRootSignature, nullptr, &rastState, &pResCache->GetShader(0), &pResCache->GetShader(1));
+	RasterizerStateConfig rastState(FillMode::SOLID, CullMode::NONE);
+	pso.Init(pDevice, layout, 2, pRootSignature, nullptr, &rastState, &pResCache->GetShader(vertShader), &pResCache->GetShader(pixelShader));
 }
 
 void RenderItem::UpdateTransform(const Transform& newTransform)

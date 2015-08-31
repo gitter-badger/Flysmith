@@ -30,21 +30,17 @@ Renderer::Impl::Impl(HWND hwnd, U32 windowWidth, U32 windowHeight)
 	// Create Descriptor Heaps
 	m_cbDescHeap.Init(m_device.Get(), DescHeapType::CB_SR_UA, 1, true);
 
-	// TODO: Move somewhere else
-	for (size_t i = 0; i < MAX_COMMAND_LISTS; i++)
-		InitCommandList(m_commandLists[i]);
+	for (auto& commandList : m_commandLists)
+	{
+		commandList.Init(m_device.Get(), m_commandAllocator.Get());
+		commandList.Close();
+	}
 
 	// Synchronize
 	m_fence.Init(m_device.Get(), 0);
 	m_currentFence = 1;
 	m_handleEvent = CreateEventEx(nullptr, FALSE, FALSE, EVENT_ALL_ACCESS);
 	WaitForGPU();
-}
-
-void Renderer::Impl::InitCommandList(CommandList& commandList)
-{
-	commandList.Init(m_device.Get(), m_commandAllocator.Get());
-	commandList.Close();
 }
 
 void Renderer::Impl::CreateRootSignature()
