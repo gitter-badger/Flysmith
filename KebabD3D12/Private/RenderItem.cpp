@@ -6,6 +6,7 @@
 
 RenderItem::RenderItem(RenderItem&& other)
 {
+	transform = other.transform;
 	mesh = other.mesh;
 	vertShader = other.vertShader;
 	pixelShader = other.pixelShader;
@@ -17,8 +18,8 @@ RenderItem::RenderItem(RenderItem&& other)
 
 RenderItem& RenderItem::operator=(RenderItem&& other)
 {
-	mesh = other.mesh;
 	transform = other.transform;
+	mesh = other.mesh;
 	vertShader = other.vertShader;
 	pixelShader = other.pixelShader;
 	pWorldMatDataBegin = other.pWorldMatDataBegin;
@@ -56,5 +57,5 @@ void RenderItem::UpdateTransform(const Transform& newTransform)
 
 	XMFLOAT4X4 worldMatTransposed;
 	XMStoreFloat4x4(&worldMatTransposed, XMMatrixTranspose(transform.GetMatrixXM()));
-	memcpy(&pWorldMatDataBegin, &worldMatTransposed, sizeof(XMFLOAT4X4));
+	memcpy(pWorldMatDataBegin, &worldMatTransposed, sizeof(XMFLOAT4X4));
 }

@@ -24,7 +24,8 @@ void Renderer::UpdateScene(const std::vector<RenderComponent>& renderables)
 {
 	for (size_t i = 0; i < m_pImpl->m_numRenderItemCacheRequests; i++)
 	{
-		m_pImpl->m_renderItems[m_pImpl->m_numRenderItems++] = std::move(m_pImpl->m_renderItemCacheQueue[i]);
+		auto& request = m_pImpl->m_renderItemCacheQueue[i];
+		m_pImpl->m_renderItems[m_pImpl->m_numRenderItems++].Init(request.mesh, request.vertShader, request.pixelShader, m_pImpl->m_device.Get(), &m_pImpl->m_cbDescHeap);
 	}
 	m_pImpl->m_numRenderItemCacheRequests = 0;
 	
@@ -70,6 +71,6 @@ ResourceHandle Renderer::CacheShader(ShaderType type, const std::wstring& fullPa
 
 RenderItemHandle Renderer::AddRenderItem(ResourceHandle mesh, ResourceHandle vertexShader, ResourceHandle pixelShader)
 {
-	m_pImpl->m_renderItemCacheQueue[m_pImpl->m_numRenderItemCacheRequests++].Init(mesh, vertexShader, pixelShader, m_pImpl->m_device.Get(), &m_pImpl->m_cbDescHeap);
+	m_pImpl->m_renderItemCacheQueue[m_pImpl->m_numRenderItemCacheRequests++] = { mesh, vertexShader, pixelShader };
 	return m_pImpl->m_numRenderItems + m_pImpl->m_numRenderItemCacheRequests - 1;
 }

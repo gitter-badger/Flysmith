@@ -81,6 +81,13 @@ struct Renderer::Impl
 	RenderItem m_renderItems[MAX_RENDER_ITEMS];
 	size_t m_numRenderItems;
 
-	RenderItem m_renderItemCacheQueue[MAX_RENDER_ITEMS];
+	struct RenderItemCacheRequest
+	{
+		ResourceHandle mesh;
+		ResourceHandle vertShader;
+		ResourceHandle pixelShader;
+	};
+
+	RenderItemCacheRequest m_renderItemCacheQueue[MAX_RENDER_ITEMS];
 	size_t m_numRenderItemCacheRequests;
 };
