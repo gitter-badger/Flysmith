@@ -9,6 +9,9 @@ CameraController::CameraController(TransformNoScale* pCamTransform)
 {
 	RegisterForEvent("KeyUp"_HASH);
 	RegisterForEvent("KeyDown"_HASH);
+	RegisterForEvent("MouseMove"_HASH);
+	RegisterForEvent("RMouseDown"_HASH);
+	RegisterForEvent("RMouseUp"_HASH);
 	RegisterForEvent("Tick"_HASH);
 	Init();
 }
@@ -37,6 +40,14 @@ void CameraController::Update(F32 dt)
 	if (m_bPressed['G'])
 		m_pCamTransform->Translate(rotationQuat.GetUpVectorXM() * -lDistance * 0.5f);
 
+	// Roll 
+	if (m_bPressed['Q'])
+		m_pCamTransform->RotateZ(-rDistance);
+
+	if (m_bPressed['E'])
+		m_pCamTransform->RotateZ(rDistance);
+
+	// Keyboard rotation
 	if (m_bPressed['I'])
 		m_pCamTransform->RotateX(rDistance);
 
@@ -49,11 +60,26 @@ void CameraController::Update(F32 dt)
 	if (m_bPressed['L'])
 		m_pCamTransform->RotateY(-rDistance);
 
-	if (m_bPressed['Q'])
-		m_pCamTransform->RotateZ(-rDistance);
+	// Mouse rotation
+	if (m_bRmbDown)
+	{
+		float sensitivity = .1f;
+		auto reX = m_mouseDeltaY * sensitivity * dt;
+		auto reY = m_mouseDeltaX * sensitivity * dt;
 
-	if (m_bPressed['E'])
-		m_pCamTransform->RotateZ(rDistance);
+		if (reX != 0.0f)
+		{
+			m_pCamTransform->RotateX(reX);
+		}
+		
+		if (reY != 0.0f)
+		{
+			m_pCamTransform->RotateY(reY);
+		}
+
+		m_mouseDeltaX = 0;
+		m_mouseDeltaY = 0;
+	}
 }
 
 void CameraController::Init()
@@ -123,6 +149,30 @@ void CameraController::HandleEvent(const Event& ev)
 				m_bPressed[key] = true;
 				break;
 			}
+		break;
+	case "MouseMove"_HASH:
+		if (m_bRmbDown)
+		{
+			if (!(m_oldMouseX == 0 && m_oldMouseY == 0))
+			{
+				m_mouseDeltaX = m_oldMouseX - ev.data[0].asU32;
+				m_mouseDeltaY = m_oldMouseY - ev.data[1].asU32;
+			}
+			m_oldMouseX = ev.data[0].asU32;
+			m_oldMouseY = ev.data[1].asU32;
+		}
+		break;
+	case "RMouseDown"_HASH:
+		m_oldMouseX = ev.data[0].asU32;
+		m_oldMouseY = ev.data[1].asU32;
+		m_mouseDeltaX = 0;
+		m_mouseDeltaY = 0;
+		m_bRmbDown = true;
+		ShowCursor(FALSE);
+		break;
+	case "RMouseUp"_HASH:
+		m_bRmbDown = false;
+		ShowCursor(TRUE);
 		break;
 	}
 }
