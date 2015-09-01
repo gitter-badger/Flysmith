@@ -1,6 +1,7 @@
 #pragma once
 #include "PCH.h"
 #include "Airfoil.h"
+#include "StandardUnits.h"
 using namespace DirectX;
 
 
@@ -12,13 +13,25 @@ public:
 	{
 	}
 
+	// TODO: Scale taking into account the chord
+	// TODO: Wing tip generation 
+	// TODO: Control surfaces(separate?)
+	// TODO: Sweep
+	// TODO: Variable thickness 
+	// TODO: Variable airfoil
+	// TODO: Innards 
 	Mesh GenerateMesh()
 	{
 		Mesh mesh;
 
+		// Measured from one wing tip to the other(i.e. includes main body)
+		F32 wingspan = MetersToD3DUnits(11.0f);
+		F32 bodyDiameter = MetersToD3DUnits(2.0f);
+
 		// 1. Generate ring configurations(for now all rings are the same).
-		U32 numRings = 2;
-		F32 ringOffsets[2] = { 0.0f, 0.5f };
+		F32 wingWidth = (wingspan - bodyDiameter) / 2.0f;
+		U32 numRings = 5;
+		F32 ringOffsets[5] = { 0.0f, wingWidth / 4.0f, wingWidth / 2.0f, 3 * wingWidth / 4.0f, wingWidth };
 
 		// 2. Generate vertices on rings 
 		for (U32 ringIndex = 0; ringIndex < numRings; ringIndex++)
