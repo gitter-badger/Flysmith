@@ -172,6 +172,7 @@
     <ClInclude Include="FlysmithGame.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="PCH.h" />
+    <ClInclude Include="Plane.h" />
     <ClInclude Include="ResourceRegistry.h" />
     <ClInclude Include="StandardUnits.h" />
     <ClInclude Include="Wing.h" />
