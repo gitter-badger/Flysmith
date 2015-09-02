@@ -25,11 +25,11 @@ FlysmithGame::FlysmithGame(HINSTANCE hInstance)
 	RenderComponent comp(m_pRenderer, planeMesh, vert, pixel);
 	m_scene.m_renderComponents.push_back(comp);
 
-	RenderComponent comp2(m_pRenderer, foilMesh, vert, pixel);
+	/*RenderComponent comp2(m_pRenderer, foilMesh, vert, pixel);
 	m_scene.m_renderComponents.push_back(comp2);
 
 	RenderComponent comp3(m_pRenderer, wingMesh, vert, pixel);
-	m_scene.m_renderComponents.push_back(comp3);
+	m_scene.m_renderComponents.push_back(comp3);*/
 }
 
 void FlysmithGame::HandleEvent(const Event& ev)

@@ -58,12 +58,10 @@ struct Renderer::Impl
 	void Present();
 
 	ResourceCache m_resCache;
-	U32 m_rootConstColorIndex;
 	U32 m_rootDescViewProjIndex;
 	U32 m_rootDescTableIndex;
 	// TODO: Temp
-	const U32 m_vertColor[4] = { 0, 0, 128, 255 };
-	const F32 m_clearColor[4] = { 0.93f, 0.5f, 0.93f, 1.0f };
+	const F32 m_clearColor[4] = { 90.0f / 255.0f, 136.0f / 255.0f, 255.0f / 255.0f, 1.0f };
 
 	static const size_t MAX_RENDER_QUEUE_ITEMS = 100;
 	static const size_t MAX_RENDER_ITEMS = 100;

@@ -56,7 +56,7 @@ void RenderItem::Init(ResourceHandle mesh_, ResourceHandle vertShader_, Resource
 	};
 
 	// TODO: Allow changing wireframe/solid on the fly.
-	RasterizerStateConfig rastState(FillMode::SOLID, CullMode::NONE);
+	RasterizerStateConfig rastState(FillMode::SOLID, CullMode::BACK);
 	pso.Init(pDevice, layout, 2, pRootSignature, nullptr, &rastState, &pResCache->GetShader(vertShader), &pResCache->GetShader(pixelShader));
 }
 

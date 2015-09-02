@@ -35,10 +35,10 @@ void CameraController::Update(F32 dt)
 		m_pCamTransform->Translate(rotationQuat.GetRightVectorXM() * -lDistance);
 
 	if (m_bPressed['T'])
-		m_pCamTransform->Translate(rotationQuat.GetUpVectorXM() * lDistance * 0.5f);
+		m_pCamTransform->Translate(rotationQuat.GetUpVectorXM() * lDistance * 0.25f);
 
 	if (m_bPressed['G'])
-		m_pCamTransform->Translate(rotationQuat.GetUpVectorXM() * -lDistance * 0.5f);
+		m_pCamTransform->Translate(rotationQuat.GetUpVectorXM() * -lDistance * 0.25f);
 
 	// Roll 
 	if (m_bPressed['Q'])

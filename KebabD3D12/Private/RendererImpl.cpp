@@ -45,7 +45,6 @@ Renderer::Impl::Impl(HWND hwnd, U32 windowWidth, U32 windowHeight)
 void Renderer::Impl::CreateRootSignature()
 {
 	RootSignatureFactory rootSigFactory(RootSignatureFactory::ALLOW_IA_LAYOUT);
-	m_rootConstColorIndex = rootSigFactory.AddParameterConstants(4);
 	m_rootDescViewProjIndex = rootSigFactory.AddParameterDescriptor(RootParameterType::INL_CONSTANT_BUFFER, 1);
 	DescriptorTable range(DescriptorTableType::CBV, 1, 2, 0);
 	m_rootDescTableIndex = rootSigFactory.AddParameterDescTable(1, &range);
@@ -80,7 +79,6 @@ void Renderer::Impl::PopulateCommandLists()
 	m_commandList.Get()->SetDescriptorHeaps(1, ppHeaps);
 
 	m_commandList.SetRootInlineDescriptor(m_rootDescViewProjIndex, m_viewProjConstBuffer.GetGPUVirtualAddress());
-	m_commandList.SetRoot32BitConstants(m_rootConstColorIndex, 4, m_vertColor, 0);
 
 	m_commandList.SetResourceBarriers(&TransitionBarrier(m_swapChain.GetRenderTarget(), D3D12_RESOURCE_STATE_PRESENT, D3D12_RESOURCE_STATE_RENDER_TARGET));
 
