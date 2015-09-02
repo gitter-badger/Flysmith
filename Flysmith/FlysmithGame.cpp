@@ -25,8 +25,8 @@ FlysmithGame::FlysmithGame(HINSTANCE hInstance)
 	RenderComponent comp(m_pRenderer, planeMesh, vert, pixel);
 	m_scene.m_renderComponents.push_back(comp);
 
-	/*RenderComponent comp2(m_pRenderer, foilMesh, vert, pixel);
-	m_scene.m_renderComponents.push_back(comp2);*/
+	RenderComponent comp2(m_pRenderer, foilMesh, vert, pixel);
+	m_scene.m_renderComponents.push_back(comp2);
 
 	RenderComponent comp3(m_pRenderer, wingMesh, vert, pixel);
 	m_scene.m_renderComponents.push_back(comp3);
@@ -61,6 +61,6 @@ void FlysmithGame::LoadResources()
 
 void FlysmithGame::UpdateScene(float dt)
 {
-	m_scene.m_renderComponents[0].m_transform.SetPosition(0.0f, 0.0, 0.0f);
-	m_scene.m_renderComponents[0].m_transform.SetRotation(0.0f, XM_PIDIV2, 0.0f);
+	//m_scene.m_renderComponents[0].m_transform.SetPosition(0.0f, 0.0, 0.0f);
+	//m_scene.m_renderComponents[0].m_transform.SetRotation(0.0f, XM_PIDIV2, 0.0f);
 }

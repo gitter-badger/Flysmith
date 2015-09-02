@@ -21,6 +21,10 @@ VS_OUT main(VS_IN vsin)
 	VS_OUT output;
 	output.pos = mul(float4(vsin.pos, 1.0f), mul(worldMat, viewProjMat));
 	output.normal = vsin.normal;
+	
+	float4 pixelPos = mul(float4(vsin.pos, 1.0f), worldMat);
+	output.pixelPos = float3(pixelPos.x, pixelPos.y, pixelPos.z);
+	output.normal = mul(vsin.normal, (float3x3)worldMat);
 
 	return output;
 }
