@@ -106,7 +106,7 @@ U32 RootSignatureFactory::GetSize()
 	return m_rootSize;
 }
 
-ID3D12RootSignature* RootSignatureFactory::BuildRootSignature(ID3D12Device* pDevice)
+void RootSignatureFactory::BuildRootSignature(ID3D12Device* pDevice, RootSignature* pOut)
 {
 	assert(pDevice != nullptr);
 
@@ -137,11 +137,10 @@ ID3D12RootSignature* RootSignatureFactory::BuildRootSignature(ID3D12Device* pDev
 	hr = pDevice->CreateRootSignature(0,
 									  pOutBlob->GetBufferPointer(),
 								      pOutBlob->GetBufferSize(),
-									  __uuidof(ID3D12RootSignature),
-									  reinterpret_cast<void**>(&pRootSignature));
+									  IID_PPV_ARGS(&pRootSignature));
 	assert(SUCCEEDED(hr));
 
 	pOutBlob->Release();
 
-	return pRootSignature;
+	pOut->Init(pRootSignature);
 }

@@ -12,6 +12,7 @@ Renderer::Impl::Impl(HWND hwnd, U32 windowWidth, U32 windowHeight)
 	, m_renderQueueEnd(0)
 	, m_numRenderItems(0)
 	, m_numRenderItemCacheRequests(0)
+	, m_psoManager(&m_device, &m_resCache, &m_rootSignature)
 {
 	auto pAdapter = m_hwCaps.GetDisplayAdapters()[0].Get();
 	m_device.Init(pAdapter.Get());
@@ -48,7 +49,7 @@ void Renderer::Impl::CreateRootSignature()
 	m_rootDescViewProjIndex = rootSigFactory.AddParameterDescriptor(RootParameterType::INL_CONSTANT_BUFFER, 1);
 	DescriptorTable range(DescriptorTableType::CBV, 1, 2, 0);
 	m_rootDescTableIndex = rootSigFactory.AddParameterDescTable(1, &range);
-	m_pRootSignature = rootSigFactory.BuildRootSignature(m_device.Get());
+	rootSigFactory.BuildRootSignature(m_device.Get(), &m_rootSignature);
 }
 
 void Renderer::Impl::WaitForGPU()
@@ -68,12 +69,12 @@ void Renderer::Impl::PopulateCommandLists()
 {
 	m_commandAllocator.Reset();
 	
-	m_commandList.Reset(m_commandAllocator.Get(), m_renderItems[0].pso.Get());
+	m_commandList.Reset(m_commandAllocator.Get());
 
 	m_commandList.SetViewports(&m_viewport);
 	m_commandList.SetScissorRects(&m_scissorRect);
 
-	m_commandList.SetRootSignature(m_pRootSignature.Get());
+	m_commandList.SetRootSignature(m_rootSignature.Get());
 
 	ID3D12DescriptorHeap* ppHeaps[] = { m_cbDescHeap.Get() };
 	m_commandList.Get()->SetDescriptorHeaps(1, ppHeaps);
@@ -88,7 +89,12 @@ void Renderer::Impl::PopulateCommandLists()
 	for (size_t i = 0; i < m_renderQueueEnd; i++)
 	{
 		auto& renderItem = m_renderItems[m_renderQueue[i]];
+
+		//m_commandList.SetPSO(m_psoManager.GetPSOById(renderItem.psoId).Get());
+		m_commandList.SetPSO(renderItem.pso.Get());
+
 		m_commandList.SetRootDescriptorTable(m_rootDescTableIndex, m_cbDescHeap.GetGPUHandle(m_renderQueue[i])); // TODO: Change how indexing in the descriptor heap works
+		
 		auto& mesh = m_resCache.GetMesh(renderItem.mesh);
 		m_commandList.SetPrimitive(TRIANGLE_LIST, &mesh.GetVertBufferView(), &mesh.GetIndexBufferView());
 		m_commandList.DrawIndexed(mesh.GetNumIndices());

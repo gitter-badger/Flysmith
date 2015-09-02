@@ -40,6 +40,7 @@ public:
 	void SetViewports(D3D12_VIEWPORT*, U32 numViewports = 1);
 	void SetScissorRects(D3D12_RECT*, U32 numRects = 1);
 
+	void SetPSO(ID3D12PipelineState*);
 	void SetPrimitiveTopology(PrimitiveTopology);
 	void SetVertexBuffers(D3D12_VERTEX_BUFFER_VIEW*, U32 numViews = 1, U32 startSlot = 0);
 	void SetIndexBuffer(D3D12_INDEX_BUFFER_VIEW*);

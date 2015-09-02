@@ -13,9 +13,10 @@
 #include "Pipeline\ScissorRectangle.h"
 #include "Pipeline\SwapChain.h"
 #include "Pipeline\Viewport.h"
-
 #include "Pipeline\CommandAllocator.h"
 #include "Pipeline\CommandQueue.h"
+#include "PSOManager.h"
+#include "RootSignature.h"
 
 
 struct Renderer::Impl
@@ -28,7 +29,7 @@ struct Renderer::Impl
 	Device m_device;
 
 	// Pipeline
-	Microsoft::WRL::ComPtr<ID3D12RootSignature> m_pRootSignature;
+	RootSignature    m_rootSignature;
 	CommandAllocator m_commandAllocator;
 	CommandQueue     m_commandQueue;
 	CommandList		 m_commandList;
@@ -37,6 +38,7 @@ struct Renderer::Impl
 	UploadHeap m_uploadHeap;
 
 	DescriptorHeap m_cbDescHeap;
+	PSOManager m_psoManager;
 
 	Resource m_viewProjConstBuffer;
 	U8* m_pViewProjDataBegin;

@@ -1,5 +1,6 @@
 #pragma once
 #include "PCH.h"
+#include "RootSignature.h"
 
 
 enum class RootParameterType
@@ -71,7 +72,7 @@ public:
 	// Get the current size in DWORDs
 	U32 GetSize();
 
-	ID3D12RootSignature* BuildRootSignature(ID3D12Device*);
+	void BuildRootSignature(ID3D12Device*, RootSignature*);
 
 private:
 	U32 m_rootSize; // In DWORDs

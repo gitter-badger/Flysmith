@@ -225,6 +225,7 @@
     <ClCompile Include="Private\Resources\ResourceCache.cpp" />
     <ClCompile Include="Private\RenderComponent.cpp" />
     <ClCompile Include="Private\RenderItem.cpp" />
+    <ClCompile Include="Private\PSOManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Private\Camera.h" />
@@ -245,6 +246,7 @@
     <ClInclude Include="Private\Resources\Resource.h" />
     <ClInclude Include="Private\Resources\ResourceBarrier.h" />
     <ClInclude Include="Private\Resources\ResourceConfig.h" />
+    <ClInclude Include="Private\PSOManager.h" />
     <ClInclude Include="Public\RenderComponent.h" />
     <ClInclude Include="Public\Vertex.h" />
     <ClInclude Include="Public\PublicDef.h" />
@@ -270,6 +272,7 @@
     <ClInclude Include="Public\Types.h" />
     <ClInclude Include="Private\RenderItem.h" />
     <ClInclude Include="Public\ShaderTypes.h" />
+    <ClInclude Include="Private\RootSignature.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Private\Shaders\TestHeader.hlsli" />

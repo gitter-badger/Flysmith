@@ -30,8 +30,19 @@ void Renderer::UpdateScene(const std::vector<RenderComponent>& renderables)
 																 request.pixelShader, 
 																 m_pImpl->m_device.Get(), 
 																 m_pImpl->m_cbDescHeap.GetCPUHandle(m_pImpl->m_numRenderItems - 1),
-																 m_pImpl->m_pRootSignature.Get(), 
-																 &m_pImpl->m_resCache);
+																 &m_pImpl->m_psoManager,
+																 FillMode::SOLID, CullMode::BACK);
+
+		// TEMP
+		// TEMP
+
+		// TODO: Make the Vertex class handle its own layout 
+		D3D12_INPUT_ELEMENT_DESC layout[] = {
+			{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
+			{ "NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 12, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 }
+		};
+
+		m_pImpl->m_renderItems[m_pImpl->m_numRenderItems - 1].pso.Init(m_pImpl->m_device.Get(), layout, 2, m_pImpl->m_rootSignature.Get(), nullptr, nullptr, &m_pImpl->m_resCache.GetShader(0), &m_pImpl->m_resCache.GetShader(1));
 	}
 	m_pImpl->m_numRenderItemCacheRequests = 0;
 	

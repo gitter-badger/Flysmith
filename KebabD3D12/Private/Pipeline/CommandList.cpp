@@ -48,6 +48,12 @@ void CommandList::Reset(ID3D12CommandAllocator* pCommandAllocator, ID3D12Pipelin
 	assert(SUCCEEDED(hr));
 }
 
+void CommandList::SetPSO(ID3D12PipelineState* pso)
+{
+	// TODO: Check if same PSO
+	m_pCommandList->SetPipelineState(pso);
+}
+
 void CommandList::SetRootSignature(ID3D12RootSignature* pRootSignature)
 {
 	assert(pRootSignature != nullptr);
