@@ -26,6 +26,8 @@ U32 Application::Run()
 	
 	while (!m_pWindow->ShouldClose())
 	{
+		g_inputManager.Reset();
+
 		m_pWindow->RunMessageLoop();
 		
 		m_timer.Update();

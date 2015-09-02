@@ -16,12 +16,4 @@ private:
 	void SetAxis(CXMVECTOR lookAt, CXMVECTOR up, CXMVECTOR right);
 
 	TransformNoScale* m_pCamTransform;
-	std::map<char, bool> m_bPressed;
-	std::vector<unsigned char> m_keys;
-
-	I32 m_oldMouseX = 0;
-	I32 m_oldMouseY = 0;
-	I32 m_mouseDeltaX = 0;
-	I32 m_mouseDeltaY = 0;
-	bool m_bRmbDown = false;
 };

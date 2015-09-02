@@ -10,6 +10,7 @@
 class KEBAB_API InputManager
 {
 	friend class Window;
+	friend class Application;
 
 public:
 	InputManager();
@@ -18,28 +19,30 @@ public:
 	bool IsKeyDown(U8 key);
 	bool IsRMBDown();
 	bool IsLMBDown();
-	U32 GetMouseDeltaX();
-	U32 GetMouseDeltaY();
-	U32 GetMousePosX();
-	U32 GetMousePosY();
+	I32 GetMouseDeltaX();
+	I32 GetMouseDeltaY();
+	I32 GetMousePosX();
+	I32 GetMousePosY();
 
 private:
 	static bool s_bInstantiated;
 	std::map<U8, bool> m_keyStates;
-	U32 m_mousePosX;
-	U32 m_mousePosY;
-	U32 m_mouseDeltaX;
-	U32 m_mouseDeltaY;
+	I32 m_mousePosX;
+	I32 m_mousePosY;
+	I32 m_mouseDeltaX;
+	I32 m_mouseDeltaY;
 	bool m_bLMBDown;
 	bool m_bRMBDown;
 
 	void SetKeyUp(U8 key);
 	void SetKeyDown(U8 key);
-	void HandleMouseMove(U32 newPosX, U32 newPosY);
+	void HandleMouseMove(I32 newPosX, I32 newPosY);
 	void SetRMBUp();
 	void SetRMBDown();
 	void SetLMBUp();
 	void SetLMBDown();
+
+	void Reset();
 };
 
-extern InputManager g_inputManager;
+extern KEBAB_API InputManager g_inputManager;

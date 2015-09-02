@@ -41,22 +41,22 @@ void InputManager::SetKeyDown(U8 key)
 	m_keyStates[key] = true;
 }
 
-U32 InputManager::GetMouseDeltaX()
+I32 InputManager::GetMouseDeltaX()
 {
 	return m_mouseDeltaX;
 }
 
-U32 InputManager::GetMouseDeltaY()
+I32 InputManager::GetMouseDeltaY()
 {
 	return m_mouseDeltaY;
 }
 
-U32 InputManager::GetMousePosX()
+I32 InputManager::GetMousePosX()
 {
 	return m_mousePosX;
 }
 
-U32 InputManager::GetMousePosY()
+I32 InputManager::GetMousePosY()
 {
 	return m_mousePosY;
 }
@@ -91,11 +91,17 @@ void InputManager::SetLMBDown()
 	m_bLMBDown = true;
 }
 
-void InputManager::HandleMouseMove(U32 newPosX, U32 newPosY)
+void InputManager::HandleMouseMove(I32 newPosX, I32 newPosY)
 {
 	m_mouseDeltaX = newPosX - m_mousePosX;
 	m_mouseDeltaY = newPosY - m_mousePosY;
 
 	m_mousePosX = newPosX;
 	m_mousePosY = newPosY;
+}
+
+void InputManager::Reset()
+{
+	m_mouseDeltaX = 0;
+	m_mouseDeltaY = 0;
 }

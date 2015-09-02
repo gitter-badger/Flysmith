@@ -1,18 +1,15 @@
 #include "PCH.h"
 #include "CameraController.h"
 #include "GameStateEvents.h"
+#include "InputManager.h"
 
 
 CameraController::CameraController(TransformNoScale* pCamTransform)
 	: m_pCamTransform(pCamTransform)
-	, m_keys{'W', 'A', 'S', 'D', 'J', 'L', 'I', 'K', 'Q', 'E', 'T', 'G'}
 {
-	RegisterForEvent("KeyUp"_HASH);
-	RegisterForEvent("KeyDown"_HASH);
-	RegisterForEvent("MouseMove"_HASH);
+	RegisterForEvent("Tick"_HASH);
 	RegisterForEvent("RMouseDown"_HASH);
 	RegisterForEvent("RMouseUp"_HASH);
-	RegisterForEvent("Tick"_HASH);
 	Init();
 }
 
@@ -22,50 +19,50 @@ void CameraController::Update(F32 dt)
 	float rDistance = 1.0f * dt;
 	auto& rotationQuat = m_pCamTransform->GetRotationQuat();
 
-	if (m_bPressed['W'])
+	if (g_inputManager.IsKeyDown('W'))
 		m_pCamTransform->Translate(rotationQuat.GetForwardVectorXM() * lDistance);
 
-	if (m_bPressed['S'])
+	if (g_inputManager.IsKeyDown('S'))
 		m_pCamTransform->Translate(rotationQuat.GetForwardVectorXM() * -lDistance);
 
-	if (m_bPressed['D'])
+	if (g_inputManager.IsKeyDown('D'))
 		m_pCamTransform->Translate(rotationQuat.GetRightVectorXM() * lDistance);
 	
-	if (m_bPressed['A'])
+	if (g_inputManager.IsKeyDown('A'))
 		m_pCamTransform->Translate(rotationQuat.GetRightVectorXM() * -lDistance);
 
-	if (m_bPressed['T'])
+	if (g_inputManager.IsKeyDown('T'))
 		m_pCamTransform->Translate(rotationQuat.GetUpVectorXM() * lDistance * 0.25f);
 
-	if (m_bPressed['G'])
+	if (g_inputManager.IsKeyDown('G'))
 		m_pCamTransform->Translate(rotationQuat.GetUpVectorXM() * -lDistance * 0.25f);
 
 	// Roll 
-	if (m_bPressed['Q'])
+	if (g_inputManager.IsKeyDown('Q'))
 		m_pCamTransform->RotateZ(-rDistance);
 
-	if (m_bPressed['E'])
+	if (g_inputManager.IsKeyDown('E'))
 		m_pCamTransform->RotateZ(rDistance);
 
 	// Keyboard rotation
-	if (m_bPressed['I'])
+	if (g_inputManager.IsKeyDown('I'))
 		m_pCamTransform->RotateX(rDistance);
 
-	if (m_bPressed['K'])
+	if (g_inputManager.IsKeyDown('K'))
 		m_pCamTransform->RotateX(-rDistance);
 
-	if (m_bPressed['J'])
+	if (g_inputManager.IsKeyDown('J'))
 		m_pCamTransform->RotateY(rDistance);
 
-	if (m_bPressed['L'])
+	if (g_inputManager.IsKeyDown('L'))
 		m_pCamTransform->RotateY(-rDistance);
 
 	// Mouse rotation
-	if (m_bRmbDown)
+	if (g_inputManager.IsRMBDown())
 	{
 		float sensitivity = .1f;
-		auto reX = m_mouseDeltaY * sensitivity * dt;
-		auto reY = m_mouseDeltaX * sensitivity * dt;
+		auto reX = -g_inputManager.GetMouseDeltaY() * sensitivity * dt;
+		auto reY = -g_inputManager.GetMouseDeltaX() * sensitivity * dt;
 
 		if (reX != 0.0f)
 		{
@@ -76,9 +73,6 @@ void CameraController::Update(F32 dt)
 		{
 			m_pCamTransform->RotateY(reY);
 		}
-
-		m_mouseDeltaX = 0;
-		m_mouseDeltaY = 0;
 	}
 }
 
@@ -134,44 +128,10 @@ void CameraController::HandleEvent(const Event& ev)
 	case "Tick"_HASH:
 		Update(ev.data[0].asFloat);
 		break;
-	case "KeyUp"_HASH:
-		for (auto key : m_keys)
-			if (ev.data[0].asU32 == key)
-			{
-				m_bPressed[key] = false;
-				break;
-			}
-		break;
-	case "KeyDown"_HASH:
-		for (auto key : m_keys)
-			if (ev.data[0].asU32 == key)
-			{
-				m_bPressed[key] = true;
-				break;
-			}
-		break;
-	case "MouseMove"_HASH:
-		if (m_bRmbDown)
-		{
-			if (!(m_oldMouseX == 0 && m_oldMouseY == 0))
-			{
-				m_mouseDeltaX = m_oldMouseX - ev.data[0].asU32;
-				m_mouseDeltaY = m_oldMouseY - ev.data[1].asU32;
-			}
-			m_oldMouseX = ev.data[0].asU32;
-			m_oldMouseY = ev.data[1].asU32;
-		}
-		break;
 	case "RMouseDown"_HASH:
-		m_oldMouseX = ev.data[0].asU32;
-		m_oldMouseY = ev.data[1].asU32;
-		m_mouseDeltaX = 0;
-		m_mouseDeltaY = 0;
-		m_bRmbDown = true;
 		ShowCursor(FALSE);
 		break;
 	case "RMouseUp"_HASH:
-		m_bRmbDown = false;
 		ShowCursor(TRUE);
 		break;
 	}
