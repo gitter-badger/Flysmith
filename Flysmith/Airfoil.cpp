@@ -50,5 +50,7 @@ Mesh Airfoil::GenerateMesh()
 		mesh.indices.push_back(i - 1);
 	}
 
+	mesh.GenerateNormals();
+
 	return mesh;
 }

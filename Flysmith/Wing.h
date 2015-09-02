@@ -64,6 +64,8 @@ public:
 				m_mesh.indices.push_back(ringOffset2 + i + 1);
 			}
 		}
+
+		m_mesh.GenerateNormals();
 	}
 
 	Mesh GetMesh()

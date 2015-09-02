@@ -34,6 +34,8 @@ public:
 		m_mesh.indices.insert(m_mesh.indices.end(), rightWing.indices.begin(), rightWing.indices.end());
 		m_mesh.indices.insert(m_mesh.indices.end(), leftWing.indices.begin(), leftWing.indices.end());
 
+		m_mesh.GenerateNormals();
+
 		m_numPairs++;
 	}
 
