@@ -13,8 +13,8 @@ public:
 		auto rightWing = wing.GetMesh();
 		for (auto& vert : rightWing.verts)
 		{
-			vert.position[2] += separationWidth / 2.0f;
-			vert.position[1] += heightOffset;
+			vert.position.z += separationWidth / 2.0f;
+			vert.position.y += heightOffset;
 		}
 
 		for (auto& index : rightWing.indices)
@@ -24,7 +24,7 @@ public:
 
 		// Mirror on the x-axis(currently the chord lines are parallel to the x-axis)
 		for (auto& vert : leftWing.verts)
-			vert.position[2] = -vert.position[2];
+			vert.position.z = -vert.position.z;
 
 		for (auto& index : leftWing.indices)
 			index += leftWing.verts.size();

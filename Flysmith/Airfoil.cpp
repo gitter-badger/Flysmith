@@ -37,8 +37,9 @@ Mesh Airfoil::GenerateMesh()
 
 	for (auto& foilPoint : points)
 	{
-		XMFLOAT2 vert(foilPoint);
-		mesh.verts.push_back({ { vert.x, vert.y, 0.0f }, { 0.0f, 0.0f, 0.0f, 1.0f } });
+		XMFLOAT3 pos(foilPoint.x, foilPoint.y, 0.0f);
+		XMFLOAT3 normal(0.0f, 0.0f, 0.0f);
+		mesh.verts.push_back({ pos, normal });
 	}
 
 	auto numPoints = points.size();

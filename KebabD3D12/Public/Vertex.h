@@ -1,9 +1,10 @@
 #pragma once
 #include "PublicDef.h"
+#include <DirectXMath.h>
 
 
 struct KEBAB12_API Vertex
 {
-	F32 position[3];
-	F32 color[4];
+	DirectX::XMFLOAT3 position;
+	DirectX::XMFLOAT3 normal;
 };

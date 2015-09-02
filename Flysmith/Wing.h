@@ -37,8 +37,9 @@ public:
 		{
 			for (auto& point : m_airfoil.points)
 			{
-				XMFLOAT2 vert(point);
-				m_mesh.verts.push_back({ { vert.x, vert.y, ringOffsets[ringIndex] }, { 0.0f, 0.0f, 0.0f, 1.0f } });
+				XMFLOAT3 pos(point.x, point.y, ringOffsets[ringIndex]);
+				XMFLOAT3 normal(0.0f, 0.0f, 0.0f);
+				m_mesh.verts.push_back({ pos, normal });
 			}
 		}
 
