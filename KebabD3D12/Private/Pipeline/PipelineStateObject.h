@@ -11,10 +11,15 @@ public:
 	PipelineStateObject();
 	PipelineStateObject(ID3D12Device*, const D3D12_GRAPHICS_PIPELINE_STATE_DESC&);
 	PipelineStateObject(ID3D12Device*, const D3D12_INPUT_ELEMENT_DESC*, const U32 numLayoutElements, ID3D12RootSignature* = nullptr,
-		const BlendStateConfig* = nullptr, const RasterizerStateConfig* = nullptr, const D3D12_SHADER_BYTECODE* VS = nullptr,
-		const D3D12_SHADER_BYTECODE* PS = nullptr, const D3D12_SHADER_BYTECODE* GS = nullptr, const D3D12_SHADER_BYTECODE* HS = nullptr,
-		const D3D12_SHADER_BYTECODE* DS = nullptr, const D3D12_PRIMITIVE_TOPOLOGY_TYPE = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE);
+						const BlendStateConfig* = nullptr, const RasterizerStateConfig* = nullptr, const D3D12_SHADER_BYTECODE* VS = nullptr,
+						const D3D12_SHADER_BYTECODE* PS = nullptr, const D3D12_SHADER_BYTECODE* GS = nullptr, const D3D12_SHADER_BYTECODE* HS = nullptr,
+						const D3D12_SHADER_BYTECODE* DS = nullptr, const D3D12_PRIMITIVE_TOPOLOGY_TYPE = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE);
 	~PipelineStateObject();
+	
+	PipelineStateObject(PipelineStateObject&);
+	PipelineStateObject& operator=(PipelineStateObject&);
+	PipelineStateObject(PipelineStateObject&&);
+	PipelineStateObject& operator=(PipelineStateObject&&);
 
 	void Init(ID3D12Device*, const D3D12_GRAPHICS_PIPELINE_STATE_DESC&);
 	void Init(ID3D12Device*,
@@ -40,5 +45,5 @@ public:
 
 private:
 	ID3D12PipelineState* m_pState;
-	D3D12_GRAPHICS_PIPELINE_STATE_DESC m_description;
+	D3D12_GRAPHICS_PIPELINE_STATE_DESC m_description; // TODO: Expose for reflection
 };

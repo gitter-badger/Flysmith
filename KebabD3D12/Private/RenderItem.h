@@ -27,5 +27,4 @@ struct RenderItem
 	U8*      pWorldMatDataBegin;
 
 	U32 psoId;
-	PipelineStateObject pso;
 };

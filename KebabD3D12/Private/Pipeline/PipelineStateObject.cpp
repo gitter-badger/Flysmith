@@ -23,6 +23,38 @@ PipelineStateObject::PipelineStateObject(ID3D12Device* pDevice, const D3D12_INPU
 	Init(pDevice, layout, numLayoutElements, pRootSignature, pBlendState, pRasterizerState, VS, PS, GS, HS, DS, primitiveType);
 }
 
+PipelineStateObject::PipelineStateObject(PipelineStateObject& other)
+{
+	other.m_pState->AddRef();
+	m_pState = other.m_pState;
+	m_description = other.m_description;
+}
+
+PipelineStateObject& PipelineStateObject::operator=(PipelineStateObject& other)
+{
+	other.m_pState->AddRef();
+	m_pState = other.m_pState;
+	m_description = other.m_description;
+
+	return *this;
+}
+
+PipelineStateObject::PipelineStateObject(PipelineStateObject&& other)
+{
+	other.m_pState->AddRef();
+	m_pState = other.m_pState;
+	m_description = other.m_description;
+}
+
+PipelineStateObject& PipelineStateObject::operator=(PipelineStateObject&& other)
+{
+	other.m_pState->AddRef();
+	m_pState = other.m_pState;
+	m_description = other.m_description;
+
+	return *this;
+}
+
 PipelineStateObject::~PipelineStateObject()
 {
 	if (m_pState)

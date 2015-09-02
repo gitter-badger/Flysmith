@@ -90,8 +90,7 @@ void Renderer::Impl::PopulateCommandLists()
 	{
 		auto& renderItem = m_renderItems[m_renderQueue[i]];
 
-		//m_commandList.SetPSO(m_psoManager.GetPSOById(renderItem.psoId).Get());
-		m_commandList.SetPSO(renderItem.pso.Get());
+		m_commandList.SetPSO(m_psoManager.GetPSOById(renderItem.psoId).Get());
 
 		m_commandList.SetRootDescriptorTable(m_rootDescTableIndex, m_cbDescHeap.GetGPUHandle(m_renderQueue[i])); // TODO: Change how indexing in the descriptor heap works
 		
