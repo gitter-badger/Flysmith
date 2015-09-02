@@ -25,7 +25,7 @@ Window::Window(HINSTANCE hInstance, U32 width, U32 height, const std::wstring& c
 	}
 	else
 	{
-		m_windowStyle = WS_OVERLAPPEDWINDOW | WS_VISIBLE;
+		m_windowStyle = WS_OVERLAPPEDWINDOW ^ WS_THICKFRAME | WS_VISIBLE ;
 		m_positionX = static_cast<U32>(CW_USEDEFAULT);
 		m_positionY = static_cast<U32>(CW_USEDEFAULT);
 	}
