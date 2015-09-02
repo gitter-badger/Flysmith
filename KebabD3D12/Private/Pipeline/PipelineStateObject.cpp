@@ -173,7 +173,44 @@ void PipelineStateObject::SetShader(ID3D12Device* pDevice, const ShaderType type
 	SetShader(pDevice, type, &bytecode);
 }
 
+FillMode PipelineStateObject::GetFillMode() const
+{
+	return static_cast<FillMode>(m_description.RasterizerState.FillMode);
+}
+
+CullMode PipelineStateObject::GetCullMode() const
+{
+	return static_cast<CullMode>(m_description.RasterizerState.CullMode);
+}
+
+const void* PipelineStateObject::GetVertexShader() const
+{
+	return m_description.VS.pShaderBytecode;
+}
+
+const void* PipelineStateObject::GetPixelShader() const
+{
+	return m_description.PS.pShaderBytecode;
+}
+
 ID3D12PipelineState* PipelineStateObject::Get() const
 {
 	return m_pState;
+}
+
+bool operator==(PipelineStateObject& lhs, PipelineStateObject& rhs)
+{
+	auto& pso1 = lhs.m_description,
+		  pso2 = rhs.m_description;
+
+	if ((pso1.pRootSignature == pso2.pRootSignature) &&
+		(pso1.RasterizerState.CullMode == pso2.RasterizerState.CullMode) &&
+		(pso1.RasterizerState.FillMode == pso2.RasterizerState.FillMode) &&
+		(pso1.VS.BytecodeLength == pso2.VS.BytecodeLength) &&
+		(pso1.PS.BytecodeLength == pso2.PS.BytecodeLength))
+	{
+		return true;
+	}
+
+	return false;
 }

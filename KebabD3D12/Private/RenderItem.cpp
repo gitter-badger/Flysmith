@@ -43,6 +43,7 @@ void RenderItem::Init(ResourceHandle mesh_, ResourceHandle vertShader, ResourceH
 	ConstantBufferView cbView(pDevice, worldMatConstBuffer.GetGPUVirtualAddress(), sizeof(XMFLOAT4X4), descHeapSlot);
 
 	psoId = psoManager->GetPSOForConfiguration(vertShader, pixelShader, fillMode, cullMode);
+	psoId = psoManager->GetPSOForConfiguration(vertShader, pixelShader, fillMode, cullMode);
 }
 
 void RenderItem::UpdateTransform(const Transform& newTransform)

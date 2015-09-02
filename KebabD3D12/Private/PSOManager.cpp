@@ -24,10 +24,23 @@ const PipelineStateObject& PSOManager::GetPSOById(U32 id) const
 	return m_PSOs[id];
 }
 
-U32 PSOManager::GetPSOForConfiguration(ResourceHandle vertShader, ResourceHandle pixelShader, FillMode fillMode, CullMode cullMode)
+U32 PSOManager::GetPSOForConfiguration(ResourceHandle vertShaderHandle, ResourceHandle pixelShaderHandle, FillMode fillMode, CullMode cullMode)
 {
-	// TODO: PSO reflection & duplicate checking 
-	// return existent PSO id 
+	auto vertShader = m_pResCache->GetShader(vertShaderHandle),
+		 pixelShader = m_pResCache->GetShader(pixelShaderHandle);	
+
+	for (U32 idx = 0; idx < m_numPSOs; ++idx)
+	{
+		auto& pso = m_PSOs[idx];
+
+		if (pso.GetVertexShader() == vertShader->pShaderBytecode && 
+			pso.GetPixelShader() == pixelShader->pShaderBytecode && 
+			pso.GetFillMode() == fillMode && 
+			pso.GetCullMode() == cullMode)
+		{
+			return idx;
+		}
+	}
 
 	PipelineStateObject pso;
 
@@ -38,7 +51,7 @@ U32 PSOManager::GetPSOForConfiguration(ResourceHandle vertShader, ResourceHandle
 	};
 
 	RasterizerStateConfig rastState(fillMode, cullMode);
-	pso.Init(m_pDevice->Get(), layout, 2, m_pRootSignature->Get(), nullptr, &rastState, &m_pResCache->GetShader(vertShader), &m_pResCache->GetShader(pixelShader));
+	pso.Init(m_pDevice->Get(), layout, 2, m_pRootSignature->Get(), nullptr, &rastState, vertShader, pixelShader);
 
 	m_PSOs[m_numPSOs++] = pso;
 	return m_numPSOs - 1;

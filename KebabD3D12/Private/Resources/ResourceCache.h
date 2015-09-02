@@ -17,9 +17,8 @@ public:
 
 	//ResourceHandle AddShader(ShaderType, const void* pData, size_t dataSize, const char* sourceName = nullptr);
 	ResourceHandle AddShader(ShaderType, const wchar_t* path);
-	bool ExistsShader(ResourceHandle);
-	D3D12_SHADER_BYTECODE& GetShader(ResourceHandle);
-
+	bool ExistsShader(ResourceHandle) const;
+	const D3D12_SHADER_BYTECODE* GetShader(ResourceHandle) const;
 
 private:
 	std::vector<Mesh> m_meshes;

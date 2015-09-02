@@ -34,13 +34,13 @@ ResourceHandle ResourceCache::AddShader(ShaderType type, const wchar_t* path)
 	return m_shaders.size() - 1;
 }
 
-bool ResourceCache::ExistsShader(ResourceHandle handle)
+bool ResourceCache::ExistsShader(ResourceHandle handle) const
 {
 	return m_shaders.size() > handle;
 }
 
-D3D12_SHADER_BYTECODE& ResourceCache::GetShader(ResourceHandle handle)
+const D3D12_SHADER_BYTECODE* ResourceCache::GetShader(ResourceHandle handle) const
 {
 	assert(ExistsShader(handle));
-	return m_shaders[handle];
+	return &m_shaders[handle];
 }

@@ -13,7 +13,7 @@ public:
 	~PSOManager();
 
 	const PipelineStateObject& GetPSOById(U32 id) const;
-	U32 GetPSOForConfiguration(ResourceHandle vertShader, ResourceHandle pixelShader, FillMode fillMode = FillMode::SOLID, CullMode cullMode = CullMode::BACK);
+	U32 GetPSOForConfiguration(ResourceHandle vertShaderHandle, ResourceHandle pixelShaderHandle, FillMode fillMode = FillMode::SOLID, CullMode cullMode = CullMode::BACK);
 
 private:
 	Device* m_pDevice;
