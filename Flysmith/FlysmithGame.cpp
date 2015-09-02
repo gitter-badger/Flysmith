@@ -5,6 +5,7 @@
 #include "../KebabD3D12/Public/RenderComponent.h"
 #include "Wing.h"
 #include "Plane.h"
+#include "Entity.h"
 using namespace DirectX;
 
 
@@ -24,6 +25,9 @@ FlysmithGame::FlysmithGame(HINSTANCE hInstance)
 
 	RenderComponent comp(m_pRenderer, planeMesh, vert, pixel);
 	m_scene.m_renderComponents.push_back(comp);
+
+	Entity test;
+	comp.AttachToEntity(test.GetId());
 
 	/*RenderComponent comp2(m_pRenderer, foilMesh, vert, pixel);
 	m_scene.m_renderComponents.push_back(comp2);

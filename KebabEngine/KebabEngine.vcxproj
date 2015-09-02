@@ -208,8 +208,10 @@
     <ClCompile Include="Private\Events\EventListener.cpp" />
     <ClCompile Include="Private\Resources\FileReader.cpp" />
     <ClCompile Include="Private\Utils\Variant.cpp" />
+    <ClCompile Include="Private\Entity.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Public\Entity.h" />
     <ClInclude Include="Public\InputManager.h" />
     <ClInclude Include="Public\KeyboardEvents.h" />
     <ClInclude Include="Public\MouseEvents.h" />

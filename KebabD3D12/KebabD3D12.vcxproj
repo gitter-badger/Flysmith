@@ -228,6 +228,7 @@
     <ClCompile Include="Private\PSOManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Public\Component.h" />
     <ClInclude Include="Private\Camera.h" />
     <ClInclude Include="Private\Descriptors\ConstantBufferView.h" />
     <ClInclude Include="Private\Descriptors\DescriptorTable.h" />
