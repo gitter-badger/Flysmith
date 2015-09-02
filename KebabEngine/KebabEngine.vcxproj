@@ -194,6 +194,7 @@
     <ClCompile Include="Private\Application\Application.cpp" />
     <ClCompile Include="Private\Application\Timer.cpp" />
     <ClCompile Include="Private\Application\Window.cpp" />
+    <ClCompile Include="Private\InputManager.cpp" />
     <ClCompile Include="Private\PCH.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
@@ -209,6 +210,7 @@
     <ClCompile Include="Private\Utils\Variant.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Public\InputManager.h" />
     <ClInclude Include="Public\KeyboardEvents.h" />
     <ClInclude Include="Public\MouseEvents.h" />
     <ClInclude Include="Public\Application.h" />

@@ -19,3 +19,5 @@
 #include <vector>
 #include <string>
 #include <map>
+
+#include "Types.h"

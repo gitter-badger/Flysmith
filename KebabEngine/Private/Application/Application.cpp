@@ -2,10 +2,13 @@
 #include "Application.h"
 #include "GameStateEvents.h"
 #include "Events\EventManager.h"
+#include "InputManager.h"
 #include "Window.h"
 
 
 EventManager g_eventManager;
+InputManager g_inputManager;
+
 Application::Application(HINSTANCE hInstance)
 {
 	m_pWindow = std::make_shared<Window>(hInstance, 800, 600, L"Kebab Engine", false);

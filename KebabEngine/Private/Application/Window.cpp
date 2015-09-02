@@ -4,6 +4,7 @@
 #include "WindowEvents.h"
 #include "KeyboardEvents.h"
 #include "Events\EventManager.h"
+#include "InputManager.h"
 
 
 std::map<HWND, Window*> Window::s_windows = {};
@@ -105,18 +106,23 @@ LRESULT CALLBACK Window::WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPar
 
 	// Mouse Events
 	case WM_LBUTTONUP:
+		g_inputManager.SetLMBUp();
 		g_eventManager.PostEvent(CreateLMouseUpEv(xPosition, yPosition));
 		break;
 	case WM_LBUTTONDOWN:
+		g_inputManager.SetLMBDown();
 		g_eventManager.PostEvent(CreateLMouseDownEv(xPosition, yPosition));
 		break;
 	case WM_RBUTTONUP:
+		g_inputManager.SetRMBUp();
 		g_eventManager.PostEvent(CreateRMouseUpEv(xPosition, yPosition));
 		break;
 	case WM_RBUTTONDOWN:
+		g_inputManager.SetRMBDown();
 		g_eventManager.PostEvent(CreateRMouseDownEv(xPosition, yPosition));
 		break;
 	case WM_MOUSEMOVE:
+		g_inputManager.HandleMouseMove(xPosition, yPosition);
 		g_eventManager.PostEvent(CreateMouseMoveEv(xPosition, yPosition));
 		break;
 	case WM_MOUSEWHEEL:
@@ -129,10 +135,12 @@ LRESULT CALLBACK Window::WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPar
 		break;
 
 	case WM_KEYUP:
+		g_inputManager.SetKeyUp(wParam);
 		g_eventManager.PostEvent(CreateKeyUpEvent(wParam));
 		break;
 
 	case WM_KEYDOWN:
+		g_inputManager.SetKeyDown(wParam);
 		g_eventManager.PostEvent(CreateKeyDownEvent(wParam));
 		break;
 
