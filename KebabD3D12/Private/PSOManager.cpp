@@ -51,7 +51,8 @@ U32 PSOManager::GetPSOForConfiguration(ResourceHandle vertShaderHandle, Resource
 	};
 
 	RasterizerStateConfig rastState(fillMode, cullMode);
-	pso.Init(m_pDevice->Get(), layout, 2, m_pRootSignature->Get(), nullptr, &rastState, vertShader, pixelShader);
+	ShaderPipeline shaderPipeline(vertShader, pixelShader);
+	pso.Init(m_pDevice->Get(), layout, 2, shaderPipeline, m_pRootSignature->Get(), &rastState);
 
 	m_PSOs[m_numPSOs++] = pso;
 	return m_numPSOs - 1;
