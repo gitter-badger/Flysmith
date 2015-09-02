@@ -16,6 +16,21 @@ public:
 	const HWND GetHandle() const;
 	const U32  GetWidth() const;
 	const U32  GetHeight() const;
+	
+	void Clip()
+	{
+		RECT clipRect;
+		GetClientRect(m_hWnd, &clipRect);
+		clipRect.top -= 30;
+		ClientToScreen(m_hWnd, (POINT*)&clipRect.left);
+		ClientToScreen(m_hWnd, (POINT*)&clipRect.right);
+		ClipCursor(&clipRect);
+	}
+
+	void Unclip()
+	{
+		ClipCursor(NULL);
+	}
 
 private:
 	HWND m_hWnd;

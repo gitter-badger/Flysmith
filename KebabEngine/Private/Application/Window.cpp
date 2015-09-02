@@ -103,6 +103,10 @@ LRESULT CALLBACK Window::WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPar
 			s_windows[hwnd]->m_height = HIWORD(lParam);
 		}
 		break;
+	case WM_KILLFOCUS:
+		g_inputManager.EnableCursor();
+		g_inputManager.SetRMBUp();
+		break;
 
 	// Mouse Events
 	case WM_LBUTTONUP:

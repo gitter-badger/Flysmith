@@ -129,10 +129,10 @@ void CameraController::HandleEvent(const Event& ev)
 		Update(ev.data[0].asFloat);
 		break;
 	case "RMouseDown"_HASH:
-		ShowCursor(FALSE);
+		g_inputManager.DisableCursor();
 		break;
 	case "RMouseUp"_HASH:
-		ShowCursor(TRUE);
+		g_inputManager.EnableCursor();
 		break;
 	}
 }
