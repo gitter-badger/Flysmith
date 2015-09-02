@@ -27,7 +27,6 @@ U32 Application::Run()
 	
 	HWND hwnd = m_pWindow->GetHandle();
 	bool bWindowActive = true;
-	m_pWindow->Clip();
 	while (!m_pWindow->ShouldClose())
 	{
 		HWND activeWindow = GetForegroundWindow();
@@ -44,7 +43,6 @@ U32 Application::Run()
 			if (!bWindowActive)
 			{
 				g_inputManager.EnableCursor();
-				m_pWindow->Clip();
 				bWindowActive = true;
 			}
 		}

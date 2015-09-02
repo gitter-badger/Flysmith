@@ -17,20 +17,11 @@ public:
 	const U32  GetWidth() const;
 	const U32  GetHeight() const;
 	
-	void Clip()
-	{
-		RECT clipRect;
-		GetClientRect(m_hWnd, &clipRect);
-		clipRect.top -= 30;
-		ClientToScreen(m_hWnd, (POINT*)&clipRect.left);
-		ClientToScreen(m_hWnd, (POINT*)&clipRect.right);
-		ClipCursor(&clipRect);
-	}
+	void EnableCursor();
+	void DisableCursor();
 
-	void Unclip()
-	{
-		ClipCursor(NULL);
-	}
+	void Clip();
+	void Unclip();
 
 private:
 	HWND m_hWnd;
@@ -40,6 +31,8 @@ private:
 	U32 m_width;
 	U32 m_height;
 	bool m_bShouldClose;
+
+	bool m_bCursorDisabled;
 
 private:
 	static LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);

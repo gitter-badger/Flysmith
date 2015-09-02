@@ -15,6 +15,7 @@ Window::Window(HINSTANCE hInstance, U32 width, U32 height, const std::wstring& c
 	, m_bShouldClose(false)
 	, m_width(width)
 	, m_height(height)
+	, m_bCursorDisabled(false)
 {
 	if (bBorderless)
 	{
@@ -179,6 +180,34 @@ const U32 Window::GetHeight() const
 	return m_height;
 }
 
+void Window::EnableCursor()
+{
+	ShowCursor(TRUE);
+	m_bCursorDisabled = false;
+	Unclip();
+}
+
+void Window::DisableCursor()
+{
+	ShowCursor(FALSE);
+	m_bCursorDisabled = true;
+	Clip();
+}
+
+void Window::Clip()
+{
+	RECT clipRect;
+	GetClientRect(m_hWnd, &clipRect);
+	ClientToScreen(m_hWnd, (POINT*)&clipRect.left);
+	ClientToScreen(m_hWnd, (POINT*)&clipRect.right);
+	ClipCursor(&clipRect);
+}
+
+void Window::Unclip()
+{
+	ClipCursor(NULL);
+}
+
 void Window::RunMessageLoop()
 {
 	MSG msg;
@@ -193,5 +222,21 @@ void Window::RunMessageLoop()
 
 		TranslateMessage(&msg);
 		DispatchMessage(&msg);
+	}
+
+	if (m_bCursorDisabled)
+	{
+		POINT center;
+		center.x = m_width / 2;
+		center.y = m_height / 2;
+		
+		if (g_inputManager.m_mousePosX != center.x && g_inputManager.m_mousePosY != center.y)
+		{
+			g_inputManager.m_mousePosX = center.x;
+			g_inputManager.m_mousePosY = center.y;
+
+			ClientToScreen(m_hWnd, &center);
+			SetCursorPos(center.x, center.y);
+		}
 	}
 }

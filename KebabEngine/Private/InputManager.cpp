@@ -100,20 +100,6 @@ void InputManager::HandleMouseMove(I32 newPosX, I32 newPosY)
 
 	m_mousePosX = newPosX;
 	m_mousePosY = newPosY;
-	
-	// TODO: BORKED
-	if (m_bCursorDisabled)
-	{
-		/*POINT center;
-		center.x = m_pWindow->GetWidth() / 2;
-		center.y = m_pWindow->GetHeight() / 2;
-
-		m_mousePosX = center.x;
-		m_mousePosY = center.y;
-		
-		ClientToScreen(m_pWindow->GetHandle(), &center);
-		SetCursorPos(center.x, center.y);*/
-	}
 }
 
 void InputManager::Reset()
@@ -124,7 +110,7 @@ void InputManager::Reset()
 
 void InputManager::EnableCursor()
 {
-	ShowCursor(TRUE);
+	m_pWindow->EnableCursor();
 	if (m_bCursorDisabled)
 	{
 		ClientToScreen(m_hwnd, &m_mouseRestore);
@@ -139,8 +125,7 @@ void InputManager::EnableCursor()
 
 void InputManager::DisableCursor()
 {
-	ShowCursor(FALSE);
-
+	m_pWindow->DisableCursor();
 	m_mouseRestore.x = m_mousePosX;
 	m_mouseRestore.y = m_mousePosY;
 
