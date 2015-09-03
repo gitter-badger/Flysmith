@@ -13,8 +13,11 @@ public:
 	};
 
 public:
+	virtual ~Component();
 	void AttachToEntity(I32 entityId);
+	
 	I32 GetEntityId();
+	virtual Type GetType() const = 0;
 
 protected:
 	Component();

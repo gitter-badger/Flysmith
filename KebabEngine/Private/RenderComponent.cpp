@@ -12,3 +12,8 @@ U32 RenderComponent::GetRenderItem() const
 {
 	return m_renderItem;
 }
+
+Component::Type RenderComponent::GetType() const
+{
+	return RENDER;
+}

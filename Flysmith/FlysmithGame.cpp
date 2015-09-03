@@ -20,22 +20,22 @@ FlysmithGame::FlysmithGame(HINSTANCE hInstance)
 	U32 pixel = m_resources.GetHandle("TestPS");
 
 	RenderComponent comp(m_pRenderer, wingMesh, vert, pixel);
-	m_scene.renderComponents.push_back(comp);
+	m_scene.AddComponent(&comp);
 	RenderComponent comp2(m_pRenderer, wingMesh, vert, pixel);
-	m_scene.renderComponents.push_back(comp2);
+	m_scene.AddComponent(&comp2);
 	RenderComponent comp3(m_pRenderer, wingMesh, vert, pixel);
-	m_scene.renderComponents.push_back(comp3);
+	m_scene.AddComponent(&comp3);
 	
 	m_scene.entities[0].pSceneNode = m_scene.sceneGraph.AddNode();
-	m_scene.entities[0].AttachComponent(Component::RENDER, 0, &m_scene.renderComponents[0]);
+	m_scene.entities[0].AttachComponent(0, &m_scene.renderComponents[0]);
 
 	m_scene.entities[1].pSceneNode = m_scene.sceneGraph.AddNode(0);
 	m_scene.entities[1].pSceneNode->transform.SetPosition(0.0f, 2.0f, 0.0f);
-	m_scene.entities[1].AttachComponent(Component::RENDER, 1, &m_scene.renderComponents[1]);
+	m_scene.entities[1].AttachComponent(1, &m_scene.renderComponents[1]);
 
 	m_scene.entities[2].pSceneNode = m_scene.sceneGraph.AddNode(1);
 	m_scene.entities[2].pSceneNode->transform.SetPosition(0.0f, 4.0f, 0.0f);
-	m_scene.entities[2].AttachComponent(Component::RENDER, 2, &m_scene.renderComponents[2]);
+	m_scene.entities[2].AttachComponent(2, &m_scene.renderComponents[2]);
 
 }
 

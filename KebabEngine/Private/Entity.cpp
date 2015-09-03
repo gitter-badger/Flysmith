@@ -23,8 +23,8 @@ void Entity::AttachComponent(const ComponentProxy& componentProxy, Component* pC
 	components.push_back(componentProxy);
 }
 
-void Entity::AttachComponent(Component::Type type, U32 componentIndex, Component* pComponent)
+void Entity::AttachComponent(U32 componentIndex, Component* pComponent)
 {
 	pComponent->AttachToEntity(m_id);
-	components.push_back(ComponentProxy(type, componentIndex));
+	components.push_back(ComponentProxy(pComponent->GetType(), componentIndex));
 }

@@ -14,6 +14,8 @@ class KEBAB_API Scene
 public:
 	Scene();
 
+	ComponentProxy AddComponent(Component*);
+
 	TransformNoScale camTransform;
 	Entity entities[MAX_ENTITIES];
 	std::vector<RenderComponent> renderComponents;

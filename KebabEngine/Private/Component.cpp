@@ -2,10 +2,13 @@
 #include "Component.h"
 
 
+Component::~Component()
+{
+}
+
 Component::Component() 
 	: entityId(-1)
 {
-	//_CrtDbgBreak();
 }
 
 void Component::AttachToEntity(I32 entityId_)

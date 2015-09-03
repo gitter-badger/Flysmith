@@ -17,7 +17,7 @@ public:
 	XMFLOAT4X4 GetWorldTransform();
 
 	void AttachComponent(const ComponentProxy&, Component*);
-	void AttachComponent(Component::Type, U32 componentIndex, Component*);
+	void AttachComponent(U32 componentIndex, Component*);
 
 	SceneNode* pSceneNode;
 	std::vector<ComponentProxy> components;
