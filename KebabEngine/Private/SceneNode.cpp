@@ -17,6 +17,5 @@ XMMATRIX SceneNode::GetWorldTransformXM()
 		return transform.GetMatrixXM();
 	}
 
-	auto parentTransform = pSceneGraph->nodes[parent].transform.GetMatrixXM();
-	return transform.GetMatrixXM() * parentTransform;
+	return transform.GetMatrixXM() * pSceneGraph->nodes[parent].GetWorldTransformXM();
 }

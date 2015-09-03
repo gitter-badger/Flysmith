@@ -30,7 +30,7 @@ FlysmithGame::FlysmithGame(HINSTANCE hInstance)
 	m_scene.entities[1].pSceneNode->transform.SetPosition(0.0f, 2.0f, 0.0f);
 	m_scene.entities[1].AttachComponent(&comp2);
 
-	m_scene.entities[2].pSceneNode = m_scene.sceneGraph.AddNode(0);
+	m_scene.entities[2].pSceneNode = m_scene.sceneGraph.AddNode(1);
 	m_scene.entities[2].pSceneNode->transform.SetPosition(0.0f, 4.0f, 0.0f);
 	m_scene.entities[2].AttachComponent(&comp3);
 
