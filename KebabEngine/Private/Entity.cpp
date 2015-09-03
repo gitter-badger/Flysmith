@@ -14,3 +14,8 @@ I32 Entity::GetId()
 {
 	return m_id;
 }
+
+XMFLOAT4X4 Entity::GetWorldTransform()
+{
+	return sceneNode.GetWorldTransform();
+}

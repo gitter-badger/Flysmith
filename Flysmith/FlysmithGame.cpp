@@ -11,7 +11,7 @@ using namespace DirectX;
 
 FlysmithGame::FlysmithGame(HINSTANCE hInstance)
 	: Application(hInstance)
-	, m_camController(&m_scene.m_camTransform)
+	, m_camController(&m_scene.camTransform)
 {
 	RegisterForEvent("KeyUp"_HASH);
 
@@ -23,11 +23,17 @@ FlysmithGame::FlysmithGame(HINSTANCE hInstance)
 	U32 vert = m_resources.GetHandle("TestVS");
 	U32 pixel = m_resources.GetHandle("TestPS");
 
-	RenderComponent comp(m_pRenderer, planeMesh, vert, pixel);
-	m_scene.m_renderComponents.push_back(comp);
-
 	Entity test;
+	test.sceneNode.pSceneGraph = &m_scene.sceneGraph;
+	m_scene.sceneGraph.nodes.push_back(test.sceneNode);
+	test.sceneNode.id = 0;
+	test.sceneNode.parent = -1;
+	
+	RenderComponent comp(m_pRenderer, planeMesh, vert, pixel);
 	comp.AttachToEntity(test.GetId());
+	m_scene.renderComponents.push_back(comp);
+
+	m_scene.entities.push_back(test);
 
 	/*RenderComponent comp2(m_pRenderer, foilMesh, vert, pixel);
 	m_scene.m_renderComponents.push_back(comp2);

@@ -68,11 +68,14 @@ void Application::CopyRenderData()
 {
 	std::vector<RenderItemProxy> visibleRenderables;
 	// Hypothetical visibility culling
-	for (auto& renderComponent : m_scene.m_renderComponents)
+	for (auto& renderComponent : m_scene.renderComponents)
 	{
-		visibleRenderables.push_back(RenderItemProxy(renderComponent.m_transform.GetMatrix(), renderComponent.GetRenderItem()));
+		auto entityId = renderComponent.GetEntityId();
+		// TODO: TEMP TEMP TEMP
+		//auto entityId = 0;
+		visibleRenderables.push_back(RenderItemProxy(m_scene.entities[entityId].GetWorldTransform(), renderComponent.GetRenderItem()));
 	}
 
 	m_pRenderer->UpdateScene(visibleRenderables);
-	m_pRenderer->UpdateView(m_scene.m_camTransform);
+	m_pRenderer->UpdateView(m_scene.camTransform);
 }

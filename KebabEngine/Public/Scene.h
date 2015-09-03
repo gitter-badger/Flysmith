@@ -3,15 +3,15 @@
 #include "../../KebabD3D12/Public/Transform.h"
 #include "RenderComponent.h"
 #include "SceneGraph.h"
+#include "Entity.h"
 #include <vector>
 
 
 class KEBAB_API Scene
 {
 public:
-	TransformNoScale m_camTransform;
-	// TEMP
-	std::vector<RenderComponent> m_renderComponents;
-
+	TransformNoScale camTransform;
+	std::vector<Entity> entities;
+	std::vector<RenderComponent> renderComponents;
 	SceneGraph sceneGraph;
 };
