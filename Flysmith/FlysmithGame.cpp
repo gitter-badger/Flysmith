@@ -45,14 +45,14 @@ void FlysmithGame::HandleEvent(const Event& ev)
 
 void FlysmithGame::LoadResources()
 {
-	m_resources.AddResource("TestVS", m_pRenderer->CacheShader(VERTEX_SHADER, L"D:\\Flysmith\\KebabD3D12\\Private\\Shaders\\TestVS.hlsl"));
-	m_resources.AddResource("TestPS", m_pRenderer->CacheShader(PIXEL_SHADER, L"D:\\Flysmith\\KebabD3D12\\Private\\Shaders\\TestPS.hlsl"));
+	m_resources.AddResource("TestVS", m_pRenderer->CacheShader(VERTEX_SHADER, L"E:\\Flysmith\\KebabD3D12\\Private\\Shaders\\TestVS.hlsl"));
+	m_resources.AddResource("TestPS", m_pRenderer->CacheShader(PIXEL_SHADER, L"E:\\Flysmith\\KebabD3D12\\Private\\Shaders\\TestPS.hlsl"));
 
-	Airfoil foil(L"NACA2412.dat");
+	Airfoil foil(L"NACA4415.dat");
 	auto foilMesh = foil.GenerateMesh();
 	m_resources.AddResource("Foil", m_pRenderer->CacheMesh(foilMesh.verts, foilMesh.indices));
 
-	Wing wing(L"NACA2412.dat");
+	Wing wing(L"NACA4415.dat");
 	auto wingMesh = wing.GetMesh();
 	m_resources.AddResource("Wing", m_pRenderer->CacheMesh(wingMesh.verts, wingMesh.indices));
 

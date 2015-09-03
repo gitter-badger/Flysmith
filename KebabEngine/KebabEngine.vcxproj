@@ -203,6 +203,7 @@
     </ClCompile>
     <ClCompile Include="Private\Resources\FileSystem.cpp" />
     <ClCompile Include="Private\Resources\Font.cpp" />
+    <ClCompile Include="Private\SceneNode.cpp" />
     <ClCompile Include="Private\Utils\dllmain.cpp" />
     <ClCompile Include="Private\Events\EventManager.cpp" />
     <ClCompile Include="Private\Events\EventListener.cpp" />
@@ -218,6 +219,8 @@
     <ClInclude Include="Public\Application.h" />
     <ClInclude Include="Public\GameStateEvents.h" />
     <ClInclude Include="Public\Scene.h" />
+    <ClInclude Include="Public\SceneGraph.h" />
+    <ClInclude Include="Public\SceneNode.h" />
     <ClInclude Include="Public\WindowEvents.h" />
     <ClInclude Include="Public\Timer.h" />
     <ClInclude Include="Private\Application\Window.h" />
