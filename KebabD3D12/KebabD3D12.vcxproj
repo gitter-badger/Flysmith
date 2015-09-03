@@ -203,6 +203,7 @@
     <ClCompile Include="Private\DXGI\DXGIAdapter.cpp" />
     <ClCompile Include="Private\HardwareCaps.cpp" />
     <ClCompile Include="Private\Pipeline\PipelineStateObject.cpp" />
+    <ClCompile Include="Private\RenderItemProxy.cpp" />
     <ClCompile Include="Private\Resources\Resource.cpp" />
     <ClCompile Include="Private\Resources\ResourceBarrier.cpp" />
     <ClCompile Include="Private\Resources\ResourceConfig.cpp" />
@@ -274,6 +275,7 @@
     <ClInclude Include="Private\RenderItem.h" />
     <ClInclude Include="Public\ShaderTypes.h" />
     <ClInclude Include="Private\RootSignature.h" />
+    <ClInclude Include="Public\RenderItemProxy.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Private\Shaders\TestHeader.hlsli" />

@@ -3,6 +3,7 @@
 #include "Transform.h"
 #include "Vertex.h"
 #include "ShaderTypes.h"
+#include "RenderItemProxy.h"
 
 
 using RenderItemHandle = U32;
@@ -14,8 +15,9 @@ public:
 	Renderer(const HWND, const U32 windowWidth, const U32 windowHeight);
 	~Renderer();
 
-	// Copy visible render components
-	void UpdateScene(const std::vector<RenderComponent>&);
+	// Populate a list of render item proxies from render component data and update 
+	// the render state for the next frame.
+	void UpdateScene(std::vector<RenderItemProxy>);
 
 	// Copy camera transform
 	void UpdateView(const TransformNoScale& camTransform);

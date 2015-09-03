@@ -20,7 +20,7 @@ Renderer::~Renderer()
 }
 
 // Copy visible render components
-void Renderer::UpdateScene(const std::vector<RenderComponent>& renderables)
+void Renderer::UpdateScene(std::vector<RenderItemProxy> renderables)
 {
 	for (size_t i = 0; i < m_pImpl->m_numRenderItemCacheRequests; i++)
 	{
@@ -38,8 +38,8 @@ void Renderer::UpdateScene(const std::vector<RenderComponent>& renderables)
 	m_pImpl->m_renderQueueEnd = 0;
 	for (auto& renderable : renderables)
 	{
-		auto itemHandle = renderable.GetRenderItem();
-		m_pImpl->m_renderItems[itemHandle].UpdateTransform(renderable.m_transform);
+		auto itemHandle = renderable.renderItemId;
+		m_pImpl->m_renderItems[itemHandle].UpdateTransform(renderable.transform);
 		m_pImpl->m_renderQueue[m_pImpl->m_renderQueueEnd++] = itemHandle;
 	}
 }

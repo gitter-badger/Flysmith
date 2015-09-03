@@ -3,6 +3,7 @@
 #include "Descriptors\ConstantBufferView.h"
 #include "Descriptors\DescriptorHeap.h"
 #include "Resources\ResourceCache.h"
+using namespace DirectX;
 
 
 RenderItem::RenderItem(RenderItem&& other)
@@ -45,11 +46,11 @@ void RenderItem::Init(ResourceHandle mesh_, ResourceHandle vertShader, ResourceH
 	psoId = psoManager->GetPSOForConfiguration(vertShader, pixelShader, fillMode, cullMode);
 }
 
-void RenderItem::UpdateTransform(const Transform& newTransform)
+void RenderItem::UpdateTransform(const XMFLOAT4X4& newTransform)
 {
 	transform = newTransform;
 
 	XMFLOAT4X4 worldMatTransposed;
-	XMStoreFloat4x4(&worldMatTransposed, XMMatrixTranspose(transform.GetMatrixXM()));
+	XMStoreFloat4x4(&worldMatTransposed, XMMatrixTranspose(XMLoadFloat4x4(&transform)));
 	memcpy(pWorldMatDataBegin, &worldMatTransposed, sizeof(XMFLOAT4X4));
 }

@@ -1,5 +1,4 @@
 #pragma once
-#include "Transform.h"
 #include "Resources\Resource.h"
 #include "StateObjects\RasterizerStateConfig.h"
 #include "PSOManager.h"
@@ -18,9 +17,9 @@ struct RenderItem
 	RenderItem& operator=(const RenderItem&) = delete;
 
 	void Init(ResourceHandle mesh_, ResourceHandle vertShader, ResourceHandle pixelShader, ID3D12Device* pDevice, D3D12_CPU_DESCRIPTOR_HANDLE descHeapSlot, PSOManager*, FillMode = FillMode::SOLID, CullMode = CullMode::BACK);
-	void UpdateTransform(const Transform&);
+	void UpdateTransform(const DirectX::XMFLOAT4X4&);
 
-	Transform transform;
+	DirectX::XMFLOAT4X4 transform;
 	ResourceHandle mesh;
 
 	Resource worldMatConstBuffer;

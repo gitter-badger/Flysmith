@@ -4,6 +4,7 @@
 #include "Events\EventManager.h"
 #include "InputManager.h"
 #include "Window.h"
+#include "../../KebabD3D12/Public/RenderItemProxy.h"
 
 
 EventManager g_eventManager;
@@ -65,6 +66,13 @@ U32 Application::Run()
 
 void Application::CopyRenderData()
 {
-	m_pRenderer->UpdateScene(m_scene.m_renderComponents);
+	std::vector<RenderItemProxy> visibleRenderables;
+	// Hypothetical visibility culling
+	for (auto& renderComponent : m_scene.m_renderComponents)
+	{
+		visibleRenderables.push_back(RenderItemProxy(renderComponent.m_transform.GetMatrix(), renderComponent.GetRenderItem()));
+	}
+
+	m_pRenderer->UpdateScene(visibleRenderables);
 	m_pRenderer->UpdateView(m_scene.m_camTransform);
 }
