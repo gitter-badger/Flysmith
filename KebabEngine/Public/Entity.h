@@ -16,7 +16,7 @@ public:
 	I32 GetId();
 
 	XMFLOAT4X4 GetWorldTransform();
-	SceneNode sceneNode;
+	SceneNode* pSceneNode;
 
 protected:
 	I32 m_id;
