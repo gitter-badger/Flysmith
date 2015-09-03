@@ -42,3 +42,5 @@ private:
 	XMFLOAT3 m_scale;
 };
 #pragma warning(pop)
+
+extern const KEBAB12_API Transform kDefaultTransform;

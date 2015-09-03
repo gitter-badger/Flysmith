@@ -15,6 +15,7 @@ Application::Application(HINSTANCE hInstance)
 	m_pWindow = std::make_shared<Window>(hInstance, 800, 600, L"Kebab Engine", false);
 	m_pRenderer = new Renderer(m_pWindow->GetHandle(), m_pWindow->GetWidth(), m_pWindow->GetHeight());
 	g_inputManager.Init(m_pWindow.get());
+	m_scene.Init(m_pRenderer);
 }
 
 Application::~Application()

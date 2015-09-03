@@ -2,6 +2,8 @@
 #include "Transform.h"
 
 
+const Transform kDefaultTransform;
+
 Transform::Transform()
 	: m_scale(1.0f, 1.0f, 1.0f)
 {
