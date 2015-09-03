@@ -204,6 +204,7 @@
     </ClCompile>
     <ClCompile Include="Private\Resources\FileSystem.cpp" />
     <ClCompile Include="Private\Resources\Font.cpp" />
+    <ClCompile Include="Private\SceneGraph.cpp" />
     <ClCompile Include="Private\SceneNode.cpp" />
     <ClCompile Include="Private\Utils\dllmain.cpp" />
     <ClCompile Include="Private\Events\EventManager.cpp" />

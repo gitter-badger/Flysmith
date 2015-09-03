@@ -1,5 +1,6 @@
 #include "PCH.h"
 #include "Entity.h"
+#include "Scene.h"
 
 
 I32 Entity::s_nextId = 0;
@@ -18,4 +19,9 @@ I32 Entity::GetId()
 XMFLOAT4X4 Entity::GetWorldTransform()
 {
 	return pSceneNode->GetWorldTransform();
+}
+
+void Entity::AttachComponent(Component* pNewComponent)
+{
+	pNewComponent->AttachToEntity(m_id);
 }
