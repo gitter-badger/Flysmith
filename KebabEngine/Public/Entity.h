@@ -7,6 +7,8 @@
 
 class KEBAB_API Entity
 {
+	friend class Scene;
+
 public:
 	// TODO: A component proxy that indicated a component's type and component id.
 	//       Store only component proxies here.
@@ -21,7 +23,4 @@ public:
 
 protected:
 	I32 m_id;
-
-private:
-	static I32 s_nextId;
 };

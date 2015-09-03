@@ -7,11 +7,15 @@
 #include <vector>
 
 
+const size_t MAX_ENTITIES = 100;
+
 class KEBAB_API Scene
 {
 public:
+	Scene();
+
 	TransformNoScale camTransform;
-	std::vector<Entity> entities;
+	Entity entities[MAX_ENTITIES];
 	std::vector<RenderComponent> renderComponents;
 	SceneGraph sceneGraph;
 };

@@ -3,12 +3,8 @@
 #include "Scene.h"
 
 
-I32 Entity::s_nextId = 0;
-
 Entity::Entity()
 {
-	m_id = s_nextId;
-	s_nextId++;
 }
 
 I32 Entity::GetId()

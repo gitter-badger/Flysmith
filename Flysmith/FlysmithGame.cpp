@@ -21,19 +21,22 @@ FlysmithGame::FlysmithGame(HINSTANCE hInstance)
 
 	RenderComponent comp(m_pRenderer, wingMesh, vert, pixel);
 	RenderComponent comp2(m_pRenderer, wingMesh, vert, pixel);
+	RenderComponent comp3(m_pRenderer, wingMesh, vert, pixel);
 	
-	Entity test;
-	test.pSceneNode = m_scene.sceneGraph.AddNode();
-	test.AttachComponent(&comp);
-	m_scene.entities.push_back(test);
+	m_scene.entities[0].pSceneNode = m_scene.sceneGraph.AddNode();
+	m_scene.entities[0].AttachComponent(&comp);
 
-	Entity test2;
-	test2.pSceneNode = m_scene.sceneGraph.AddNode();
-	test2.AttachComponent(&comp2);
-	m_scene.entities.push_back(test2);
+	m_scene.entities[1].pSceneNode = m_scene.sceneGraph.AddNode(0);
+	m_scene.entities[1].pSceneNode->transform.SetPosition(0.0f, 2.0f, 0.0f);
+	m_scene.entities[1].AttachComponent(&comp2);
+
+	m_scene.entities[2].pSceneNode = m_scene.sceneGraph.AddNode(0);
+	m_scene.entities[2].pSceneNode->transform.SetPosition(0.0f, 4.0f, 0.0f);
+	m_scene.entities[2].AttachComponent(&comp3);
 
 	m_scene.renderComponents.push_back(comp);
 	m_scene.renderComponents.push_back(comp2);
+	m_scene.renderComponents.push_back(comp3);
 }
 
 void FlysmithGame::HandleEvent(const Event& ev)
@@ -66,4 +69,5 @@ void FlysmithGame::LoadResources()
 void FlysmithGame::UpdateScene(float dt)
 {
 	m_scene.entities[0].pSceneNode->transform.RotateY(dt);
+	m_scene.entities[1].pSceneNode->transform.TranslateX(dt / 4);
 }
