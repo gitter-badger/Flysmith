@@ -1,10 +1,11 @@
 #pragma once
-#include "Transform.h"
-#include "Renderer.h"
 #include "Component.h"
+#include "../../KebabD3D12/Public/Transform.h"
 
 
-class KEBAB12_API RenderComponent : public Component
+class Renderer;
+
+class KEBAB_API RenderComponent : public Component
 {
 public:
 	RenderComponent(Renderer*, U32 mesh, U32 vertShader, U32 pixelShader);

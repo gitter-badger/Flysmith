@@ -1,7 +1,7 @@
 #pragma once
 #include "PublicDef.h"
+#include "Component.h"
 #include <vector>
-#include "../../KebabD3D12/Public/Component.h"
 
 
 class KEBAB_API Entity

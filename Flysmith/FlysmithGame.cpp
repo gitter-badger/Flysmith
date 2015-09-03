@@ -2,7 +2,7 @@
 #include "FlysmithGame.h"
 #include "Airfoil.h"
 #include "KeyboardEvents.h"
-#include "../KebabD3D12/Public/RenderComponent.h"
+#include "RenderComponent.h"
 #include "Wing.h"
 #include "Plane.h"
 #include "Entity.h"

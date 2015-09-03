@@ -194,6 +194,7 @@
     <ClCompile Include="Private\Application\Application.cpp" />
     <ClCompile Include="Private\Application\Timer.cpp" />
     <ClCompile Include="Private\Application\Window.cpp" />
+    <ClCompile Include="Private\Component.cpp" />
     <ClCompile Include="Private\InputManager.cpp" />
     <ClCompile Include="Private\PCH.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -210,14 +211,17 @@
     <ClCompile Include="Private\Resources\FileReader.cpp" />
     <ClCompile Include="Private\Utils\Variant.cpp" />
     <ClCompile Include="Private\Entity.cpp" />
+    <ClCompile Include="Private\RenderComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Public\Component.h" />
     <ClInclude Include="Public\Entity.h" />
     <ClInclude Include="Public\InputManager.h" />
     <ClInclude Include="Public\KeyboardEvents.h" />
     <ClInclude Include="Public\MouseEvents.h" />
     <ClInclude Include="Public\Application.h" />
     <ClInclude Include="Public\GameStateEvents.h" />
+    <ClInclude Include="Public\RenderComponent.h" />
     <ClInclude Include="Public\Scene.h" />
     <ClInclude Include="Public\SceneGraph.h" />
     <ClInclude Include="Public\SceneNode.h" />

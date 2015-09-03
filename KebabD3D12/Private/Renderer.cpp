@@ -2,7 +2,6 @@
 #include "Renderer.h"
 #include "RendererImpl.h"
 #include "Transform.h"
-#include "RenderComponent.h"
 
 #pragma comment(lib, "D3d12.lib")
 #pragma comment(lib, "DXGI.lib")
