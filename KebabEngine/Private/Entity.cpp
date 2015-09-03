@@ -17,7 +17,14 @@ XMFLOAT4X4 Entity::GetWorldTransform()
 	return pSceneNode->GetWorldTransform();
 }
 
-void Entity::AttachComponent(Component* pNewComponent)
+void Entity::AttachComponent(const ComponentProxy& componentProxy, Component* pComponent)
 {
-	pNewComponent->AttachToEntity(m_id);
+	pComponent->AttachToEntity(m_id);
+	components.push_back(componentProxy);
+}
+
+void Entity::AttachComponent(Component::Type type, U32 componentIndex, Component* pComponent)
+{
+	pComponent->AttachToEntity(m_id);
+	components.push_back(ComponentProxy(type, componentIndex));
 }

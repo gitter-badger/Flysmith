@@ -5,6 +5,14 @@
 class KEBAB_API Component
 {
 public:
+	enum Type
+	{
+		RENDER,
+
+		NUM_TYPES
+	};
+
+public:
 	void AttachToEntity(I32 entityId);
 	I32 GetEntityId();
 
