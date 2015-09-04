@@ -101,7 +101,10 @@ void PipelineStateObject::Init(ID3D12Device* pDevice,
 		m_description.RasterizerState = pRasterizerState->Get();
 
 	// Depth-stencil state
-	m_description.DepthStencilState.DepthEnable = FALSE;
+	m_description.DepthStencilState.DepthEnable = TRUE;
+	m_description.DepthStencilState.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ALL;
+	m_description.DepthStencilState.DepthFunc = D3D12_COMPARISON_FUNC_LESS;
+	m_description.DSVFormat = DXGI_FORMAT_D32_FLOAT;
 	m_description.DepthStencilState.StencilEnable = FALSE;
 	// ...
 

@@ -37,6 +37,9 @@ struct Renderer::Impl
 	// Resources
 	UploadHeap m_uploadHeap;
 
+	DescriptorHeap m_dsvDescHeap;
+	ID3D12Resource* m_pDepthBuffer;
+
 	DescriptorHeap m_cbDescHeap;
 	PSOManager m_psoManager;
 

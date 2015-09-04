@@ -4,7 +4,7 @@
 
 struct D3D12_RESOURCE_DESC;
 
-enum ResourceType
+enum class ResourceType
 {
 	//UNKNOWN  = 0,
 	BUFFER = 1,

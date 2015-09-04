@@ -30,7 +30,7 @@ void Renderer::UpdateScene(std::vector<RenderItemProxy> renderables)
 																 m_pImpl->m_device.Get(), 
 																 m_pImpl->m_cbDescHeap.GetCPUHandle(m_pImpl->m_numRenderItems - 1),
 																 &m_pImpl->m_psoManager,
-																 FillMode::SOLID, CullMode::BACK);
+																 FillMode::SOLID, CullMode::NONE);
 	}
 	m_pImpl->m_numRenderItemCacheRequests = 0;
 	

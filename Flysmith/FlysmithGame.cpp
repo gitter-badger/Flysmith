@@ -63,6 +63,6 @@ void FlysmithGame::LoadResources()
 
 void FlysmithGame::UpdateScene(float dt)
 {
-	m_scene.entities[0].pSceneNode->transform.RotateY(dt);
-	m_scene.entities[1].pSceneNode->transform.TranslateX(dt / 4);
+	//m_scene.entities[0].pSceneNode->transform.RotateY(dt);
+	//m_scene.entities[1].pSceneNode->transform.TranslateX(dt / 4);
 }
