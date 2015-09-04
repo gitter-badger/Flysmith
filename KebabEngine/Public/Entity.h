@@ -19,6 +19,9 @@ public:
 	void AttachComponent(const ComponentProxy&, Component*);
 	void AttachComponent(U32 componentIndex, Component*);
 
+	void SetParent(Entity*);
+	void AddChild(Entity*);
+
 	SceneNode* pSceneNode;
 	std::vector<ComponentProxy> components;
 
