@@ -14,7 +14,6 @@ public:
 	Entity();
 
 	I32 GetId();
-	XMFLOAT4X4 GetWorldTransform();
 
 	void AttachComponent(const ComponentProxy&, Component*);
 	void AttachComponent(U32 componentIndex, Component*);
@@ -22,9 +21,13 @@ public:
 	void SetParent(Entity*);
 	void AddChild(Entity*);
 
-	SceneNode* pSceneNode;
+	void SetTransform(const Transform&);
+	Transform* GetTransform();
+	XMFLOAT4X4 GetWorldTransformMatrix();
+
 	std::vector<ComponentProxy> components;
 
 protected:
 	I32 m_id;
+	SceneNode* pSceneNode;
 };

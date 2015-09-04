@@ -12,9 +12,19 @@ I32 Entity::GetId()
 	return m_id;
 }
 
-XMFLOAT4X4 Entity::GetWorldTransform()
+XMFLOAT4X4 Entity::GetWorldTransformMatrix()
 {
 	return pSceneNode->GetWorldTransform();
+}
+
+void Entity::SetTransform(const Transform& transform)
+{
+	pSceneNode->transform = transform;
+}
+
+Transform* Entity::GetTransform()
+{
+	return &pSceneNode->transform;
 }
 
 void Entity::AttachComponent(const ComponentProxy& componentProxy, Component* pComponent)

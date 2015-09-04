@@ -74,7 +74,7 @@ void Application::CopyRenderData()
 		auto entityId = renderComponent.GetEntityId();
 		// TODO: TEMP TEMP TEMP
 		//auto entityId = 0;
-		visibleRenderables.push_back(RenderItemProxy(m_scene.entities[entityId].GetWorldTransform(), renderComponent.GetRenderItem()));
+		visibleRenderables.push_back(RenderItemProxy(m_scene.entities[entityId].GetWorldTransformMatrix(), renderComponent.GetRenderItem()));
 	}
 
 	m_pRenderer->UpdateScene(visibleRenderables);

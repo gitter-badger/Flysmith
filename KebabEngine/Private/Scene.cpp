@@ -41,7 +41,7 @@ U32 Scene::CreateEntity(Transform transform, I32 parentEntity)
 	numEntities++;
 
 	entities[newEntityIndex].pSceneNode = sceneGraph.AddNode(parentEntity);
-	entities[newEntityIndex].pSceneNode->transform = transform;
+	entities[newEntityIndex].SetTransform(transform);
 
 	return newEntityIndex;
 }

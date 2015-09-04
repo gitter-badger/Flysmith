@@ -40,7 +40,7 @@ FlysmithGame::FlysmithGame(HINSTANCE hInstance)
 	auto fuseComp = m_scene.CreateRenderComponent(m_resources.GetHandle("Fuselage"), vert, pixel);
 	m_scene.CreateEntity();
 	m_scene.entities[1].AttachComponent(fuseComp, &m_scene.renderComponents[fuseComp.index]);
-	m_scene.entities[1].pSceneNode->transform.SetRotation(0.0f, XM_PIDIV2, 0.0f);
+	m_scene.entities[1].GetTransform()->SetRotation(0.0f, XM_PIDIV2, 0.0f);
 }
 
 void FlysmithGame::HandleEvent(const Event& ev)
