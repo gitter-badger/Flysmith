@@ -66,7 +66,27 @@ void Entity::AttachComponent(U32 componentIndex, Component* pComponent)
 void Entity::SetParent(Entity* pParent)
 {
 	assert(!m_pSceneNode->pSceneGraph->FormsCycle(m_pSceneNode->id, pParent->m_pSceneNode->id));
-	// TODO: Update old relationship
+
+	// The associated node has a parent
+	if (m_pSceneNode->parent != -1)
+	{
+		auto& parentNode = m_pSceneNode->pSceneGraph->nodes[m_pSceneNode->parent];
+		
+		auto it = parentNode.children.begin();
+		for (; it != parentNode.children.end(); ++it)
+		{
+			if (*it == m_pSceneNode->id)
+			{
+				break;
+			}
+		}
+
+		if (it != parentNode.children.end())
+		{
+			parentNode.children.erase(it);
+		}
+	}
+
 	m_pSceneNode->parent = pParent->m_pSceneNode->parent;
 	pParent->m_pSceneNode->children.push_back(m_pSceneNode->id);
 }
@@ -74,7 +94,28 @@ void Entity::SetParent(Entity* pParent)
 void Entity::AddChild(Entity* pChild)
 {
 	assert(!m_pSceneNode->pSceneGraph->FormsCycle(pChild->m_pSceneNode->id, m_pSceneNode->id));
-	// TODO: Update old relationship
-	m_pSceneNode->children.push_back(pChild->m_pSceneNode->id);
+
+	auto& newChildNode = m_pSceneNode->pSceneGraph->nodes[pChild->GetSceneNodeId()];
+	// The to-be child node already has a parent
+	if (newChildNode.parent != -1)
+	{
+		auto& parentNode = m_pSceneNode->pSceneGraph->nodes[newChildNode.parent];
+
+		auto it = parentNode.children.begin();
+		for (; it != parentNode.children.end(); ++it)
+		{
+			if (*it == newChildNode.id)
+			{
+				break;
+			}
+		}
+
+		if (it != parentNode.children.end())
+		{
+			parentNode.children.erase(it);
+		}
+	}
+
 	pChild->m_pSceneNode->parent = m_pSceneNode->id;
+	m_pSceneNode->children.push_back(pChild->m_pSceneNode->id);
 }
