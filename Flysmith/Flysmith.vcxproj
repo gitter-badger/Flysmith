@@ -170,6 +170,7 @@
     <ClInclude Include="AssetLocator.h" />
     <ClInclude Include="CameraController.h" />
     <ClInclude Include="FlysmithGame.h" />
+    <ClInclude Include="Fuselage.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="PCH.h" />
     <ClInclude Include="Plane.h" />
