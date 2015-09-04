@@ -181,6 +181,7 @@
     </FxCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Private\Descriptors\DepthStencilView.cpp" />
     <ClCompile Include="Private\Descriptors\DescriptorTable.cpp" />
     <ClCompile Include="Private\Math\PerspectiveMatrix.cpp" />
     <ClCompile Include="Private\Camera.cpp" />
@@ -231,6 +232,7 @@
   <ItemGroup>
     <ClInclude Include="Private\Camera.h" />
     <ClInclude Include="Private\Descriptors\ConstantBufferView.h" />
+    <ClInclude Include="Private\Descriptors\DepthStencilView.h" />
     <ClInclude Include="Private\Descriptors\DescriptorTable.h" />
     <ClInclude Include="Private\Descriptors\IndexBufferView.h" />
     <ClInclude Include="Private\Descriptors\VertexBufferView.h" />

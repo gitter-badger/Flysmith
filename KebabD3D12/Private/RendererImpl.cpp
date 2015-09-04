@@ -4,6 +4,7 @@
 #include "Resources\ClearValue.h"
 #include "Resources\ResourceBarrier.h"
 #include "Descriptors\DescriptorTable.h"
+#include "Descriptors\DepthStencilView.h"
 
 
 Renderer::Impl::Impl(HWND hwnd, U32 windowWidth, U32 windowHeight)
@@ -38,11 +39,7 @@ Renderer::Impl::Impl(HWND hwnd, U32 windowWidth, U32 windowHeight)
 	ResourceConfig dbConfig(ResourceType::TEXTURE2D, 800, 600, DXGI_FORMAT_R32_TYPELESS, TextureLayout::UNKNOWN, ResourceFlag::ALLOW_DEPTH_STENCIL);
 	m_depthBuffer.CreateCommited(m_device.Get(), dbConfig, nullptr, nullptr, 0, D3D12_HEAP_TYPE_DEFAULT, D3D12_RESOURCE_STATE_DEPTH_WRITE, &clearValue);
 
-	D3D12_DEPTH_STENCIL_VIEW_DESC dsvDesc = {};
-	dsvDesc.ViewDimension = D3D12_DSV_DIMENSION_TEXTURE2D;
-	dsvDesc.Format = DXGI_FORMAT_D32_FLOAT;
-	dsvDesc.Texture2D.MipSlice = 0;
-	dsvDesc.Flags = D3D12_DSV_FLAG_NONE;
+	DepthStencilView dsvDesc;
 	m_device.Get()->CreateDepthStencilView(m_depthBuffer.Get(), &dsvDesc, m_dsvDescHeap.GetCPUHandle(0));
 
 	// Create a command list 
