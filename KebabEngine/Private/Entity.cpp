@@ -65,6 +65,7 @@ void Entity::AttachComponent(U32 componentIndex, Component* pComponent)
 
 void Entity::SetParent(Entity* pParent)
 {
+	assert(!m_pSceneNode->pSceneGraph->FormsCycle(m_pSceneNode->id, pParent->m_pSceneNode->id));
 	// TODO: Update old relationship
 	m_pSceneNode->parent = pParent->m_pSceneNode->parent;
 	pParent->m_pSceneNode->children.push_back(m_pSceneNode->id);
@@ -72,6 +73,7 @@ void Entity::SetParent(Entity* pParent)
 
 void Entity::AddChild(Entity* pChild)
 {
+	assert(!m_pSceneNode->pSceneGraph->FormsCycle(pChild->m_pSceneNode->id, m_pSceneNode->id));
 	// TODO: Update old relationship
 	m_pSceneNode->children.push_back(pChild->m_pSceneNode->id);
 	pChild->m_pSceneNode->parent = m_pSceneNode->id;

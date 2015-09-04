@@ -7,13 +7,31 @@ SceneGraph::SceneGraph()
 {
 }
 
+bool SceneGraph::FormsCycle(U32 child, U32 parent)
+{
+	I32 tempNode = child;
+	while (tempNode != -1)
+	{
+		if (tempNode == parent)
+		{
+			return true;
+		}
+
+		tempNode = nodes[tempNode].parent;
+	}
+
+	return false;
+}
+
 SceneNode* SceneGraph::AddNode(I32 parentNodeId)
 {
 	SceneNode newNode;
-	newNode.id = numNodes;
 	newNode.pSceneGraph = this;
-	newNode.parent = parentNodeId;
 	
+	newNode.id = numNodes;
+	assert(newNode.id != parentNodeId);
+	newNode.parent = parentNodeId;
+
 	if (parentNodeId != -1)
 	{
 		nodes[parentNodeId].children.push_back(newNode.id);

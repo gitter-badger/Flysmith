@@ -64,8 +64,7 @@ void FlysmithGame::LoadResources()
 	m_resources.AddResource("Wing", m_pRenderer->CacheMesh(wingMesh.verts, wingMesh.indices));
 
 	Plane plane;
-	plane.AddWingPair(wing, MetersToDXUnits(0), MetersToDXUnits(0), MetersToDXUnits(2));
-	plane.AddWingPair(wing, MetersToDXUnits(0), MetersToDXUnits(1.5f), MetersToDXUnits(2));
+	plane.AddWingPair(wing, MetersToDXUnits(-1.5f), MetersToDXUnits(0.5f), MetersToDXUnits(0.0f));
 	auto planeMesh = plane.GetMesh();
 	m_resources.AddResource("Plane", m_pRenderer->CacheMesh(planeMesh.verts, planeMesh.indices));
 
