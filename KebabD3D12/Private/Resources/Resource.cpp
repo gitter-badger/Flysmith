@@ -16,13 +16,13 @@ Resource::~Resource()
 	}
 }
 
-void Resource::CreateCommited(ID3D12Device* pDevice, const ResourceConfig& resConfig, U8** dataPtr, void* pData, size_t dataSize)
+void Resource::CreateCommited(ID3D12Device* pDevice, const ResourceConfig& resConfig, U8** dataPtr, void* pData, size_t dataSize, D3D12_HEAP_TYPE heapType, D3D12_RESOURCE_STATES initialState, D3D12_CLEAR_VALUE* clearValue)
 {
 	assert(pDevice != nullptr);
 	assert(m_pResource == nullptr);
 
 	D3D12_HEAP_PROPERTIES heapProperties;
-	heapProperties.Type = D3D12_HEAP_TYPE_UPLOAD;
+	heapProperties.Type = heapType;
 	heapProperties.CPUPageProperty = D3D12_CPU_PAGE_PROPERTY_UNKNOWN;
 	heapProperties.MemoryPoolPreference = D3D12_MEMORY_POOL_UNKNOWN;
 	heapProperties.CreationNodeMask = 0;
@@ -31,8 +31,8 @@ void Resource::CreateCommited(ID3D12Device* pDevice, const ResourceConfig& resCo
 	HRESULT hr = pDevice->CreateCommittedResource(&heapProperties,
 												  D3D12_HEAP_FLAG_NONE,
 												  &resConfig.Get(),
-												  D3D12_RESOURCE_STATE_GENERIC_READ,
-												  nullptr,
+												  initialState,
+												  clearValue,
 												  IID_PPV_ARGS(&m_pResource));
 	assert(SUCCEEDED(hr));
 

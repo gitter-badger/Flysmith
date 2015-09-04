@@ -38,13 +38,13 @@ struct Renderer::Impl
 	UploadHeap m_uploadHeap;
 
 	DescriptorHeap m_dsvDescHeap;
-	ID3D12Resource* m_pDepthBuffer;
+	Resource m_depthBuffer;
 
 	DescriptorHeap m_cbDescHeap;
-	PSOManager m_psoManager;
-
 	Resource m_viewProjConstBuffer;
 	U8* m_pViewProjDataBegin;
+	
+	PSOManager m_psoManager;
 	Camera m_camera;
 
 	// Synchronization

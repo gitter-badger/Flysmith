@@ -33,46 +33,21 @@ Renderer::Impl::Impl(HWND hwnd, U32 windowWidth, U32 windowHeight)
 	m_dsvDescHeap.Init(m_device.Get(), DescHeapType::DEPTH_STENCIL, 1);
 
 	// Create Depth Buffer
-	//ResourceConfig dbConfig(ResourceType::TEXTURE2D, 800, 600, DXGI_FORMAT_R32_TYPELESS, TextureLayout::UNKNOWN, ResourceFlag::ALLOW_DEPTH_STENCIL);
-	D3D12_RESOURCE_DESC dbConfig;
-	dbConfig.Dimension = D3D12_RESOURCE_DIMENSION_TEXTURE2D;
-	dbConfig.Width = 800;
-	dbConfig.Height = 600;
-	dbConfig.Format = DXGI_FORMAT_R32_TYPELESS;
-	dbConfig.Flags = D3D12_RESOURCE_FLAG_ALLOW_DEPTH_STENCIL;
-	dbConfig.Layout = D3D12_TEXTURE_LAYOUT_UNKNOWN;
-
-	dbConfig.Alignment = 0;
-	dbConfig.DepthOrArraySize = 1;
-	dbConfig.MipLevels = 1;
-	dbConfig.SampleDesc.Count = 1;
-	dbConfig.SampleDesc.Quality = 0;
+	ResourceConfig dbConfig(ResourceType::TEXTURE2D, 800, 600, DXGI_FORMAT_R32_TYPELESS, TextureLayout::UNKNOWN, ResourceFlag::ALLOW_DEPTH_STENCIL);
 
 	D3D12_CLEAR_VALUE dsvClearValue;
 	dsvClearValue.Format = DXGI_FORMAT_D32_FLOAT;
 	dsvClearValue.DepthStencil.Depth = 1.0f;
 	dsvClearValue.DepthStencil.Stencil = 0;
-	
-	D3D12_HEAP_PROPERTIES heapProperties;
-	heapProperties.Type = D3D12_HEAP_TYPE_DEFAULT;
-	heapProperties.CPUPageProperty = D3D12_CPU_PAGE_PROPERTY_UNKNOWN;
-	heapProperties.MemoryPoolPreference = D3D12_MEMORY_POOL_UNKNOWN;
-	heapProperties.CreationNodeMask = 0;
-	heapProperties.VisibleNodeMask = 0;
 
-	m_device.Get()->CreateCommittedResource(&heapProperties,
-											D3D12_HEAP_FLAG_NONE,
-											&dbConfig,
-											D3D12_RESOURCE_STATE_DEPTH_WRITE,
-											&dsvClearValue,
-											IID_PPV_ARGS(&m_pDepthBuffer));
+	m_depthBuffer.CreateCommited(m_device.Get(), dbConfig, nullptr, nullptr, 0, D3D12_HEAP_TYPE_DEFAULT, D3D12_RESOURCE_STATE_DEPTH_WRITE, &dsvClearValue);
 
 	D3D12_DEPTH_STENCIL_VIEW_DESC dsvDesc = {};
 	dsvDesc.ViewDimension = D3D12_DSV_DIMENSION_TEXTURE2D;
 	dsvDesc.Format = DXGI_FORMAT_D32_FLOAT;
 	dsvDesc.Texture2D.MipSlice = 0;
 	dsvDesc.Flags = D3D12_DSV_FLAG_NONE;
-	m_device.Get()->CreateDepthStencilView(m_pDepthBuffer, &dsvDesc, m_dsvDescHeap.GetCPUHandle(0));
+	m_device.Get()->CreateDepthStencilView(m_depthBuffer.Get(), &dsvDesc, m_dsvDescHeap.GetCPUHandle(0));
 
 	// Create a command list 
 	m_commandList.Init(m_device.Get(), m_commandAllocator.Get());
