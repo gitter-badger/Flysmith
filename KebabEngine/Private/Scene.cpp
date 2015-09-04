@@ -2,11 +2,11 @@
 #include "Scene.h"
 
 
+const U32 Scene::s_sceneKey = 1337123456789;
+
 Scene::Scene()
 {
 	numEntities = 0;
-	for (size_t entityIndex = 0; entityIndex < MAX_ENTITIES; entityIndex++)
-		entities[entityIndex].m_id = entityIndex;
 }
 
 ComponentProxy Scene::AddComponent(Component* pComponent)
@@ -40,7 +40,13 @@ U32 Scene::CreateEntity(Transform transform, I32 parentEntity)
 	auto newEntityIndex = numEntities;
 	numEntities++;
 
-	entities[newEntityIndex].pSceneNode = sceneGraph.AddNode(parentEntity);
+	I32 parentEntityNodeId = -1;
+	if (parentEntity != -1)
+	{
+		parentEntityNodeId = entities[parentEntity].GetSceneNodeId();
+	}
+
+	entities[newEntityIndex].Init(s_sceneKey, newEntityIndex, sceneGraph.AddNode(parentEntityNodeId));
 	entities[newEntityIndex].SetTransform(transform);
 
 	return newEntityIndex;

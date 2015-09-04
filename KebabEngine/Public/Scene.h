@@ -34,4 +34,8 @@ public:
 
 private:
 	Renderer* m_pRenderer;
+
+	// Shared between the scene and entities so intialization is done once only by the scene.
+	// The scene then no longer has direct access to the entity's private state beyond initialization.
+	static const U32 s_sceneKey;
 };

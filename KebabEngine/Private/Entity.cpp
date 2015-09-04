@@ -3,28 +3,52 @@
 #include "Scene.h"
 
 
+const U32 Entity::s_sceneKey = 1337123456789;
+
 Entity::Entity()
+	: m_id(-1)
+	, m_pSceneNode(nullptr)
+	, m_bInitialized(false)
 {
 }
 
-I32 Entity::GetId()
+void Entity::Init(U32 sceneKey, I32 id, SceneNode* pSceneNode)
 {
+	assert(!m_bInitialized);
+	assert(sceneKey == s_sceneKey);
+	assert(pSceneNode != nullptr);
+	assert(id >= 0);
+
+	m_id = id;
+	m_pSceneNode = pSceneNode;
+	m_bInitialized = true;
+}
+
+U32 Entity::GetId()
+{
+	assert(m_bInitialized);
 	return m_id;
+}
+
+U32 Entity::GetSceneNodeId()
+{
+	assert(m_bInitialized);
+	return m_pSceneNode->id;
 }
 
 XMFLOAT4X4 Entity::GetWorldTransformMatrix()
 {
-	return pSceneNode->GetWorldTransform();
+	return m_pSceneNode->GetWorldTransform();
 }
 
 void Entity::SetTransform(const Transform& transform)
 {
-	pSceneNode->transform = transform;
+	m_pSceneNode->transform = transform;
 }
 
 Transform* Entity::GetTransform()
 {
-	return &pSceneNode->transform;
+	return &m_pSceneNode->transform;
 }
 
 void Entity::AttachComponent(const ComponentProxy& componentProxy, Component* pComponent)
@@ -41,12 +65,14 @@ void Entity::AttachComponent(U32 componentIndex, Component* pComponent)
 
 void Entity::SetParent(Entity* pParent)
 {
-	pSceneNode->parent = pParent->pSceneNode->parent;
-	pParent->pSceneNode->children.push_back(pSceneNode->id);
+	// TODO: Update old relationship
+	m_pSceneNode->parent = pParent->m_pSceneNode->parent;
+	pParent->m_pSceneNode->children.push_back(m_pSceneNode->id);
 }
 
 void Entity::AddChild(Entity* pChild)
 {
-	pSceneNode->children.push_back(pChild->pSceneNode->id);
-	pChild->pSceneNode->parent = pSceneNode->id;
+	// TODO: Update old relationship
+	m_pSceneNode->children.push_back(pChild->m_pSceneNode->id);
+	pChild->m_pSceneNode->parent = m_pSceneNode->id;
 }

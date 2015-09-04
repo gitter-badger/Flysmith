@@ -8,12 +8,12 @@
 
 class KEBAB_API Entity
 {
-	friend class Scene;
-
 public:
 	Entity();
+	void Init(U32 sceneKey, I32 id, SceneNode*);
 
-	I32 GetId();
+	U32 GetId();
+	U32 GetSceneNodeId();
 
 	void AttachComponent(const ComponentProxy&, Component*);
 	void AttachComponent(U32 componentIndex, Component*);
@@ -29,5 +29,12 @@ public:
 
 protected:
 	I32 m_id;
-	SceneNode* pSceneNode;
+	SceneNode* m_pSceneNode;
+
+private:
+	bool m_bInitialized;
+
+	// Shared between the scene and entities so intialization is done once only by the scene.
+	// The scene then no longer has direct access to the entity's private state beyond initialization.
+	static const U32 s_sceneKey;
 };
