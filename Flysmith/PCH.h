@@ -15,3 +15,5 @@
 
 // TODO: Replace with api neutral math wrapper
 #include <DirectXMath.h>
+
+#include "Types.h"

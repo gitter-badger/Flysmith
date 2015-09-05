@@ -7,6 +7,7 @@
 #include "Plane.h"
 #include "Entity.h"
 #include "Fuselage.h"
+#include "Atmosphere.h"
 using namespace DirectX;
 
 
@@ -41,6 +42,14 @@ FlysmithGame::FlysmithGame(HINSTANCE hInstance)
 	m_scene.CreateEntity();
 	m_scene.entities[1].AttachComponent(fuseComp, &m_scene.renderComponents[fuseComp.index]);
 	m_scene.entities[1].GetTransform()->SetRotation(0.0f, XM_PIDIV2, 0.0f);
+
+	Atmosphere atmo;
+	OutputDebugStringA(std::to_string(atmo.GetTemperature(0.0f)).c_str());
+	OutputDebugStringA("\n");
+	OutputDebugStringA(std::to_string(atmo.GetTemperature(3451.0f)).c_str());
+	OutputDebugStringA("\n");
+	OutputDebugStringA(std::to_string(atmo.GetTemperature(15000.0f)).c_str());
+	OutputDebugStringA("\n");
 }
 
 void FlysmithGame::HandleEvent(const Event& ev)

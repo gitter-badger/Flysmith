@@ -154,6 +154,7 @@
   <ItemGroup>
     <ClCompile Include="Airfoil.cpp" />
     <ClCompile Include="AssetLocator.cpp" />
+    <ClCompile Include="Atmosphere.cpp" />
     <ClCompile Include="CameraController.cpp" />
     <ClCompile Include="FlysmithGame.cpp" />
     <ClCompile Include="main.cpp" />
@@ -168,6 +169,7 @@
   <ItemGroup>
     <ClInclude Include="Airfoil.h" />
     <ClInclude Include="AssetLocator.h" />
+    <ClInclude Include="Atmosphere.h" />
     <ClInclude Include="CameraController.h" />
     <ClInclude Include="FlysmithGame.h" />
     <ClInclude Include="Fuselage.h" />
