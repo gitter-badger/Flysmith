@@ -37,19 +37,11 @@ void Wing::GenerateMesh()
 	}
 
 	// 3. Stitch
+	auto ringSize = m_airfoil.points.size();
 	for (U32 ringIndex = 0; ringIndex < numRings - 1; ringIndex++)
 	{
-		auto numPoints = m_airfoil.points.size();
-		auto ringOffset1 = numPoints * ringIndex;
-		auto ringOffset2 = numPoints * (ringIndex + 1);
-
-		for (U32 i = 0; i < numPoints - 1; i++)
-		{
-			m_mesh.SetQuadFace(ringOffset1 + i,
-				ringOffset2 + i,
-				ringOffset2 + i + 1,
-				ringOffset1 + i + 1);
-		}
+		m_mesh.StitchRings(ringSize, ringSize * ringIndex,
+									 ringSize * (ringIndex + 1));
 	}
 
 	m_mesh.GenerateNormals();

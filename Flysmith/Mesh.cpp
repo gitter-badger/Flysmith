@@ -42,3 +42,14 @@ void Mesh::GenerateNormals()
 		XMStoreFloat3(&vert.normal, XMVector3Normalize(XMLoadFloat3(&vert.normal)));
 	}
 }
+
+void Mesh::StitchRings(U32 numVertsInRing, U32 firstRingStart, U32 secondRingStart)
+{
+	for (U32 vertOffset = 0; vertOffset < numVertsInRing - 1; vertOffset++)
+	{
+		SetQuadFace(firstRingStart  + vertOffset,
+					secondRingStart + vertOffset,
+					secondRingStart + vertOffset + 1,
+					firstRingStart  + vertOffset + 1);
+	}
+}

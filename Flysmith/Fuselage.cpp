@@ -23,25 +23,11 @@ Mesh Fuselage::GenerateMesh()
 	// *Stable* sort by z coord
 
 	// Stitch
+	auto ringSize = mesh.verts.size() / numRings;
 	for (U32 ringIndex = 0; ringIndex < numRings - 1; ringIndex++)
 	{
-		auto numPoints = mesh.verts.size() / numRings;
-		auto ringOffset1 = numPoints * ringIndex;
-		auto ringOffset2 = numPoints * (ringIndex + 1);
-
-		for (U32 i = 0; i < numPoints - 1; i++)
-		{
-			mesh.indices.push_back(ringOffset1 + i);
-			mesh.indices.push_back(ringOffset2 + i + 1);
-			mesh.indices.push_back(ringOffset2 + i);
-		}
-
-		for (U32 i = 0; i < numPoints - 1; i++)
-		{
-			mesh.indices.push_back(ringOffset1 + i);
-			mesh.indices.push_back(ringOffset1 + i + 1);
-			mesh.indices.push_back(ringOffset2 + i + 1);
-		}
+		mesh.StitchRings(ringSize, ringSize * ringIndex,
+								   ringSize * (ringIndex + 1));
 	}
 
 	mesh.GenerateNormals();

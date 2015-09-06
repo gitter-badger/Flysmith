@@ -18,4 +18,7 @@ struct Mesh
 	// v3 --- v0
 	void SetQuadFace(U32 v0, U32 v1, U32 v2, U32 v3);
 	void GenerateNormals();
+
+	// TODO: Support ring pairs with different edge counts 
+	void StitchRings(U32 numVertsInRing, U32 firstRingStart, U32 secondRingStart);
 };
