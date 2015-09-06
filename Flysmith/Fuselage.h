@@ -22,7 +22,7 @@ struct Fuselage
 		auto ring0 = GenerateCircularRing(0.5f, { 0.0f, 0.0f, -1.0f });
 		auto ring1 = GenerateCircularRing(1.0f, { 0.0f, 0.0f, 0.0f });
 		auto ring2 = GenerateCircularRing(1.0f, { 0.0f, 0.0f, 2.0f });
-		auto ring4 = GenerateCircularRing(0.01f, { 0.0f, 0.0f, 5.0f });
+		auto ring4 = GenerateCircularRing(0.1f, { 0.0f, 0.0f, 5.0f });
 		
 		mesh.verts.insert(mesh.verts.end(), ring3.begin(), ring3.end());
 		mesh.verts.insert(mesh.verts.end(), ring0.begin(), ring0.end());

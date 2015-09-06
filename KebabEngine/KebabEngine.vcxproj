@@ -215,6 +215,7 @@
     <ClCompile Include="Private\Entity.cpp" />
     <ClCompile Include="Private\RenderComponent.cpp" />
     <ClCompile Include="Private\ComponentProxy.cpp" />
+    <ClCompile Include="Private\Logger.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Public\Component.h" />
@@ -222,6 +223,7 @@
     <ClInclude Include="Public\Entity.h" />
     <ClInclude Include="Public\InputManager.h" />
     <ClInclude Include="Public\KeyboardEvents.h" />
+    <ClInclude Include="Public\Logger.h" />
     <ClInclude Include="Public\MouseEvents.h" />
     <ClInclude Include="Public\Application.h" />
     <ClInclude Include="Public\GameStateEvents.h" />

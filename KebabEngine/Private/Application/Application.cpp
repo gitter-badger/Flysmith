@@ -4,14 +4,17 @@
 #include "Events\EventManager.h"
 #include "InputManager.h"
 #include "Window.h"
+#include "Logger.h"
 #include "../../KebabD3D12/Public/RenderItemProxy.h"
 
 
 EventManager g_eventManager;
 InputManager g_inputManager;
+Logger		 g_logger;
 
 Application::Application(HINSTANCE hInstance)
 {
+	g_logger.Init();
 	m_pWindow = std::make_shared<Window>(hInstance, 800, 600, L"Kebab Engine", false);
 	m_pRenderer = new Renderer(m_pWindow->GetHandle(), m_pWindow->GetWidth(), m_pWindow->GetHeight());
 	g_inputManager.Init(m_pWindow.get());

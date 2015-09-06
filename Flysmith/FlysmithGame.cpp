@@ -44,12 +44,10 @@ FlysmithGame::FlysmithGame(HINSTANCE hInstance)
 	m_scene.entities[1].GetTransform()->SetRotation(0.0f, XM_PIDIV2, 0.0f);
 
 	Atmosphere atmo;
-	OutputDebugStringA(std::to_string(atmo.GetTemperature(0.0f)).c_str());
-	OutputDebugStringA("\n");
-	OutputDebugStringA(std::to_string(atmo.GetTemperature(3451.0f)).c_str());
-	OutputDebugStringA("\n");
-	OutputDebugStringA(std::to_string(atmo.GetTemperature(15000.0f)).c_str());
-	OutputDebugStringA("\n");
+	g_logger.Write(atmo.GetTemperature(0.0f));
+	g_logger.Write(atmo.GetTemperature(3451.0f));
+	g_logger.Write(atmo.GetTemperature(15000.0f));
+	g_logger.Write(atmo.GetTemperature(17000.0f));
 }
 
 void FlysmithGame::HandleEvent(const Event& ev)

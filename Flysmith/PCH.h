@@ -17,3 +17,4 @@
 #include <DirectXMath.h>
 
 #include "Types.h"
+#include "Logger.h"
