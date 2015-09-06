@@ -7,9 +7,9 @@
 // TODO: Might use literals. 
 
 // DX Units
-// 1 meter = 1 DX unit
+// 1 meter = 0.01 DX units
 // i.e. the far plane is at 1 km from the camera
-const F32 kMeter = 1.0f; 
+const F32 kMeter = 1.f; 
 
 inline F32 MetersToDXUnits(F32 meters)
 {

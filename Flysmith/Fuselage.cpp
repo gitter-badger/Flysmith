@@ -1,25 +1,46 @@
 #include "PCH.h"
 #include "Fuselage.h"
+#include "StandardUnits.h"
 
 
 Mesh Fuselage::GenerateMesh()
 {
-	U32 numRings = 5;
+	// Paper measurements
+	F32 ringDist[] = {
+		0.0f, 0.5f, 2.0f, 5.0f, 14.0f, 16.0f, 29.0f
+	};
 
+	F32 ringDiameters[] = {
+		1.0f, 2.0f, 3.5f, 4.0f, 4.5f, 3.5f, 0.1f
+	};
+
+	// Real length: 8.28m
+	// Paper length: 0.29m
+	auto paperToReal = 8.28f / 0.29f * 0.01; // ringDist and ringDiam are in cm 
+
+	for (auto& distance : ringDist)
+	{
+		distance *= paperToReal;
+	}
+
+	for (auto& diameter : ringDiameters)
+	{
+		diameter *= paperToReal;
+	}
+
+	auto numRings = _countof(ringDist);
+
+	std::vector<std::vector<Vertex>> rings(numRings);
 	// Generate vertex data
+	for (U32 idx = 0; idx < numRings; idx++)
+	{
+		rings[idx] = GenerateCircularRing(MetersToDXUnits(ringDiameters[idx]), { 0.0f, 0.0f, MetersToDXUnits(ringDist[idx]) });
+	}
+
 	Mesh mesh;
-	auto ring3 = GenerateCircularRing(0.1f, { 0.0f, 0.0f, -1.2f });
-	auto ring0 = GenerateCircularRing(0.5f, { 0.0f, 0.0f, -1.0f });
-	auto ring1 = GenerateCircularRing(1.0f, { 0.0f, 0.0f, 0.0f });
-	auto ring2 = GenerateCircularRing(1.0f, { 0.0f, 0.0f, 2.0f });
-	auto ring4 = GenerateCircularRing(0.1f, { 0.0f, 0.0f, 5.0f });
-
-	mesh.verts.insert(mesh.verts.end(), ring3.begin(), ring3.end());
-	mesh.verts.insert(mesh.verts.end(), ring0.begin(), ring0.end());
-	mesh.verts.insert(mesh.verts.end(), ring1.begin(), ring1.end());
-	mesh.verts.insert(mesh.verts.end(), ring2.begin(), ring2.end());
-	mesh.verts.insert(mesh.verts.end(), ring4.begin(), ring4.end());
-
+	for (auto& ring : rings)
+		mesh.verts.insert(mesh.verts.end(), ring.begin(), ring.end());
+	
 	// *Stable* sort by z coord
 
 	// Stitch
