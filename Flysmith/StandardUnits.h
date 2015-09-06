@@ -11,12 +11,12 @@
 // i.e. the far plane is at 1 km from the camera
 const int kMeter = 1.0f; 
 
-float MetersToDXUnits(float meters)
+inline float MetersToDXUnits(float meters)
 {
 	return meters * kMeter;
 }
 
-float DXUnitsToMeters(float dxUnits)
+inline float DXUnitsToMeters(float dxUnits)
 {
 	return dxUnits * (1.0f / kMeter);
 }

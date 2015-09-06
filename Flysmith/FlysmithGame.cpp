@@ -17,24 +17,10 @@ FlysmithGame::FlysmithGame(HINSTANCE hInstance)
 {
 	LoadResources();
 
-	auto wingMesh = m_resources.GetHandle("Wing");
-	auto planeMesh = m_resources.GetHandle("Plane");
 	U32 vert = m_resources.GetHandle("TestVS");
 	U32 pixel = m_resources.GetHandle("TestPS");
 
-	/*auto comp0 = m_scene.CreateRenderComponent(wingMesh, vert, pixel),
-		 comp1 = m_scene.CreateRenderComponent(wingMesh, vert, pixel),
-		 comp2 = m_scene.CreateRenderComponent(wingMesh, vert, pixel);
-	
-	m_scene.CreateEntity();
-	m_scene.entities[0].AttachComponent(comp0, &m_scene.renderComponents[comp0.index]);
-
-	m_scene.CreateEntity(Transform({ 0.0f, 2.0f, 0.0f }), 0);
-	m_scene.entities[1].AttachComponent(comp1, &m_scene.renderComponents[comp1.index]);
-
-	m_scene.CreateEntity(Transform({ 0.0f, 4.0f, 0.0f }), 1);
-	m_scene.entities[2].AttachComponent(comp2, &m_scene.renderComponents[comp2.index]);*/
-	auto renderComp = m_scene.CreateRenderComponent(planeMesh, vert, pixel);
+	auto renderComp = m_scene.CreateRenderComponent(m_resources.GetHandle("Plane"), vert, pixel);
 	m_scene.CreateEntity();
 	m_scene.entities[0].AttachComponent(renderComp, &m_scene.renderComponents[renderComp.index]);
 
@@ -52,9 +38,6 @@ FlysmithGame::FlysmithGame(HINSTANCE hInstance)
 
 void FlysmithGame::HandleEvent(const Event& ev)
 {
-	switch (ev.type)
-	{
-	}
 }
 
 void FlysmithGame::LoadResources()
@@ -82,6 +65,4 @@ void FlysmithGame::LoadResources()
 
 void FlysmithGame::UpdateScene(float dt)
 {
-	//m_scene.entities[0].pSceneNode->transform.RotateY(dt);
-	//m_scene.entities[1].pSceneNode->transform.TranslateX(dt / 4);
 }
