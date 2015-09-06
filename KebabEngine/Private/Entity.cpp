@@ -3,7 +3,7 @@
 #include "Scene.h"
 
 
-const U32 Entity::s_sceneKey = 1337123456789;
+const U32 Entity::s_sceneKey = 1337;
 
 Entity::Entity()
 	: m_id(-1)
@@ -24,13 +24,13 @@ void Entity::Init(U32 sceneKey, I32 id, SceneNode* pSceneNode)
 	m_bInitialized = true;
 }
 
-U32 Entity::GetId()
+I32 Entity::GetId()
 {
 	assert(m_bInitialized);
 	return m_id;
 }
 
-U32 Entity::GetSceneNodeId()
+I32 Entity::GetSceneNodeId()
 {
 	assert(m_bInitialized);
 	return m_pSceneNode->id;

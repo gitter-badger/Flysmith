@@ -2,7 +2,7 @@
 #include "Scene.h"
 
 
-const U32 Scene::s_sceneKey = 1337123456789;
+const U32 Scene::s_sceneKey = 1337;
 
 Scene::Scene()
 {

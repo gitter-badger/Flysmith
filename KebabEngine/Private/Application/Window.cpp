@@ -140,12 +140,12 @@ LRESULT CALLBACK Window::WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPar
 		break;
 
 	case WM_KEYUP:
-		g_inputManager.SetKeyUp(wParam);
+		g_inputManager.SetKeyUp(static_cast<U8>(wParam));
 		g_eventManager.PostEvent(CreateKeyUpEvent(wParam));
 		break;
 
 	case WM_KEYDOWN:
-		g_inputManager.SetKeyDown(wParam);
+		g_inputManager.SetKeyDown(static_cast<U8>(wParam));
 		g_eventManager.PostEvent(CreateKeyDownEvent(wParam));
 		break;
 

@@ -1,7 +1,8 @@
 #pragma once
 #include "PublicDef.h"
-#include <DirectXMath.h>
 
+
+struct KEBAB12_API DirectX::XMFLOAT3;
 
 struct KEBAB12_API Vertex
 {

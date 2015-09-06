@@ -12,9 +12,9 @@ struct KEBAB_API SceneNode
 	Transform transform;
 	
 	// Indices in the associated scene graph's node list. 
-	U32 id;
+	I32 id;
 	I32 parent;
-	std::vector<U32> children;
+	std::vector<I32> children;
 	SceneGraph* pSceneGraph;
 
 	XMFLOAT4X4 GetWorldTransform();

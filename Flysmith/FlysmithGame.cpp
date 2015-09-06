@@ -39,6 +39,9 @@ FlysmithGame::FlysmithGame(HINSTANCE hInstance)
 
 void FlysmithGame::HandleEvent(const Event& ev)
 {
+	switch (ev.type)
+	{
+	}
 }
 
 void FlysmithGame::LoadResources()

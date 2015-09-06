@@ -12,8 +12,8 @@ public:
 	Entity();
 	void Init(U32 sceneKey, I32 id, SceneNode*);
 
-	U32 GetId();
-	U32 GetSceneNodeId();
+	I32 GetId();
+	I32 GetSceneNodeId();
 
 	void AttachComponent(const ComponentProxy&, Component*);
 	void AttachComponent(U32 componentIndex, Component*);

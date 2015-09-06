@@ -9,14 +9,14 @@
 // DX Units
 // 1 meter = 1 DX unit
 // i.e. the far plane is at 1 km from the camera
-const int kMeter = 1.0f; 
+const F32 kMeter = 1.0f; 
 
-inline float MetersToDXUnits(float meters)
+inline F32 MetersToDXUnits(F32 meters)
 {
 	return meters * kMeter;
 }
 
-inline float DXUnitsToMeters(float dxUnits)
+inline F32 DXUnitsToMeters(F32 dxUnits)
 {
 	return dxUnits * (1.0f / kMeter);
 }

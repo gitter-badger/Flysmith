@@ -7,8 +7,11 @@ SceneGraph::SceneGraph()
 {
 }
 
-bool SceneGraph::FormsCycle(U32 child, U32 parent)
+bool SceneGraph::FormsCycle(I32 child, I32 parent)
 {
+	assert(child >= 0);
+	assert(parent >= 0);
+
 	I32 tempNode = child;
 	while (tempNode != -1)
 	{

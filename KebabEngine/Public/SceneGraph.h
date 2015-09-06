@@ -11,7 +11,7 @@ const size_t MAX_NODES = 100;
 struct KEBAB_API SceneGraph
 {
 	SceneGraph();
-	bool FormsCycle(U32 child, U32 parent);
+	bool FormsCycle(I32 child, I32 parent);
 
 	// Returns a pointer to the new node
 	SceneNode* AddNode(I32 parentNodeId = -1);
