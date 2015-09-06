@@ -52,16 +52,10 @@ public:
 			
 			for (U32 i = 0; i < numPoints - 1; i++)
 			{
-				m_mesh.indices.push_back(ringOffset1 + i);
-				m_mesh.indices.push_back(ringOffset2 + i + 1);
-				m_mesh.indices.push_back(ringOffset2 + i);
-			}
-
-			for (U32 i = 0; i < numPoints - 1; i++)
-			{
-				m_mesh.indices.push_back(ringOffset1 + i);
-				m_mesh.indices.push_back(ringOffset1 + i + 1);
-				m_mesh.indices.push_back(ringOffset2 + i + 1);
+				m_mesh.SetQuadFace(ringOffset1 + i,
+								   ringOffset2 + i,
+								   ringOffset2 + i + 1,
+								   ringOffset1 + i + 1);
 			}
 		}
 

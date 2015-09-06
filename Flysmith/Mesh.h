@@ -9,6 +9,24 @@ struct Mesh
 	std::vector<U32> indices;
 	std::vector<Vertex> verts;
 
+	// Specify the verts in counter-clockwise order:
+	// v2 --- v1
+	// |    /  |
+	// | I /   |
+	// |  / II |
+	// | /     |
+	// v3 --- v0
+	void SetQuadFace(U32 v0, U32 v1, U32 v2, U32 v3)
+	{
+		indices.push_back(v0);
+		indices.push_back(v1);
+		indices.push_back(v3);
+
+		indices.push_back(v3);
+		indices.push_back(v1);
+		indices.push_back(v2);
+	}
+
 	void GenerateNormals()
 	{
 		U32 numTriangles = indices.size() / 3;
