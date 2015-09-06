@@ -21,20 +21,29 @@ FlysmithGame::FlysmithGame(HINSTANCE hInstance)
 	U32 vert = m_resources.GetHandle("TestVS");
 	U32 pixel = m_resources.GetHandle("TestPS");
 
-	auto renderComp = m_scene.CreateRenderComponent(m_resources.GetHandle("Plane"), vert, pixel);
-	m_scene.CreateEntity();
-	m_scene.entities[0].AttachComponent(renderComp, &m_scene.renderComponents[renderComp.index]);
+	// Plane
+	auto planeEntityId = m_scene.CreateEntity();
 
-	auto fuseComp = m_scene.CreateRenderComponent(m_resources.GetHandle("Fuselage"), vert, pixel);
-	m_scene.CreateEntity();
-	m_scene.entities[1].AttachComponent(fuseComp, &m_scene.renderComponents[fuseComp.index]);
-	m_scene.entities[1].GetTransform()->SetRotation(0.0f, XM_PIDIV2, 0.0f);
+	// Fuselage
+	auto fuselageEntityId = m_scene.CreateEntity();
+	auto rcFuselage = m_scene.CreateRenderComponent(m_resources.GetHandle("Fuselage"), vert, pixel);
+	m_scene.entities[fuselageEntityId].AttachComponent(rcFuselage, &m_scene.renderComponents[rcFuselage.index]);
 
-	Atmosphere atmo;
-	g_logger.Write(atmo.GetTemperature(0.0f));
-	g_logger.Write(atmo.GetTemperature(3451.0f));
-	g_logger.Write(atmo.GetTemperature(15000.0f));
-	g_logger.Write(atmo.GetTemperature(17000.0f));
+	// Wings
+	auto wing1EntityId = m_scene.CreateEntity();
+	m_scene.entities[wing1EntityId].GetTransform()->RotateY(-XM_PIDIV2);
+	auto rcWing1 = m_scene.CreateRenderComponent(m_resources.GetHandle("Wing"), vert, pixel);
+	m_scene.entities[wing1EntityId].AttachComponent(rcWing1, &m_scene.renderComponents[rcWing1.index]);
+
+	auto wing2EntityId = m_scene.CreateEntity();
+	m_scene.entities[wing2EntityId].GetTransform()->RotateY(XM_PIDIV2);
+	auto rcWing2 = m_scene.CreateRenderComponent(m_resources.GetHandle("Wing"), vert, pixel);
+	m_scene.entities[wing2EntityId].AttachComponent(rcWing2, &m_scene.renderComponents[rcWing2.index]);
+
+	// Attach
+	m_scene.entities[planeEntityId].AddChild(&m_scene.entities[fuselageEntityId]);
+	m_scene.entities[planeEntityId].AddChild(&m_scene.entities[wing1EntityId]);
+	m_scene.entities[planeEntityId].AddChild(&m_scene.entities[wing2EntityId]);
 }
 
 void FlysmithGame::HandleEvent(const Event& ev)
@@ -50,18 +59,9 @@ void FlysmithGame::LoadResources()
 	m_resources.AddResource("TestVS", m_pRenderer->CacheShader(VERTEX_SHADER, assLocator.GetAssetDirectory(AssetType::SHADERS) + L"TestVS.hlsl"));
 	m_resources.AddResource("TestPS", m_pRenderer->CacheShader(PIXEL_SHADER, assLocator.GetAssetDirectory(AssetType::SHADERS) + L"TestPS.hlsl"));
 
-	Airfoil foil(L"NACA4415.dat");
-	auto foilMesh = foil.GenerateMesh();
-	m_resources.AddResource("Foil", m_pRenderer->CacheMesh(foilMesh.verts, foilMesh.indices));
-
 	Wing wing(L"NACA4415.dat");
 	auto wingMesh = wing.GetMesh();
 	m_resources.AddResource("Wing", m_pRenderer->CacheMesh(wingMesh.verts, wingMesh.indices));
-
-	Plane plane;
-	plane.AddWingPair(wing, MetersToDXUnits(-1.5f), MetersToDXUnits(0.5f), MetersToDXUnits(0.0f));
-	auto planeMesh = plane.GetMesh();
-	m_resources.AddResource("Plane", m_pRenderer->CacheMesh(planeMesh.verts, planeMesh.indices));
 
 	Fuselage fuselage;
 	auto fuselageMesh = fuselage.GenerateMesh();
@@ -70,4 +70,5 @@ void FlysmithGame::LoadResources()
 
 void FlysmithGame::UpdateScene(float dt)
 {
+	m_scene.entities[0].GetTransform()->TranslateZ(-dt);
 }
