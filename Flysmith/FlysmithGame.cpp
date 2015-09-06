@@ -8,6 +8,7 @@
 #include "Entity.h"
 #include "Fuselage.h"
 #include "Atmosphere.h"
+#include "AssetLocator.h"
 using namespace DirectX;
 
 
@@ -42,8 +43,9 @@ void FlysmithGame::HandleEvent(const Event& ev)
 
 void FlysmithGame::LoadResources()
 {
-	m_resources.AddResource("TestVS", m_pRenderer->CacheShader(VERTEX_SHADER, L"E:\\Flysmith\\KebabD3D12\\Private\\Shaders\\TestVS.hlsl"));
-	m_resources.AddResource("TestPS", m_pRenderer->CacheShader(PIXEL_SHADER, L"E:\\Flysmith\\KebabD3D12\\Private\\Shaders\\TestPS.hlsl"));
+	AssetLocator assLocator;
+	m_resources.AddResource("TestVS", m_pRenderer->CacheShader(VERTEX_SHADER, assLocator.GetAssetDirectory(AssetType::SHADERS) + L"TestVS.hlsl"));
+	m_resources.AddResource("TestPS", m_pRenderer->CacheShader(PIXEL_SHADER, assLocator.GetAssetDirectory(AssetType::SHADERS) + L"TestPS.hlsl"));
 
 	Airfoil foil(L"NACA4415.dat");
 	auto foilMesh = foil.GenerateMesh();

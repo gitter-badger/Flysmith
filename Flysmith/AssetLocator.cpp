@@ -7,7 +7,7 @@ struct AssetLocator::Impl
 {
 	Impl();
 
-	std::map<AssetDirectory, std::wstring> assetDirectories;
+	std::map<AssetType, std::wstring> assetDirectories;
 };
 std::unique_ptr<AssetLocator::Impl> AssetLocator::s_pImpl = nullptr;
 
@@ -19,7 +19,7 @@ AssetLocator::AssetLocator()
 	}
 }
 
-const std::wstring& AssetLocator::GetAssetDirectory(const AssetDirectory assetType, bool bTrailingBackslash) const
+const std::wstring& AssetLocator::GetAssetDirectory(AssetType assetType, bool bTrailingBackslash) const
 {
 	if (!bTrailingBackslash)
 	{
@@ -29,7 +29,7 @@ const std::wstring& AssetLocator::GetAssetDirectory(const AssetDirectory assetTy
 	return s_pImpl->assetDirectories[assetType];
 }
 
-const bool AssetLocator::GetAssetPath(const AssetDirectory assetType, const std::wstring& filename, std::wstring* outPath) const
+const bool AssetLocator::GetAssetPath(AssetType assetType, const std::wstring& filename, std::wstring* outPath) const
 {
 	*outPath = GetAssetDirectory(assetType) + filename;
 	return FileSystem::FileExists(outPath->c_str());
@@ -38,18 +38,28 @@ const bool AssetLocator::GetAssetPath(const AssetDirectory assetType, const std:
 AssetLocator::Impl::Impl()
 {
 	FileSystem fs;
-	std::wstring projectRootPath(fs.GetExePath());
+	std::wstring rootPath(fs.GetExePath());
 
-	// For now, place all assets in a single folder in the solution directory instead of making copies for each build configuration.
-	// Configuration folder
-	FileSystem::RemoveLastNameFromPath(&projectRootPath, true);
-	// Bin folder
-	FileSystem::RemoveLastNameFromPath(&projectRootPath, true);
-	// Solution folder
-	FileSystem::RemoveLastNameFromPath(&projectRootPath, true);
+#ifdef _DEBUG
+	// Root is the Solution folder
 
-	assetDirectories[AssetDirectory::ROOT] = projectRootPath + L"Assets\\";
-	assetDirectories[AssetDirectory::SHADERS] = assetDirectories[AssetDirectory::ROOT] + L"Shaders\\";
-	assetDirectories[AssetDirectory::FONTS] = assetDirectories[AssetDirectory::ROOT] + L"Fonts\\";
-	assetDirectories[AssetDirectory::AIRFOILS] = assetDirectories[AssetDirectory::ROOT] + L"Airfoils\\";
+	// Remove executable name
+	FileSystem::RemoveLastNameFromPath(&rootPath, true);
+
+	// Remove build configuration folder
+	FileSystem::RemoveLastNameFromPath(&rootPath, true);
+
+	// Remove Bin folder
+	FileSystem::RemoveLastNameFromPath(&rootPath, true);
+#else /* REDISTRIBUTING */
+	// Root is the executable folder
+
+	// Remove executable name and trailing slash
+	rootPath = rootPath.substr(0, rootPath.find_last_of(L"\\") + 1);
+#endif
+
+	assetDirectories[AssetType::NONE_ROOT] = rootPath + L"Assets\\";
+	assetDirectories[AssetType::SHADERS] = assetDirectories[AssetType::NONE_ROOT] + L"Shaders\\";
+	assetDirectories[AssetType::FONTS] = assetDirectories[AssetType::NONE_ROOT] + L"Fonts\\";
+	assetDirectories[AssetType::AIRFOILS] = assetDirectories[AssetType::NONE_ROOT] + L"Airfoils\\";
 }

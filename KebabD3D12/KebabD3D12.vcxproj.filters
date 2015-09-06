@@ -285,11 +285,4 @@
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
-  <ItemGroup>
-    <FxCompile Include="Private\Shaders\TestPS.hlsl" />
-    <FxCompile Include="Private\Shaders\TestVS.hlsl" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Private\Shaders\TestHeader.hlsli" />
-  </ItemGroup>
 </Project>

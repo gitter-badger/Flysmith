@@ -2,9 +2,9 @@
 #include <memory>
 
 
-enum class AssetDirectory
+enum class AssetType
 {
-	ROOT,
+	NONE_ROOT, 
 	SHADERS,
 	FONTS,
 	AIRFOILS
@@ -14,8 +14,8 @@ class AssetLocator
 {
 public:
 	AssetLocator();
-	const std::wstring& GetAssetDirectory(const AssetDirectory, bool bTrailingBackslash = true) const;
-	const bool GetAssetPath(const AssetDirectory, const std::wstring& filename, std::wstring* outPath) const;
+	const std::wstring& GetAssetDirectory(AssetType, bool bTrailingBackslash = true) const;
+	const bool GetAssetPath(AssetType, const std::wstring& filename, std::wstring* outPath) const;
 
 private:
 	struct Impl;

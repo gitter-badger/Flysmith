@@ -17,7 +17,7 @@ Airfoil::Airfoil(const std::wstring& filename)
 {
 	AssetLocator al;
 	std::wstring path;
-	assert(al.GetAssetPath(AssetDirectory::AIRFOILS, filename, &path) == true);
+	assert(al.GetAssetPath(AssetType::AIRFOILS, filename, &path) == true);
 
 	std::ifstream file(path);
 	std::string desc;
