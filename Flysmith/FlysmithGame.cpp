@@ -32,11 +32,16 @@ FlysmithGame::FlysmithGame(HINSTANCE hInstance)
 	// Wings
 	auto wing1EntityId = m_scene.CreateEntity();
 	m_scene.entities[wing1EntityId].GetTransform()->RotateY(-XM_PIDIV2);
+	m_scene.entities[wing1EntityId].GetTransform()->TranslateY(0.1f);
+	m_scene.entities[wing1EntityId].GetTransform()->TranslateX(1.4f);
 	auto rcWing1 = m_scene.CreateRenderComponent(m_resources.GetHandle("Wing"), vert, pixel);
 	m_scene.entities[wing1EntityId].AttachComponent(rcWing1, &m_scene.renderComponents[rcWing1.index]);
 
 	auto wing2EntityId = m_scene.CreateEntity();
-	m_scene.entities[wing2EntityId].GetTransform()->RotateY(XM_PIDIV2);
+	m_scene.entities[wing2EntityId].GetTransform()->RotateY(-XM_PIDIV2);
+	m_scene.entities[wing2EntityId].GetTransform()->TranslateZ(-2.5f);
+	m_scene.entities[wing2EntityId].GetTransform()->TranslateY(0.1f);
+	m_scene.entities[wing2EntityId].GetTransform()->TranslateX(1.4f);
 	auto rcWing2 = m_scene.CreateRenderComponent(m_resources.GetHandle("Wing"), vert, pixel);
 	m_scene.entities[wing2EntityId].AttachComponent(rcWing2, &m_scene.renderComponents[rcWing2.index]);
 
@@ -64,7 +69,7 @@ void FlysmithGame::LoadResources()
 	m_resources.AddResource("Wing", m_pRenderer->CacheMesh(wingMesh.verts, wingMesh.indices));
 
 	Fuselage fuselage;
-	auto fuselageMesh = fuselage.GenerateMesh();
+	auto fuselageMesh = fuselage.GenerateMesh(assLocator.GetAssetDirectory(AssetType::FUSELAGES) + L"Cessna172S");
 	m_resources.AddResource("Fuselage", m_pRenderer->CacheMesh(fuselageMesh.verts, fuselageMesh.indices));
 }
 

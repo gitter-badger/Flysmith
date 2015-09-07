@@ -3,24 +3,42 @@
 #include "StandardUnits.h"
 
 
-Mesh Fuselage::GenerateMesh()
+// Format:
+// num rings
+// points per ring
+// for each ring:
+// x-axis displacement from front 
+Mesh Fuselage::GenerateMesh(const std::wstring& path)
 {
+	U32 numRings = 0;
+	U32 pointsPerRing = 0;
+	std::vector<XMFLOAT2> ringDisp;
+
+	std::wifstream file(path);
+	file >> numRings;
+	file >> pointsPerRing;
+
+	ringDisp.resize(numRings);
+
 	// Paper measurements
-	F32 ringDist[] = {
-		0.0f, 0.5f, 2.0f, 5.0f, 14.0f, 16.0f, 29.0f
-	};
+	for (U32 ringIndex = 0; ringIndex < numRings; ringIndex++)
+	{
+		file >> ringDisp[ringIndex].x
+			 >> ringDisp[ringIndex].y;
+	}
 
 	F32 ringDiameters[] = {
-		1.0f, 2.0f, 3.5f, 4.0f, 4.5f, 3.5f, 0.1f
+		1.0f, 2.0f, 3.5f, 4.0f, 4.5f, 3.5f, 1.f
 	};
 
 	// Real length: 8.28m
 	// Paper length: 0.29m
 	auto paperToReal = 8.28f / 0.29f * 0.01; // ringDist and ringDiam are in cm 
 
-	for (auto& distance : ringDist)
+	for (auto& disp : ringDisp)
 	{
-		distance *= paperToReal;
+		disp.x *= paperToReal;
+		disp.y *= paperToReal;
 	}
 
 	for (auto& diameter : ringDiameters)
@@ -28,13 +46,12 @@ Mesh Fuselage::GenerateMesh()
 		diameter *= paperToReal;
 	}
 
-	auto numRings = _countof(ringDist);
 
 	std::vector<std::vector<Vertex>> rings(numRings);
 	// Generate vertex data
 	for (U32 idx = 0; idx < numRings; idx++)
 	{
-		rings[idx] = GenerateCircularRing(MetersToDXUnits(ringDiameters[idx]), { 0.0f, 0.0f, MetersToDXUnits(ringDist[idx]) });
+		rings[idx] = GenerateCircularRing(MetersToDXUnits(ringDiameters[idx]), { 0.0f, MetersToDXUnits(ringDisp[idx].y), MetersToDXUnits(ringDisp[idx].x) });
 	}
 
 	Mesh mesh;

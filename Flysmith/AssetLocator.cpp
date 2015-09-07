@@ -62,4 +62,5 @@ AssetLocator::Impl::Impl()
 	assetDirectories[AssetType::SHADERS] = assetDirectories[AssetType::NONE_ROOT] + L"Shaders\\";
 	assetDirectories[AssetType::FONTS] = assetDirectories[AssetType::NONE_ROOT] + L"Fonts\\";
 	assetDirectories[AssetType::AIRFOILS] = assetDirectories[AssetType::NONE_ROOT] + L"Airfoils\\";
+	assetDirectories[AssetType::FUSELAGES] = assetDirectories[AssetType::NONE_ROOT] + L"Fuselages\\";
 }

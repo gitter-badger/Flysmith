@@ -7,7 +7,8 @@ enum class AssetType
 	NONE_ROOT, 
 	SHADERS,
 	FONTS,
-	AIRFOILS
+	AIRFOILS,
+	FUSELAGES
 };
 
 class AssetLocator
