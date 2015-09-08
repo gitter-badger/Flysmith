@@ -195,6 +195,7 @@
     <ClCompile Include="Private\Application\Timer.cpp" />
     <ClCompile Include="Private\Application\Window.cpp" />
     <ClCompile Include="Private\Component.cpp" />
+    <ClCompile Include="Private\Dependencies\lodepng\lodepng.cpp" />
     <ClCompile Include="Private\InputManager.cpp" />
     <ClCompile Include="Private\PCH.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -218,6 +219,7 @@
     <ClCompile Include="Private\Logger.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Private\Dependencies\lodepng\lodepng.h" />
     <ClInclude Include="Public\Component.h" />
     <ClInclude Include="Public\ComponentProxy.h" />
     <ClInclude Include="Public\Entity.h" />
