@@ -7,7 +7,6 @@ Wing::Wing(const std::wstring& airfoilFile) : m_airfoil(airfoilFile)
 	GenerateMesh();
 }
 
-// TODO: Scale taking into account the chord
 // TODO: Wing tip generation 
 // TODO: Control surfaces(separate?)
 // TODO: Sweep
@@ -19,11 +18,19 @@ void Wing::GenerateMesh()
 	// Measured from one wing tip to the other(i.e. includes main body)
 	F32 wingspan = MetersToDXUnits(7.0f);
 	F32 bodyDiameter = MetersToDXUnits(2.0f);
+	
+	F32 rootChord = MetersToDXUnits(1.6256f);
+	XMFLOAT3 scalingVec = { rootChord, rootChord, 1.0f };
+	auto scalingMat = XMMatrixScalingFromVector(XMLoadFloat3(&scalingVec));
+	for (auto& point : m_airfoil.points)
+	{
+		XMStoreFloat2(&point, XMVector2Transform(XMLoadFloat2(&point), scalingMat));
+	}
 
 	// 1. Generate ring configurations(for now all rings are the same).
 	F32 wingWidth = (wingspan - bodyDiameter) / 2.0f;
 	U32 numRings = 2;
-	F32 ringOffsets[5] = { 0.0f, wingWidth };
+	F32 ringOffsets[2] = { 0.0f, wingWidth };
 
 	// 2. Generate vertices on rings 
 	for (U32 ringIndex = 0; ringIndex < numRings; ringIndex++)
