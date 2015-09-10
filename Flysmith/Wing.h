@@ -1,21 +1,8 @@
 #pragma once
 #include "PCH.h"
-#include "Airfoil.h"
-#include "StandardUnits.h"
-using namespace DirectX;
 
 
-//class Wing
-//{
-//public:
-//	Wing(const std::wstring& airfoilFile);
-//	void GenerateMesh();
-//	Mesh GetMesh();
-//
-//private:
-//	Airfoil m_airfoil;
-//	Mesh m_mesh;
-//};
+struct Mesh;
 
 // Rings divide the wing into sections(2 rings delimit such a section), each with constant cross section profile 
 // and constant rate of change in parameters
