@@ -11,6 +11,7 @@
 #include <cassert>
 #include <fstream>
 #include <cstdio>
+#include <algorithm>
 
 
 // TODO: Replace with api neutral math wrapper

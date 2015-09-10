@@ -20,6 +20,8 @@ struct WingRing
 	// In degrees
 	// Linearly interpolated between rings
 	F32 incidenceAngle;
+
+	WingRing();
 };
 
 struct Wing
