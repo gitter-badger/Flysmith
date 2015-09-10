@@ -64,8 +64,21 @@ void FlysmithGame::LoadResources()
 	m_resources.AddResource("TestVS", m_pRenderer->CacheShader(VERTEX_SHADER, assLocator.GetAssetDirectory(AssetType::SHADERS) + L"TestVS.hlsl"));
 	m_resources.AddResource("TestPS", m_pRenderer->CacheShader(PIXEL_SHADER, assLocator.GetAssetDirectory(AssetType::SHADERS) + L"TestPS.hlsl"));
 
-	Wing wing(L"NACA4415.dat");
-	auto wingMesh = wing.GetMesh();
+	Wing wing;
+	wing.airfoilFile = L"NACA2412";
+	
+	WingRing root;
+	root.chord = 1.6256f;
+	root.locationOnWing = 0.0f;
+	
+	WingRing tip;
+	tip.chord = 1.1303f;
+	tip.locationOnWing = 1.0f;
+
+	wing.rings.push_back(root);
+	wing.rings.push_back(tip);
+
+	auto wingMesh = wing.GenerateMesh();
 	m_resources.AddResource("Wing", m_pRenderer->CacheMesh(wingMesh.verts, wingMesh.indices));
 
 	Fuselage fuselage;
@@ -75,5 +88,5 @@ void FlysmithGame::LoadResources()
 
 void FlysmithGame::UpdateScene(float dt)
 {
-	m_scene.entities[0].GetTransform()->TranslateZ(-dt);
+	//m_scene.entities[0].GetTransform()->TranslateZ(-dt);
 }

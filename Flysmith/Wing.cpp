@@ -2,59 +2,59 @@
 #include "Wing.h"
 
 
-Wing::Wing(const std::wstring& airfoilFile) : m_airfoil(airfoilFile)
-{
-	GenerateMesh();
-}
-
 // TODO: Wing tip generation 
 // TODO: Control surfaces(separate?)
 // TODO: Sweep
 // TODO: Variable thickness 
 // TODO: Variable airfoil
 // TODO: Innards 
-void Wing::GenerateMesh()
+Mesh Wing::GenerateMesh()
 {
 	// Measured from one wing tip to the other(i.e. includes main body)
 	F32 wingspan = MetersToDXUnits(7.0f);
 	F32 bodyDiameter = MetersToDXUnits(2.0f);
+	F32 length = (wingspan - bodyDiameter) / 2.0f;
 	
-	F32 rootChord = MetersToDXUnits(1.6256f);
-	XMFLOAT3 scalingVec = { rootChord, rootChord, 1.0f };
-	auto scalingMat = XMMatrixScalingFromVector(XMLoadFloat3(&scalingVec));
-	for (auto& point : m_airfoil.points)
+	std::vector<Airfoil> crossSections;
+	for (U32 ringIdx = 0; ringIdx < rings.size(); ringIdx++)
 	{
-		XMStoreFloat2(&point, XMVector2Transform(XMLoadFloat2(&point), scalingMat));
+		crossSections.push_back(Airfoil(airfoilFile + L".dat"));
 	}
 
-	// 1. Generate ring configurations(for now all rings are the same).
-	F32 wingWidth = (wingspan - bodyDiameter) / 2.0f;
-	U32 numRings = 2;
-	F32 ringOffsets[2] = { 0.0f, wingWidth };
+	for (U32 ringIdx = 0; ringIdx < rings.size(); ringIdx++)
+	{
+		F32 scaledChord = MetersToDXUnits(rings[ringIdx].chord);
+		XMFLOAT3 scalingVec = { scaledChord, scaledChord, 1.0f };
+		auto scalingMat = XMMatrixScalingFromVector(XMLoadFloat3(&scalingVec));
+
+		for (auto& point : crossSections[ringIdx].points)
+		{
+			XMStoreFloat2(&point, XMVector2Transform(XMLoadFloat2(&point), scalingMat));
+		}
+	}
+
+	Mesh mesh;
 
 	// 2. Generate vertices on rings 
-	for (U32 ringIndex = 0; ringIndex < numRings; ringIndex++)
+	for (U32 ringIndex = 0; ringIndex < rings.size(); ringIndex++)
 	{
-		for (auto& point : m_airfoil.points)
+		for (auto& point : crossSections[ringIndex].points)
 		{
-			XMFLOAT3 pos(point.x, point.y, ringOffsets[ringIndex]);
+			XMFLOAT3 pos(point.x, point.y, length * rings[ringIndex].locationOnWing);
 			XMFLOAT3 normal(0.0f, 0.0f, 0.0f);
-			m_mesh.verts.push_back({ pos, normal });
+			mesh.verts.push_back({ pos, normal });
 		}
 	}
 
 	// 3. Stitch
-	auto ringSize = m_airfoil.points.size();
-	for (U32 ringIndex = 0; ringIndex < numRings - 1; ringIndex++)
+	auto ringSize = crossSections[0].points.size();
+	for (U32 ringIndex = 0; ringIndex < rings.size() - 1; ringIndex++)
 	{
-		m_mesh.StitchRings(ringSize, ringSize * ringIndex,
-									 ringSize * (ringIndex + 1));
+		mesh.StitchRings(ringSize, ringSize * ringIndex,
+								   ringSize * (ringIndex + 1));
 	}
 
-	m_mesh.GenerateNormals();
-}
+	mesh.GenerateNormals();
 
-Mesh Wing::GetMesh()
-{
-	return m_mesh;
+	return mesh;
 }
