@@ -1,5 +1,4 @@
 #pragma once
-#include "PCH.h"
 
 
 struct Mesh;
@@ -17,6 +16,10 @@ struct WingRing
 	// In meters
 	// Linearly interpolated between rings
 	F32 chord;
+
+	// In degrees
+	// Linearly interpolated between rings
+	F32 incidenceAngle;
 };
 
 struct Wing

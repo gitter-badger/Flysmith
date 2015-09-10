@@ -24,9 +24,12 @@ Mesh Wing::GenerateMesh()
 		XMFLOAT3 scalingVec = { scaledChord, scaledChord, 1.0f };
 		auto scalingMat = XMMatrixScalingFromVector(XMLoadFloat3(&scalingVec));
 
+		auto rotMat = XMMatrixRotationZ(XMConvertToRadians(rings[ringIdx].incidenceAngle));
+
 		for (auto& point : airfoils[ringIdx].points)
 		{
 			XMStoreFloat2(&point, XMVector2Transform(XMLoadFloat2(&point), scalingMat));
+			XMStoreFloat2(&point, XMVector2Transform(XMLoadFloat2(&point), rotMat));
 		}
 	}
 
