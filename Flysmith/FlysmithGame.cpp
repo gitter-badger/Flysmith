@@ -66,15 +66,15 @@ void FlysmithGame::LoadResources()
 
 	Wing wing;
 	wing.airfoilFile = L"NACA2412";
+	wing.length = 5.0f;
 	
 	WingRing root;
 	root.chord = 1.6256f;
 	root.locationOnWing = 0.0f;
-	root.incidenceAngle = 1.0f + 44.0f / 60.0f; // 1 degree 44 minutes
+	root.incidenceAngle = 1.0f + 30.0f / 60.0f; // 1 degree 30 minutes
 	
 	WingRing tip;
 	tip.chord = 1.1303f;
-	//tip.chord = 1.6256f;
 	tip.locationOnWing = 1.0f;
 	tip.incidenceAngle = -(1.0f + 30.0f / 60.0f); // - 1 degree 30 minutes
 

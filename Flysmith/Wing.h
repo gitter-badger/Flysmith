@@ -31,7 +31,14 @@ struct Wing
 	// TODO: Cache airfoil data and require the desired airfoil's id in the cache 
 	//       Better, generate airfoil data 
 	std::wstring airfoilFile;
+
 	std::vector<WingRing> rings;
+	
+	// In meters
+	// Length from root to tip(i.e. not wingspan)
+	F32 length;
 
 	Mesh GenerateMesh();
+	
+	Wing();
 };
