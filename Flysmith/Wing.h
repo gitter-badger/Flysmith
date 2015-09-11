@@ -24,6 +24,12 @@ struct WingRing
 	WingRing();
 };
 
+struct WingSection
+{
+	// In degrees
+	F32 sweepAngle; 
+};
+
 struct Wing
 {
 	// Doesn't include full path and extension
@@ -37,6 +43,9 @@ struct Wing
 	// In meters
 	// Length from root to tip(i.e. not wingspan)
 	F32 length;
+
+	// TODO: Encapsulate 
+	std::vector<WingSection> sections;
 
 	Mesh GenerateMesh();
 	

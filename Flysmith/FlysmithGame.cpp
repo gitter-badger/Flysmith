@@ -39,8 +39,9 @@ FlysmithGame::FlysmithGame(HINSTANCE hInstance)
 
 	auto wing2EntityId = m_scene.CreateEntity();
 	m_scene.entities[wing2EntityId].GetTransform()->RotateY(-XM_PIDIV2);
-	m_scene.entities[wing2EntityId].GetTransform()->TranslateZ(-2.5f);
-	m_scene.entities[wing2EntityId].GetTransform()->TranslateY(0.1f);
+	m_scene.entities[wing2EntityId].GetTransform()->RotateZ(XM_PI);
+	m_scene.entities[wing2EntityId].GetTransform()->TranslateZ(0.f);
+	m_scene.entities[wing2EntityId].GetTransform()->TranslateY(1.5f);
 	m_scene.entities[wing2EntityId].GetTransform()->TranslateX(1.4f);
 	auto rcWing2 = m_scene.CreateRenderComponent(m_resources.GetHandle("Wing"), vert, pixel);
 	m_scene.entities[wing2EntityId].AttachComponent(rcWing2, &m_scene.renderComponents[rcWing2.index]);
@@ -80,6 +81,9 @@ void FlysmithGame::LoadResources()
 
 	wing.rings.push_back(root);
 	wing.rings.push_back(tip);
+
+	wing.sections.push_back(WingSection());
+	wing.sections[0].sweepAngle = 0.0f;
 
 	auto wingMesh = wing.GenerateMesh();
 	m_resources.AddResource("Wing", m_pRenderer->CacheMesh(wingMesh.verts, wingMesh.indices));
