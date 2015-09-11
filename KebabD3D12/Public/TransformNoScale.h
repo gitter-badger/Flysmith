@@ -52,11 +52,23 @@ public:
 	void RotateY(float dYawAngle);
 	void RotateZ(float dRollAngle);
 
+	void MirrorAlongX();
+	void MirrorAlongY();
+	void MirrorAlongZ();
+
 protected:
 	virtual void CacheTransform();
 	XMFLOAT4X4 m_transformMatrix;
 
 	XMFLOAT3   m_position;
 	Quaternion m_rotation;
+
+	bool m_bMirrorX;
+	bool m_bMirrorY;
+	bool m_bMirrorZ;
+
+	static XMFLOAT4X4 s_mirrorXMat;
+	static XMFLOAT4X4 s_mirrorYMat;
+	static XMFLOAT4X4 s_mirrorZMat;
 };
 #pragma warning(pop)

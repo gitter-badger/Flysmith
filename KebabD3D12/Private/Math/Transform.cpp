@@ -138,8 +138,21 @@ void Transform::ScaleZ(float byZ)
 
 void Transform::CacheTransform()
 {
+	XMMATRIX transform;
+
 	// Scale -> Rotate -> Translate
-	XMStoreFloat4x4(&m_transformMatrix, XMMatrixTranslationFromVector(XMLoadFloat3(&m_position))*
-									    m_rotation.GetMatrixFormXM() *
-										XMMatrixScalingFromVector(XMLoadFloat3(&m_scale)));
+	transform = XMMatrixTranslationFromVector(XMLoadFloat3(&m_position))*
+				m_rotation.GetMatrixFormXM() *
+				XMMatrixScalingFromVector(XMLoadFloat3(&m_scale));
+
+	if (m_bMirrorX)
+		transform *= XMLoadFloat4x4(&s_mirrorXMat);
+
+	if (m_bMirrorY)
+		transform *= XMLoadFloat4x4(&s_mirrorYMat);
+
+	if (m_bMirrorZ)
+		transform *= XMLoadFloat4x4(&s_mirrorZMat);
+
+	XMStoreFloat4x4(&m_transformMatrix, transform);
 }

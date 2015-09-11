@@ -30,26 +30,27 @@ FlysmithGame::FlysmithGame(HINSTANCE hInstance)
 	m_scene.entities[fuselageEntityId].AttachComponent(rcFuselage, &m_scene.renderComponents[rcFuselage.index]);
 
 	// Wings
-	auto wing1EntityId = m_scene.CreateEntity();
-	/*m_scene.entities[wing1EntityId].GetTransform()->RotateY(-XM_PIDIV2);
-	m_scene.entities[wing1EntityId].GetTransform()->TranslateY(0.1f);
-	m_scene.entities[wing1EntityId].GetTransform()->TranslateX(1.4f);*/
+	auto rightWingEntityId = m_scene.CreateEntity();
+	m_scene.entities[rightWingEntityId].GetTransform()->RotateY(-XM_PIDIV2);
+	/*m_scene.entities[rightWingEntityId].GetTransform()->TranslateY(0.1f);
+	m_scene.entities[rightWingEntityId].GetTransform()->TranslateX(1.4f);*/
 	auto rcWing1 = m_scene.CreateRenderComponent(m_resources.GetHandle("Wing"), vert, pixel);
-	m_scene.entities[wing1EntityId].AttachComponent(rcWing1, &m_scene.renderComponents[rcWing1.index]);
+	m_scene.entities[rightWingEntityId].AttachComponent(rcWing1, &m_scene.renderComponents[rcWing1.index]);
 
-	/*auto wing2EntityId = m_scene.CreateEntity();
-	m_scene.entities[wing2EntityId].GetTransform()->RotateY(-XM_PIDIV2);
-	m_scene.entities[wing2EntityId].GetTransform()->RotateZ(XM_PI);
-	m_scene.entities[wing2EntityId].GetTransform()->TranslateZ(0.f);
-	m_scene.entities[wing2EntityId].GetTransform()->TranslateY(1.5f);
-	m_scene.entities[wing2EntityId].GetTransform()->TranslateX(1.4f);
+	auto leftWingEntityId = m_scene.CreateEntity();
+	// Mirror along X
+	m_scene.entities[leftWingEntityId].GetTransform()->MirrorAlongX();
+	m_scene.entities[leftWingEntityId].GetTransform()->RotateY(XM_PIDIV2);
+	//m_scene.entities[leftWingEntityId].GetTransform()->TranslateY(1);
+	/*m_scene.entities[leftWingEntityId].GetTransform()->TranslateY(1.5f);
+	m_scene.entities[leftWingEntityId].GetTransform()->TranslateX(1.4f);*/
 	auto rcWing2 = m_scene.CreateRenderComponent(m_resources.GetHandle("Wing"), vert, pixel);
-	m_scene.entities[wing2EntityId].AttachComponent(rcWing2, &m_scene.renderComponents[rcWing2.index]);*/
+	m_scene.entities[leftWingEntityId].AttachComponent(rcWing2, &m_scene.renderComponents[rcWing2.index]);
 
 	// Attach
 	m_scene.entities[planeEntityId].AddChild(&m_scene.entities[fuselageEntityId]);
-	m_scene.entities[planeEntityId].AddChild(&m_scene.entities[wing1EntityId]);
-	//m_scene.entities[planeEntityId].AddChild(&m_scene.entities[wing2EntityId]);
+	m_scene.entities[planeEntityId].AddChild(&m_scene.entities[rightWingEntityId]);
+	m_scene.entities[planeEntityId].AddChild(&m_scene.entities[leftWingEntityId]);
 }
 
 void FlysmithGame::HandleEvent(const Event& ev)

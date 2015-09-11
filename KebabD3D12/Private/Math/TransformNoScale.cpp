@@ -2,9 +2,33 @@
 #include "TransformNoScale.h"
 
 
+XMFLOAT4X4 TransformNoScale::s_mirrorXMat = {
+	1.f, 0.f, 0.f, 0.f,
+	0.f, 1.f, 0.f, 0.f,
+	0.f, 0.f, -1.f, 0.f,
+	0.f, 0.f, 0.f, 1.f
+};
+
+XMFLOAT4X4 TransformNoScale::s_mirrorYMat = {
+	1.f, 0.f, 0.f, 0.f,
+	0.f, -1.f, 0.f, 0.f,
+	0.f, 0.f, 1.f, 0.f,
+	0.f, 0.f, 0.f, 1.f
+};
+
+XMFLOAT4X4 TransformNoScale::s_mirrorZMat = {
+	-1.f, 0.f, 0.f, 0.f,
+	0.f, 1.f, 0.f, 0.f,
+	0.f, 0.f, 1.f, 0.f,
+	0.f, 0.f, 0.f, 1.f
+};
+
 TransformNoScale::TransformNoScale()
 	: m_position(0.0f, 0.0f, 0.0f)
 	, m_rotation(0.0f, 0.0f, 0.0f)
+	, m_bMirrorX(0.0f)
+	, m_bMirrorY(0.0f)
+	, m_bMirrorZ(0.0f)
 {
 	CacheTransform();
 }
@@ -195,8 +219,39 @@ void TransformNoScale::RotateZ(float dRollAngle)
 	CacheTransform();
 }
 
+void TransformNoScale::MirrorAlongX()
+{
+	m_bMirrorX = !m_bMirrorX;
+	CacheTransform();
+}
+
+void TransformNoScale::MirrorAlongY()
+{
+	m_bMirrorY = !m_bMirrorY;
+	CacheTransform();
+}
+
+void TransformNoScale::MirrorAlongZ()
+{
+	m_bMirrorZ = !m_bMirrorZ;
+	CacheTransform();
+}
+
 void TransformNoScale::CacheTransform()
 {
+	XMMATRIX transform;
+
 	// Rotate -> Translate
-	XMStoreFloat4x4(&m_transformMatrix, XMMatrixTranslationFromVector(XMLoadFloat3(&m_position)) * m_rotation.GetMatrixFormXM());
+	transform = XMMatrixTranslationFromVector(XMLoadFloat3(&m_position)) * m_rotation.GetMatrixFormXM();
+	
+	if (m_bMirrorX)
+		transform *= XMLoadFloat4x4(&s_mirrorXMat);
+
+	if (m_bMirrorY)
+		transform *= XMLoadFloat4x4(&s_mirrorYMat);
+
+	if (m_bMirrorZ)
+		transform *= XMLoadFloat4x4(&s_mirrorZMat);
+
+	XMStoreFloat4x4(&m_transformMatrix, transform);
 }
