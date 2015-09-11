@@ -1,6 +1,6 @@
 #include "PCH.h"
 #include "RendererImpl.h"
-#include "Resources\RootSignatureFactory.h"
+#include "Pipeline\RootSignatureFactory.h"
 #include "Resources\ClearValue.h"
 #include "Resources\ResourceBarrier.h"
 #include "Descriptors\DescriptorTable.h"

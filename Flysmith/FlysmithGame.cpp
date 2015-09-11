@@ -1,15 +1,13 @@
 #include "PCH.h"
-#include "FlysmithGame.h"
-#include "Airfoil.h"
-#include "KeyboardEvents.h"
 #include "RenderComponent.h"
-#include "Wing.h"
-#include "Plane.h"
-#include "Entity.h"
-#include "Fuselage.h"
-#include "Atmosphere.h"
-#include "AssetLocator.h"
+#include "KeyboardEvents.h"
+#include "FlysmithGame.h"
 #include "AngleMath.h"
+#include "Entity.h"
+
+#include "Resources\AssetLocator.h"
+#include "Aircraft\Fuselage.h"
+#include "Aircraft\Wing.h"
 using namespace DirectX;
 
 

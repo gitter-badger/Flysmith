@@ -1,11 +1,11 @@
 #pragma once
 #include "Resources\Resource.h"
 #include "StateObjects\RasterizerStateConfig.h"
-#include "PSOManager.h"
 
 
 class DescriptorHeap;
 class ResourceCache;
+class PSOManager;
 
 // TODO: Handle state changes to render items outside -> make it a POD 
 struct RenderItem

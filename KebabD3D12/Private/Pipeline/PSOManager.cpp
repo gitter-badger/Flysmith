@@ -1,5 +1,6 @@
 #include "PCH.h"
 #include "PSOManager.h"
+#include "Renderer\Device.h"
 
 
 bool PSOManager::s_bInstantiated = false;

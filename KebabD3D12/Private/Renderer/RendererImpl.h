@@ -1,7 +1,7 @@
 #pragma once
 #include "Renderer.h"
 
-#include "HardwareCaps.h"
+#include "Misc\HardwareCaps.h"
 #include "RenderItem.h"
 #include "Camera.h"
 #include "Device.h"
@@ -15,8 +15,8 @@
 #include "Pipeline\Viewport.h"
 #include "Pipeline\CommandAllocator.h"
 #include "Pipeline\CommandQueue.h"
-#include "PSOManager.h"
-#include "RootSignature.h"
+#include "Pipeline\PSOManager.h"
+#include "Pipeline\RootSignature.h"
 
 
 struct Renderer::Impl

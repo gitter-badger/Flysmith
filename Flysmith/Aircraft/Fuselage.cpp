@@ -33,7 +33,7 @@ Mesh Fuselage::GenerateMesh(const std::wstring& path)
 
 	// Real length: 8.28m
 	// Paper length: 0.29m
-	auto paperToReal = 8.28f / 0.29f * 0.01; // ringDist and ringDiam are in cm 
+	auto paperToReal = 8.28f / 0.29f * 0.01f; // ringDist and ringDiam are in cm 
 
 	for (auto& disp : ringDisp)
 	{
@@ -83,10 +83,9 @@ std::vector<Vertex> Fuselage::GenerateCircularRing(F32 diameter, XMFLOAT3 dispFr
 	for (F32 angle = 0; angle <= XM_2PI; angle += 0.1f)
 	{
 		XMFLOAT3 pos(radius * cos(angle),
-			radius * sin(angle) + dispFromFront.y,
-			dispFromFront.z);
-		XMFLOAT3 normal(0.0f, 0.0f, 0.0f);
-		verts.push_back({ pos, normal });
+					 radius * sin(angle) + dispFromFront.y,
+					 dispFromFront.z);
+		verts.push_back(Vertex(pos));
 	}
 
 	return verts;

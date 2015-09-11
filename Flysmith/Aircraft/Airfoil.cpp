@@ -1,6 +1,6 @@
 #include "PCH.h"
 #include "Airfoil.h"
-#include "AssetLocator.h"
+#include "Resources\AssetLocator.h"
 using namespace DirectX;
 
 
@@ -37,9 +37,7 @@ Mesh Airfoil::GenerateMesh()
 
 	for (auto& foilPoint : points)
 	{
-		XMFLOAT3 pos(foilPoint.x, foilPoint.y, 0.0f);
-		XMFLOAT3 normal(0.0f, 0.0f, 0.0f);
-		mesh.verts.push_back({ pos, normal });
+		mesh.verts.push_back(foilPoint);
 	}
 
 	auto numPoints = points.size();

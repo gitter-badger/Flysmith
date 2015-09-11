@@ -1,10 +1,11 @@
 #pragma once
 #include "PCH.h"
-#include "Device.h"
 #include "RootSignature.h"
 #include "Resources\ResourceCache.h"
 #include "Pipeline\PipelineStateObject.h"
 
+
+class Device;
 
 class PSOManager
 {

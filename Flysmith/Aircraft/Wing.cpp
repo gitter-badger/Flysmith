@@ -136,11 +136,9 @@ void Wing::GenerateMeshVertsIndices(Mesh& mesh, std::vector<std::vector<DirectX:
 {
 	for (U32 ringIdx = 0; ringIdx < rings.size(); ringIdx++)
 	{
-		XMFLOAT3 normal(0.0f, 0.0f, 0.0f);
-
 		for (auto& point : airfoils[ringIdx])
 		{
-			mesh.verts.push_back({ point, normal });
+			mesh.verts.push_back(Vertex(point));
 		}
 	}
 

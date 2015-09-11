@@ -1,6 +1,6 @@
 #include "PCH.h"
 #include "SwapChainConfig.h"
-#include "HardwareCaps.h"
+#include "Misc\HardwareCaps.h"
 
 
 SwapChainConfig::SwapChainConfig(const HWND hwnd)
