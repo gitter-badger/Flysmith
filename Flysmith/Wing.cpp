@@ -2,6 +2,7 @@
 #include "Wing.h"
 #include "Mesh.h"
 #include "Airfoil.h"
+#include "AngleMath.h"
 
 
 WingRing::WingRing()
@@ -51,7 +52,7 @@ Mesh Wing::GenerateMesh()
 		XMFLOAT3 scalingVec = { rings[ringIdx].chord, rings[ringIdx].chord, 1.0f };
 		auto scalingMat = XMMatrixScalingFromVector(XMLoadFloat3(&scalingVec));
 
-		auto rotMat = XMMatrixRotationZ(XMConvertToRadians(rings[ringIdx].incidenceAngle));
+		auto rotMat = XMMatrixRotationZ(DegToRad(rings[ringIdx].incidenceAngle));
 
 		for (auto& point : airfoils[ringIdx])
 		{
@@ -80,7 +81,7 @@ Mesh Wing::GenerateMesh()
 	// Apply dihedral/anhedral 
 	for (U32 sectionIdx = 0; sectionIdx < sections.size(); ++sectionIdx)
 	{
-		auto dihedral = XMConvertToRadians(sections[sectionIdx].dihedral);
+		auto dihedral = DegToRad(sections[sectionIdx].dihedral);
 		for (auto& point : airfoils[sectionIdx + 1])
 		{
 			point.y = point.y * cos(dihedral) + point.z * sin(dihedral);

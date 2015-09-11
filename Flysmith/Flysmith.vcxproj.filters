@@ -86,5 +86,8 @@
     <ClInclude Include="Atmosphere.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="AngleMath.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

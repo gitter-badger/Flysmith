@@ -9,6 +9,7 @@
 #include "Fuselage.h"
 #include "Atmosphere.h"
 #include "AssetLocator.h"
+#include "AngleMath.h"
 using namespace DirectX;
 
 
@@ -32,18 +33,12 @@ FlysmithGame::FlysmithGame(HINSTANCE hInstance)
 	// Wings
 	auto rightWingEntityId = m_scene.CreateEntity();
 	m_scene.entities[rightWingEntityId].GetTransform()->RotateY(-XM_PIDIV2);
-	/*m_scene.entities[rightWingEntityId].GetTransform()->TranslateY(0.1f);
-	m_scene.entities[rightWingEntityId].GetTransform()->TranslateX(1.4f);*/
 	auto rcWing1 = m_scene.CreateRenderComponent(m_resources.GetHandle("Wing"), vert, pixel);
 	m_scene.entities[rightWingEntityId].AttachComponent(rcWing1, &m_scene.renderComponents[rcWing1.index]);
 
 	auto leftWingEntityId = m_scene.CreateEntity();
-	// Mirror along X
 	m_scene.entities[leftWingEntityId].GetTransform()->MirrorAlongX();
 	m_scene.entities[leftWingEntityId].GetTransform()->RotateY(XM_PIDIV2);
-	//m_scene.entities[leftWingEntityId].GetTransform()->TranslateY(1);
-	/*m_scene.entities[leftWingEntityId].GetTransform()->TranslateY(1.5f);
-	m_scene.entities[leftWingEntityId].GetTransform()->TranslateX(1.4f);*/
 	auto rcWing2 = m_scene.CreateRenderComponent(m_resources.GetHandle("Wing"), vert, pixel);
 	m_scene.entities[leftWingEntityId].AttachComponent(rcWing2, &m_scene.renderComponents[rcWing2.index]);
 
@@ -73,19 +68,19 @@ void FlysmithGame::LoadResources()
 	WingRing root;
 	root.chord = 1.6256f;
 	root.locationOnWing = 0.0f;
-	root.incidenceAngle = 1.0f + 30.0f / 60.0f; // 1 degree 30 minutes
+	root.incidenceAngle = DegMinSecToDecimal(1.0f, 30.0f);
 	
 	WingRing tip;
 	tip.chord = 1.1303f;
 	tip.locationOnWing = 1.0f;
-	tip.incidenceAngle = -(1.0f + 30.0f / 60.0f); // - 1 degree 30 minutes
+	tip.incidenceAngle = DegMinSecToDecimal(-1.0f, 30.0f);
 
 	wing.rings.push_back(root);
 	wing.rings.push_back(tip);
 
 	wing.sections.push_back(WingSection());
 	wing.sections[0].sweep = 0.0f;
-	wing.sections[0].dihedral = 1.0f + 44.0f / 60.0f; // 1 degree 44 minutes dihedral
+	wing.sections[0].dihedral = DegMinSecToDecimal(1.0f, 44.0f);
 
 	auto wingMesh = wing.GenerateMesh();
 	m_resources.AddResource("Wing", m_pRenderer->CacheMesh(wingMesh.verts, wingMesh.indices));
@@ -97,5 +92,5 @@ void FlysmithGame::LoadResources()
 
 void FlysmithGame::UpdateScene(float dt)
 {
-	//m_scene.entities[0].GetTransform()->TranslateZ(-dt);
+	m_scene.entities[0].GetTransform()->TranslateZ(-dt);
 }

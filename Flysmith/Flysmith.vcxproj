@@ -183,6 +183,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Airfoil.h" />
+    <ClInclude Include="AngleMath.h" />
     <ClInclude Include="AssetLocator.h" />
     <ClInclude Include="Atmosphere.h" />
     <ClInclude Include="CameraController.h" />
