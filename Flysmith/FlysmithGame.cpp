@@ -31,25 +31,25 @@ FlysmithGame::FlysmithGame(HINSTANCE hInstance)
 
 	// Wings
 	auto wing1EntityId = m_scene.CreateEntity();
-	m_scene.entities[wing1EntityId].GetTransform()->RotateY(-XM_PIDIV2);
+	/*m_scene.entities[wing1EntityId].GetTransform()->RotateY(-XM_PIDIV2);
 	m_scene.entities[wing1EntityId].GetTransform()->TranslateY(0.1f);
-	m_scene.entities[wing1EntityId].GetTransform()->TranslateX(1.4f);
+	m_scene.entities[wing1EntityId].GetTransform()->TranslateX(1.4f);*/
 	auto rcWing1 = m_scene.CreateRenderComponent(m_resources.GetHandle("Wing"), vert, pixel);
 	m_scene.entities[wing1EntityId].AttachComponent(rcWing1, &m_scene.renderComponents[rcWing1.index]);
 
-	auto wing2EntityId = m_scene.CreateEntity();
+	/*auto wing2EntityId = m_scene.CreateEntity();
 	m_scene.entities[wing2EntityId].GetTransform()->RotateY(-XM_PIDIV2);
 	m_scene.entities[wing2EntityId].GetTransform()->RotateZ(XM_PI);
 	m_scene.entities[wing2EntityId].GetTransform()->TranslateZ(0.f);
 	m_scene.entities[wing2EntityId].GetTransform()->TranslateY(1.5f);
 	m_scene.entities[wing2EntityId].GetTransform()->TranslateX(1.4f);
 	auto rcWing2 = m_scene.CreateRenderComponent(m_resources.GetHandle("Wing"), vert, pixel);
-	m_scene.entities[wing2EntityId].AttachComponent(rcWing2, &m_scene.renderComponents[rcWing2.index]);
+	m_scene.entities[wing2EntityId].AttachComponent(rcWing2, &m_scene.renderComponents[rcWing2.index]);*/
 
 	// Attach
 	m_scene.entities[planeEntityId].AddChild(&m_scene.entities[fuselageEntityId]);
 	m_scene.entities[planeEntityId].AddChild(&m_scene.entities[wing1EntityId]);
-	m_scene.entities[planeEntityId].AddChild(&m_scene.entities[wing2EntityId]);
+	//m_scene.entities[planeEntityId].AddChild(&m_scene.entities[wing2EntityId]);
 }
 
 void FlysmithGame::HandleEvent(const Event& ev)
@@ -83,7 +83,8 @@ void FlysmithGame::LoadResources()
 	wing.rings.push_back(tip);
 
 	wing.sections.push_back(WingSection());
-	wing.sections[0].sweepAngle = 0.0f;
+	wing.sections[0].sweep = 0.0f;
+	wing.sections[0].dihedral = 1.0f + 44.0f / 60.0f; // 1 degree 44 minutes dihedral
 
 	auto wingMesh = wing.GenerateMesh();
 	m_resources.AddResource("Wing", m_pRenderer->CacheMesh(wingMesh.verts, wingMesh.indices));

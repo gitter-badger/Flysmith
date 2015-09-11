@@ -28,6 +28,9 @@ Mesh Wing::GenerateMesh()
 	for (auto& ring : rings)
 		assert(ring.chord > 0.0f);
 
+	for (auto& section : sections)
+		assert(section.dihedral <= 45.0f);
+
 	// Sort rings by location on wing 
 	std::sort(rings.begin(), rings.end(), [](const WingRing& lhs, const WingRing& rhs) -> bool { 
 		return lhs.locationOnWing < rhs.locationOnWing; 
@@ -67,10 +70,20 @@ Mesh Wing::GenerateMesh()
 	// Sweep
 	for (U32 sectionIdx = 0; sectionIdx < sections.size(); ++sectionIdx)
 	{
-		auto sweepAngle = XMConvertToRadians(sections[sectionIdx].sweepAngle);
+		auto sweep = XMConvertToRadians(sections[sectionIdx].sweep);
 		for (auto& point : airfoils[sectionIdx + 1])
 		{
-			point.x = point.x * cos(sweepAngle) + point.z * sin(sweepAngle);
+			point.x = point.x * cos(sweep) + point.z * sin(sweep);
+		}
+	}
+
+	// Apply dihedral/anhedral 
+	for (U32 sectionIdx = 0; sectionIdx < sections.size(); ++sectionIdx)
+	{
+		auto dihedral = XMConvertToRadians(sections[sectionIdx].dihedral);
+		for (auto& point : airfoils[sectionIdx + 1])
+		{
+			point.y = point.y * cos(dihedral) + point.z * sin(dihedral);
 		}
 	}
 

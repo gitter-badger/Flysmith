@@ -27,7 +27,12 @@ struct WingRing
 struct WingSection
 {
 	// In degrees
-	F32 sweepAngle; 
+	// Relative to root
+	F32 sweep; 
+	
+	// In degrees
+	// Relative to root 
+	F32 dihedral;
 };
 
 struct Wing
