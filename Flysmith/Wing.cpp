@@ -23,6 +23,34 @@ WingSection::WingSection()
 {
 }
 
+Wingtip::Wingtip()
+	: type(CUTOFF)
+{
+}
+
+void Wingtip::Generate(Mesh& mesh, std::vector<DirectX::XMFLOAT3>& tipAirfoil, U32 tipVertexBegin)
+{
+	switch (type)
+	{
+	case CUTOFF:
+		GenerateCutoff(mesh, tipAirfoil, tipVertexBegin);
+		break;
+	}
+}
+
+void Wingtip::GenerateCutoff(Mesh& mesh, std::vector<XMFLOAT3>& tipAirfoil, U32 tipVertexBegin)
+{
+	// For whole wing
+	auto numPoints = tipVertexBegin + tipAirfoil.size();
+
+	for (U32 pointIdx = tipVertexBegin; pointIdx < numPoints - 1; ++pointIdx)
+	{
+		mesh.indices.push_back(pointIdx);
+		mesh.indices.push_back(pointIdx + 1);
+		mesh.indices.push_back(numPoints - 1 - (pointIdx - tipVertexBegin));
+	}
+}
+
 void Wing::CheckConfigurationValidity()
 {
 	assert(length > 0.0f);
@@ -138,6 +166,9 @@ Mesh Wing::GenerateMesh()
 
 	Mesh mesh;
 	GenerateMeshVertsIndices(mesh, airfoils);
+
+	wingtip.Generate(mesh, airfoils[airfoils.size () - 1], (rings.size() - 1) * airfoils[0].size());
+
 	mesh.GenerateNormals();
 
 	return mesh;
