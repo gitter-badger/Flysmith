@@ -2,6 +2,7 @@
 
 
 struct Mesh;
+struct DirectX::XMFLOAT3;
 
 // Rings divide the wing into sections(2 rings delimit such a section), each with constant cross section profile 
 // and constant rate of change in parameters
@@ -33,14 +34,14 @@ struct WingSection
 	// In degrees
 	// Relative to root 
 	F32 dihedral;
+
+	WingSection();
 };
 
 struct Wing
 {
 	// Doesn't include full path and extension
 	// i.e. NACA2412 and not D:\Flysmith\Assets\NACA2412.dat
-	// TODO: Cache airfoil data and require the desired airfoil's id in the cache 
-	//       Better, generate airfoil data 
 	std::wstring airfoilFile;
 
 	std::vector<WingRing> rings;
@@ -49,10 +50,18 @@ struct Wing
 	// Length from root to tip(i.e. not wingspan)
 	F32 length;
 
-	// TODO: Encapsulate 
 	std::vector<WingSection> sections;
 
 	Mesh GenerateMesh();
 	
 	Wing();
+
+private:
+	void CheckConfigurationValidity();
+	void GenerateAirfoils(std::vector<std::vector<DirectX::XMFLOAT3>>& airfoils);
+	void PlaceRingsAlongWing(std::vector<std::vector<DirectX::XMFLOAT3>>& airfoils);
+	void ScaleSectionsByChord(std::vector<std::vector<DirectX::XMFLOAT3>>& airfoils);
+	void ApplySweeps(std::vector<std::vector<DirectX::XMFLOAT3>>& airfoils);
+	void ApplyDihedrals(std::vector<std::vector<DirectX::XMFLOAT3>>& airfoils);
+	void GenerateMeshVertsIndices(Mesh&, std::vector<std::vector<DirectX::XMFLOAT3>>& airfoils);
 };
