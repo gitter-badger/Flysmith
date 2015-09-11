@@ -10,6 +10,7 @@
 #include "Atmosphere.h"
 #include "AssetLocator.h"
 #include "AngleMath.h"
+#include "Wingtip.h"
 using namespace DirectX;
 
 
@@ -46,6 +47,26 @@ FlysmithGame::FlysmithGame(HINSTANCE hInstance)
 	m_scene.entities[planeEntityId].AddChild(&m_scene.entities[fuselageEntityId]);
 	m_scene.entities[planeEntityId].AddChild(&m_scene.entities[rightWingEntityId]);
 	m_scene.entities[planeEntityId].AddChild(&m_scene.entities[leftWingEntityId]);
+
+	// Wingtips
+	auto wingtipRightId = m_scene.CreateEntity();
+	auto rcWingtipRight = m_scene.CreateRenderComponent(m_resources.GetHandle("Wingtip"), vert, pixel);
+	m_scene.entities[wingtipRightId].AttachComponent(rcWingtipRight, &m_scene.renderComponents[rcWingtipRight.index]);
+
+	auto wingtipLeftId = m_scene.CreateEntity();
+	auto rcWingtipLeft = m_scene.CreateRenderComponent(m_resources.GetHandle("Wingtip"), vert, pixel);
+	m_scene.entities[wingtipLeftId].AttachComponent(rcWingtipLeft, &m_scene.renderComponents[rcWingtipLeft.index]);
+
+	// TEMP
+	// Fit wingtips to wings
+	m_scene.entities[wingtipRightId].GetTransform()->TranslateZ(5.0f);
+	m_scene.entities[wingtipRightId].GetTransform()->TranslateY(0.15f);
+
+	m_scene.entities[wingtipLeftId].GetTransform()->TranslateZ(5.0f);
+	m_scene.entities[wingtipLeftId].GetTransform()->TranslateY(0.15f);
+
+	m_scene.entities[rightWingEntityId].AddChild(&m_scene.entities[wingtipRightId]);
+	m_scene.entities[leftWingEntityId].AddChild(&m_scene.entities[wingtipLeftId]);
 }
 
 void FlysmithGame::HandleEvent(const Event& ev)
@@ -85,6 +106,14 @@ void FlysmithGame::LoadResources()
 	auto wingMesh = wing.GenerateMesh();
 	m_resources.AddResource("Wing", m_pRenderer->CacheMesh(wingMesh.verts, wingMesh.indices));
 
+	Wingtip wingtip;
+	wingtip.airfoilFile = L"NACA2412";
+	wingtip.chord = tip.chord;
+	wingtip.type = Wingtip::Type::CUTOFF;
+	
+	auto wingtipMesh = wingtip.GenerateMesh();
+	m_resources.AddResource("Wingtip", m_pRenderer->CacheMesh(wingtipMesh.verts, wingtipMesh.indices));
+
 	Fuselage fuselage;
 	auto fuselageMesh = fuselage.GenerateMesh(assLocator.GetAssetDirectory(AssetType::FUSELAGES) + L"Cessna172S");
 	m_resources.AddResource("Fuselage", m_pRenderer->CacheMesh(fuselageMesh.verts, fuselageMesh.indices));
@@ -92,5 +121,5 @@ void FlysmithGame::LoadResources()
 
 void FlysmithGame::UpdateScene(float dt)
 {
-	m_scene.entities[0].GetTransform()->TranslateZ(-dt);
+	//m_scene.entities[0].GetTransform()->TranslateZ(-dt);
 }

@@ -52,9 +52,10 @@ struct Wing
 
 	std::vector<WingSection> sections;
 
-	Mesh GenerateMesh();
-	
+public:
 	Wing();
+	void FromFile(std::wstring& fullPath);
+	Mesh GenerateMesh();
 
 private:
 	void CheckConfigurationValidity();

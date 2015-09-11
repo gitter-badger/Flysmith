@@ -120,7 +120,7 @@ void Wing::GenerateMeshVertsIndices(Mesh& mesh, std::vector<std::vector<DirectX:
 	for (U32 ringIdx = 0; ringIdx < rings.size() - 1; ringIdx++)
 	{
 		mesh.StitchRings(ringSize, ringSize * ringIdx,
-			ringSize * (ringIdx + 1));
+								   ringSize * (ringIdx + 1));
 	}
 }
 

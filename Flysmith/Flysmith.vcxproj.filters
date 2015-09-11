@@ -48,6 +48,9 @@
     <ClCompile Include="Wing.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Wingtip.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FlysmithGame.h">
@@ -87,6 +90,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="AngleMath.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Wingtip.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
