@@ -105,6 +105,7 @@ LRESULT CALLBACK Window::WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPar
 		}
 		break;
 	case WM_KILLFOCUS:
+		g_eventManager.PostEvent(CreateDeviceLostEvent());
 		g_inputManager.EnableCursor();
 		g_inputManager.SetRMBUp();
 		break;

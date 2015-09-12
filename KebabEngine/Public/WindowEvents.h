@@ -14,3 +14,21 @@ Event&& CreateWindowResizeEvent(U32 width, U32 height)
 
 	return std::move(ev);
 }
+
+inline KEBAB_API
+Event&& CreateDeviceLostEvent()
+{
+	Event ev;
+	ev.type = "DeviceLost"_HASH;
+
+	return std::move(ev);
+}
+
+inline KEBAB_API
+Event&& CreateDeviceRecoveredEvent()
+{
+	Event ev;
+	ev.type = "DeviceRecovered"_HASH;
+
+	return std::move(ev);
+}
