@@ -122,6 +122,36 @@ void Wing::GenerateMeshVertsIndices(Mesh& mesh)
 	}
 }
 
+void Wing::AttachWingtip(Mesh& meshOut)
+{
+	// Set the wingtip device's base airfoil to the wing's last ring(tip)'s airfoil
+	wingtip.tipAirfoil = airfoils[rings.size() - 1];
+	
+	// Generate wingtip device 
+	auto wingtipMesh = wingtip.Generate();
+
+	// For now, assume the wingtip device and the wing's tip have matching airfoil data
+	// Stitching is done by adding any additional vertices besides the last ring's vertices already in place
+	// and merging(and offsetting) the connectivity data.
+	
+	// Merge and offset connectivity info
+	auto offset = meshOut.verts.size() - airfoils[rings.size() - 1].size();
+
+	for (U32 vertIdx = 0; vertIdx < wingtipMesh.indices.size(); vertIdx++)
+	{
+		meshOut.indices.push_back(wingtipMesh.indices[vertIdx] + offset);
+	}
+
+	// Add additional verts
+	auto numAdditionalVerts = wingtipMesh.verts.size() - airfoils[rings.size() - 1].size();
+	meshOut.verts.reserve(meshOut.verts.size() + numAdditionalVerts);
+	
+	for (U32 vertIdx = airfoils[rings.size() - 1].size(); vertIdx < wingtipMesh.verts.size(); vertIdx++)
+	{
+		meshOut.verts.push_back(wingtipMesh.verts[vertIdx]);
+	}
+}
+
 Mesh Wing::GenerateMesh()
 {
 	CheckConfigurationValidity();
@@ -137,7 +167,7 @@ Mesh Wing::GenerateMesh()
 	Mesh mesh;
 	GenerateMeshVertsIndices(mesh);
 
-	wingtip.Generate(mesh, airfoils[airfoils.size () - 1], (rings.size() - 1) * airfoils[0].size());
+	AttachWingtip(mesh);
 
 	mesh.GenerateNormals();
 

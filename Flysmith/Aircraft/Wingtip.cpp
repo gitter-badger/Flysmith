@@ -3,30 +3,48 @@
 #include "Mesh.h"
 
 
-Wingtip::Wingtip()
-	: type(CUTOFF)
+Wingtip::Wingtip() : type(CUTOFF)
 {
 }
 
-void Wingtip::Generate(Mesh& mesh, VertexArray& tipAirfoil, U32 tipVertexBegin)
+Mesh Wingtip::Generate()
 {
+	Mesh mesh;
+
+	// Any wingtip device will at least contain the wing...tip's airfoil's verts.
+	for (auto& vertPos : tipAirfoil)
+	{
+		mesh.verts.push_back(Vertex(vertPos));
+	}
+
+	// Generate the rest of the geometry(if needed) and set connectivity, depending on the set type.
 	switch (type)
 	{
 	case CUTOFF:
-		GenerateCutoff(mesh, tipAirfoil, tipVertexBegin);
+		GenerateCutoff(mesh);
 		break;
+	case ROUNDED:
+	case SHARP:
+	case HOERNER:
+	case DROOPED:
+	case ENDPLATE:
+	case WINGLET:
+		break;	
 	}
+
+	return mesh;
 }
 
-void Wingtip::GenerateCutoff(Mesh& mesh, VertexArray& tipAirfoil, U32 tipVertexBegin)
+void Wingtip::GenerateCutoff(Mesh& meshOut)
 {
-	// For whole wing
-	auto numPoints = tipVertexBegin + tipAirfoil.size();
+	auto numPoints = tipAirfoil.size();
 
-	for (U32 pointIdx = tipVertexBegin; pointIdx < numPoints - 1; ++pointIdx)
+	// There's no geometry generation needed for the cutoff wingtip, 
+	// therefore only connectivity info is handled.
+	for (U32 pointIdx = 0; pointIdx < numPoints - 1; ++pointIdx)
 	{
-		mesh.indices.push_back(pointIdx);
-		mesh.indices.push_back(pointIdx + 1);
-		mesh.indices.push_back(numPoints - 1 - (pointIdx - tipVertexBegin));
+		meshOut.indices.push_back(pointIdx);
+		meshOut.indices.push_back(pointIdx + 1);
+		meshOut.indices.push_back(numPoints - 1 - pointIdx);
 	}
 }

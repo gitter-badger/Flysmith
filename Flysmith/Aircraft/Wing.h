@@ -29,6 +29,7 @@ struct WingRing
 	WingRing();
 };
 
+// "Interval" delimited by two rings.
 struct WingSection
 {
 	// In degrees
@@ -68,6 +69,7 @@ private:
 	void ScaleSectionsByChord();
 	void ApplySweeps();
 	void ApplyDihedrals();
+	void AttachWingtip(Mesh& meshOut);
 	void GenerateMeshVertsIndices(Mesh&);
 
 	std::vector<VertexArray> airfoils;
