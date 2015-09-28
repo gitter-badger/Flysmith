@@ -2,7 +2,7 @@
 #include "Wing.h"
 #include "Mesh.h"
 #include "Airfoil.h"
-#include "AngleMath.h"
+#include "Math\AngleMath.h"
 
 
 WingRing::WingRing()

@@ -2,7 +2,7 @@
 #include "RenderComponent.h"
 #include "KeyboardEvents.h"
 #include "FlysmithGame.h"
-#include "AngleMath.h"
+#include "Math\AngleMath.h"
 #include "Entity.h"
 
 #include "Resources\AssetLocator.h"
@@ -91,5 +91,4 @@ void FlysmithGame::LoadResources()
 
 void FlysmithGame::UpdateScene(float dt)
 {
-	//m_scene.entities[0].GetTransform()->TranslateZ(-dt);
 }

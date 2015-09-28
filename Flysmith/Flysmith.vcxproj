@@ -166,7 +166,7 @@
   <ItemGroup>
     <ClCompile Include="Aircraft\Airfoil.cpp" />
     <ClCompile Include="Resources\AssetLocator.cpp" />
-    <ClCompile Include="Atmosphere.cpp" />
+    <ClCompile Include="Simulation\Atmosphere.cpp" />
     <ClCompile Include="CameraController.cpp" />
     <ClCompile Include="FlysmithGame.cpp" />
     <ClCompile Include="Aircraft\Fuselage.cpp" />
@@ -183,17 +183,16 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Aircraft\Airfoil.h" />
-    <ClInclude Include="AngleMath.h" />
+    <ClInclude Include="Math\AngleMath.h" />
     <ClInclude Include="Resources\AssetLocator.h" />
-    <ClInclude Include="Atmosphere.h" />
+    <ClInclude Include="Simulation\Atmosphere.h" />
     <ClInclude Include="CameraController.h" />
     <ClInclude Include="FlysmithGame.h" />
     <ClInclude Include="Aircraft\Fuselage.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="PCH.h" />
-    <ClInclude Include="Aircraft\Plane.h" />
     <ClInclude Include="Resources\ResourceRegistry.h" />
-    <ClInclude Include="StandardUnits.h" />
+    <ClInclude Include="Math\StandardUnits.h" />
     <ClInclude Include="Aircraft\Wing.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -21,9 +21,6 @@
     <ClCompile Include="CameraController.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Atmosphere.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Mesh.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -48,6 +45,9 @@
     <ClCompile Include="Resources\ResourceRegistry.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Simulation\Atmosphere.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FlysmithGame.h">
@@ -62,15 +62,6 @@
     <ClInclude Include="Mesh.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="StandardUnits.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Atmosphere.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="AngleMath.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Aircraft\Airfoil.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -80,13 +71,19 @@
     <ClInclude Include="Aircraft\Wing.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Aircraft\Plane.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Resources\AssetLocator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Resources\ResourceRegistry.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\StandardUnits.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\AngleMath.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Simulation\Atmosphere.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
