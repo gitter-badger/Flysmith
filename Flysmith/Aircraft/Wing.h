@@ -1,8 +1,12 @@
 #pragma once
-
+#include "Wingtip.h"
 
 struct Mesh;
 struct DirectX::XMFLOAT3;
+
+// Array of vertex/point positions.
+// Not using 'vector', even though it would be more appropriate, to avoid confusion.
+using VertexArray = std::vector<DirectX::XMFLOAT3>;
 
 // Rings divide the wing into sections(2 rings delimit such a section), each with constant cross section profile 
 // and constant rate of change in parameters
@@ -38,28 +42,6 @@ struct WingSection
 	WingSection();
 };
 
-struct Wingtip
-{
-	enum Type
-	{
-		CUTOFF,
-		ROUNDED,
-		SHARP,
-		HOERNER,
-		DROOPED,
-		ENDPLATE,
-		WINGLET
-	} type;
-
-	Wingtip();
-	// TODO: Less retarded explanation
-	// @tipVertexBegin - offset index in the list of vertices already generated for the wing, up to the tip
-	// i.e. if the wing uses only one airfoil plotted with 10 points and the wing has only one section(2 rings - for root and tip),
-	//      tipVertexBegin would be 0 + (numRings - 1) * pointsPerAirfoil = 0 + 1 * 10 = 10 
-	void Generate(Mesh&, std::vector<DirectX::XMFLOAT3>& tipAirfoil, U32 tipVertexBegin);
-	void GenerateCutoff(Mesh&, std::vector<DirectX::XMFLOAT3>& tipAirfoil, U32 tipVertexBegin);
-};
-
 struct Wing
 {
 	// Doesn't include full path and extension
@@ -76,16 +58,17 @@ struct Wing
 
 	std::vector<WingSection> sections;
 
-public:
 	Wing();
 	Mesh GenerateMesh();
 
 private:
 	void CheckConfigurationValidity();
-	void GenerateAirfoils(std::vector<std::vector<DirectX::XMFLOAT3>>& airfoils);
-	void PlaceRingsAlongWing(std::vector<std::vector<DirectX::XMFLOAT3>>& airfoils);
-	void ScaleSectionsByChord(std::vector<std::vector<DirectX::XMFLOAT3>>& airfoils);
-	void ApplySweeps(std::vector<std::vector<DirectX::XMFLOAT3>>& airfoils);
-	void ApplyDihedrals(std::vector<std::vector<DirectX::XMFLOAT3>>& airfoils);
-	void GenerateMeshVertsIndices(Mesh&, std::vector<std::vector<DirectX::XMFLOAT3>>& airfoils);
+	void GenerateAirfoils();
+	void PlaceRingsAlongWing();
+	void ScaleSectionsByChord();
+	void ApplySweeps();
+	void ApplyDihedrals();
+	void GenerateMeshVertsIndices(Mesh&);
+
+	std::vector<VertexArray> airfoils;
 };

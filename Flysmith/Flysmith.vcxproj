@@ -165,6 +165,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Aircraft\Airfoil.cpp" />
+    <ClCompile Include="Aircraft\Wingtip.cpp" />
     <ClCompile Include="Resources\AssetLocator.cpp" />
     <ClCompile Include="Simulation\Atmosphere.cpp" />
     <ClCompile Include="CameraController.cpp" />
@@ -183,6 +184,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Aircraft\Airfoil.h" />
+    <ClInclude Include="Aircraft\Wingtip.h" />
     <ClInclude Include="Math\AngleMath.h" />
     <ClInclude Include="Resources\AssetLocator.h" />
     <ClInclude Include="Simulation\Atmosphere.h" />

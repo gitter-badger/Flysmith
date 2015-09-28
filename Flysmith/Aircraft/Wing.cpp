@@ -23,34 +23,6 @@ WingSection::WingSection()
 {
 }
 
-Wingtip::Wingtip()
-	: type(CUTOFF)
-{
-}
-
-void Wingtip::Generate(Mesh& mesh, std::vector<DirectX::XMFLOAT3>& tipAirfoil, U32 tipVertexBegin)
-{
-	switch (type)
-	{
-	case CUTOFF:
-		GenerateCutoff(mesh, tipAirfoil, tipVertexBegin);
-		break;
-	}
-}
-
-void Wingtip::GenerateCutoff(Mesh& mesh, std::vector<XMFLOAT3>& tipAirfoil, U32 tipVertexBegin)
-{
-	// For whole wing
-	auto numPoints = tipVertexBegin + tipAirfoil.size();
-
-	for (U32 pointIdx = tipVertexBegin; pointIdx < numPoints - 1; ++pointIdx)
-	{
-		mesh.indices.push_back(pointIdx);
-		mesh.indices.push_back(pointIdx + 1);
-		mesh.indices.push_back(numPoints - 1 - (pointIdx - tipVertexBegin));
-	}
-}
-
 void Wing::CheckConfigurationValidity()
 {
 	assert(length > 0.0f);
@@ -67,7 +39,7 @@ void Wing::CheckConfigurationValidity()
 		assert(section.dihedral <= 45.0f);
 }
 
-void Wing::GenerateAirfoils(std::vector<std::vector<XMFLOAT3>>& airfoils)
+void Wing::GenerateAirfoils()
 {
 	Airfoil airfoil(airfoilFile + L".dat");
 	for (U32 ringIdx = 0; ringIdx < rings.size(); ringIdx++)
@@ -77,7 +49,7 @@ void Wing::GenerateAirfoils(std::vector<std::vector<XMFLOAT3>>& airfoils)
 	}
 }
 
-void Wing::ApplySweeps(std::vector<std::vector<XMFLOAT3>>& airfoils)
+void Wing::ApplySweeps()
 {
 	for (U32 sectionIdx = 0; sectionIdx < sections.size(); ++sectionIdx)
 	{
@@ -89,7 +61,7 @@ void Wing::ApplySweeps(std::vector<std::vector<XMFLOAT3>>& airfoils)
 	}
 }
 
-void Wing::ApplyDihedrals(std::vector<std::vector<XMFLOAT3>>& airfoils)
+void Wing::ApplyDihedrals()
 {
 	for (U32 sectionIdx = 0; sectionIdx < sections.size(); ++sectionIdx)
 	{
@@ -101,7 +73,7 @@ void Wing::ApplyDihedrals(std::vector<std::vector<XMFLOAT3>>& airfoils)
 	}
 }
 
-void Wing::ScaleSectionsByChord(std::vector<std::vector<XMFLOAT3>>& airfoils)
+void Wing::ScaleSectionsByChord()
 {
 	for (U32 ringIdx = 0; ringIdx < rings.size(); ringIdx++)
 	{
@@ -118,7 +90,7 @@ void Wing::ScaleSectionsByChord(std::vector<std::vector<XMFLOAT3>>& airfoils)
 	}
 }
 
-void Wing::PlaceRingsAlongWing(std::vector<std::vector<XMFLOAT3>>& airfoils)
+void Wing::PlaceRingsAlongWing()
 {
 	// Sort rings by location on wing 
 	std::sort(rings.begin(), rings.end(), [](const WingRing& lhs, const WingRing& rhs) -> bool {
@@ -132,7 +104,7 @@ void Wing::PlaceRingsAlongWing(std::vector<std::vector<XMFLOAT3>>& airfoils)
 	}
 }
 
-void Wing::GenerateMeshVertsIndices(Mesh& mesh, std::vector<std::vector<DirectX::XMFLOAT3>>& airfoils)
+void Wing::GenerateMeshVertsIndices(Mesh& mesh)
 {
 	for (U32 ringIdx = 0; ringIdx < rings.size(); ringIdx++)
 	{
@@ -153,17 +125,17 @@ void Wing::GenerateMeshVertsIndices(Mesh& mesh, std::vector<std::vector<DirectX:
 Mesh Wing::GenerateMesh()
 {
 	CheckConfigurationValidity();
-	 
-	std::vector<std::vector<XMFLOAT3>> airfoils(rings.size());
+	
+	airfoils.resize(rings.size());
 
-	GenerateAirfoils(airfoils);
-	ScaleSectionsByChord(airfoils);
-	PlaceRingsAlongWing(airfoils);
-	ApplySweeps(airfoils);
-	ApplyDihedrals(airfoils);
+	GenerateAirfoils();
+	ScaleSectionsByChord();
+	PlaceRingsAlongWing();
+	ApplySweeps();
+	ApplyDihedrals();
 
 	Mesh mesh;
-	GenerateMeshVertsIndices(mesh, airfoils);
+	GenerateMeshVertsIndices(mesh);
 
 	wingtip.Generate(mesh, airfoils[airfoils.size () - 1], (rings.size() - 1) * airfoils[0].size());
 
