@@ -1,0 +1,30 @@
+{
+	"airfoil": "NACA2412",
+	"length": 5.0,
+	"wingtip": "Cutoff",
+	
+	"rings": 
+	[
+		{
+			"chord": 1.6256,
+			"location_on_wing": 0.0,
+			"incidence_angle_deg": 1.0,
+			"incidence_angle_min": 30.0
+		},
+		{
+			"chord": 1.1303,
+			"location_on_wing": 1.0,
+			"incidence_angle_deg": -1.0,
+			"incidence_angle_min": 30.0
+		}
+	],
+	
+	"sections":
+	[
+		{
+			"sweep": 0.0,
+			"dihedral_deg": 1.0,
+			"dihedral_min": 44.0
+		}
+	]
+}

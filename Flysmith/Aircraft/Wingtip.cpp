@@ -3,6 +3,16 @@
 #include "Mesh.h"
 
 
+const std::map<std::string, Wingtip::Type> Wingtip::s_typeNames = {
+	{ "Cutoff", CUTOFF },
+	{ "Rounded", ROUNDED },
+	{ "Sharp", SHARP },
+	{ "Hoerner", HOERNER },
+	{ "Drooped", DROOPED },
+	{ "Endplate", ENDPLATE },
+	{ "Winglet", WINGLET }
+};
+
 Wingtip::Wingtip() : type(CUTOFF)
 {
 }

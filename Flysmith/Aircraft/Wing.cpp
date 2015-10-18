@@ -1,13 +1,12 @@
 #include "PCH.h"
 #include "Wing.h"
 #include "Mesh.h"
+#include "json.hpp"
 #include "Airfoil.h"
 #include "Variant.h"
 #include "Math\AngleMath.h"
+#include "Resources\AssetLocator.h"
 
-
-std::map<std::string, Variant32> numberProperties;
-std::map<std::string, std::wstring> textProperties;
 
 WingRing::WingRing()
 	: locationOnWing(0.0f)
@@ -182,4 +181,47 @@ Mesh Wing::GenerateMesh()
 	mesh.GenerateNormals();
 
 	return mesh;
+}
+
+void Wing::ReadFromFile(const std::wstring& filename)
+{
+	// TODO: Validity checking 
+
+	AssetLocator al;
+
+	std::ifstream wingfile(al.GetAssetDirectory(AssetType::WINGS) + filename + L".json");
+	std::string wingdata;
+	std::string token;
+	while (wingfile >> token)
+		wingdata += token;
+
+	auto config = nlohmann::json::parse(wingdata);
+
+	std::string wingFileTemp = config["airfoil"];
+	airfoilFile = std::wstring(wingFileTemp.begin(), wingFileTemp.end());
+	length = config["length"];
+	std::string wingtipTypeName = config["wingtip"];
+	wingtip.type = Wingtip::s_typeNames.at(wingtipTypeName);
+
+	auto ringArray = config["rings"];
+	for (U32 i = 0; i < ringArray.size(); i++)
+	{
+		auto ringConfig = ringArray[i];
+
+		WingRing ring;
+		ring.chord = ringConfig["chord"];
+		ring.locationOnWing = ringConfig["location_on_wing"];
+		ring.incidenceAngle = DegMinSecToDecimal(ringConfig["incidence_angle_deg"], ringConfig["incidence_angle_min"]);
+		rings.push_back(ring);
+	}
+
+	auto sectionArray = config["sections"];
+	for (U32 i = 0; i < sectionArray.size(); i++)
+	{
+		auto section = sectionArray[i];
+
+		sections.push_back(WingSection());
+		sections[sections.size() - 1].sweep = section["sweep"];
+		sections[sections.size() - 1].dihedral = DegMinSecToDecimal(section["dihedral_deg"], section["dihedral_min"]);
+	}
 }

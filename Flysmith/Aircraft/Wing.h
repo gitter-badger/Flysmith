@@ -58,6 +58,7 @@ struct Wing
 
 	Wing();
 	Mesh GenerateMesh();
+	void ReadFromFile(const std::wstring&);
 
 private:
 	void CheckConfigurationValidity();

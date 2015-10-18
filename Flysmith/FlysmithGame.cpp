@@ -15,7 +15,7 @@ FlysmithGame::FlysmithGame(HINSTANCE hInstance)
 	: Application(hInstance)
 	, m_camController(&m_scene.camTransform)
 {
-	RegisterForEvent("LMouseUp"_HASH);
+	RegisterForEvent("LMouseDown"_HASH);
 	LoadResources();
 
 	U32 vert = m_resources.GetHandle("TestVS");
@@ -47,44 +47,17 @@ FlysmithGame::FlysmithGame(HINSTANCE hInstance)
 	m_scene.entities[planeEntityId].AddChild(&m_scene.entities[leftWingEntityId]);
 }
 
-float sweep = 0.0f;
+Wing wing;
+bool enabled = false;
 
 void FlysmithGame::HandleEvent(const Event& ev)
 {
 	switch (ev.type)
 	{
-	case "LMouseUp"_HASH:
-		sweep++;
-
-		Wing wing;
-		wing.airfoilFile = L"NACA2412";
-		wing.length = 5.0f;
-		wing.wingtip.type = Wingtip::Type::CUTOFF;
-
-		WingRing root;
-		root.chord = 1.6256f;
-		root.locationOnWing = 0.0f;
-		root.incidenceAngle = DegMinSecToDecimal(1.0f, 30.0f);
-
-		WingRing tip;
-		tip.chord = 1.1303f;
-		tip.locationOnWing = 1.0f;
-		tip.incidenceAngle = DegMinSecToDecimal(-1.0f, 30.0f);
-
-		wing.rings.push_back(root);
-		wing.rings.push_back(tip);
-
-		wing.sections.push_back(WingSection());
-		wing.sections[0].sweep = sweep;
-		wing.sections[0].dihedral = DegMinSecToDecimal(1.0f, 44.0f);
-
-		auto wingMesh = wing.GenerateMesh();
-		m_pRenderer->UpdateMesh(0, wingMesh.verts, wingMesh.indices);
-		break;
+	case "LMouseDown"_HASH:
+		enabled = true;
 	}
 }
-
-#include "json.hpp"
 
 void FlysmithGame::LoadResources()
 {
@@ -92,27 +65,7 @@ void FlysmithGame::LoadResources()
 	m_resources.AddResource("TestVS", m_pRenderer->CacheShader(VERTEX_SHADER, assLocator.GetAssetDirectory(AssetType::SHADERS) + L"TestVS.hlsl"));
 	m_resources.AddResource("TestPS", m_pRenderer->CacheShader(PIXEL_SHADER, assLocator.GetAssetDirectory(AssetType::SHADERS) + L"TestPS.hlsl"));
 
-	Wing wing;
-	wing.airfoilFile = L"NACA2412";
-	wing.length = 5.0f;
-	wing.wingtip.type = Wingtip::Type::CUTOFF;
-	
-	WingRing root;
-	root.chord = 1.6256f;
-	root.locationOnWing = 0.0f;
-	root.incidenceAngle = DegMinSecToDecimal(1.0f, 30.0f);
-	
-	WingRing tip;
-	tip.chord = 1.1303f;
-	tip.locationOnWing = 1.0f;
-	tip.incidenceAngle = DegMinSecToDecimal(-1.0f, 30.0f);
-
-	wing.rings.push_back(root);
-	wing.rings.push_back(tip);
-
-	wing.sections.push_back(WingSection());
-	wing.sections[0].sweep = 0.0f;
-	wing.sections[0].dihedral = DegMinSecToDecimal(1.0f, 44.0f);
+	wing.ReadFromFile(L"Cessna172S");
 
 	auto wingMesh = wing.GenerateMesh();
 	m_resources.AddResource("Wing", m_pRenderer->CacheMesh(wingMesh.verts, wingMesh.indices));
@@ -122,6 +75,19 @@ void FlysmithGame::LoadResources()
 	m_resources.AddResource("Fuselage", m_pRenderer->CacheMesh(fuselageMesh.verts, fuselageMesh.indices));
 }
 
+float dicks = 0.0f;
+
 void FlysmithGame::UpdateScene(float dt)
 {
+	if (enabled)
+	{
+		dicks += dt;
+		if (dicks >= 1.f)
+		{
+			dicks = 0.0f;
+			wing.sections[0].sweep = 1.0f;
+			auto wingMesh = wing.GenerateMesh();
+			m_pRenderer->UpdateMesh(0, wingMesh.verts, wingMesh.indices);
+		}
+	}
 }

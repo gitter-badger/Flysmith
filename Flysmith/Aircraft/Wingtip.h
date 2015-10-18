@@ -18,6 +18,8 @@ public:
 		WINGLET
 	} type;
 
+	static const std::map<std::string, Type> s_typeNames;
+
 	// For now, it has to match the wing's airfoil at the tip.
 	VertexArray tipAirfoil;
 	

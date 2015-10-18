@@ -12,6 +12,7 @@ public:
 	void HandleEvent(const Event&);
 
 protected:
+	// dt is in seconds
 	void UpdateScene(float dt);
 
 private:

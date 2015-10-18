@@ -17,6 +17,7 @@ public:
 	virtual U32 Run();
 
 protected:
+	// dt is in seconds
 	virtual void UpdateScene(float dt) = 0;
 	Scene m_scene;
 	Timer m_timer;
