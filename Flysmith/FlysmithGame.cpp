@@ -84,6 +84,8 @@ void FlysmithGame::HandleEvent(const Event& ev)
 	}
 }
 
+#include "json.hpp"
+
 void FlysmithGame::LoadResources()
 {
 	AssetLocator assLocator;

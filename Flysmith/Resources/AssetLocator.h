@@ -8,7 +8,8 @@ enum class AssetType
 	SHADERS,
 	FONTS,
 	AIRFOILS,
-	FUSELAGES
+	FUSELAGES, 
+	WINGS
 };
 
 class AssetLocator

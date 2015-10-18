@@ -2,8 +2,12 @@
 #include "Wing.h"
 #include "Mesh.h"
 #include "Airfoil.h"
+#include "Variant.h"
 #include "Math\AngleMath.h"
 
+
+std::map<std::string, Variant32> numberProperties;
+std::map<std::string, std::wstring> textProperties;
 
 WingRing::WingRing()
 	: locationOnWing(0.0f)
