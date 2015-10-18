@@ -27,7 +27,8 @@ public:
 	RenderItemHandle AddRenderItem(ResourceHandle mesh, ResourceHandle vertexShader, ResourceHandle pixelShader);
 
 	// TODO: Queue resource caching requests for later 
-	ResourceHandle CacheMesh(const std::vector<Vertex>& verts, const std::vector<U32>& indices);
+	ResourceHandle CacheMesh(const VertexArray& verts, const IndexArray& indices);
+	void UpdateMesh(ResourceHandle, const VertexArray& verts, const IndexArray& indices);
 	ResourceHandle CacheShader(ShaderType, const std::wstring& fullPath);
 
 private:

@@ -9,9 +9,11 @@ class ResourceCache
 {
 public:
 	ResourceCache();
+	void Init(ID3D12Device*);
 
 	// TODO: Handle all resource types uniformly
-	ResourceHandle AddMesh(ID3D12Device*, const std::vector<Vertex>& verts, const std::vector<U32>& indices);
+	ResourceHandle AddMesh(const VertexArray&, const IndexArray&);
+	void UpdateMesh(ResourceHandle meshHandle, const VertexArray&, const IndexArray&);
 	bool ExistsMesh(ResourceHandle);
 	Mesh& GetMesh(ResourceHandle);
 
@@ -23,4 +25,5 @@ public:
 private:
 	std::vector<Mesh> m_meshes;
 	std::vector<D3D12_SHADER_BYTECODE> m_shaders;
+	ID3D12Device* m_pDevice;
 };

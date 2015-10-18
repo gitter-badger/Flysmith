@@ -1,12 +1,9 @@
 #pragma once
 #include "Wingtip.h"
+#include "Vertex.h"
+
 
 struct Mesh;
-struct DirectX::XMFLOAT3;
-
-// Array of vertex/point positions.
-// Not using 'vector', even though it would be more appropriate, to avoid confusion.
-using VertexArray = std::vector<DirectX::XMFLOAT3>;
 
 // Rings divide the wing into sections(2 rings delimit such a section), each with constant cross section profile 
 // and constant rate of change in parameters

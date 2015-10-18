@@ -1,12 +1,8 @@
 #pragma once
+#include "Vertex.h"
 
 
 struct Mesh;
-struct DirectX::XMFLOAT3;
-
-// Array of vertex/point positions.
-// Not using 'vector', even though it would be more appropriate, to avoid confusion.
-using VertexArray = std::vector<DirectX::XMFLOAT3>;
 
 class Wingtip
 {

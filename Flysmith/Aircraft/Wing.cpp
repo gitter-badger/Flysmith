@@ -45,7 +45,7 @@ void Wing::GenerateAirfoils()
 	for (U32 ringIdx = 0; ringIdx < rings.size(); ringIdx++)
 	{
 		for (auto& point : airfoil.points)
-			airfoils[ringIdx].push_back({ point.x, point.y, 0.0f });
+			airfoils[ringIdx].push_back(Vertex({ point.x, point.y, 0.0f }));
 	}
 }
 
@@ -56,7 +56,8 @@ void Wing::ApplySweeps()
 		auto sweep = XMConvertToRadians(sections[sectionIdx].sweep);
 		for (auto& point : airfoils[sectionIdx + 1])
 		{
-			point.x = point.x * cos(sweep) + point.z * sin(sweep);
+			auto& pointPos = point.position;
+			pointPos.x = pointPos.x * cos(sweep) + pointPos.z * sin(sweep);
 		}
 	}
 }
@@ -68,7 +69,8 @@ void Wing::ApplyDihedrals()
 		auto dihedral = DegToRad(sections[sectionIdx].dihedral);
 		for (auto& point : airfoils[sectionIdx + 1])
 		{
-			point.y = point.y * cos(dihedral) + point.z * sin(dihedral);
+			auto& pointPos = point.position;
+			pointPos.y = pointPos.y * cos(dihedral) + pointPos.z * sin(dihedral);
 		}
 	}
 }
@@ -84,8 +86,9 @@ void Wing::ScaleSectionsByChord()
 
 		for (auto& point : airfoils[ringIdx])
 		{
-			XMStoreFloat3(&point, XMVector3Transform(XMLoadFloat3(&point), scalingMat));
-			XMStoreFloat3(&point, XMVector3Transform(XMLoadFloat3(&point), rotMat));
+			auto& pointPos = point.position;
+			XMStoreFloat3(&pointPos, XMVector3Transform(XMLoadFloat3(&pointPos), scalingMat));
+			XMStoreFloat3(&pointPos, XMVector3Transform(XMLoadFloat3(&pointPos), rotMat));
 		}
 	}
 }
@@ -100,7 +103,10 @@ void Wing::PlaceRingsAlongWing()
 	for (U32 ringIdx = 0; ringIdx < rings.size(); ringIdx++)
 	{
 		for (auto& point : airfoils[ringIdx])
-			point.z = length * rings[ringIdx].locationOnWing;
+		{
+			auto& pointPos = point.position;
+			pointPos.z = length * rings[ringIdx].locationOnWing;
+		}
 	}
 }
 

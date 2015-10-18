@@ -62,9 +62,14 @@ void Renderer::Render()
 	m_pImpl->WaitForGPU();
 }
 	
-ResourceHandle Renderer::CacheMesh(const std::vector<Vertex>& verts, const std::vector<U32>& indices)
+ResourceHandle Renderer::CacheMesh(const VertexArray& verts, const IndexArray& indices)
 {
-	return m_pImpl->m_resCache.AddMesh(m_pImpl->m_device.Get(), verts, indices);
+	return m_pImpl->m_resCache.AddMesh(verts, indices);
+}
+
+void Renderer::UpdateMesh(ResourceHandle handle, const VertexArray& verts, const IndexArray& indices)
+{
+	m_pImpl->m_resCache.UpdateMesh(handle, verts, indices);
 }
 
 ResourceHandle Renderer::CacheShader(ShaderType type, const std::wstring& fullPath)

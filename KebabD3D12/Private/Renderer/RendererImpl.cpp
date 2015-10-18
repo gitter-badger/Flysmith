@@ -53,6 +53,8 @@ Renderer::Impl::Impl(HWND hwnd, U32 windowWidth, U32 windowHeight)
 
 	// Synchronize
 	WaitForGPU();
+
+	m_resCache.Init(m_device.Get());
 }
 
 void Renderer::Impl::CreateRootSignature()

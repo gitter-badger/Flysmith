@@ -3,18 +3,32 @@
 
 
 
-ResourceCache::ResourceCache()
+ResourceCache::ResourceCache() : m_pDevice(nullptr)
 {
 }
 
-ResourceHandle ResourceCache::AddMesh(ID3D12Device* pDevice, const std::vector<Vertex>& verts, const std::vector<U32>& indices)
+void ResourceCache::Init(ID3D12Device* pDevice)
+{
+	assert(pDevice != nullptr);
+	m_pDevice = pDevice;
+}
+
+ResourceHandle ResourceCache::AddMesh(const VertexArray& verts, const IndexArray& indices)
 {
 	Mesh mesh;
 	mesh.verts = verts;
 	mesh.indices = indices;
-	mesh.Init(pDevice);
+	mesh.Init(m_pDevice);
 	m_meshes.push_back(std::move(mesh));
 	return m_meshes.size() - 1;
+}
+
+void ResourceCache::UpdateMesh(ResourceHandle meshHandle, const VertexArray& verts, const IndexArray& indices)
+{
+	assert(ExistsMesh(meshHandle));
+	m_meshes[meshHandle].verts = verts;
+	m_meshes[meshHandle].indices = indices;
+	m_meshes[meshHandle].Init(m_pDevice);
 }
 
 bool ResourceCache::ExistsMesh(ResourceHandle handle)
