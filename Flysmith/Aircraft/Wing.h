@@ -61,7 +61,7 @@ struct Wing
 	void ReadFromFile(const std::wstring&);
 
 private:
-	void CheckConfigurationValidity();
+	bool IsConfigValid();
 	void GenerateAirfoils();
 	void PlaceRingsAlongWing();
 	void ScaleSectionsByChord();

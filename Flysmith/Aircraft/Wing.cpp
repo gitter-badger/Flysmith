@@ -26,20 +26,56 @@ WingSection::WingSection()
 {
 }
 
-void Wing::CheckConfigurationValidity()
+bool Wing::IsConfigValid()
 {
-	assert(length > 0.0f);
-	assert(airfoilFile.size());
-	assert(rings.size() >= 2);
+	if (length < 0.0f)
+	{
+		g_logger.Write("Attempting to create wing of length " + std::to_string(length) + "m. It must be larger than 0m.");
+		return false;
+	}
 
-	for (U32 ringIdx = 1; ringIdx < rings.size(); ringIdx++)
-		assert(rings[ringIdx].locationOnWing != rings[ringIdx - 1].locationOnWing);
+	if (!airfoilFile.size())
+	{
+		g_logger.Write("Attempting to create wing with no airfoil file provided.");
+		return false;
+	}
 
-	for (auto& ring : rings)
-		assert(ring.chord > 0.0f);
+	if (rings.size() < 2)
+	{
+		g_logger.Write("Attempting to create wing with " + std::to_string(rings.size()) + " rings. There must be at least 2 rings.");
+		return false;
+	}
 
-	for (auto& section : sections)
-		assert(section.dihedral <= 45.0f);
+	for (size_t ringIdx = 1; ringIdx < rings.size(); ++ringIdx)
+	{
+		if (rings[ringIdx].locationOnWing == rings[ringIdx - 1].locationOnWing)
+		{
+			g_logger.Write("Attempting to create wing with rings " + std::to_string(ringIdx) + " and " + std::to_string(ringIdx - 1) + " overlapping.");
+			return false;
+		}
+	}
+
+	for (size_t ringIdx = 1; ringIdx < rings.size(); ++ringIdx)
+	{
+		if (rings[ringIdx].chord < 0.0f)
+		{
+			g_logger.Write("Attempting to create wing with ring " + std::to_string(ringIdx) + " of chord "
+						   + std::to_string(rings[ringIdx].chord) + "m while it must be larger than 0m.");
+			return false;
+		}
+	}
+
+	for (size_t sectionIdx = 0; sectionIdx < sections.size(); ++sectionIdx)
+	{
+		if (sections[sectionIdx].dihedral > 45.0f)
+		{
+			g_logger.Write("Attempting to create wing with section " + std::to_string(sectionIdx) + " having a dihedral of "
+						   + std::to_string(sections[sectionIdx].dihedral) + " degrees. It must be less or equal than 45 degrees.");
+			return false;
+		}
+	}
+
+	return true;
 }
 
 void Wing::GenerateAirfoils()
@@ -163,7 +199,10 @@ void Wing::AttachWingtip(Mesh& meshOut)
 
 Mesh Wing::GenerateMesh()
 {
-	CheckConfigurationValidity();
+	if (!IsConfigValid())
+	{
+		MessageBoxA(NULL, "Wing creation failed. Check log file for more details.", NULL, MB_OK);
+	}
 	
 	airfoils.resize(rings.size());
 
@@ -174,7 +213,11 @@ Mesh Wing::GenerateMesh()
 	ApplyDihedrals();
 
 	Mesh mesh;
+	OutputDebugStringA(std::to_string(mesh.verts.size()).c_str());
+	OutputDebugStringA("\n");
 	GenerateMeshVertsIndices(mesh);
+	OutputDebugStringA(std::to_string(mesh.verts.size()).c_str());
+	OutputDebugStringA("\n");
 
 	AttachWingtip(mesh);
 

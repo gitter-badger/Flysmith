@@ -15,9 +15,13 @@ using namespace DirectX;
 
 Airfoil::Airfoil(const std::wstring& filename)
 {
-	AssetLocator al;
+	AssetLocator assLocator;
 	std::wstring path;
-	assert(al.GetAssetPath(AssetType::AIRFOILS, filename, &path) == true);
+	if (!assLocator.GetAssetPath(AssetType::AIRFOILS, filename, &path))
+	{
+		MessageBoxA(NULL, "The airfoil file with the provided name doesn't exist. There's no error \"handling\" and this right here is in the constr,\
+							because I'm a moron. Close the application.", NULL, MB_OK);
+	}
 
 	std::ifstream file(path);
 	std::string desc;

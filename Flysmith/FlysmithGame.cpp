@@ -47,7 +47,6 @@ FlysmithGame::FlysmithGame(HINSTANCE hInstance)
 	m_scene.entities[planeEntityId].AddChild(&m_scene.entities[leftWingEntityId]);
 }
 
-Wing wing;
 bool enabled = false;
 
 void FlysmithGame::HandleEvent(const Event& ev)
@@ -65,6 +64,7 @@ void FlysmithGame::LoadResources()
 	m_resources.AddResource("TestVS", m_pRenderer->CacheShader(VERTEX_SHADER, assLocator.GetAssetDirectory(AssetType::SHADERS) + L"TestVS.hlsl"));
 	m_resources.AddResource("TestPS", m_pRenderer->CacheShader(PIXEL_SHADER, assLocator.GetAssetDirectory(AssetType::SHADERS) + L"TestPS.hlsl"));
 
+	Wing wing;
 	wing.ReadFromFile(L"Cessna172S");
 
 	auto wingMesh = wing.GenerateMesh();
@@ -76,6 +76,7 @@ void FlysmithGame::LoadResources()
 }
 
 float dicks = 0.0f;
+float sweep = 0.0f;
 
 void FlysmithGame::UpdateScene(float dt)
 {
@@ -85,7 +86,11 @@ void FlysmithGame::UpdateScene(float dt)
 		if (dicks >= 1.f)
 		{
 			dicks = 0.0f;
-			wing.sections[0].sweep = 1.0f;
+			sweep++;
+
+			Wing wing;
+			wing.ReadFromFile(L"Cessna172S");
+			wing.sections[0].sweep = sweep;
 			auto wingMesh = wing.GenerateMesh();
 			m_pRenderer->UpdateMesh(0, wingMesh.verts, wingMesh.indices);
 		}
