@@ -2,10 +2,22 @@
 #include "Mesh.h"
 
 
+struct FuselageRing
+{
+	float diameter;
+
+	// Displacement from the aircraft's front
+	float x;
+	float y;
+};
+
 struct Fuselage
 {
-	Mesh GenerateMesh(const std::wstring& path);
+	void ReadFromFile(const std::wstring& filename);
+	Mesh GenerateMesh();
 
 	// TODO: Change to displacement from center
 	std::vector<Vertex> GenerateCircularRing(F32 diameter, XMFLOAT3 dispFromFront);
+
+	std::vector<FuselageRing> rings;
 };

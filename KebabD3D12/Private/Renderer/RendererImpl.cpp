@@ -16,7 +16,8 @@ Renderer::Impl::Impl(HWND hwnd, U32 windowWidth, U32 windowHeight)
 	, m_numRenderItemCacheRequests(0)
 	, m_psoManager(&m_device, &m_resCache, &m_rootSignature)
 {
-	auto pAdapter = m_hwCaps.GetDisplayAdapters()[0].Get();
+	// TEMP: Select the second(integrated card) adapter due to some problem with nvidia I can't pinpoint.
+	auto pAdapter = m_hwCaps.GetDisplayAdapter(1).Get();
 	m_device.Init(pAdapter.Get());
 	m_hwCaps.CheckMSAASupport(m_device.Get());
 

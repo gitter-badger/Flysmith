@@ -51,6 +51,11 @@ const std::vector<DXGIAdapter>& HardwareCaps::GetDisplayAdapters() const
 	return m_displayAdapters;
 }
 
+const DXGIAdapter& HardwareCaps::GetDisplayAdapter(size_t index) const
+{
+	return m_displayAdapters[index];
+}
+
 const MSAAConfig HardwareCaps::GetMSAASupport() const
 {
 	return m_msaaSupport;

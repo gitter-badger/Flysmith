@@ -54,6 +54,7 @@ void FlysmithGame::HandleEvent(const Event& ev)
 	switch (ev.type)
 	{
 	case "LMouseDown"_HASH:
+		OutputDebugStringA("CLICK\n");
 		enabled = true;
 	}
 }
@@ -66,12 +67,12 @@ void FlysmithGame::LoadResources()
 
 	Wing wing;
 	wing.ReadFromFile(L"Cessna172S");
-
 	auto wingMesh = wing.GenerateMesh();
 	m_resources.AddResource("Wing", m_pRenderer->CacheMesh(wingMesh.verts, wingMesh.indices));
 
 	Fuselage fuselage;
-	auto fuselageMesh = fuselage.GenerateMesh(assLocator.GetAssetDirectory(AssetType::FUSELAGES) + L"Cessna172S");
+	fuselage.ReadFromFile(L"Cessna172S");
+	auto fuselageMesh = fuselage.GenerateMesh();
 	m_resources.AddResource("Fuselage", m_pRenderer->CacheMesh(fuselageMesh.verts, fuselageMesh.indices));
 }
 

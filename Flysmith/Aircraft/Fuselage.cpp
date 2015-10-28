@@ -1,71 +1,64 @@
 #include "PCH.h"
 #include "Fuselage.h"
 #include "Math\StandardUnits.h"
+#include "Resources\AssetLocator.h"
+#include "json.hpp"
 
 
-// Format:
-// num rings
-// points per ring
-// for each ring:
-// x-axis displacement from front 
-Mesh Fuselage::GenerateMesh(const std::wstring& path)
+void Fuselage::ReadFromFile(const std::wstring& filename)
 {
-	U32 numRings = 0;
-	U32 pointsPerRing = 0;
-	std::vector<XMFLOAT2> ringDisp;
+	AssetLocator assLocator;
+	std::wstring filePath;
+	assLocator.GetAssetPath(AssetType::FUSELAGES, filename + L".json", &filePath);
+	std::ifstream file(filePath);
 
-	std::wifstream file(path);
-	file >> numRings;
-	file >> pointsPerRing;
+	std::string data;
+	std::string token;
+	while (file >> token)
+		data += token;
 
-	ringDisp.resize(numRings);
+	auto config = nlohmann::json::parse(data);
 
-	// Paper measurements
-	for (U32 ringIndex = 0; ringIndex < numRings; ringIndex++)
+	auto ringArray = config["rings"];
+	for (size_t ringIdx = 0; ringIdx < ringArray.size(); ++ringIdx)
 	{
-		file >> ringDisp[ringIndex].x
-			 >> ringDisp[ringIndex].y;
+		auto ringConfig = ringArray[ringIdx];
+
+		FuselageRing ring;
+		ring.diameter = ringConfig["diameter"];
+		ring.x = ringConfig["x"];
+		ring.y = ringConfig["y"];
+		rings.push_back(ring);
 	}
+}
 
-	F32 ringDiameters[] = {
-		1.0f, 2.0f, 3.5f, 4.0f, 4.5f, 3.5f, 1.f
-	};
-
+Mesh Fuselage::GenerateMesh()
+{
+	// TEMP
 	// Real length: 8.28m
 	// Paper length: 0.29m
 	auto paperToReal = 8.28f / 0.29f * 0.01f; // ringDist and ringDiam are in cm 
 
-	for (auto& disp : ringDisp)
+	for (auto& ring : rings)
 	{
-		disp.x *= paperToReal;
-		disp.y *= paperToReal;
-	}
-
-	for (auto& diameter : ringDiameters)
-	{
-		diameter *= paperToReal;
-	}
-
-
-	std::vector<std::vector<Vertex>> rings(numRings);
-	// Generate vertex data
-	for (U32 idx = 0; idx < numRings; idx++)
-	{
-		rings[idx] = GenerateCircularRing(MetersToDXUnits(ringDiameters[idx]), { 0.0f, MetersToDXUnits(ringDisp[idx].y), MetersToDXUnits(ringDisp[idx].x) });
+		ring.x *= paperToReal;
+		ring.y *= paperToReal;
+		ring.diameter *= paperToReal;
 	}
 
 	Mesh mesh;
 	for (auto& ring : rings)
-		mesh.verts.insert(mesh.verts.end(), ring.begin(), ring.end());
-	
-	// *Stable* sort by z coord
+	{
+		auto ringVerts = GenerateCircularRing(MetersToDXUnits(ring.diameter), { 0.0f, MetersToDXUnits(ring.y), MetersToDXUnits(ring.x) });
+		mesh.verts.insert(mesh.verts.end(), ringVerts.begin(), ringVerts.end());
+	}
 
 	// Stitch
-	auto ringSize = mesh.verts.size() / numRings;
-	for (U32 ringIndex = 0; ringIndex < numRings - 1; ringIndex++)
+	auto ringSize = mesh.verts.size() / rings.size();
+	for (size_t ringIdx = 0; ringIdx < rings.size() - 1; ++ringIdx)
 	{
-		mesh.StitchRings(ringSize, ringSize * ringIndex,
-								   ringSize * (ringIndex + 1));
+		mesh.StitchRings(ringSize, ringSize * ringIdx,
+								   ringSize * (ringIdx + 1));
 	}
 
 	mesh.GenerateNormals();
@@ -80,7 +73,7 @@ std::vector<Vertex> Fuselage::GenerateCircularRing(F32 diameter, XMFLOAT3 dispFr
 
 	std::vector<Vertex> verts;
 
-	for (F32 angle = 0; angle <= XM_2PI; angle += 0.1f)
+	for (F32 angle = 0; angle <= XM_2PI; angle += 0.3f)
 	{
 		XMFLOAT3 pos(radius * cos(angle),
 					 radius * sin(angle) + dispFromFront.y,

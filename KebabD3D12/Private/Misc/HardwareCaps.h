@@ -19,7 +19,13 @@ public:
 	// Returns the highest level of MSAA available
 	const MSAAConfig CheckMSAASupport(ID3D12Device*);
 
+	// Display adapters are ordered from most to least desireable(e.g. dedicated->integrated->software)
 	const std::vector<DXGIAdapter>& GetDisplayAdapters() const;
+	
+	// Display adapters are ordered from most to least desireable(e.g. dedicated->integrated->software)
+	// Indexing starts at 0 
+	const DXGIAdapter& GetDisplayAdapter(size_t index) const;
+
 	const MSAAConfig GetMSAASupport() const;
 
 private:
