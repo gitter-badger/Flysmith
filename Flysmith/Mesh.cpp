@@ -52,4 +52,15 @@ void Mesh::StitchRings(U32 numVertsInRing, U32 firstRingStart, U32 secondRingSta
 					secondRingStart + vertOffset + 1,
 					firstRingStart  + vertOffset + 1);
 	}
+
+	// Quad delimited by start edge and end edge
+	/*SetQuadFace(secondRingStart + numVertsInRing - 1,
+				secondRingStart,
+				firstRingStart,
+				firstRingStart + numVertsInRing - 1);*/
+
+	SetQuadFace(secondRingStart,
+				firstRingStart,
+				firstRingStart + numVertsInRing - 1,
+				secondRingStart + numVertsInRing - 1);
 }
