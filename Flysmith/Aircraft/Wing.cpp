@@ -60,7 +60,7 @@ bool Wing::IsConfigValid()
 		if (rings[ringIdx].chord < 0.0f)
 		{
 			g_logger.Write("Attempting to create wing with ring " + std::to_string(ringIdx) + " of chord "
-						   + std::to_string(rings[ringIdx].chord) + "m while it must be larger than 0m.");
+				+ std::to_string(rings[ringIdx].chord) + "m while it must be larger than 0m.");
 			return false;
 		}
 	}
@@ -70,7 +70,7 @@ bool Wing::IsConfigValid()
 		if (sections[sectionIdx].dihedral > 45.0f)
 		{
 			g_logger.Write("Attempting to create wing with section " + std::to_string(sectionIdx) + " having a dihedral of "
-						   + std::to_string(sections[sectionIdx].dihedral) + " degrees. It must be less or equal than 45 degrees.");
+				+ std::to_string(sections[sectionIdx].dihedral) + " degrees. It must be less or equal than 45 degrees.");
 			return false;
 		}
 	}
@@ -81,16 +81,16 @@ bool Wing::IsConfigValid()
 void Wing::GenerateAirfoils()
 {
 	Airfoil airfoil(airfoilFile + L".dat");
-	for (U32 ringIdx = 0; ringIdx < rings.size(); ringIdx++)
+	for (size_t ringIdx = 0, numRings = rings.size(); ringIdx < numRings; ++ringIdx)
 	{
-		for (auto& point : airfoil.points)
+		for (const auto& point : airfoil.points)
 			airfoils[ringIdx].push_back(Vertex({ point.x, point.y, 0.0f }));
 	}
 }
 
 void Wing::ApplySweeps()
 {
-	for (U32 sectionIdx = 0; sectionIdx < sections.size(); ++sectionIdx)
+	for (size_t sectionIdx = 0, numSections = sections.size(); sectionIdx < numSections; ++sectionIdx)
 	{
 		auto sweep = XMConvertToRadians(sections[sectionIdx].sweep);
 		for (auto& point : airfoils[sectionIdx + 1])
@@ -103,7 +103,7 @@ void Wing::ApplySweeps()
 
 void Wing::ApplyDihedrals()
 {
-	for (U32 sectionIdx = 0; sectionIdx < sections.size(); ++sectionIdx)
+	for (size_t sectionIdx = 0, numSections = sections.size(); sectionIdx < numSections; ++sectionIdx)
 	{
 		auto dihedral = DegToRad(sections[sectionIdx].dihedral);
 		for (auto& point : airfoils[sectionIdx + 1])
@@ -116,7 +116,7 @@ void Wing::ApplyDihedrals()
 
 void Wing::ScaleSectionsByChord()
 {
-	for (U32 ringIdx = 0; ringIdx < rings.size(); ringIdx++)
+	for (size_t ringIdx = 0, numRings = rings.size(); ringIdx < numRings; ++ringIdx)
 	{
 		XMFLOAT3 scalingVec = { rings[ringIdx].chord, rings[ringIdx].chord, 1.0f };
 		auto scalingMat = XMMatrixScalingFromVector(XMLoadFloat3(&scalingVec));
@@ -139,7 +139,7 @@ void Wing::PlaceRingsAlongWing()
 		return lhs.locationOnWing < rhs.locationOnWing;
 	});
 
-	for (U32 ringIdx = 0; ringIdx < rings.size(); ringIdx++)
+	for (size_t ringIdx = 0, numRings = rings.size(); ringIdx < numRings; ++ringIdx)
 	{
 		for (auto& point : airfoils[ringIdx])
 		{
@@ -151,19 +151,19 @@ void Wing::PlaceRingsAlongWing()
 
 void Wing::GenerateMeshVertsIndices(Mesh& mesh)
 {
-	for (U32 ringIdx = 0; ringIdx < rings.size(); ringIdx++)
+	for (size_t ringIdx = 0, numRings = rings.size(); ringIdx < numRings; ++ringIdx)
 	{
-		for (auto& point : airfoils[ringIdx])
+		for (const auto& point : airfoils[ringIdx])
 		{
 			mesh.verts.push_back(Vertex(point));
 		}
 	}
 
 	auto ringSize = airfoils[0].size();
-	for (U32 ringIdx = 0; ringIdx < rings.size() - 1; ringIdx++)
+	for (size_t ringIdx = 0, numRings = rings.size(); ringIdx < numRings - 1; ++ringIdx)
 	{
 		mesh.StitchRings(ringSize, ringSize * ringIdx,
-								   ringSize * (ringIdx + 1));
+			ringSize * (ringIdx + 1));
 	}
 }
 
@@ -171,18 +171,18 @@ void Wing::AttachWingtip(Mesh& meshOut)
 {
 	// Set the wingtip device's base airfoil to the wing's last ring(tip)'s airfoil
 	wingtip.tipAirfoil = airfoils[rings.size() - 1];
-	
+
 	// Generate wingtip device 
 	auto wingtipMesh = wingtip.Generate();
 
 	// For now, assume the wingtip device and the wing's tip have matching airfoil data
 	// Stitching is done by adding any additional vertices besides the last ring's vertices already in place
 	// and merging(and offsetting) the connectivity data.
-	
+
 	// Merge and offset connectivity info
 	auto offset = meshOut.verts.size() - airfoils[rings.size() - 1].size();
 
-	for (U32 vertIdx = 0; vertIdx < wingtipMesh.indices.size(); vertIdx++)
+	for (size_t vertIdx = 0, numVertIndices = wingtipMesh.indices.size(); vertIdx < numVertIndices; ++vertIdx)
 	{
 		meshOut.indices.push_back(wingtipMesh.indices[vertIdx] + offset);
 	}
@@ -190,8 +190,8 @@ void Wing::AttachWingtip(Mesh& meshOut)
 	// Add additional verts
 	auto numAdditionalVerts = wingtipMesh.verts.size() - airfoils[rings.size() - 1].size();
 	meshOut.verts.reserve(meshOut.verts.size() + numAdditionalVerts);
-	
-	for (U32 vertIdx = airfoils[rings.size() - 1].size(); vertIdx < wingtipMesh.verts.size(); vertIdx++)
+
+	for (size_t vertIdx = airfoils[rings.size() - 1].size(), numVerts = wingtipMesh.verts.size(); vertIdx < numVerts; ++vertIdx)
 	{
 		meshOut.verts.push_back(wingtipMesh.verts[vertIdx]);
 	}
@@ -203,7 +203,7 @@ Mesh Wing::GenerateMesh()
 	{
 		MessageBoxA(NULL, "Wing creation failed. Check log file for more details.", NULL, MB_OK);
 	}
-	
+
 	airfoils.resize(rings.size());
 
 	GenerateAirfoils();
@@ -213,11 +213,7 @@ Mesh Wing::GenerateMesh()
 	ApplyDihedrals();
 
 	Mesh mesh;
-	OutputDebugStringA(std::to_string(mesh.verts.size()).c_str());
-	OutputDebugStringA("\n");
 	GenerateMeshVertsIndices(mesh);
-	OutputDebugStringA(std::to_string(mesh.verts.size()).c_str());
-	OutputDebugStringA("\n");
 
 	AttachWingtip(mesh);
 
@@ -247,9 +243,9 @@ void Wing::ReadFromFile(const std::wstring& filename)
 	wingtip.type = Wingtip::s_typeNames.at(wingtipTypeName);
 
 	auto ringArray = config["rings"];
-	for (U32 i = 0; i < ringArray.size(); i++)
+	for (size_t ringIdx = 0, numRings = ringArray.size(); ringIdx < numRings; ++ringIdx)
 	{
-		auto ringConfig = ringArray[i];
+		auto ringConfig = ringArray[ringIdx];
 
 		WingRing ring;
 		ring.chord = ringConfig["chord"];
@@ -259,9 +255,9 @@ void Wing::ReadFromFile(const std::wstring& filename)
 	}
 
 	auto sectionArray = config["sections"];
-	for (U32 i = 0; i < sectionArray.size(); i++)
+	for (size_t sectionIdx = 0, numSections = sectionArray.size(); sectionIdx < numSections; ++sectionIdx)
 	{
-		auto section = sectionArray[i];
+		auto section = sectionArray[sectionIdx];
 
 		sections.push_back(WingSection());
 		sections[sections.size() - 1].sweep = section["sweep"];

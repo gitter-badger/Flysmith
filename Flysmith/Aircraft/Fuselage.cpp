@@ -20,7 +20,7 @@ void Fuselage::ReadFromFile(const std::wstring& filename)
 	auto config = nlohmann::json::parse(data);
 
 	auto ringArray = config["rings"];
-	for (size_t ringIdx = 0; ringIdx < ringArray.size(); ++ringIdx)
+	for (size_t ringIdx = 0, numRings = ringArray.size(); ringIdx < numRings; ++ringIdx)
 	{
 		auto ringConfig = ringArray[ringIdx];
 
@@ -47,7 +47,7 @@ Mesh Fuselage::GenerateMesh()
 	}
 
 	Mesh mesh;
-	for (auto& ring : rings)
+	for (const auto& ring : rings)
 	{
 		auto ringVerts = GenerateCircularRing(MetersToDXUnits(ring.diameter), { 0.0f, MetersToDXUnits(ring.y), MetersToDXUnits(ring.x) });
 		mesh.verts.insert(mesh.verts.end(), ringVerts.begin(), ringVerts.end());
@@ -55,7 +55,7 @@ Mesh Fuselage::GenerateMesh()
 
 	// Stitch
 	auto ringSize = mesh.verts.size() / rings.size();
-	for (size_t ringIdx = 0; ringIdx < rings.size() - 1; ++ringIdx)
+	for (size_t ringIdx = 0, numRings = rings.size(); ringIdx < numRings - 1; ++ringIdx)
 	{
 		mesh.StitchRings(ringSize, ringSize * ringIdx,
 								   ringSize * (ringIdx + 1));
