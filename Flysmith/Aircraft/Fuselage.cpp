@@ -75,9 +75,9 @@ std::vector<Vertex> Fuselage::GenerateCircularRing(F32 diameter, XMFLOAT3 dispFr
 
 	for (F32 angle = 0; angle <= XM_2PI; angle += 0.1f)
 	{
-		XMFLOAT3 pos(radius * cos(angle),
-					 radius * sin(angle) + dispFromFront.y,
-					 dispFromFront.z);
+		Vector3 pos(radius * cos(angle),
+				radius * sin(angle) + dispFromFront.y,
+				dispFromFront.z);
 		verts.push_back(Vertex(pos));
 	}
 

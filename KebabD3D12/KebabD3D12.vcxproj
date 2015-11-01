@@ -188,6 +188,7 @@
     <ClCompile Include="Private\Descriptors\ConstantBufferView.cpp" />
     <ClCompile Include="Private\Descriptors\IndexBufferView.cpp" />
     <ClCompile Include="Private\Descriptors\VertexBufferView.cpp" />
+    <ClCompile Include="Private\Math\Vector.cpp" />
     <ClCompile Include="Private\Pipeline\RootSignature.cpp" />
     <ClCompile Include="Private\Renderer\Device.cpp" />
     <ClCompile Include="Private\Renderer\Fence.cpp" />
@@ -253,6 +254,7 @@
     <ClInclude Include="Private\Resources\ResourceBarrier.h" />
     <ClInclude Include="Private\Resources\ResourceConfig.h" />
     <ClInclude Include="Private\Pipeline\PSOManager.h" />
+    <ClInclude Include="Public\Vector.h" />
     <ClInclude Include="Public\Vertex.h" />
     <ClInclude Include="Public\PublicDef.h" />
     <ClInclude Include="Public\Quaternion.h" />

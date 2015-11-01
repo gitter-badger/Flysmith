@@ -1,19 +1,16 @@
 #pragma once
 #include "PublicDef.h"
-
-
-struct KEBAB12_API DirectX::XMFLOAT3;
+#include "Vector.h"
 
 
 struct KEBAB12_API Vertex
 {
-	DirectX::XMFLOAT3 position;
-	DirectX::XMFLOAT3 normal;
+	Vector3 position;
+	Vector3 normal;
 
-	Vertex();
-	Vertex(const DirectX::XMFLOAT2& position);
-	Vertex(const DirectX::XMFLOAT3& position);
-	Vertex(const DirectX::XMFLOAT3& position, const DirectX::XMFLOAT3& normal);
+	Vertex(const Vector2& position);
+	Vertex(const Vector3& position);
+	Vertex(const Vector3& position, const Vector3& normal);
 };
 
 

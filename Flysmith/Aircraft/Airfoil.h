@@ -9,5 +9,5 @@ public:
 	Airfoil(const std::wstring& filename);
 	Mesh GenerateMesh();
 
-	std::vector<DirectX::XMFLOAT2> points;
+	std::vector<Vector2> points;
 };

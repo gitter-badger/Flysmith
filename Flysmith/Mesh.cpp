@@ -22,24 +22,24 @@ void Mesh::GenerateNormals()
 			i1 = indices[i * 3 + 1],
 			i2 = indices[i * 3 + 2];
 
-		auto v0 = XMLoadFloat3(&verts[i0].position),
-			v1 = XMLoadFloat3(&verts[i1].position),
-			v2 = XMLoadFloat3(&verts[i2].position);
+		auto v0 = verts[i0].position.GetXMVec(),
+			 v1 = verts[i1].position.GetXMVec(),
+			 v2 = verts[i2].position.GetXMVec();
 
 		auto faceNormal = XMVector3Cross((v1 - v0), (v2 - v0));
 
-		auto n0 = XMLoadFloat3(&verts[i0].normal),
-			n1 = XMLoadFloat3(&verts[i1].normal),
-			n2 = XMLoadFloat3(&verts[i2].normal);
+		auto n0 = verts[i0].normal.GetXMVec(),
+			 n1 = verts[i1].normal.GetXMVec(),
+			 n2 = verts[i2].normal.GetXMVec();
 
-		XMStoreFloat3(&verts[i0].normal, n0 + faceNormal);
-		XMStoreFloat3(&verts[i1].normal, n1 + faceNormal);
-		XMStoreFloat3(&verts[i2].normal, n2 + faceNormal);
+		verts[i0].normal.Set(n0 + faceNormal);
+		verts[i1].normal.Set(n1 + faceNormal);
+		verts[i2].normal.Set(n2 + faceNormal);
 	}
 
 	for (auto& vert : verts)
 	{
-		XMStoreFloat3(&vert.normal, XMVector3Normalize(XMLoadFloat3(&vert.normal)));
+		vert.normal.Set(XMVector3Normalize(vert.normal.GetXMVec()));
 	}
 }
 

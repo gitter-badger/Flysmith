@@ -126,8 +126,8 @@ void Wing::ScaleSectionsByChord()
 		for (auto& point : airfoils[ringIdx])
 		{
 			auto& pointPos = point.position;
-			XMStoreFloat3(&pointPos, XMVector3Transform(XMLoadFloat3(&pointPos), scalingMat));
-			XMStoreFloat3(&pointPos, XMVector3Transform(XMLoadFloat3(&pointPos), rotMat));
+			pointPos.Set(XMVector3Transform(pointPos.GetXMVec(), scalingMat));
+			pointPos.Set(XMVector3Transform(pointPos.GetXMVec(), rotMat));
 		}
 	}
 }
