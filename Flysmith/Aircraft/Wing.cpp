@@ -3,7 +3,6 @@
 #include "Mesh.h"
 #include "json.hpp"
 #include "Airfoil.h"
-#include "Variant.h"
 #include "Math\AngleMath.h"
 #include "Resources\AssetLocator.h"
 

@@ -55,7 +55,6 @@ struct Renderer::Impl
 	Impl(HWND hwnd, U32 windowWidth, U32 windowHeight);
 
 	void CreateRootSignature();
-	void CreateDevice();
 	void WaitForGPU();
 
 	void PopulateCommandLists();

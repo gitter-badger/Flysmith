@@ -2,7 +2,6 @@
 #include "PCH.h"
 #include "StateObjects\RasterizerStateConfig.h"
 #include "StateObjects\BlendStateConfig.h"
-#include "ShaderProgram.h"
 
 
 struct ShaderPipeline

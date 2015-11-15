@@ -4,8 +4,8 @@
 
 SwapChain::SwapChain()
 	: m_pSwapChain(nullptr)
-	, m_pRenderTarget(nullptr)
 	, m_indexLastBufSwap(0)
+	, m_pRenderTarget(nullptr)
 {
 }
 

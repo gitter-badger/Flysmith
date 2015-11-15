@@ -5,6 +5,7 @@
 const U32 Scene::s_sceneKey = 1337;
 
 Scene::Scene()
+	: m_pRenderer(nullptr)
 {
 	numEntities = 0;
 }
@@ -19,6 +20,8 @@ ComponentProxy Scene::AddComponent(Component* pComponent)
 	case Component::RENDER:
 		renderComponents.push_back(*reinterpret_cast<RenderComponent*>(pComponent));
 		break;
+	default:
+		break;
 	}
 
 	return ComponentProxy(type, index);
@@ -29,18 +32,23 @@ void Scene::Init(Renderer* pRenderer)
 	m_pRenderer = pRenderer;
 }
 
-ComponentProxy Scene::CreateRenderComponent(U32 mesh, U32 vertShader, U32 pixelShader)
+ComponentProxy Scene::CreateRenderComponent(U32 meshHandle, U32 vertShaderHandle, U32 pixelShaderHandle)
 {
-	renderComponents.push_back(RenderComponent(m_pRenderer, mesh, vertShader, pixelShader));
+	renderComponents.push_back(RenderComponent(m_pRenderer, meshHandle, vertShaderHandle, pixelShaderHandle));
 	return ComponentProxy(Component::Type::RENDER, renderComponents.size() - 1);
 }
 
-U32 Scene::CreateEntity(Transform transform, I32 parentEntity)
+void Scene::AttachComponent(EntityId entityId, const ComponentProxy& component)
+{
+	entities[entityId].AttachComponent(component, &renderComponents[component.index]);
+}
+
+EntityId Scene::CreateEntity(Transform transform, I32 parentEntity)
 {
 	auto newEntityIndex = numEntities;
 	numEntities++;
 
-	I32 parentEntityNodeId = -1;
+	auto parentEntityNodeId = -1;
 	if (parentEntity != -1)
 	{
 		parentEntityNodeId = entities[parentEntity].GetSceneNodeId();

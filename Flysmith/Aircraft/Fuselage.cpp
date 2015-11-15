@@ -67,13 +67,13 @@ Mesh Fuselage::GenerateMesh()
 }
 
 // TODO: Change to displacement from center
-std::vector<Vertex> Fuselage::GenerateCircularRing(F32 diameter, XMFLOAT3 dispFromFront)
+std::vector<Vertex> Fuselage::GenerateCircularRing(F32 diameter, XMFLOAT3 dispFromFront) const
 {
-	F32 radius = diameter / 2.0f;
+	auto radius = diameter / 2.0f;
 
 	std::vector<Vertex> verts;
 
-	for (F32 angle = 0; angle <= XM_2PI; angle += 0.1f)
+	for (auto angle = 0.0f; angle <= XM_2PI; angle += 0.1f)
 	{
 		Vector3 pos(radius * cos(angle),
 				radius * sin(angle) + dispFromFront.y,

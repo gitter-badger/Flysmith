@@ -45,7 +45,7 @@ Mesh Wingtip::Generate()
 	return mesh;
 }
 
-void Wingtip::GenerateCutoff(Mesh& meshOut)
+void Wingtip::GenerateCutoff(Mesh& meshOut) const
 {
 	auto numPoints = tipAirfoil.size();
 

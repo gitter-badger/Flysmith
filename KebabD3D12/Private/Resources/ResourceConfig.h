@@ -1,5 +1,4 @@
 #pragma once
-#include "PublicDef.h"
 
 
 struct D3D12_RESOURCE_DESC;

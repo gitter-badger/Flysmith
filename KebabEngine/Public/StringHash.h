@@ -1,5 +1,4 @@
 #pragma once
-#include "PublicDef.h"
 
 
 // djb2
@@ -11,7 +10,7 @@ constexpr U32 Hash(const char* str)
 		5381;
 }
 
-constexpr U32 operator "" _HASH(const char* str, size_t)
+constexpr U32 operator"" _HASH(const char* str, size_t)
 {
 	return Hash(str);
 }

@@ -1,8 +1,6 @@
 #include "PCH.h"
 #include "RenderItem.h"
 #include "Descriptors\ConstantBufferView.h"
-#include "Descriptors\DescriptorHeap.h"
-#include "Resources\ResourceCache.h"
 #include "Pipeline\PSOManager.h"
 using namespace DirectX;
 

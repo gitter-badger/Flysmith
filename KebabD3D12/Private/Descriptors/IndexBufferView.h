@@ -1,5 +1,4 @@
 #pragma once
-#include "PublicDef.h"
 
 
 struct IndexBufferView : D3D12_INDEX_BUFFER_VIEW

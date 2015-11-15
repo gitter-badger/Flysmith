@@ -1,8 +1,6 @@
 #include "PCH.h"
-#include "RenderComponent.h"
 #include "KeyboardEvents.h"
 #include "FlysmithGame.h"
-#include "Math\AngleMath.h"
 #include "Entity.h"
 
 #include "Resources\AssetLocator.h"
@@ -18,8 +16,8 @@ FlysmithGame::FlysmithGame(HINSTANCE hInstance)
 	RegisterForEvent("LMouseDown"_HASH);
 	LoadResources();
 
-	U32 vert = m_resources.GetHandle("TestVS");
-	U32 pixel = m_resources.GetHandle("TestPS");
+	auto vert = m_resources.GetHandle("TestVS");
+	auto pixel = m_resources.GetHandle("TestPS");
 
 	// Plane
 	auto planeEntityId = m_scene.CreateEntity();
@@ -27,20 +25,20 @@ FlysmithGame::FlysmithGame(HINSTANCE hInstance)
 	// Fuselage
 	auto fuselageEntityId = m_scene.CreateEntity();
 	auto rcFuselage = m_scene.CreateRenderComponent(m_resources.GetHandle("Fuselage"), vert, pixel);
-	m_scene.entities[fuselageEntityId].AttachComponent(rcFuselage, &m_scene.renderComponents[rcFuselage.index]);
-
+	m_scene.AttachComponent(fuselageEntityId, rcFuselage);
+	
 	// Wings
 	auto rightWingEntityId = m_scene.CreateEntity();
 	m_scene.entities[rightWingEntityId].GetTransform()->RotateY(-XM_PIDIV2);
 	auto rcWing1 = m_scene.CreateRenderComponent(m_resources.GetHandle("Wing"), vert, pixel);
-	m_scene.entities[rightWingEntityId].AttachComponent(rcWing1, &m_scene.renderComponents[rcWing1.index]);
-
+	m_scene.AttachComponent(rightWingEntityId, rcWing1);
+	
 	auto leftWingEntityId = m_scene.CreateEntity();
 	m_scene.entities[leftWingEntityId].GetTransform()->MirrorAlongX();
 	m_scene.entities[leftWingEntityId].GetTransform()->RotateY(XM_PIDIV2);
 	auto rcWing2 = m_scene.CreateRenderComponent(m_resources.GetHandle("Wing"), vert, pixel);
-	m_scene.entities[leftWingEntityId].AttachComponent(rcWing2, &m_scene.renderComponents[rcWing2.index]);
-
+	m_scene.AttachComponent(leftWingEntityId, rcWing2);
+	
 	// Attach
 	m_scene.entities[planeEntityId].AddChild(&m_scene.entities[fuselageEntityId]);
 	m_scene.entities[planeEntityId].AddChild(&m_scene.entities[rightWingEntityId]);

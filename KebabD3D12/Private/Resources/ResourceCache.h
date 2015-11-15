@@ -1,5 +1,4 @@
 #pragma once
-#include "PublicDef.h"
 #include <vector>
 #include "Mesh.h"
 #include "Pipeline\ShaderProgram.h"

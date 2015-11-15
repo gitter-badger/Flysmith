@@ -8,12 +8,12 @@
 class FlysmithGame : public Application, public EventListener
 {
 public:
-	FlysmithGame(HINSTANCE);
-	void HandleEvent(const Event&);
+	explicit FlysmithGame(HINSTANCE);
+	void HandleEvent(const Event&) override;
 
 protected:
 	// dt is in seconds
-	void UpdateScene(float dt);
+	void UpdateScene(float dt) override;
 
 private:
 	void LoadResources();

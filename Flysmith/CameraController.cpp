@@ -13,10 +13,10 @@ CameraController::CameraController(TransformNoScale* pCamTransform)
 	Init();
 }
 
-void CameraController::Update(F32 dt)
+void CameraController::Update(F32 dt) const
 {
-	float lDistance = 10.0f * dt;
-	float rDistance = 1.0f * dt;
+	auto lDistance = 10.0f * dt;
+	auto rDistance = 1.0f * dt;
 	auto& rotationQuat = m_pCamTransform->GetRotationQuat();
 
 	if (g_inputManager.IsKeyDown('W'))
@@ -60,7 +60,7 @@ void CameraController::Update(F32 dt)
 	// Mouse rotation
 	if (g_inputManager.IsRMBDown())
 	{
-		float sensitivity = .1f;
+		auto sensitivity = .1f;
 		auto reX = -g_inputManager.GetMouseDeltaY() * sensitivity * dt;
 		auto reY = -g_inputManager.GetMouseDeltaX() * sensitivity * dt;
 
@@ -76,7 +76,7 @@ void CameraController::Update(F32 dt)
 	}
 }
 
-void CameraController::Init()
+void CameraController::Init() const
 {
 	XMFLOAT3 vFocalPoint(0.0f, 0.0f, 0.0f);
 	XMVECTOR focalPoint = XMLoadFloat3(&vFocalPoint);
@@ -96,7 +96,7 @@ void CameraController::Init()
 	SetAxis(lookAt, upVec, right);
 }
 
-void CameraController::SetAxis(CXMVECTOR lookAt, CXMVECTOR up, CXMVECTOR right)
+void CameraController::SetAxis(CXMVECTOR lookAt, CXMVECTOR up, CXMVECTOR right) const
 {
 	XMFLOAT4X4 rot;
 	XMStoreFloat4x4(&rot, XMMatrixIdentity());

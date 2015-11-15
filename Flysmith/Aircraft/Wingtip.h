@@ -28,5 +28,5 @@ public:
 	Mesh Generate();
 
 private:
-	void GenerateCutoff(Mesh& meshOut);
+	void GenerateCutoff(Mesh& meshOut) const;
 };

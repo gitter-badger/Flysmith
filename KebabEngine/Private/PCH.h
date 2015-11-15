@@ -1,10 +1,10 @@
 #pragma once
 
 
-#define SAFE_RELEASE(x) if(x) \
-						{ \
+#define SAFE_RELEASE(x) if(x)               \
+						{                   \
 							(x)->Release(); \
-							(x) = nullptr; \
+							(x) = nullptr;  \
 						}
 
 #define WIN32_LEAN_AND_MEAN

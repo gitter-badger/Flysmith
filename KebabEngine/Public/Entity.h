@@ -6,6 +6,8 @@
 #include <vector>
 
 
+using EntityId = I32;
+
 class KEBAB_API Entity
 {
 public:
@@ -28,7 +30,7 @@ public:
 	std::vector<ComponentProxy> components;
 
 protected:
-	I32 m_id;
+	EntityId m_id;
 	SceneNode* m_pSceneNode;
 
 private:

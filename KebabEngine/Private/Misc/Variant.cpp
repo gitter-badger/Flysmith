@@ -43,7 +43,7 @@ inline void Variant32::SetValue(U32 value)
 	asUnsignedInt = value;
 }
 
-bool Variant32::operator==(const Variant32& rhs)
+bool Variant32::operator==(const Variant32& rhs) const
 {
 	if (type != rhs.type)
 		return false;
@@ -61,6 +61,8 @@ bool Variant32::operator==(const Variant32& rhs)
 	case Type::UNSIGNED_INT:
 		if (asUnsignedInt != rhs.asUnsignedInt)
 			return false;
+		break;
+	default:
 		break;
 	}
 

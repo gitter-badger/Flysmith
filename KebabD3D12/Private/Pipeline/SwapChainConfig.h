@@ -1,6 +1,5 @@
 #pragma once
 #include "PCH.h"
-#include <dxgi1_4.h>
 
 
 struct MSAAConfig;

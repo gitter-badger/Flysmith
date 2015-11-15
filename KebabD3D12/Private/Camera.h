@@ -1,7 +1,5 @@
 #pragma once
-#include "PublicDef.h"
 #include "Transform.h"
-#include "Quaternion.h"
 #include "Math\PerspectiveMatrix.h"
 using namespace DirectX;
 

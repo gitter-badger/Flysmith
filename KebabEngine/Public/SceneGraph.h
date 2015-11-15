@@ -1,7 +1,6 @@
 #pragma once
 #include "PublicDef.h"
 #include "SceneNode.h"
-#include <vector>
 
 
 const size_t MAX_NODES = 100;

@@ -29,7 +29,7 @@ const std::wstring& AssetLocator::GetAssetDirectory(AssetType assetType, bool bT
 	return s_pImpl->assetDirectories[assetType];
 }
 
-const bool AssetLocator::GetAssetPath(AssetType assetType, const std::wstring& filename, std::wstring* outPath) const
+bool AssetLocator::GetAssetPath(AssetType assetType, const std::wstring& filename, std::wstring* outPath) const
 {
 	*outPath = GetAssetDirectory(assetType) + filename;
 	return FileSystem::FileExists(outPath->c_str());

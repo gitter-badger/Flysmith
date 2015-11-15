@@ -4,6 +4,7 @@
 
 enum class DataType : U32
 {
+	UNKNOWN,
 	U8,
 	U16,
 	U32,
@@ -13,7 +14,7 @@ enum class DataType : U32
 
 struct KEBAB_API EventData final
 {
-	EventData() {}
+	EventData() : type(DataType::UNKNOWN) {}
 	explicit EventData(U8 data) : type(DataType::U8) { asU8 = data; }
 	explicit EventData(U16 data) : type(DataType::U16) { asU16 = data; }
 	explicit EventData(U32 data) : type(DataType::U32) { asU32 = data; }

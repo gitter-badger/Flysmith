@@ -22,9 +22,9 @@ struct KEBAB_API Variant32
 	} type;
 
 	Variant32();
-	Variant32(F32);
-	Variant32(I32);
-	Variant32(U32);
+	explicit Variant32(F32);
+	explicit Variant32(I32);
+	explicit Variant32(U32);
 
 	void SetValue(F32);
 	void SetValue(I32);
@@ -34,7 +34,7 @@ struct KEBAB_API Variant32
 	I32 GetSignedInt() const;
 	U32 GetUnsignedInt() const;
 
-	bool operator ==(const Variant32&);
+	bool operator ==(const Variant32&) const;
 
 private:
 	union

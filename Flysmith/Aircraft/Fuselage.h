@@ -17,7 +17,7 @@ struct Fuselage
 	Mesh GenerateMesh();
 
 	// TODO: Change to displacement from center
-	std::vector<Vertex> GenerateCircularRing(F32 diameter, XMFLOAT3 dispFromFront);
+	std::vector<Vertex> GenerateCircularRing(F32 diameter, XMFLOAT3 dispFromFront) const;
 
 	std::vector<FuselageRing> rings;
 };

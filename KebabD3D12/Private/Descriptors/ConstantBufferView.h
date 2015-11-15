@@ -1,5 +1,4 @@
 #pragma once
-#include "PublicDef.h"
 
 
 struct ConstantBufferView : D3D12_CONSTANT_BUFFER_VIEW_DESC

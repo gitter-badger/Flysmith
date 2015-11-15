@@ -1,5 +1,4 @@
 #pragma once
-#include "PublicDef.h"
 
 
 struct VertexBufferView : D3D12_VERTEX_BUFFER_VIEW
