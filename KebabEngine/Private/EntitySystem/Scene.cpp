@@ -49,7 +49,18 @@ ComponentProxy Scene::CreatePhysicsComponent()
 
 void Scene::AttachComponent(EntityId entityId, const ComponentProxy& component)
 {
-	entities[entityId].AttachComponent(component, &renderComponents[component.index]);
+	// TODO: Refactor
+	switch(component.type)
+	{
+	case Component::Type::RENDER:
+		entities[entityId].AttachComponent(component, &renderComponents[component.index]);
+		break;
+	case Component::Type::PHYSICS:
+		entities[entityId].AttachComponent(component, &physicsComponents[component.index]);
+		break;
+	default:
+		break;
+	}
 }
 
 EntityId Scene::CreateEntity(Transform transform, I32 parentEntity)

@@ -26,8 +26,8 @@ void CreateFuselage(Scene& scene, ResourceRegistry& resources, EntityId planeId)
 	auto physComponentProxy = scene.CreatePhysicsComponent();
 	scene.AttachComponent(fuselageId, physComponentProxy);
 	scene.physicsComponents[0].inverseMass = 0.1f;
-	scene.physicsComponents[0].velocity = 0.1f;
-	scene.physicsComponents[0].acceleration = { 0.0f, -9.8f, 0.0f };
+	scene.physicsComponents[0].velocity = 0.f;
+	scene.physicsComponents[0].acceleration = { 0.0f, -9000.8f, 0.0f };
 	scene.physicsComponents[0].damping = 1.f;
 
 	// Attach the fuselage entity to the dummy master plane entity 
@@ -51,7 +51,6 @@ void CreateLeftWing(Scene& scene, ResourceRegistry& resources, EntityId planeId)
 
 	// Create physics component
 
-
 	// Attach the fuselage entity to the dummy master plane entity 
 	scene.entities[planeId].AddChild(&scene.entities[wingId]);
 }
@@ -71,7 +70,6 @@ void CreateRightWing(Scene& scene, ResourceRegistry& resources, EntityId planeId
 	scene.AttachComponent(wingId, renderCompProxy);
 
 	// Create physics component
-
 
 	// Attach the fuselage entity to the dummy master plane entity 
 	scene.entities[planeId].AddChild(&scene.entities[wingId]);
