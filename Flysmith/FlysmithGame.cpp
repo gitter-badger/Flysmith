@@ -59,9 +59,7 @@ void FlysmithGame::UpdateScene(float dt)
 		auto pos = xform->GetPositionXM();
 		xform->SetPosition(pos + vel * dt);
 
-		obj.velocity.Set(vel + dt * acc);
-		
-		vel = obj.velocity.GetXMVec();
-		obj.velocity.Set(vel * powf(dt, obj.damping));
+		obj.velocity += obj.acceleration * dt;
+		obj.velocity *= powf(dt, obj.damping);
 	}
 }

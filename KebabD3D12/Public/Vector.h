@@ -39,6 +39,16 @@ struct KEBAB12_API Vector3
 	// Set x and y to @vec's x and y and the z component to @z
 	Vector3(Vector2 vec, float z = 0.0f);
 
+	Vector3& operator=(const Vector3&);
+	Vector3 operator+(const Vector3&) const;
+	Vector3 operator-(const Vector3&) const;
+	Vector3 operator*(float scale) const;
+	Vector3 operator/(float scale) const;
+	Vector3 operator+=(const Vector3&);
+	Vector3 operator-=(const Vector3&);
+	Vector3 operator*=(float scale);
+	Vector3 operator/=(float scale);
+
 	DirectX::XMVECTOR GetXMVec();
 	void Set(DirectX::CXMVECTOR);
 };
