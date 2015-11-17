@@ -92,5 +92,8 @@
     <ClInclude Include="Aircraft\Wingtip.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Aircraft\PlaneFactory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
