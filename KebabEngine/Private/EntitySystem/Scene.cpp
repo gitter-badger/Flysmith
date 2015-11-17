@@ -20,6 +20,9 @@ ComponentProxy Scene::AddComponent(Component* pComponent)
 	case Component::RENDER:
 		renderComponents.push_back(*reinterpret_cast<RenderComponent*>(pComponent));
 		break;
+	case Component::PHYSICS:
+		physicsComponents.push_back(*reinterpret_cast<PhysicsComponent*>(pComponent));
+		break;
 	default:
 		break;
 	}

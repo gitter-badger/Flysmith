@@ -9,6 +9,75 @@
 using namespace DirectX;
 
 
+// TEMP for readability 
+// Will move into a factory alltogether(and don't do this kind of silly code duplication)
+void CreateFuselage(Scene& scene, ResourceRegistry& resources, EntityId planeId)
+{
+	// Create dummy entity
+	auto fuselageId = scene.CreateEntity();
+
+	// Crate render component
+	auto renderCompProxy = scene.CreateRenderComponent(resources.GetHandle("Fuselage"),
+													   resources.GetHandle("TestVS"),
+													   resources.GetHandle("TestPS"));
+	scene.AttachComponent(fuselageId, renderCompProxy);
+
+	// Create physics component
+	PhysicsComponent physComponent;
+	physComponent.inverseMass = 0.1f;
+	physComponent.velocity = 0.0f;
+	physComponent.acceleration = { 0.0f, -9.8f, 0.0f };
+	physComponent.damping = 1.0f;
+	auto physComponentProxy = scene.AddComponent(&physComponent);
+	scene.AttachComponent(fuselageId, physComponentProxy);
+
+	// Attach the fuselage entity to the dummy master plane entity 
+	scene.entities[planeId].AddChild(&scene.entities[fuselageId]);
+}
+
+void CreateLeftWing(Scene& scene, ResourceRegistry& resources, EntityId planeId)
+{
+	// Create dummy entity
+	auto wingId = scene.CreateEntity();
+
+	// Set initial transform(relative to the master plane dummy)
+	scene.entities[wingId].GetTransform()->MirrorAlongX();
+	scene.entities[wingId].GetTransform()->RotateY(XM_PIDIV2);
+
+	// Crate render component
+	auto renderCompProxy = scene.CreateRenderComponent(resources.GetHandle("Wing"),
+													   resources.GetHandle("TestVS"),
+													   resources.GetHandle("TestPS"));
+	scene.AttachComponent(wingId, renderCompProxy);
+
+	// Create physics component
+
+
+	// Attach the fuselage entity to the dummy master plane entity 
+	scene.entities[planeId].AddChild(&scene.entities[wingId]);
+}
+
+void CreateRightWing(Scene& scene, ResourceRegistry& resources, EntityId planeId)
+{
+	// Create dummy entity
+	auto wingId = scene.CreateEntity();
+
+	// Set initial transform(relative to the master plane dummy)
+	scene.entities[wingId].GetTransform()->RotateY(-XM_PIDIV2);
+
+	// Crate render component
+	auto renderCompProxy = scene.CreateRenderComponent(resources.GetHandle("Wing"),
+													   resources.GetHandle("TestVS"),
+													   resources.GetHandle("TestPS"));
+	scene.AttachComponent(wingId, renderCompProxy);
+
+	// Create physics component
+
+
+	// Attach the fuselage entity to the dummy master plane entity 
+	scene.entities[planeId].AddChild(&scene.entities[wingId]);
+}
+
 FlysmithGame::FlysmithGame(HINSTANCE hInstance)
 	: Application(hInstance)
 	, m_camController(&m_scene.camTransform)
@@ -16,33 +85,11 @@ FlysmithGame::FlysmithGame(HINSTANCE hInstance)
 	RegisterForEvent("LMouseDown"_HASH);
 	LoadResources();
 
-	auto vert = m_resources.GetHandle("TestVS");
-	auto pixel = m_resources.GetHandle("TestPS");
-
-	// Plane
+	// TEMP for readability 
 	auto planeEntityId = m_scene.CreateEntity();
-
-	// Fuselage
-	auto fuselageEntityId = m_scene.CreateEntity();
-	auto rcFuselage = m_scene.CreateRenderComponent(m_resources.GetHandle("Fuselage"), vert, pixel);
-	m_scene.AttachComponent(fuselageEntityId, rcFuselage);
-	
-	// Wings
-	auto rightWingEntityId = m_scene.CreateEntity();
-	m_scene.entities[rightWingEntityId].GetTransform()->RotateY(-XM_PIDIV2);
-	auto rcWing1 = m_scene.CreateRenderComponent(m_resources.GetHandle("Wing"), vert, pixel);
-	m_scene.AttachComponent(rightWingEntityId, rcWing1);
-	
-	auto leftWingEntityId = m_scene.CreateEntity();
-	m_scene.entities[leftWingEntityId].GetTransform()->MirrorAlongX();
-	m_scene.entities[leftWingEntityId].GetTransform()->RotateY(XM_PIDIV2);
-	auto rcWing2 = m_scene.CreateRenderComponent(m_resources.GetHandle("Wing"), vert, pixel);
-	m_scene.AttachComponent(leftWingEntityId, rcWing2);
-	
-	// Attach
-	m_scene.entities[planeEntityId].AddChild(&m_scene.entities[fuselageEntityId]);
-	m_scene.entities[planeEntityId].AddChild(&m_scene.entities[rightWingEntityId]);
-	m_scene.entities[planeEntityId].AddChild(&m_scene.entities[leftWingEntityId]);
+	CreateFuselage(m_scene, m_resources, planeEntityId);
+	CreateLeftWing(m_scene, m_resources, planeEntityId);
+	CreateRightWing(m_scene, m_resources, planeEntityId);
 }
 
 bool enabled = false;
@@ -79,6 +126,25 @@ float sweep = 0.0f;
 
 void FlysmithGame::UpdateScene(float dt)
 {
+	// TEMP physics
+	for(auto& obj : m_scene.physicsComponents)
+	{
+		// Ignore things with infinite mass.
+		if (obj.inverseMass <= 0.0f) continue;
+	
+		auto vel = obj.velocity.GetXMVec();
+		auto acc = obj.acceleration.GetXMVec();
+		
+		auto xform = m_scene.entities[obj.GetEntityId()].GetTransform();
+		auto pos = xform->GetPositionXM();
+		xform->SetPosition(pos + vel * dt);
+
+		obj.velocity.Set(vel + dt * acc);
+		
+		vel = obj.velocity.GetXMVec();
+		obj.velocity.Set(vel * powf(dt, obj.damping));
+	}
+
 	if (enabled)
 	{
 		dicks += dt;

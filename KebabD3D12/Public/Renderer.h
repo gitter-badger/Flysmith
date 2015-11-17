@@ -17,19 +17,19 @@ public:
 
 	// Populate a list of render item proxies from render component data and update 
 	// the render state for the next frame.
-	void UpdateScene(std::vector<RenderItemProxy>);
+	void UpdateScene(std::vector<RenderItemProxy>) const;
 
 	// Copy camera transform
-	void UpdateView(const TransformNoScale& camTransform);
+	void UpdateView(const TransformNoScale& camTransform) const;
 
-	void Render();
+	void Render() const;
 
-	RenderItemHandle AddRenderItem(ResourceHandle mesh, ResourceHandle vertexShader, ResourceHandle pixelShader);
+	RenderItemHandle AddRenderItem(ResourceHandle mesh, ResourceHandle vertexShader, ResourceHandle pixelShader) const;
 
 	// TODO: Queue resource caching requests for later 
-	ResourceHandle CacheMesh(const VertexArray& verts, const IndexArray& indices);
-	void UpdateMesh(ResourceHandle, const VertexArray& verts, const IndexArray& indices);
-	ResourceHandle CacheShader(ShaderType, const std::wstring& fullPath);
+	ResourceHandle CacheMesh(const VertexArray& verts, const IndexArray& indices) const;
+	void UpdateMesh(ResourceHandle, const VertexArray& verts, const IndexArray& indices) const;
+	ResourceHandle CacheShader(ShaderType, const std::wstring& fullPath) const;
 
 private:
 	struct Impl;

@@ -10,7 +10,7 @@ public:
 	RenderComponent(Renderer*, U32 mesh, U32 vertShader, U32 pixelShader);
 	
 	U32 GetRenderItem() const;
-	Type GetType() const;
+	Component::Type GetType() const override;
 
 private:
 	U32 m_renderItem;

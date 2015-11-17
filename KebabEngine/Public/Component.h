@@ -8,6 +8,7 @@ public:
 	enum Type
 	{
 		RENDER,
+		PHYSICS,
 
 		NUM_TYPES
 	};

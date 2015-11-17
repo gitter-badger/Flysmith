@@ -19,7 +19,7 @@ Renderer::~Renderer()
 }
 
 // Copy visible render components
-void Renderer::UpdateScene(std::vector<RenderItemProxy> renderables)
+void Renderer::UpdateScene(std::vector<RenderItemProxy> renderables) const
 {
 	for (size_t i = 0; i < m_pImpl->m_numRenderItemCacheRequests; i++)
 	{
@@ -44,7 +44,7 @@ void Renderer::UpdateScene(std::vector<RenderItemProxy> renderables)
 }
 
 // Copy camera state
-void Renderer::UpdateView(const TransformNoScale& transform)
+void Renderer::UpdateView(const TransformNoScale& transform) const
 {
 	m_pImpl->m_camera.Update(transform);
 
@@ -54,7 +54,7 @@ void Renderer::UpdateView(const TransformNoScale& transform)
 	memcpy(m_pImpl->m_pViewProjDataBegin, &wvpMat, sizeof(XMFLOAT4X4));
 }
 
-void Renderer::Render()
+void Renderer::Render() const
 {
 	m_pImpl->PopulateCommandLists();
 	m_pImpl->ExecuteCommandLists();
@@ -62,22 +62,22 @@ void Renderer::Render()
 	m_pImpl->WaitForGPU();
 }
 	
-ResourceHandle Renderer::CacheMesh(const VertexArray& verts, const IndexArray& indices)
+ResourceHandle Renderer::CacheMesh(const VertexArray& verts, const IndexArray& indices) const
 {
 	return m_pImpl->m_resCache.AddMesh(verts, indices);
 }
 
-void Renderer::UpdateMesh(ResourceHandle handle, const VertexArray& verts, const IndexArray& indices)
+void Renderer::UpdateMesh(ResourceHandle handle, const VertexArray& verts, const IndexArray& indices) const
 {
 	m_pImpl->m_resCache.UpdateMesh(handle, verts, indices);
 }
 
-ResourceHandle Renderer::CacheShader(ShaderType type, const std::wstring& fullPath)
+ResourceHandle Renderer::CacheShader(ShaderType type, const std::wstring& fullPath) const
 {
 	return m_pImpl->m_resCache.AddShader(type, fullPath.c_str());
 }
 
-RenderItemHandle Renderer::AddRenderItem(ResourceHandle mesh, ResourceHandle vertexShader, ResourceHandle pixelShader)
+RenderItemHandle Renderer::AddRenderItem(ResourceHandle mesh, ResourceHandle vertexShader, ResourceHandle pixelShader) const
 {
 	m_pImpl->m_renderItemCacheQueue[m_pImpl->m_numRenderItemCacheRequests++] = { mesh, vertexShader, pixelShader };
 	return m_pImpl->m_numRenderItems + m_pImpl->m_numRenderItemCacheRequests - 1;

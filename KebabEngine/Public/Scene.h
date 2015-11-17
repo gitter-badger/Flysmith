@@ -2,6 +2,7 @@
 #include "PublicDef.h"
 #include "../../KebabD3D12/Public/Transform.h"
 #include "RenderComponent.h"
+#include "PhysicsComponent.h"
 #include "SceneGraph.h"
 #include "Entity.h"
 #include <vector>
@@ -28,7 +29,8 @@ public:
 	TransformNoScale camTransform;
 	
 	std::vector<RenderComponent> renderComponents;
-	
+	std::vector<PhysicsComponent> physicsComponents;
+
 	SceneGraph sceneGraph;
 
 	Entity entities[MAX_ENTITIES];

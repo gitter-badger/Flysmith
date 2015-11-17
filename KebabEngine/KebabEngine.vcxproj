@@ -196,6 +196,7 @@
     <ClCompile Include="Private\Application\Window.cpp" />
     <ClCompile Include="Private\EntitySystem\Component.cpp" />
     <ClCompile Include="Private\Dependencies\lodepng\lodepng.cpp" />
+    <ClCompile Include="Private\EntitySystem\PhysicsComponent.cpp" />
     <ClCompile Include="Private\InputManager.cpp" />
     <ClCompile Include="Private\Misc\PCH.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -230,6 +231,7 @@
     <ClInclude Include="Public\MouseEvents.h" />
     <ClInclude Include="Public\Application.h" />
     <ClInclude Include="Public\GameStateEvents.h" />
+    <ClInclude Include="Public\PhysicsComponent.h" />
     <ClInclude Include="Public\RenderComponent.h" />
     <ClInclude Include="Public\Scene.h" />
     <ClInclude Include="Public\SceneGraph.h" />
