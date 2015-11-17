@@ -23,13 +23,12 @@ void CreateFuselage(Scene& scene, ResourceRegistry& resources, EntityId planeId)
 	scene.AttachComponent(fuselageId, renderCompProxy);
 
 	// Create physics component
-	PhysicsComponent physComponent;
-	physComponent.inverseMass = 0.1f;
-	physComponent.velocity = 0.0f;
-	physComponent.acceleration = { 0.0f, -9.8f, 0.0f };
-	physComponent.damping = 1.0f;
-	auto physComponentProxy = scene.AddComponent(&physComponent);
+	auto physComponentProxy = scene.CreatePhysicsComponent();
 	scene.AttachComponent(fuselageId, physComponentProxy);
+	scene.physicsComponents[0].inverseMass = 0.1f;
+	scene.physicsComponents[0].velocity = 0.1f;
+	scene.physicsComponents[0].acceleration = { 0.0f, -9.8f, 0.0f };
+	scene.physicsComponents[0].damping = 1.f;
 
 	// Attach the fuselage entity to the dummy master plane entity 
 	scene.entities[planeId].AddChild(&scene.entities[fuselageId]);
@@ -92,15 +91,10 @@ FlysmithGame::FlysmithGame(HINSTANCE hInstance)
 	CreateRightWing(m_scene, m_resources, planeEntityId);
 }
 
-bool enabled = false;
-
 void FlysmithGame::HandleEvent(const Event& ev)
 {
 	switch (ev.type)
 	{
-	case "LMouseDown"_HASH:
-		OutputDebugStringA("CLICK\n");
-		enabled = true;
 	}
 }
 
@@ -121,9 +115,6 @@ void FlysmithGame::LoadResources()
 	m_resources.AddResource("Fuselage", m_pRenderer->CacheMesh(fuselageMesh.verts, fuselageMesh.indices));
 }
 
-float dicks = 0.0f;
-float sweep = 0.0f;
-
 void FlysmithGame::UpdateScene(float dt)
 {
 	// TEMP physics
@@ -143,21 +134,5 @@ void FlysmithGame::UpdateScene(float dt)
 		
 		vel = obj.velocity.GetXMVec();
 		obj.velocity.Set(vel * powf(dt, obj.damping));
-	}
-
-	if (enabled)
-	{
-		dicks += dt;
-		if (dicks >= 1.f)
-		{
-			dicks = 0.0f;
-			sweep++;
-
-			Wing wing;
-			wing.ReadFromFile(L"Cessna172S");
-			wing.sections[0].sweep = sweep;
-			auto wingMesh = wing.GenerateMesh();
-			m_pRenderer->UpdateMesh(0, wingMesh.verts, wingMesh.indices);
-		}
 	}
 }

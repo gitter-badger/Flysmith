@@ -14,8 +14,8 @@ public:
 	Entity();
 	void Init(U32 sceneKey, I32 id, SceneNode*);
 
-	I32 GetId();
-	I32 GetSceneNodeId();
+	I32 GetId() const;
+	I32 GetSceneNodeId() const;
 
 	void AttachComponent(const ComponentProxy&, Component*);
 	void AttachComponent(U32 componentIndex, Component*);
@@ -24,8 +24,8 @@ public:
 	void AddChild(Entity*);
 
 	void SetTransform(const Transform&);
-	Transform* GetTransform();
-	XMFLOAT4X4 GetWorldTransformMatrix();
+	Transform* GetTransform() const;
+	XMFLOAT4X4 GetWorldTransformMatrix() const;
 
 	std::vector<ComponentProxy> components;
 

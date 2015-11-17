@@ -18,6 +18,7 @@ public:
 
 	ComponentProxy AddComponent(Component*);
 	ComponentProxy CreateRenderComponent(U32 mesh, U32 vertShader, U32 pixelShader);
+	ComponentProxy CreatePhysicsComponent();
 
 	void AttachComponent(EntityId, const ComponentProxy&);
 

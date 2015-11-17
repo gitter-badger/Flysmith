@@ -41,6 +41,12 @@ ComponentProxy Scene::CreateRenderComponent(U32 meshHandle, U32 vertShaderHandle
 	return ComponentProxy(Component::Type::RENDER, renderComponents.size() - 1);
 }
 
+ComponentProxy Scene::CreatePhysicsComponent()
+{
+	physicsComponents.push_back(PhysicsComponent());
+	return ComponentProxy(Component::Type::PHYSICS, physicsComponents.size() - 1);
+}
+
 void Scene::AttachComponent(EntityId entityId, const ComponentProxy& component)
 {
 	entities[entityId].AttachComponent(component, &renderComponents[component.index]);

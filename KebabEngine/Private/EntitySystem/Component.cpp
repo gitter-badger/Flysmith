@@ -6,8 +6,7 @@ Component::~Component()
 {
 }
 
-Component::Component() 
-	: entityId(-1)
+Component::Component() : entityId(-1)
 {
 }
 
@@ -16,7 +15,8 @@ void Component::AttachToEntity(I32 entityId_)
 	entityId = entityId_;
 }
 
-I32 Component::GetEntityId()
+I32 Component::GetEntityId() const
 {
+	assert(entityId != -1);
 	return entityId;
 }

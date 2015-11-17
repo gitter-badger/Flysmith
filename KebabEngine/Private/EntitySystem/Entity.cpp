@@ -24,19 +24,19 @@ void Entity::Init(U32 sceneKey, I32 id, SceneNode* pSceneNode)
 	m_bInitialized = true;
 }
 
-I32 Entity::GetId()
+I32 Entity::GetId() const
 {
 	assert(m_bInitialized);
 	return m_id;
 }
 
-I32 Entity::GetSceneNodeId()
+I32 Entity::GetSceneNodeId() const
 {
 	assert(m_bInitialized);
 	return m_pSceneNode->id;
 }
 
-XMFLOAT4X4 Entity::GetWorldTransformMatrix()
+XMFLOAT4X4 Entity::GetWorldTransformMatrix() const
 {
 	return m_pSceneNode->GetWorldTransform();
 }
@@ -46,7 +46,7 @@ void Entity::SetTransform(const Transform& transform)
 	m_pSceneNode->transform = transform;
 }
 
-Transform* Entity::GetTransform()
+Transform* Entity::GetTransform() const
 {
 	return &m_pSceneNode->transform;
 }

@@ -17,7 +17,7 @@ public:
 	virtual ~Component();
 	void AttachToEntity(I32 entityId);
 	
-	I32 GetEntityId();
+	I32 GetEntityId() const;
 	virtual Type GetType() const = 0;
 
 protected:
