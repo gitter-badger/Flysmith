@@ -6,7 +6,7 @@ using namespace DirectX;
 
 #pragma warning(push)
 #pragma warning(disable:4251)
-class KEBAB12_API Quaternion
+class KEBABCOMMON_API Quaternion
 {
 public:
 	Quaternion();

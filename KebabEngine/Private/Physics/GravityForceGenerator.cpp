@@ -8,7 +8,7 @@ GravityForceGenerator::GravityForceGenerator(const Vector3& gravityAcc)
 {
 }
 
-void GravityForceGenerator::UpdateForce(PhysicsComponent* pPhysComp, float dt)
+void GravityForceGenerator::UpdateForce(PhysicsComponent* pPhysComp, float)
 {
 	if (pPhysComp->GetMass()) return;
 

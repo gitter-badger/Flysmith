@@ -1,9 +1,10 @@
 #pragma once
 #include "PublicDef.h"
 #include "Vector.h"
+#include <vector>
 
 
-struct KEBAB12_API Vertex
+struct KEBABCOMMON_API Vertex
 {
 	Vector3 position;
 	Vector3 normal;

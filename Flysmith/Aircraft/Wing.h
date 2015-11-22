@@ -1,6 +1,6 @@
 #pragma once
 #include "Wingtip.h"
-#include "Vertex.h"
+#include "../../KebabCommon/Vertex.h"
 
 
 struct Mesh;

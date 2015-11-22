@@ -2,7 +2,7 @@
 #include "Resources\Resource.h"
 #include "Descriptors\IndexBufferView.h"
 #include "Descriptors\VertexBufferView.h"
-#include "Vertex.h"
+#include "../../KebabCommon/Vertex.h"
 
 
 class Mesh

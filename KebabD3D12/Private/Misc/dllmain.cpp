@@ -3,16 +3,8 @@
 
 
 #pragma comment(lib, "KebabCommon.lib")
-FORCE_NV_OPTIMUS
-#ifdef RENDERER_GL
-#pragma comment(lib, "KebabGL.lib")
-#elif defined(RENDERER_DX12)
-#pragma comment(lib, "KebabD3D12.lib")
-#endif
 
-BOOL APIENTRY DllMain(HMODULE,
-					  DWORD ul_reason_for_call,
-					  LPVOID)
+BOOL APIENTRY DllMain(HMODULE, DWORD ul_reason_for_call, LPVOID)
 {
 	switch (ul_reason_for_call)
 	{

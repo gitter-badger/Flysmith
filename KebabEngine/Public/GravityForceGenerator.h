@@ -1,7 +1,7 @@
 #pragma once
 #include "Forces.h"
 #include "PublicDef.h"
-#include "../../KebabD3D12/Public/Vector.h"
+#include "../../KebabCommon/Vector.h"
 
 
 class KEBAB_API GravityForceGenerator : public IForceGenerator

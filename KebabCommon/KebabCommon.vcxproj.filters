@@ -15,51 +15,60 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Private\Dependencies\OpenGL\WGL_4_5.hpp">
+    <ClInclude Include="Vector.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Private\Dependencies\GLCore.h">
+    <ClInclude Include="Quaternion.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Private\Dependencies\OpenGL\GLCore_4_5.hpp">
+    <ClInclude Include="OrthographicMatrix.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Private\Dependencies\WGL.h">
+    <ClInclude Include="PerspectiveMatrix.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Public\Renderer.h">
+    <ClInclude Include="ProjectionMatrix.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Public\PublicDef.h">
+    <ClInclude Include="PublicDef.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Public\Types.h">
+    <ClInclude Include="Transform.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Private\GLContext.h">
+    <ClInclude Include="TransformNoScale.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Private\PCH.h">
+    <ClInclude Include="Types.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Vertex.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Private\Dependencies\OpenGL\WGL_4_5.cpp">
+    <ClCompile Include="OrthographicMatrix.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Private\Dependencies\OpenGL\GLCore_4_5.cpp">
+    <ClCompile Include="PerspectiveMatrix.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Private\Renderer.cpp">
+    <ClCompile Include="ProjectionMatrix.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Private\GLContext.cpp">
+    <ClCompile Include="Quaternion.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Private\PCH.cpp">
+    <ClCompile Include="Transform.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Private\dllmain.cpp">
+    <ClCompile Include="TransformNoScale.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Vector.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Vertex.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

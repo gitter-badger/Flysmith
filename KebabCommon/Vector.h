@@ -3,7 +3,7 @@
 #include <DirectXMath.h>
 
 
-struct KEBAB12_API Vector2
+struct KEBABCOMMON_API Vector2
 {
 	float x;
 	float y;
@@ -21,7 +21,7 @@ struct KEBAB12_API Vector2
 	void Set(DirectX::CXMVECTOR);
 };
 
-struct KEBAB12_API Vector3
+struct KEBABCOMMON_API Vector3
 {
 	float x;
 	float y;

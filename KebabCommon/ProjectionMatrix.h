@@ -1,9 +1,10 @@
 #pragma once
+#include "PublicDef.h"
 #include <DirectXMath.h>
 using namespace DirectX;
 
 
-class ProjectionMatrix
+class KEBABCOMMON_API ProjectionMatrix
 {
 public:
 	XMMATRIX GetMatrixXM();

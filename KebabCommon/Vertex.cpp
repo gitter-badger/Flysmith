@@ -1,4 +1,3 @@
-#include "PCH.h"
 #include "Vertex.h"
 using namespace DirectX;
 

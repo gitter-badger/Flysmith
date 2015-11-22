@@ -7,7 +7,7 @@ using namespace DirectX;
 
 #pragma warning(push)
 #pragma warning(disable:4251)
-class KEBAB12_API TransformNoScale
+class KEBABCOMMON_API TransformNoScale
 {
 public:
 	TransformNoScale();

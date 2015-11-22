@@ -1,6 +1,6 @@
 #pragma once
 #include "PublicDef.h"
-#include "../../KebabD3D12/Public/Transform.h"
+#include "../../KebabCommon/Transform.h"
 #include "RenderComponent.h"
 #include "PhysicsComponent.h"
 #include "SceneGraph.h"

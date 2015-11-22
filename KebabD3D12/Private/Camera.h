@@ -1,6 +1,6 @@
 #pragma once
-#include "Transform.h"
-#include "Math\PerspectiveMatrix.h"
+#include "../../KebabCommon/TransformNoScale.h"
+#include "../../KebabCommon/PerspectiveMatrix.h"
 using namespace DirectX;
 
 

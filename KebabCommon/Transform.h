@@ -5,7 +5,7 @@
 
 #pragma warning(push)
 #pragma warning(disable:4251)
-class KEBAB12_API Transform : public TransformNoScale
+class KEBABCOMMON_API Transform : public TransformNoScale
 {
 public:
 	Transform();
@@ -43,4 +43,4 @@ private:
 };
 #pragma warning(pop)
 
-extern const KEBAB12_API Transform kDefaultTransform;
+extern const KEBABCOMMON_API Transform kDefaultTransform;

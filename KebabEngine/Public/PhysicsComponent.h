@@ -1,7 +1,7 @@
 #pragma once
 #include "Component.h"
-#include "../../KebabD3D12/Public/Vector.h"
-#include "../../KebabD3D12/Public/Transform.h"
+#include "../../KebabCommon/Vector.h"
+#include "../../KebabCommon/Transform.h"
 
 
 class KEBAB_API PhysicsComponent : public Component

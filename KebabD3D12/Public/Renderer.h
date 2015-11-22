@@ -1,7 +1,7 @@
 #pragma once
 #include "PublicDef.h"
-#include "Transform.h"
-#include "Vertex.h"
+#include "../../KebabCommon/Transform.h"
+#include "../../KebabCommon/Vertex.h"
 #include "ShaderTypes.h"
 #include "RenderItemProxy.h"
 

@@ -8,12 +8,21 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "KebabEngine", "KebabEngine\KebabEngine.vcxproj", "{396E5932-C801-4089-8A0D-33CEC31A9336}"
 	ProjectSection(ProjectDependencies) = postProject
 		{B0210E0E-6C84-4F0B-995F-541801EE6981} = {B0210E0E-6C84-4F0B-995F-541801EE6981}
+		{3E715231-4DFB-46EC-9320-7A97A0887DA8} = {3E715231-4DFB-46EC-9320-7A97A0887DA8}
 		{2D2DDCB5-46CB-47ED-8BC0-913F90BDEA7F} = {2D2DDCB5-46CB-47ED-8BC0-913F90BDEA7F}
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "KebabD3D12", "KebabD3D12\KebabD3D12.vcxproj", "{2D2DDCB5-46CB-47ED-8BC0-913F90BDEA7F}"
+	ProjectSection(ProjectDependencies) = postProject
+		{3E715231-4DFB-46EC-9320-7A97A0887DA8} = {3E715231-4DFB-46EC-9320-7A97A0887DA8}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "KebabGL", "KebabGL\KebabGL.vcxproj", "{B0210E0E-6C84-4F0B-995F-541801EE6981}"
+	ProjectSection(ProjectDependencies) = postProject
+		{3E715231-4DFB-46EC-9320-7A97A0887DA8} = {3E715231-4DFB-46EC-9320-7A97A0887DA8}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "KebabCommon", "KebabCommon\KebabCommon.vcxproj", "{3E715231-4DFB-46EC-9320-7A97A0887DA8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -55,6 +64,14 @@ Global
 		{B0210E0E-6C84-4F0B-995F-541801EE6981}.Release|x64.Build.0 = Release|x64
 		{B0210E0E-6C84-4F0B-995F-541801EE6981}.Release|x86.ActiveCfg = Release|Win32
 		{B0210E0E-6C84-4F0B-995F-541801EE6981}.Release|x86.Build.0 = Release|Win32
+		{3E715231-4DFB-46EC-9320-7A97A0887DA8}.Debug|x64.ActiveCfg = Debug|x64
+		{3E715231-4DFB-46EC-9320-7A97A0887DA8}.Debug|x64.Build.0 = Debug|x64
+		{3E715231-4DFB-46EC-9320-7A97A0887DA8}.Debug|x86.ActiveCfg = Debug|Win32
+		{3E715231-4DFB-46EC-9320-7A97A0887DA8}.Debug|x86.Build.0 = Debug|Win32
+		{3E715231-4DFB-46EC-9320-7A97A0887DA8}.Release|x64.ActiveCfg = Release|x64
+		{3E715231-4DFB-46EC-9320-7A97A0887DA8}.Release|x64.Build.0 = Release|x64
+		{3E715231-4DFB-46EC-9320-7A97A0887DA8}.Release|x86.ActiveCfg = Release|Win32
+		{3E715231-4DFB-46EC-9320-7A97A0887DA8}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,5 +1,6 @@
 #include "PCH.h"
 #include "Camera.h"
+#include <DirectXMath.h>
 
 
 Camera::Camera(float viewWidth, float viewHeight, float fovY, float nearPlane, float farPlane)

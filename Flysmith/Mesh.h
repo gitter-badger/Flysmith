@@ -1,6 +1,6 @@
 #pragma once
 #include "PCH.h"
-#include "../KebabD3D12/Public/Vertex.h"
+#include "../KebabCommon/Vertex.h"
 using namespace DirectX;
 
 
