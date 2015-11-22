@@ -197,6 +197,7 @@
     <ClCompile Include="Private\EntitySystem\Component.cpp" />
     <ClCompile Include="Private\Dependencies\lodepng\lodepng.cpp" />
     <ClCompile Include="Private\EntitySystem\PhysicsComponent.cpp" />
+    <ClCompile Include="Private\Forces.cpp" />
     <ClCompile Include="Private\InputManager.cpp" />
     <ClCompile Include="Private\Misc\PCH.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
