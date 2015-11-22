@@ -49,17 +49,10 @@ void FlysmithGame::UpdateScene(float dt)
 	// TEMP physics
 	for(auto& obj : m_scene.physicsComponents)
 	{
-		// Ignore things with infinite mass.
-		if (obj.inverseMass <= 0.0f) continue;
-	
-		auto vel = obj.velocity.GetXMVec();
-		auto acc = obj.acceleration.GetXMVec();
-		
-		auto xform = m_scene.entities[obj.GetEntityId()].GetTransform();
-		auto pos = xform->GetPositionXM();
-		xform->SetPosition(pos + vel * dt);
+		// Apply forces on object
+		obj.AddForce({ 0.f, -900.f, 0.f });
 
-		obj.velocity += obj.acceleration * dt;
-		obj.velocity *= powf(dt, obj.damping);
+		auto xform = m_scene.entities[obj.GetEntityId()].GetTransform();
+		obj.Integrate(xform, dt);
 	}
 }

@@ -17,10 +17,10 @@ namespace PlaneFactory
 		// Create physics component
 		auto physComponentProxy = scene.CreatePhysicsComponent();
 		scene.AttachComponent(fuselageId, physComponentProxy);
-		scene.physicsComponents[0].inverseMass = 0.1f;
-		scene.physicsComponents[0].velocity = 0.f;
-		scene.physicsComponents[0].acceleration = { 0.0f, -90.8f, 0.0f };
-		scene.physicsComponents[0].damping = 1.f;
+		scene.physicsComponents[0].SetInverseMass(0.1f);
+		scene.physicsComponents[0].SetVelocity({ 0 });
+		scene.physicsComponents[0].SetAcceleration({ 0.0f });
+		scene.physicsComponents[0].SetDamping(1.0f);
 
 		// Attach the fuselage entity to the dummy master plane entity 
 		scene.entities[planeId].AddChild(&scene.entities[fuselageId]);
