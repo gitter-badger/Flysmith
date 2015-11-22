@@ -237,6 +237,7 @@
     <ClInclude Include="Public\GameStateEvents.h" />
     <ClInclude Include="Public\PhysicsComponent.h" />
     <ClInclude Include="Public\RenderComponent.h" />
+    <ClInclude Include="Public\RendererSwitch.h" />
     <ClInclude Include="Public\Scene.h" />
     <ClInclude Include="Public\SceneGraph.h" />
     <ClInclude Include="Public\SceneNode.h" />

@@ -1,18 +1,11 @@
 #include "PCH.h"
 #include "Renderer.h"
 #include "Dependencies\GLCore.h"
-#include "GLContext.h"
+#include "RendererImpl.h"
 
 
 #pragma comment(lib, "opengl32.lib")
 
-
-struct Renderer::Impl
-{
-	Impl(HWND windowHandle, const U32 windowWidth, const U32 windowHeight);
-
-	GLContext m_context;
-};
 
 Renderer::Renderer(HWND windowHandle, const U32 windowWidth, const U32 windowHeight)
 {
@@ -30,7 +23,32 @@ void Renderer::Render() const
 	m_pImpl->m_context.SwapContextBuffers();
 }
 
-Renderer::Impl::Impl(HWND windowHandle, const U32 windowWidth, const U32 windowHeight)
-	: m_context(windowHandle, windowWidth, windowHeight)
+void Renderer::UpdateScene(std::vector<RenderItemProxy>) const
 {
+
+}
+
+void Renderer::UpdateView(const TransformNoScale& camTransform) const
+{
+
+}
+
+RenderItemHandle Renderer::AddRenderItem(ResourceHandle mesh, ResourceHandle vertexShader, ResourceHandle pixelShader) const
+{
+	return 0;
+}
+
+ResourceHandle Renderer::CacheMesh(const VertexArray& verts, const IndexArray& indices) const
+{
+	return 0;
+}
+
+void Renderer::UpdateMesh(ResourceHandle, const VertexArray& verts, const IndexArray& indices) const
+{
+
+}
+
+ResourceHandle Renderer::CacheShader(ShaderType, const std::wstring& fullPath) const
+{
+	return 0;
 }

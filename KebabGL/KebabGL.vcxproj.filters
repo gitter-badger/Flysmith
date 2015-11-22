@@ -39,6 +39,9 @@
     <ClInclude Include="Private\PCH.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Private\RendererImpl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Private\Dependencies\OpenGL\WGL_4_5.cpp">
@@ -57,6 +60,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Private\dllmain.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Private\RendererImpl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

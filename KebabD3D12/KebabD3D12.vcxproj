@@ -187,7 +187,6 @@
   <ItemGroup>
     <ClCompile Include="Private\Descriptors\DepthStencilView.cpp" />
     <ClCompile Include="Private\Descriptors\DescriptorTable.cpp" />
-    <ClCompile Include="Private\Camera.cpp" />
     <ClCompile Include="Private\Descriptors\ConstantBufferView.cpp" />
     <ClCompile Include="Private\Descriptors\IndexBufferView.cpp" />
     <ClCompile Include="Private\Descriptors\VertexBufferView.cpp" />
@@ -229,7 +228,6 @@
     <ClCompile Include="Private\Pipeline\PSOManager.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Private\Camera.h" />
     <ClInclude Include="Private\Descriptors\ConstantBufferView.h" />
     <ClInclude Include="Private\Descriptors\DepthStencilView.h" />
     <ClInclude Include="Private\Descriptors\DescriptorTable.h" />

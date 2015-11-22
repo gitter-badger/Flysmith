@@ -169,6 +169,7 @@
     <ClInclude Include="Private\Dependencies\WGL.h" />
     <ClInclude Include="Private\GLContext.h" />
     <ClInclude Include="Private\PCH.h" />
+    <ClInclude Include="Private\RendererImpl.h" />
     <ClInclude Include="Public\PublicDef.h" />
     <ClInclude Include="Public\Renderer.h" />
   </ItemGroup>
@@ -184,6 +185,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Private\Renderer.cpp" />
+    <ClCompile Include="Private\RendererImpl.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

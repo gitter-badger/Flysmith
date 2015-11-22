@@ -185,5 +185,8 @@
     <ClInclude Include="Public\GravityForceGenerator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Public\RendererSwitch.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

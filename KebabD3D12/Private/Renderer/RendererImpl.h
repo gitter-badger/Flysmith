@@ -3,7 +3,7 @@
 
 #include "Misc\HardwareCaps.h"
 #include "RenderItem.h"
-#include "Camera.h"
+#include "../../KebabCommon/Camera.h"
 #include "Device.h"
 #include "Fence.h"
 

@@ -1,4 +1,3 @@
-#include "PCH.h"
 #include "Camera.h"
 #include <DirectXMath.h>
 

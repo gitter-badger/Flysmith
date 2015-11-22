@@ -48,9 +48,6 @@
     <ClCompile Include="Private\Resources\ResourceConfig.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Private\Camera.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Private\Pipeline\CommandQueue.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -183,9 +180,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Private\Descriptors\ConstantBufferView.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Private\Camera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Private\Resources\Resource.h">

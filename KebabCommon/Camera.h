@@ -1,10 +1,10 @@
 #pragma once
-#include "../../KebabCommon/TransformNoScale.h"
-#include "../../KebabCommon/PerspectiveMatrix.h"
+#include "TransformNoScale.h"
+#include "PerspectiveMatrix.h"
 using namespace DirectX;
 
 
-class Camera
+class KEBABCOMMON_API Camera
 {
 public:
 	Camera(float viewWidth, float viewHight, float fovY = 0.8f, float nearPlane = 1.0f, float farPlane = 1000.0f);

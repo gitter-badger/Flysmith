@@ -3,8 +3,7 @@
 // Happens with STL objects 
 #pragma warning(disable:4251)
 
-//#define RENDERER_GL
-#define RENDERER_DX12
+#include "RendererSwitch.h"
 
 #ifdef KEBABENGINE_EXPORTS
 #define KEBAB_API __declspec(dllexport)
