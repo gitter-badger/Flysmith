@@ -3,8 +3,8 @@
 
 
 PhysicsComponent::PhysicsComponent()
-	: inverseMass(0.0f)
-	, damping(0.0f)
+	: m_inverseMass(0.0f)
+	, m_damping(0.0f)
 {
 }
 
@@ -13,65 +13,65 @@ Component::Type PhysicsComponent::GetType() const
 	return Component::Type::PHYSICS;
 }
 
-void PhysicsComponent::SetMass(float newMass)
+void PhysicsComponent::SetMass(float mass)
 {
-	assert(newMass > 0.0f);
-	inverseMass = 1.0f / newMass;
+	assert(mass > 0.0f);
+	m_inverseMass = 1.0f / mass;
 }
 
-void PhysicsComponent::SetInverseMass(float newInverseMass)
+void PhysicsComponent::SetInverseMass(float inverseMass)
 {
 	// The inverse mass may be 0, equivalent to infinite mass
-	assert(newInverseMass >= 0.0f);
-	inverseMass = newInverseMass;
+	assert(inverseMass >= 0.0f);
+	inverseMass = inverseMass;
 }
 
-void PhysicsComponent::SetDamping(float newDamping)
+void PhysicsComponent::SetDamping(float damping)
 {
-	damping = newDamping;
+	m_damping = damping;
 }
 
-void PhysicsComponent::SetVelocity(const Vector3& newVelocity)
+void PhysicsComponent::SetVelocity(const Vector3& velocity)
 {
-	velocity = newVelocity;
+	m_velocity = velocity;
 }
 
-void PhysicsComponent::SetAcceleration(const Vector3& newAcceleration)
+void PhysicsComponent::SetAcceleration(const Vector3& acceleration)
 {
-	acceleration = newAcceleration;
+	m_acceleration = acceleration;
 }
 
 void PhysicsComponent::AddForce(const Vector3& force)
 {
-	forceAccum += force;
+	m_forceAccum += force;
 }
 
 void PhysicsComponent::ClearAccumulator()
 {
-	forceAccum = { 0 };
+	m_forceAccum = { 0 };
 }
 
 void PhysicsComponent::Integrate(Transform* xform, float dt)
 {
 	// Ignore things with infinite mass
-	if (inverseMass <= 0.0f) return;
+	if (m_inverseMass <= 0.0f) return;
 
 	// Update position
-	auto vel = velocity.GetXMVec();
+	auto vel = m_velocity.GetXMVec();
 	auto pos = xform->GetPositionXM();
 	xform->SetPosition(pos + vel * dt);
 
 	// Acceleration from force
 	// a = inverseMass * forceAccum
-	Vector3 resultingAcc = acceleration;
-	resultingAcc += forceAccum * inverseMass;
+	Vector3 resultingAcc = m_acceleration;
+	resultingAcc += m_forceAccum * m_inverseMass;
 
 	// Update velocity from acceleration
-	velocity += resultingAcc * dt;
+	m_velocity += resultingAcc * dt;
 
 	// Impose drag
-	velocity *= powf(dt, damping);
+	m_velocity *= powf(dt, m_damping);
 
 	// Clear forces
-	forceAccum = { 0 };
+	m_forceAccum = { 0 };
 }

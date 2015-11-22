@@ -18,7 +18,7 @@ namespace PlaneFactory
 		auto physComponentProxy = scene.CreatePhysicsComponent();
 		scene.AttachComponent(fuselageId, physComponentProxy);
 		scene.physicsComponents[0].SetInverseMass(0.1f);
-		scene.physicsComponents[0].SetVelocity({ 0 });
+		scene.physicsComponents[0].SetVelocity({ 0.0f });
 		scene.physicsComponents[0].SetAcceleration({ 0.0f });
 		scene.physicsComponents[0].SetDamping(1.0f);
 

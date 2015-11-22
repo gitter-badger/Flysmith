@@ -25,17 +25,17 @@ public:
 
 private:
 	// Net force acting on object
-	Vector3 forceAccum;
+	Vector3 m_forceAccum;
 
 	// 0 inverse mass is equivalent to infinite mass 
 	// while infinite inverse mass(mass = 0) is impossible
 	// Done to avoid division by 0 during integration(and also avoid the additional division each step)
-	float inverseMass;
+	float m_inverseMass;
 	
-	Vector3 velocity;
-	Vector3 acceleration;
+	Vector3 m_velocity;
+	Vector3 m_acceleration;
 
 	// Temp while testing physics inside Flysmith main
 	// TODO: Replace with the aerodynamic drag model from TestsAero proj
-	float damping;
+	float m_damping;
 };

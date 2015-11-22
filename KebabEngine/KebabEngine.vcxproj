@@ -224,6 +224,7 @@
     <ClInclude Include="Public\Component.h" />
     <ClInclude Include="Public\ComponentProxy.h" />
     <ClInclude Include="Public\Entity.h" />
+    <ClInclude Include="Public\Forces.h" />
     <ClInclude Include="Public\InputManager.h" />
     <ClInclude Include="Public\json.hpp" />
     <ClInclude Include="Public\KeyboardEvents.h" />
