@@ -3,7 +3,11 @@
 #include "Timer.h"
 #include "Scene.h"
 
+#ifdef RENDERER_DX12
 #include "../../KebabD3D12/Public/Renderer.h"
+#elif defined(RENDERER_GL)
+#include "../../KebabGL/Public/Renderer.h"
+#endif
 
 
 class Window;
