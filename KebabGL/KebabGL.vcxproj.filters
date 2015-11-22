@@ -33,9 +33,6 @@
     <ClInclude Include="Public\PublicDef.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Public\Types.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Private\GLContext.h">
       <Filter>Header Files</Filter>
     </ClInclude>

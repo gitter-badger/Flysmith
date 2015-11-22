@@ -171,7 +171,6 @@
     <ClInclude Include="Private\PCH.h" />
     <ClInclude Include="Public\PublicDef.h" />
     <ClInclude Include="Public\Renderer.h" />
-    <ClInclude Include="Public\Types.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Private\Dependencies\OpenGL\GLCore_4_5.cpp" />

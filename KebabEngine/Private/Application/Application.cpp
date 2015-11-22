@@ -5,7 +5,7 @@
 #include "InputManager.h"
 #include "Window.h"
 #include "Logger.h"
-#include "../../KebabD3D12/Public/RenderItemProxy.h"
+#include "../../KebabCommon/RenderItemProxy.h"
 
 
 EventManager g_eventManager;

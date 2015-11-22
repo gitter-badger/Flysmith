@@ -2,12 +2,11 @@
 #include "PublicDef.h"
 #include "../../KebabCommon/Transform.h"
 #include "../../KebabCommon/Vertex.h"
-#include "ShaderTypes.h"
-#include "RenderItemProxy.h"
+#include "../../KebabCommon/ShaderTypes.h"
+#include "../../KebabCommon/RenderItemProxy.h"
 
 
 using RenderItemHandle = U32;
-class RenderComponent;
 
 class KEBAB12_API Renderer
 {

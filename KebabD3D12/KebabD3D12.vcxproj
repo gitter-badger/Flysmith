@@ -205,7 +205,6 @@
     <ClCompile Include="Private\DXGI\DXGIAdapter.cpp" />
     <ClCompile Include="Private\Misc\HardwareCaps.cpp" />
     <ClCompile Include="Private\Pipeline\PipelineStateObject.cpp" />
-    <ClCompile Include="Private\Renderer\RenderItemProxy.cpp" />
     <ClCompile Include="Private\Resources\ClearValue.cpp" />
     <ClCompile Include="Private\Resources\Resource.cpp" />
     <ClCompile Include="Private\Resources\ResourceBarrier.cpp" />
@@ -265,11 +264,8 @@
     <ClInclude Include="Private\Pipeline\Viewport.h" />
     <ClInclude Include="Private\PCH.h" />
     <ClInclude Include="Private\Resources\ResourceCache.h" />
-    <ClInclude Include="Public\Types.h" />
     <ClInclude Include="Private\Renderer\RenderItem.h" />
-    <ClInclude Include="Public\ShaderTypes.h" />
     <ClInclude Include="Private\Pipeline\RootSignature.h" />
-    <ClInclude Include="Public\RenderItemProxy.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

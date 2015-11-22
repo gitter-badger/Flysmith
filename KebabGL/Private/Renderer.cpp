@@ -24,7 +24,7 @@ Renderer::~Renderer()
 	delete m_pImpl;
 }
 
-void Renderer::Render()
+void Renderer::Render() const
 {
 	gl::Clear(gl::COLOR_BUFFER_BIT | gl::DEPTH_BUFFER_BIT | gl::STENCIL_BUFFER_BIT);
 	m_pImpl->m_context.SwapContextBuffers();

@@ -252,7 +252,6 @@
     <ClInclude Include="Public\FileSystem.h" />
     <ClInclude Include="Private\Resources\Font.h" />
     <ClInclude Include="Public\StringHash.h" />
-    <ClInclude Include="Public\Types.h" />
     <ClInclude Include="Public\Variant.h" />
     <ClInclude Include="Public\PublicDef.h" />
   </ItemGroup>

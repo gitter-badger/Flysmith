@@ -4,5 +4,3 @@
 #else
 #define KEBAB12_API __declspec(dllimport)
 #endif
-
-#include "Types.h"

@@ -159,6 +159,8 @@
     <ClInclude Include="ProjectionMatrix.h" />
     <ClInclude Include="PublicDef.h" />
     <ClInclude Include="Quaternion.h" />
+    <ClInclude Include="RenderItemProxy.h" />
+    <ClInclude Include="ShaderTypes.h" />
     <ClInclude Include="Transform.h" />
     <ClInclude Include="TransformNoScale.h" />
     <ClInclude Include="Types.h" />
@@ -170,6 +172,7 @@
     <ClCompile Include="PerspectiveMatrix.cpp" />
     <ClCompile Include="ProjectionMatrix.cpp" />
     <ClCompile Include="Quaternion.cpp" />
+    <ClCompile Include="RenderItemProxy.cpp" />
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="TransformNoScale.cpp" />
     <ClCompile Include="Vector.cpp" />

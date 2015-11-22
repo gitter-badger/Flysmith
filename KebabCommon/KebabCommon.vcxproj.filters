@@ -39,10 +39,16 @@
     <ClInclude Include="TransformNoScale.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Types.h">
+    <ClInclude Include="Vertex.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Vertex.h">
+    <ClInclude Include="RenderItemProxy.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ShaderTypes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Types.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -69,6 +75,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Vertex.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderItemProxy.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

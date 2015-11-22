@@ -1,6 +1,5 @@
 #pragma once
-#include "PCH.h"
-#include "ShaderTypes.h"
+#include "../../KebabCommon/ShaderTypes.h"
 
 
 namespace ShaderProgram
