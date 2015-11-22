@@ -23,7 +23,7 @@ void PhysicsComponent::SetInverseMass(float inverseMass)
 {
 	// The inverse mass may be 0, equivalent to infinite mass
 	assert(inverseMass >= 0.0f);
-	inverseMass = inverseMass;
+	m_inverseMass = inverseMass;
 }
 
 void PhysicsComponent::SetDamping(float damping)
@@ -75,3 +75,21 @@ void PhysicsComponent::Integrate(Transform* xform, float dt)
 	// Clear forces
 	m_forceAccum = { 0 };
 }
+
+float PhysicsComponent::GetMass() const
+{
+	assert(m_inverseMass > 0.0f);
+	return 1 / m_inverseMass;
+}
+
+float PhysicsComponent::GetInverseMass() const
+{
+	return m_inverseMass;
+}
+
+bool PhysicsComponent::HasFiniteMass() const
+{
+	return (m_inverseMass != 0.0f);
+}
+
+

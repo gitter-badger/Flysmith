@@ -1,16 +1,17 @@
 #pragma once
 #include <vector>
+#include "PublicDef.h"
 
 
 class PhysicsComponent;
 
-class IForceGenerator
+class KEBAB_API IForceGenerator
 {
 public:
 	virtual void UpdateForce(PhysicsComponent*, float dt) = 0;
 };
 
-class ForceRegistry
+class KEBAB_API ForceRegistry
 {
 public:
 	void AddForceGenerator(PhysicsComponent*, IForceGenerator*);

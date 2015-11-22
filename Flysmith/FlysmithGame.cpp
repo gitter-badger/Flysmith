@@ -7,7 +7,16 @@
 #include "Aircraft\Fuselage.h"
 #include "Aircraft\Wing.h"
 #include "Aircraft\PlaneFactory.h"
+
+#include "Forces.h"
+#include "GravityForceGenerator.h"
+
 using namespace DirectX;
+
+
+// TEMP
+ForceRegistry forceRegistry;
+GravityForceGenerator gravityGen({ 0.0f, -9.8f, 0.0f });
 
 
 FlysmithGame::FlysmithGame(HINSTANCE hInstance)
@@ -18,6 +27,8 @@ FlysmithGame::FlysmithGame(HINSTANCE hInstance)
 	LoadResources();
 
 	PlaneFactory::Create(m_resources, m_scene);
+
+	forceRegistry.AddForceGenerator(&m_scene.physicsComponents[0], &gravityGen);
 }
 
 void FlysmithGame::HandleEvent(const Event& ev)
@@ -46,6 +57,8 @@ void FlysmithGame::LoadResources()
 
 void FlysmithGame::UpdateScene(float dt)
 {
+	forceRegistry.UpdateForces(dt);
+
 	// TEMP physics
 	for(auto& obj : m_scene.physicsComponents)
 	{

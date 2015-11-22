@@ -23,6 +23,10 @@ public:
 
 	void Integrate(Transform*, float dt);
 
+	float GetMass() const;
+	float GetInverseMass() const;
+	bool HasFiniteMass() const;
+
 private:
 	// Net force acting on object
 	Vector3 m_forceAccum;

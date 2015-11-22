@@ -197,7 +197,7 @@
     <ClCompile Include="Private\EntitySystem\Component.cpp" />
     <ClCompile Include="Private\Dependencies\lodepng\lodepng.cpp" />
     <ClCompile Include="Private\EntitySystem\PhysicsComponent.cpp" />
-    <ClCompile Include="Private\Forces.cpp" />
+    <ClCompile Include="Private\Physics\Forces.cpp" />
     <ClCompile Include="Private\InputManager.cpp" />
     <ClCompile Include="Private\Misc\PCH.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -205,6 +205,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Private\Physics\GravityForceGenerator.cpp" />
     <ClCompile Include="Private\Resources\FileSystem.cpp" />
     <ClCompile Include="Private\Resources\Font.cpp" />
     <ClCompile Include="Private\EntitySystem\SceneGraph.cpp" />
@@ -226,6 +227,7 @@
     <ClInclude Include="Public\ComponentProxy.h" />
     <ClInclude Include="Public\Entity.h" />
     <ClInclude Include="Public\Forces.h" />
+    <ClInclude Include="Public\GravityForceGenerator.h" />
     <ClInclude Include="Public\InputManager.h" />
     <ClInclude Include="Public\json.hpp" />
     <ClInclude Include="Public\KeyboardEvents.h" />
